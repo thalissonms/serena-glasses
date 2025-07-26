@@ -1,15 +1,50 @@
-@import "tailwindcss";
+/* src/app/globals.css */
 
+@import "tailwindcss"; /* A nova diretiva unificada para Tailwind v4 */
+
+/*
+  Definição da fonte local 'Routhers' usando @font-face.
+  Certifique-se de que os arquivos da fonte estejam em public/fonts/.
+  Ajuste os caminhos e formatos conforme seus arquivos de fonte.
+*/
+@font-face {
+  font-family: "Routhers"; /* Nome que você usará para se referir a esta fonte no CSS */
+  src: url("/fonts/routhers.ttf") format("truetype"); /* Caminho para o arquivo TTF */
+  font-weight: 700; /* Defina o peso da sua fonte. Se tiver variações, adicione mais @font-face */
+  font-style: normal; /* Defina o estilo (normal, italic) */
+  font-display: swap; /* Como a fonte deve ser exibida enquanto carrega */
+}
+
+@theme {
+  /* Suas cores */
+  --color-primary: #ff00b6;
+  --color-pink-light: #feb6de;
+  --color-black: #000000;
+  --color-white: #ffffff;
+
+  /*
+    Suas fontes.
+    Aqui, 'font-sans' ainda usa Poppins do next/font.
+    Para 'font-routhers', agora referenciamos a fonte local 'Routhers' que definimos acima.
+    As outras fontes do next/font (Playfair Display, Beth Ellen) continuam sendo referenciadas
+    pelas variáveis injetadas no <html>.
+  */
+  --font-sans: var(
+    --font-poppins
+  ); /* Para a classe 'font-sans' (Poppins do next/font) */
+  --font-julia: Routhers; /* Para a classe 'font-routhers', agora usa a fonte local "Routhers" */
+  --font-jocham: var(
+    --font-jocham
+  ); /* Para a classe 'font-jocham' (Playfair Display do next/font) */
+  --font-aisha: var(
+    --font-aisha
+  ); /* Para a classe 'font-aisha' (Beth Ellen do next/font) */
+}
+
+/* Resto do seu CSS global */
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,9 +53,43 @@
     --foreground: #ededed;
   }
 }
+@layer utilities {
+  /* Define os keyframes para o marquee */
+  @keyframes marquee {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  .glass-container {
+    @apply relative rounded-4xl flex items-center justify-center overflow-hidden;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    box-shadow: inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7),
+      inset 0 0 3px 1px rgba(255, 255, 255, 0.7);
+  }
+
+  .glass-btn {
+    /* @apply relative p-[15px] rounded-md border-none shadow-md cursor-pointer flex items-center justify-center; */
+    @apply relative px-8 py-6 rounded-2xl cursor-pointer font-medium text-3xl shadow-md overflow-hidden;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    box-shadow: inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7),
+      inset 0 0 3px 1px rgba(255, 255, 255, 0.7);
+  }
+  .glass-text-mask {
+    @apply bg-clip-text text-white/80 backdrop:blur-2xl text-shadow-2xs hover:text-white transition-colors;
+    /* background-image: radial-gradient(circle at center, var(--color-primary) 0%, var(--color-primary) 100%); */
+  }
+  /* Aplica a animação com duração e repetição */
+  .animate-marquee {
+    animation: marquee 25s linear infinite; /* Ajuste a duração conforme necessário */
+  }
+}
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }
