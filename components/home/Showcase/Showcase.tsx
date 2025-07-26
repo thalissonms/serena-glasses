@@ -13,18 +13,27 @@ const productImages = [
   "/products/6.png",
 ];
 
-export function FloatingProductGrid() {
-  const columns = 6;
-  const blocksPerColumn = 6;
-  const minHeight = 150;
-  const maxHeight = 300;
-  const duration = 30; // mais lento
+const useGeneratedBlocks = (columns: number, blocksPerColumn: number) => {
+  const [mounted, setMounted] = useState(false);
+  const [columnsData, setColumnsData] = useState<
+    Array<
+      Array<{
+        height: number;
+        product: string;
+        key: string;
+      }>
+    >
+  >([]);
 
-  return (
-    <div className="w-full h-full grid grid-cols-6 gap-4 overflow-hidden relative z-0">
-      {Array.from({ length: columns }).map((_, colIndex) => {
-        // Gere uma lista de blocos com altura e imagem
-        const blocks = Array.from({ length: blocksPerColumn }).map((_, i) => {
+  useEffect(() => {
+    setMounted(true);
+
+    const minHeight = 150;
+    const maxHeight = 300;
+
+    const generatedColumns = Array.from({ length: columns }).map(
+      (_, colIndex) => {
+        return Array.from({ length: blocksPerColumn }).map((_, i) => {
           const height =
             Math.floor(Math.random() * (maxHeight - minHeight)) + minHeight;
           const product = productImages[(colIndex + i) % productImages.length];
@@ -35,9 +44,28 @@ export function FloatingProductGrid() {
             key: `${colIndex}-${i}`,
           };
         });
+      }
+    );
 
-        // Duplicar os blocos para looping contínuo
-        const animatedBlocks = [...blocks, ...blocks];
+    setColumnsData(generatedColumns);
+  }, [columns, blocksPerColumn]);
+
+  return { mounted, columnsData };
+};
+
+export function FloatingProductGrid() {
+  const columns = 6;
+  const blocksPerColumn = 6;
+  const duration = 30;
+
+  const { mounted, columnsData } = useGeneratedBlocks(columns, blocksPerColumn);
+
+  if (!mounted) return null; 
+
+  return (
+    <div className="w-full h-full grid grid-cols-6 gap-4 overflow-hidden relative z-0">
+      {columnsData.map((blocks, colIndex) => {
+        const animatedBlocks = [...blocks, ...blocks]; 
 
         return (
           <div
