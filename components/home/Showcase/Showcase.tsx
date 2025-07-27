@@ -92,13 +92,12 @@ const Showcase = () => {
             className="opacity-95"
           />
         </motion.div>
-
         <motion.button
-          className="p-2 flex group rounded-xs bg-primary cursor-pointer shadow-[6px_4px_0px_1px_rgba(0,0,0,0.9)] active:shadow-none hover:bg-pink-500 transition-all duration-200"
+          className="group flex items-center justify-center w-full sm:w-auto px-1 sm:px-2 md:p-3 rounded-xs bg-primary shadow-[6px_4px_0px_1px_rgba(0,0,0,0.9)] active:shadow-none hover:bg-pink-500 transition-all duration-200"
           whileTap={{ scale: 0.95 }}
           transition={{ type: "inertia" }}
         >
-          <span className="px-8 py-4 border-2 border-pink-light/80 rounded-xs text-2xl font-medium text-pink-50/90 group-hover:text-white group-hover:text-shadow-[6px_4px_0px_1px_rgba(0,0,0,0.9)] transition-all duration-200">
+          <span className="border-2 border-pink-light/80 rounded-xs text-base sm:text-lg md:text-xl lg:text-2xl font-medium text-pink-50/90 group-hover:text-white transition-all duration-200 px-4 sm:px-6 md:px-8 py-2 sm:py-3 md:py-4 text-center">
             Explorar Coleção
           </span>
         </motion.button>
