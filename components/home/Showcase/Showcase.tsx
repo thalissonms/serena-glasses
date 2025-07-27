@@ -46,13 +46,13 @@ const Showcase = () => {
   const { stars, mounted } = useGeneratedStars(30);
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-primary to-pink-light/80 min-h-[560px] w-full">
+    <section className="relative overflow-hidden bg-gradient-to-b from-primary to-pink-light/80 min-h-[575px] w-full">
       <div className="absolute inset-0 z-0">
         <StackedPolaroids productImages={productImages} />
       </div>
-
+      <div className="w-full h-24 absolute bottom-0 bg-gradient-to-t from-pink-light to-transparent" />
       {mounted && (
-        <div className="absolute inset-0 z-5">
+        <div className="absolute inset-0 z-5 bg-gradient-to-b from-primary/0">
           {stars.map((star, i) => (
             <motion.div
               key={i}
@@ -93,11 +93,11 @@ const Showcase = () => {
           />
         </motion.div>
         <motion.button
-          className="group flex items-center justify-center w-full sm:w-auto px-1 sm:px-2 md:p-3 rounded-xs bg-primary shadow-[6px_4px_0px_1px_rgba(0,0,0,0.9)] active:shadow-none hover:bg-pink-500 transition-all duration-200"
+          className="group flex items-center justify-center p-1 sm:px-2 md:p-3 rounded-xs bg-primary shadow-[6px_4px_0px_1px_rgba(0,0,0,0.9)] active:shadow-none hover:bg-pink-500 transition-all duration-200 cursor-pointer"
           whileTap={{ scale: 0.95 }}
           transition={{ type: "inertia" }}
         >
-          <span className="border-2 border-pink-light/80 rounded-xs text-base sm:text-lg md:text-xl lg:text-2xl font-medium text-pink-50/90 group-hover:text-white transition-all duration-200 px-4 sm:px-6 md:px-8 py-2 sm:py-3 md:py-4 text-center">
+          <span className="border lg:border-2 border-pink-light/80 rounded-xs text-base sm:text-lg md:text-xl lg:text-2xl font-medium text-pink-50/90 group-hover:text-white transition-all duration-200 px-4 sm:px-6 md:px-8 py-2 sm:py-3 md:py-4 text-center">
             Explorar Coleção
           </span>
         </motion.button>
