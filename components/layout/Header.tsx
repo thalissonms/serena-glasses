@@ -19,23 +19,16 @@ export default function Header() {
 
   return (
     <>
-      <div className="bg-black text-primary text-center py-1.5 text-sm font-medium">
-        <div className="whitespace-nowrap">
-          ✨ FRETE GRÁTIS PARA TODO BRASIL EM COMPRAS ACIMA DE R$ 199,00 ✨ USE
-          O CUPOM: FRETEGRATIS ✨
-        </div>
-      </div>
-
       <header className="w-full bg-white sticky top-0 z-50 shadow-md">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-between h-16 lg:h-24">
+          <div className="flex items-center justify-between h-16 lg:h-10">
             <Link href="/" className="flex items-center gap-3 group">
               <div className="relative">
                 <Image
                   src="/logos/logo-black.png"
                   alt="Serena Sunglasses Logo"
-                  width={175}
-                  height={175}
+                  width={100}
+                  height={100}
                 />
               </div>
             </Link>

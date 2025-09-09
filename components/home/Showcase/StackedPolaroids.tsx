@@ -161,7 +161,7 @@ function PolaroidWithLifecycle({ polaroid }: { polaroid: Polaroid }) {
 
 function PolaroidCard({ product }: { product: string }) {
   return (
-    <div className="w-24 h-32 sm:w-28 sm:h-36 md:w-36 md:h-48 lg:w-40 lg:h-52 xl:w-44 xl:h-56 bg-gray-50 flex flex-col items-center pt-2 md:pt-3 rounded-sm shadow-lg cursor-pointer select-none hover:scale-110 hover:z-50 hover:rotate-0 transition-all duration-300 ease-out">
+    <div className="w-24 h-32 sm:w-28 sm:h-36 md:w-36 md:h-48 lg:w-40 lg:h-52 xl:w-44 xl:h-56 noise-overlay-white noise-overlay-blend flex flex-col items-center pt-2 md:pt-3 rounded-sm shadow-lg cursor-pointer select-none hover:scale-110 hover:z-50 hover:rotate-0 transition-all duration-300 ease-out">
       <div className="w-[87.5%] h-[70%] bg-pink-200 rounded-sm overflow-hidden relative border border-gray-100">
         <Image
           src={product}

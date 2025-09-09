@@ -4,7 +4,7 @@ import React from "react";
 
 const TypographyExamples: React.FC = () => {
   return (
-    <article className="bg-gradient-to-b bg-white from-pink-light/80 to-pink-light text-black min-h-screen">
+    <article className="bg-gradient-to-b bg-white from-white/80 to-white text-black min-h-screen">
       <Showcase />
     </article>
   );

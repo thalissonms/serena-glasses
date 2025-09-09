@@ -5,6 +5,7 @@ import {
   Dancing_Script,
   Playfair_Display,
   Beth_Ellen,
+  Shrikhand,
 } from "next/font/google";
 
 // Configurando Poppins (sua fonte sans-serif principal)
@@ -13,6 +14,13 @@ export const poppins = Poppins({
   display: "swap",
   variable: "--font-poppins",
   weight: ["400", "500", "600", "700"], // Pesos comuns para um texto sans-serif
+});
+
+export const shrikhand = Shrikhand({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-shrikhand",
+  weight: ["400"], // Pesos comuns para um texto sans-serif
 });
 
 // Configurando Dancing Script (para títulos ou elementos decorativos)
@@ -49,4 +57,4 @@ export const fontVariables = {
 };
 
 // Se você precisar de todas as classes de variáveis de uma vez
-export const allFontVariablesClassNames = `${poppins.variable} ${dancingScript.variable} ${playfairDisplay.variable} ${bethEllen.variable}`;
+export const allFontVariablesClassNames = `${poppins.variable} ${dancingScript.variable} ${playfairDisplay.variable} ${bethEllen.variable} ${shrikhand.variable}`;
