@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "../../styles/tailwind.css";
+import "../../styles/scss/globals.scss";
 import { allFontVariablesClassNames } from "@/modules/ui/utils/typography";
 
 import siteConfig from "@/config/siteConfig";

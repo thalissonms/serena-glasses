@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand Colors */
+  --color-brand-pink: #FF00B6;
+  --color-brand-pink-light: #FEB6DE;
+  --color-brand-black: #000000;
+  --color-brand-white: #FFFFFF;
+  
+  /* Border Radius */
+  --radius: 0.625rem;
+  
+  /* Custom Border Radius Scale */
+  --radius-xs: calc(var(--radius) * 0.5);
+  --radius-sm: calc(var(--radius) * 0.75);
+  --radius-md: calc(var(--radius) * 1.25);
+  --radius-lg: calc(var(--radius) * 1.5);
+  --radius-xl: calc(var(--radius) * 2);
+  
+  /* Font Families (referenciando CSS custom properties) */
+  --font-family-shrikhand: var(--font-shrikhand);
+  --font-family-inter: var(--font-inter);
+  --font-family-playfair: var(--font-playfair);
+}

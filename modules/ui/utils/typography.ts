@@ -6,7 +6,16 @@ import {
   Playfair_Display,
   Beth_Ellen,
   Shrikhand,
+  Inter,
 } from "next/font/google";
+
+// Configurando Inter (fonte principal para substituir a importação CSS)
+export const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
 
 // Configurando Poppins (sua fonte sans-serif principal)
 export const poppins = Poppins({
@@ -50,11 +59,13 @@ export const bethEllen = Beth_Ellen({
 
 // Opcional: Você pode exportar um objeto para facilitar o uso no layout
 export const fontVariables = {
+  inter: inter.variable,
   poppins: poppins.variable,
   dancingScript: dancingScript.variable,
   playfairDisplay: playfairDisplay.variable,
   bethEllen: bethEllen.variable,
+  shrikhand: shrikhand.variable,
 };
 
 // Se você precisar de todas as classes de variáveis de uma vez
-export const allFontVariablesClassNames = `${poppins.variable} ${dancingScript.variable} ${playfairDisplay.variable} ${bethEllen.variable} ${shrikhand.variable}`;
+export const allFontVariablesClassNames = `${inter.variable} ${poppins.variable} ${dancingScript.variable} ${playfairDisplay.variable} ${bethEllen.variable} ${shrikhand.variable}`;

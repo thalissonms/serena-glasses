@@ -1,0 +1,10 @@
+@use "../core/mixins" as *;
+
+.glass-container { @include glass(0.1); position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.glass-text-mask { background-image: radial-gradient(circle at center, var(--color-primary) 0%, var(--color-primary) 100%); -webkit-background-clip: text; color: transparent; }
+.noise-overlay-blend { background: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500'%3E%3Cfilter id='noise' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeBlend mode='screen'/%3E%3C/filter%3E%3Crect width='500' height='500' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E"); mix-blend-mode: soft-light; }
+.noise-overlay { background: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500'%3E%3Cfilter id='noise' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeBlend mode='screen'/%3E%3C/filter%3E%3Crect width='500' height='500' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E"); mix-blend-mode: luminosity; }
+.glass-overlay-blend { background: url("/public/backgrounds/glasstexture.svg"); }
+.noise-overlay-white { background-color: var(--color-white); }
+.text-shadow-highlight { position: relative; }
+.text-shadow-highlight::before { content: attr(data-text); position: absolute; top: 2px; left: 2px; color: #000; z-index: -1; }

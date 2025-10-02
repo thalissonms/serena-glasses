@@ -1,0 +1,10 @@
+// Funções utilitárias SCSS
+@use "sass:map";
+
+@function color($group, $key) {
+  @return map.get(map.get($colors, $group), $key);
+}
+
+@function chart-color($index) {
+  @return map.get(map.get($colors, charts), $index);
+}

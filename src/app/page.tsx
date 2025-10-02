@@ -1,5 +1,5 @@
 // src/components/TypographyExamples.tsx
-import Showcase from "@/components/home/Showcase/Showcase";
+import Showcase from "@/modules/home/components/Showcase";
 import React from "react";
 
 const TypographyExamples: React.FC = () => {

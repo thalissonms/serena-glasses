@@ -1,0 +1,34 @@
+{
+    "i18n-ally.localesPaths": [
+        "i18n",
+        "i18n/locales"
+    ],
+    "tailwindCSS.includeLanguages": {
+        "typescript": "typescript",
+        "javascript": "javascript",
+        "typescriptreact": "typescriptreact",
+        "javascriptreact": "javascriptreact"
+    },
+    "tailwindCSS.experimental.classRegex": [
+        ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+        ["cn\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+        ["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+        ["classnames\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+    ],
+    "tailwindCSS.files.exclude": [
+        "**/.git/**",
+        "**/node_modules/**",
+        "**/.next/**",
+        "**/dist/**"
+    ],
+    "tailwindCSS.experimental.configFile": "tailwind.config.ts",
+    "tailwindCSS.rootFontSize": 16,
+    "editor.quickSuggestions": {
+        "strings": "on"
+    },
+    "css.validate": false,
+    "scss.validate": false,
+    "editor.inlineSuggest.enabled": true,
+    "tailwindCSS.validate": true,
+    "tailwindCSS.emmetCompletions": true
+}

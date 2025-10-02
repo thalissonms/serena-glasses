@@ -1,0 +1,16 @@
+/* Main SCSS entry */
+/* 1. Load all SCSS modules (must come before any other rules/imports) */
+@use "core/tokens";
+@use "core/mixins";
+@use "core/functions";
+@use "base/base";
+@use "base/typography";
+@use "base/fonts";
+@use "utilities/animations";
+@use "utilities/effects";
+@use "utilities/showcase-stars";
+
+/* Tailwind import movido para styles/tailwind.css para evitar @import deprecated dentro de SCSS */
+/* Dark mode handled via .dark class */
+
+/* Placeholder for additional utility layers */
