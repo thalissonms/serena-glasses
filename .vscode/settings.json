@@ -3,32 +3,33 @@
         "i18n",
         "i18n/locales"
     ],
-    "tailwindCSS.includeLanguages": {
-        "typescript": "typescript",
-        "javascript": "javascript",
-        "typescriptreact": "typescriptreact",
-        "javascriptreact": "javascriptreact"
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": false,
+        "strings": true
     },
-    "tailwindCSS.experimental.classRegex": [
-        ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
-        ["cn\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
-        ["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
-        ["classnames\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
-    ],
+    "tailwindCSS.includeLanguages": {
+        "typescriptreact": "html",
+        "javascriptreact": "html",
+        "scss": "css"
+    },
+    "tailwindCSS.emmetCompletions": true,
+    "tailwindCSS.validate": true,
+    "tailwindCSS.trace": "verbose",
     "tailwindCSS.files.exclude": [
         "**/.git/**",
         "**/node_modules/**",
         "**/.next/**",
         "**/dist/**"
     ],
-    "tailwindCSS.experimental.configFile": "tailwind.config.ts",
-    "tailwindCSS.rootFontSize": 16,
-    "editor.quickSuggestions": {
-        "strings": "on"
-    },
+    "tailwindCSS.experimental.classRegex": [
+        ["cva\\(([^)]*)\\)", "(?:'([^']*)'|\"([^\"]*)\"|`([^`]*)`)"],
+        ["classVarianceAuthority\\(([^)]*)\\)", "(?:'([^']*)'|\"([^\"]*)\"|`([^`]*)`)"],
+        ["cn\\(([^)]*)\\)", "(?:'([^']*)'|\"([^\"]*)\"|`([^`]*)`)"],
+        ["clsx\\(([^)]*)\\)", "(?:'([^']*)'|\"([^\"]*)\"|`([^`]*)`)"],
+        ["cx\\(([^)]*)\\)", "(?:'([^']*)'|\"([^\"]*)\"|`([^`]*)`)"]
+    ],
     "css.validate": false,
     "scss.validate": false,
-    "editor.inlineSuggest.enabled": true,
-    "tailwindCSS.validate": true,
-    "tailwindCSS.emmetCompletions": true
+    "editor.inlineSuggest.enabled": true
 }

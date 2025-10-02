@@ -21,14 +21,14 @@ const Showcase = () => {
   const { stars, mounted } = useGeneratedStars(25);
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-pink to-white/90 min-h-[600px] md:min-h-[900px] w-full -mt-24">
-      <div className="absolute bottom-0 w-full z-10 noise-overlay-blend" />
+    <section className="relative overflow-hidden bg-gradient-to-b from-brand-pink to-white/90 min-h-[600px] md:min-h-[900px] w-full -mt-24">
+      <div className="absolute bottom-0 z-10 w-full noise-overlay-blend" />
 
       <div className="absolute inset-0 z-0 opacity-75">
         <StackedPolaroids productImages={productImages} />
       </div>
 
-      <div className="absolute bottom-0 w-full h-10 md:h-14 lg:h-18 xl:h-24 bg-gradient-to-t from-white via-white/40 to-transparent z-30" />
+      <div className="absolute bottom-0 z-30 w-full h-10 md:h-14 lg:h-18 xl:h-24 bg-gradient-to-t from-white via-white/40 to-transparent" />
 
       {mounted && (
         <div className="absolute inset-0 z-15">

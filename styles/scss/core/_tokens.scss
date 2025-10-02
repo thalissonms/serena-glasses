@@ -1,5 +1,4 @@
-// Design Tokens (SCSS)
-// Use maps para organizar grupos
+
 @use "sass:map";
 
 $colors: (
@@ -8,6 +7,7 @@ $colors: (
     pink-light: #FEB6DE,
     black: #000000,
     white: #FFFFFF,
+    blue: #31cfe9
   ),
   base: (
     background: #ffffff,
@@ -107,6 +107,7 @@ $font-weight-normal: 400;
   --brand-pink-light: map.get(map.get($colors, brand), pink-light);
   --brand-black: map.get(map.get($colors, brand), black);
   --brand-white: map.get(map.get($colors, brand), white);
+  --brand-blue: map.get(map.get($colors, brand), blue);
 
   /* Base */
   --background: map.get(map.get($colors, base), background);

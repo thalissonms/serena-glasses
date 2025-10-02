@@ -59,7 +59,7 @@ export default function RootLayout({
       <body>
         <I18nProvider>
           <Header />
-          <main className="min-h-screen container">{children}</main>
+          <main className="min-h-screen">{children}</main>
           <Footer />
         </I18nProvider>
       </body>
