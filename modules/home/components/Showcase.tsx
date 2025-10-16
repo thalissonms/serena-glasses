@@ -21,7 +21,7 @@ const Showcase = () => {
   const { stars, mounted } = useGeneratedStars(25);
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-brand-pink to-white/90 min-h-[600px] md:min-h-[900px] w-full -mt-24">
+    <section className="relative overflow-hidden bg-gradient-to-b from-brand-pink bg-[url('/backgrounds/bg-clipper-gradient.png')] bg-no-repeat bg-cover bg-blend-multiply bg-center to-white/90 min-h-[600px] md:min-h-[900px] w-full -mt-24">
       <div className="absolute bottom-0 z-10 w-full noise-overlay-blend" />
 
       <div className="absolute inset-0 z-0 opacity-75">
@@ -80,10 +80,9 @@ const Showcase = () => {
               role="img"
             />
           </motion.div>
-          <HeaderButton />
+          {/* <HeaderButton /> */}
         </motion.div>
       </div>
-
     </section>
   );
 };
