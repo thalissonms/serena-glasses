@@ -11,6 +11,25 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    rules: {
+      'no-restricted-imports': [
+        'warn',
+        {
+          patterns: [
+            {
+              group: [
+                '../../features/*',
+                '../features/*',
+                'features/*'
+              ],
+              message: 'Use o alias @features para importar módulos de features.'
+            }
+          ]
+        }
+      ]
+    }
+  }
 ];
 
 export default eslintConfig;

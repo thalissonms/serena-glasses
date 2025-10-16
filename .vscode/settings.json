@@ -1,0 +1,35 @@
+{
+    "i18n-ally.localesPaths": [
+        "i18n",
+        "i18n/locales"
+    ],
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": false,
+        "strings": true
+    },
+    "tailwindCSS.includeLanguages": {
+        "typescriptreact": "html",
+        "javascriptreact": "html",
+        "scss": "css"
+    },
+    "tailwindCSS.emmetCompletions": true,
+    "tailwindCSS.validate": true,
+    "tailwindCSS.trace": "verbose",
+    "tailwindCSS.files.exclude": [
+        "**/.git/**",
+        "**/node_modules/**",
+        "**/.next/**",
+        "**/dist/**"
+    ],
+    "tailwindCSS.experimental.classRegex": [
+        ["cva\\(([^)]*)\\)", "(?:'([^']*)'|\"([^\"]*)\"|`([^`]*)`)"],
+        ["classVarianceAuthority\\(([^)]*)\\)", "(?:'([^']*)'|\"([^\"]*)\"|`([^`]*)`)"],
+        ["cn\\(([^)]*)\\)", "(?:'([^']*)'|\"([^\"]*)\"|`([^`]*)`)"],
+        ["clsx\\(([^)]*)\\)", "(?:'([^']*)'|\"([^\"]*)\"|`([^`]*)`)"],
+        ["cx\\(([^)]*)\\)", "(?:'([^']*)'|\"([^\"]*)\"|`([^`]*)`)"]
+    ],
+    "css.validate": false,
+    "scss.validate": false,
+    "editor.inlineSuggest.enabled": true
+}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "../../styles/tailwind.css";
 import { allFontVariablesClassNames } from "@/modules/ui/utils/typography";
+import { localFontVariablesClassNames } from "./fonts";
 
 import siteConfig from "@/config/siteConfig";
 
@@ -8,7 +9,8 @@ import i18n from "@/i18n/i18n";
 
 import I18nProvider from "@/i18n/i18nProvider";
 
-import { Header, Footer } from "@/components/layout";
+import { Footer } from "@/components/layout";
+import { Nav } from "@features/navigation/components/Nav";
 
 export const metadata: Metadata = {
   title: siteConfig.siteName,
@@ -54,11 +56,12 @@ export default function RootLayout({
       : undefined;
 
   return (
-    <html lang={initialLang} className={allFontVariablesClassNames}>
+    <html lang={initialLang} className={`${allFontVariablesClassNames} ${localFontVariablesClassNames}`}>
+      <head />
       <body>
         <I18nProvider>
-          <Header />
-          <main className="min-h-screen container">{children}</main>
+          <Nav />
+          <main className="min-h-screen">{children}</main>
           <Footer />
         </I18nProvider>
       </body>

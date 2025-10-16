@@ -1,0 +1,210 @@
+@import "tailwindcss";
+
+/* =============================================
+ * TAILWIND V4 CSS-FIRST THEME
+ * Fonte única de verdade para tokens + utilidades
+ * ============================================= */
+
+@theme {
+	/* Radius / Escala */
+	--radius: 0.625rem;
+	--font-size: 16px;
+
+	/* Font Weights (alinhados ao padrão Tailwind)
+	 * tailwind utility -> token abaixo
+	 * font-thin        -> 100
+	 * font-extralight  -> 200
+	 * font-light       -> 300
+	 * font-normal      -> 400
+	 * font-medium      -> 500
+	 * font-semibold    -> 600
+	 * font-bold        -> 700
+	 * font-extrabold   -> 800
+	 * font-black       -> 900
+	 */
+	--font-weight-thin: 100;
+	--font-weight-extralight: 200;
+	--font-weight-light: 300;
+	--font-weight-normal: 400;
+	--font-weight-medium: 500;
+	--font-weight-semibold: 600;
+	--font-weight-bold: 700;      /* antes estava 600 -> parecia sem negrito */
+	--font-weight-extrabold: 800; /* antes estava 700 */
+	--font-weight-black: 900;     /* antes estava 800 -> faltava peso máximo */
+
+
+	/* Brand Colors */
+	--brand-pink: #FF00B6;
+	--brand-pink-light: #FEB6DE;
+	--brand-black: #000000;
+	--brand-white: #FFFFFF;
+	--brand-blue: #31cfe9;
+
+	/* Colors */
+	--color-background: #ffffff;
+	--color-foreground: oklch(0.145 0 0);
+	--color-card: #ffffff;
+	--color-card-foreground: oklch(0.145 0 0);
+	--color-popover: oklch(1 0 0);
+	--color-popover-foreground: oklch(0.145 0 0);
+	--color-primary: #030213;
+	--color-primary-foreground: oklch(1 0 0);
+	--color-secondary: oklch(0.95 0.0058 264.53);
+	--color-secondary-foreground: #030213;
+	--color-muted: #ececf0;
+	--color-muted-foreground: #717182;
+	--color-accent: #e9ebef;
+	--color-accent-foreground: #030213;
+	--color-destructive: #d4183d;
+	--color-destructive-foreground: #ffffff;
+	--color-border: rgba(0, 0, 0, 0.1);
+	--color-input: transparent;
+	--color-input-background: #f3f3f5;
+	--color-switch-background: #cbced4;
+	--color-ring: oklch(0.708 0 0);
+
+	/* Brand Color Classes */
+	--color-brand-pink: var(--brand-pink);
+	--color-brand-pink-light: var(--brand-pink-light);
+	--color-brand-black: var(--brand-black);
+	--color-brand-white: var(--brand-white);
+	--color-brand-blue: var(--brand-blue);
+
+	/* Charts */
+	--color-chart-1: oklch(0.646 0.222 41.116);
+	--color-chart-2: oklch(0.6 0.118 184.704);
+	--color-chart-3: oklch(0.398 0.07 227.392);
+	--color-chart-4: oklch(0.828 0.189 84.429);
+	--color-chart-5: oklch(0.769 0.188 70.08);
+
+	/* Sidebar */
+	--color-sidebar: oklch(0.985 0 0);
+	--color-sidebar-foreground: oklch(0.145 0 0);
+	--color-sidebar-primary: #030213;
+	--color-sidebar-primary-foreground: oklch(0.985 0 0);
+	--color-sidebar-accent: oklch(0.97 0 0);
+	--color-sidebar-accent-foreground: oklch(0.205 0 0);
+	--color-sidebar-border: oklch(0.922 0 0);
+	--color-sidebar-ring: oklch(0.708 0 0);
+
+	/* Font Families */
+	--font-family-inter: var(--font-inter), 'Helvetica Neue', Arial, sans-serif;
+	--font-family-poppins: var(--font-poppins), 'Helvetica Neue', Arial, sans-serif;
+	--font-family-shrikhand: var(--font-shrikhand), 'Impact', sans-serif;
+	--font-family-routhers: var(--font-routhers), 'Arial Black', sans-serif;
+	--font-family-jocham: var(--font-jocham), 'Impact', sans-serif;
+	--font-family-aisha: var(--font-aisha), 'Trebuchet MS', sans-serif;
+
+	/* Text Scale */
+	--font-size-base: 1rem;
+	--font-size-lg: 1.125rem;
+	--font-size-xl: 1.25rem;
+	--font-size-2xl: 1.5rem;
+}
+
+/* Dark Mode Overrides (classe .dark no <html> ou <body>) */
+.dark {
+	--color-background: oklch(0.145 0 0);
+	--color-foreground: oklch(0.985 0 0);
+	--color-card: oklch(0.145 0 0);
+	--color-card-foreground: oklch(0.985 0 0);
+	--color-popover: oklch(0.145 0 0);
+	--color-popover-foreground: oklch(0.985 0 0);
+	--color-primary: oklch(0.985 0 0);
+	--color-primary-foreground: oklch(0.205 0 0);
+	--color-secondary: oklch(0.269 0 0);
+	--color-secondary-foreground: oklch(0.985 0 0);
+	--color-muted: oklch(0.269 0 0);
+	--color-muted-foreground: oklch(0.708 0 0);
+	--color-accent: oklch(0.269 0 0);
+	--color-accent-foreground: oklch(0.985 0 0);
+	--color-destructive: oklch(0.396 0.141 25.723);
+	--color-destructive-foreground: oklch(0.637 0.237 25.331);
+	--color-border: oklch(0.269 0 0);
+	--color-input: oklch(0.269 0 0);
+	--color-ring: oklch(0.439 0 0);
+	--color-chart-1: oklch(0.488 0.243 264.376);
+	--color-chart-2: oklch(0.696 0.17 162.48);
+	--color-chart-3: oklch(0.769 0.188 70.08);
+	--color-chart-4: oklch(0.627 0.265 303.9);
+	--color-chart-5: oklch(0.645 0.246 16.439);
+	--color-sidebar: oklch(0.205 0 0);
+	--color-sidebar-foreground: oklch(0.985 0 0);
+	--color-sidebar-primary: oklch(0.488 0.243 264.376);
+	--color-sidebar-primary-foreground: oklch(0.985 0 0);
+	--color-sidebar-accent: oklch(0.269 0 0);
+	--color-sidebar-accent-foreground: oklch(0.985 0 0);
+	--color-sidebar-border: oklch(0.269 0 0);
+	--color-sidebar-ring: oklch(0.439 0 0);
+}
+
+/* Base / Reset Migrado */
+html { font-size: var(--font-size-base); }
+body {
+	font-family: var(--font-family-inter);
+	background: var(--color-background);
+	color: var(--color-foreground);
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
+
+Tipografia simples
+h1 { font-size: var(--font-size-2xl); font-weight: var(--font-weight-medium); line-height: 1.5; }
+h2 { font-size: var(--font-size-xl); font-weight: var(--font-weight-medium); line-height: 1.5; }
+h3 { font-size: var(--font-size-lg); font-weight: var(--font-weight-medium); line-height: 1.5; }
+h4 { font-size: var(--font-size-base); font-weight: var(--font-weight-medium); line-height: 1.5; }
+p, label, button, input { font-size: var(--font-size-base); line-height: 1.5; }
+
+/* Font utility classes */
+.font-routhers { font-family: var(--font-family-routhers); font-weight: 900; letter-spacing: 0.05em; }
+.font-jocham { font-family: var(--font-family-jocham); font-weight: 800; letter-spacing: 0.1em; }
+.font-aisha { font-family: var(--font-family-aisha); font-weight: 700; letter-spacing: 0.02em; }
+.font-shrikhand { font-family: var(--font-family-shrikhand); font-weight: 400; letter-spacing: 0.02em; }
+.font-inter { font-family: var(--font-family-inter); }
+.font-poppins { font-family: var(--font-family-poppins); }
+
+/* Animações (ex maps -> mantidos como custom props via inline style quando necessário) */
+@keyframes polaroid-appear {
+	0% { opacity: 0; transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) scale(0.3); }
+	60% { opacity: 0.6; transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) scale(calc(var(--scale, 1) * 1.05)); }
+	100% { opacity: 0.9; transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) scale(var(--scale, 1)); }
+}
+@keyframes polaroid-disappear {
+	0% { opacity: 0.9; transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) scale(var(--scale, 1)); }
+	40% { opacity: 0.5; transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) scale(calc(var(--scale, 1) * 0.95)); }
+	100% { opacity: 0; transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) scale(0.3); }
+}
+@keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-100%); } }
+
+.animate-polaroid-appear { animation: polaroid-appear 2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; opacity: 0; will-change: transform, opacity; }
+.animate-polaroid-visible { opacity: 0.9; transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) scale(var(--scale, 1)); transition: none; }
+.animate-polaroid-disappear { animation: polaroid-disappear 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; will-change: transform, opacity; }
+.animate-polaroid-appear:hover,
+.animate-polaroid-visible:hover,
+.animate-polaroid-disappear:hover { z-index: 9999 !important; transform: translate(-50%, -50%) rotate(0deg) scale(1.1) !important; transition: transform 0.3s ease-out, z-index 0s; }
+.animate-polaroid-appear:hover { animation-play-state: paused; }
+.animate-polaroid-disappear:hover { animation-play-state: paused; }
+.animate-polaroid-appear,
+.animate-polaroid-visible,
+.animate-polaroid-disappear { backface-visibility: hidden; transform-style: preserve-3d; contain: layout style paint; }
+.animate-marquee { animation: marquee 25s linear infinite; }
+
+/* Effects */
+.glass-container { position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; background-color: rgba(255,255,255,0.1); backdrop-filter: blur(5px); box-shadow: inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7), inset 0 0 3px 1px rgba(255, 255, 255, 0.7); }
+.glass-text-mask { background-image: radial-gradient(circle at center, var(--primary) 0%, var(--primary) 100%); -webkit-background-clip: text; color: transparent; }
+.noise-overlay-blend { background: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500'%3E%3Cfilter id='noise' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeBlend mode='screen'/%3E%3C/filter%3E%3Crect width='500' height='500' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E"); mix-blend-mode: soft-light; }
+.noise-overlay { background: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500'%3E%3Cfilter id='noise' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeBlend mode='screen'/%3E%3C/filter%3E%3Crect width='500' height='500' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E"); mix-blend-mode: luminosity; }
+.glass-overlay-blend { background: url("/backgrounds/glasstexture.svg"); }
+.noise-overlay-white { background-color: var(--brand-white); }
+.text-shadow-highlight { position: relative; }
+.text-shadow-highlight::before { content: attr(data-text); position: absolute; top: 2px; left: 2px; color: #000; z-index: -1; }
+
+/* Showcase Stars Responsivo */
+@media (min-width: 640px) {
+	[data-size] { width: calc(var(--size) * 1px) !important; height: calc(var(--size) * 1px) !important; }
+}
+@media (min-width: 1024px) {
+	[data-size] { width: calc(var(--size) * 1.2px) !important; height: calc(var(--size) * 1.2px) !important; }
+}
+
+/* Fim do bundle CSS-first */
