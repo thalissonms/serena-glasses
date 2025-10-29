@@ -24,6 +24,26 @@ const eslintConfig = [
                 'features/*'
               ],
               message: 'Use o alias @features para importar módulos de features.'
+            },
+            {
+              group: [
+                '../../shared/*',
+                '../shared/*',
+                'shared/*'
+              ],
+              message: 'Use o alias @shared para importar módulos compartilhados.'
+            },
+            {
+              group: [
+                '@/features/*'
+              ],
+              message: 'Use @features em vez de @/features.'
+            },
+            {
+              group: [
+                '@/shared/*'
+              ],
+              message: 'Use @shared em vez de @/shared.'
             }
           ]
         }

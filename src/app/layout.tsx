@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
 import "../../styles/tailwind.css";
-import { allFontVariablesClassNames } from "@/modules/ui/utils/typography";
-import { localFontVariablesClassNames } from "./fonts";
+import { allFontVariablesClassNames, localFontVariablesClassNames } from "@shared/utils/typography";
+import { Footer } from "@shared/components/layout";
 
-import siteConfig from "@/config/siteConfig";
+import i18n from "@i18n/i18n";
 
-import i18n from "@/i18n/i18n";
+import I18nProvider from "@i18n/i18nProvider";
 
-import I18nProvider from "@/i18n/i18nProvider";
-
-import { Footer } from "@/components/layout";
+import { siteConfig } from "@shared/config";
 import { Nav } from "@features/navigation/components/Nav";
 
 export const metadata: Metadata = {

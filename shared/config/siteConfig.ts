@@ -1,4 +1,4 @@
-const siteConfig = {
+export const siteConfig = {
   siteName: "Serena Glasses",
   siteDescription: "Serana Glasses - Boutique de Óculos Solar",
   siteKeywords: "óculos, moda, estilo, música, rosa, loja, design, boutique",
@@ -32,5 +32,3 @@ const siteConfig = {
     images: ["/logo/logo-pink.svg"],
   },
 } as const;
-
-export default siteConfig
