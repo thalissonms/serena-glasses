@@ -1,7 +1,6 @@
 // src/components/TypographyExamples.tsx
 import { SerenaCollageBackground } from "@shared/components/layout";
 import Showcase from "@features/home/components/Showcase";
-import { isActive } from '@features/navigation/utils/isActive';
 import React from "react";
 
 const TypographyExamples: React.FC = () => {
