@@ -1,9 +1,8 @@
 import localFont from 'next/font/local';
 
-// Espelha variáveis já usadas anteriormente (--font-jocham, --font-aisha, --font-routhers)
 export const jocham = localFont({
   src: [
-    { path: '../../public/fonts/jocham-italic-webfont.ttf', style: 'italic', weight: '400' }
+    { path: '../../../public/fonts/jocham-italic-webfont.ttf', style: 'italic', weight: '400' }
   ],
   variable: '--font-jocham',
   display: 'swap'
@@ -11,7 +10,7 @@ export const jocham = localFont({
 
 export const aisha = localFont({
   src: [
-    { path: '../../public/fonts/Aisha-Script.otf', weight: '400', style: 'normal' }
+    { path: '../../../public/fonts/Aisha-Script.otf', weight: '400', style: 'normal' }
   ],
   variable: '--font-aisha',
   display: 'swap'
@@ -19,7 +18,7 @@ export const aisha = localFont({
 
 export const routhers = localFont({
   src: [
-    { path: '../../public/fonts/routhers.ttf', weight: '400', style: 'normal' }
+    { path: '../../../public/fonts/routhers.ttf', weight: '400', style: 'normal' }
   ],
   variable: '--font-routhers',
   display: 'swap'

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { isActive } from '@/features/navigation/utils/isActive';
+import { isActive } from '@features/navigation/utils/isActive';
 
 describe('isActive', () => {
   it('root only matches root', () => {

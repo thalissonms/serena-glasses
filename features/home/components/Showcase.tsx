@@ -4,8 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { StackedPolaroids } from "./StackedPolaroids";
-import { HeaderButton } from "./buttons";
-import { useGeneratedStars } from "../utils";
+import { useGeneratedStars } from "../utils/generatedStars";
 
 const productImages = [
   "/products/1.png",

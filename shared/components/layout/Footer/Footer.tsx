@@ -3,7 +3,7 @@
 import React from "react";
 import { Shield, Star, Truck, Instagram, Facebook } from "lucide-react";
 import Link from "next/link"; 
-import siteConfig from "@/config/siteConfig"; 
+import { siteConfig } from "@shared/config"; 
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();

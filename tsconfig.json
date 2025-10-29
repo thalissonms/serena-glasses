@@ -25,7 +25,9 @@
       "@public/*": ["./public/*"],
       "@components/*": ["./components/*"],
       "@lib/*": ["./lib/*"],
-      "@features/*": ["./features/*"]
+      "@features/*": ["./features/*"],
+      "@shared/*": ["./shared/*"],
+      "@i18n/*": ["./i18n/*"]
     }
   },
   "include": [
