@@ -15,6 +15,8 @@ const SUPPORTED_LOCALES = (process.env.NEXT_PUBLIC_I18N_LOCALES || "pt-BR,en-US,
   .filter(Boolean);
 
 const isProd = process.env.NODE_ENV === 'production';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
+const supabaseHostname = supabaseUrl ? new URL(supabaseUrl).hostname : '';
 
 /**
  * CSP Produção (mais rígida) e CSP Desenvolvimento (relaxada para HMR / overlay):
@@ -23,13 +25,13 @@ const isProd = process.env.NODE_ENV === 'production';
  */
 const cspProd = [
   "default-src 'self'",
-  "script-src 'self' 'strict-dynamic'",
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://images.unsplash.com https://cdn.example.com",
-  "font-src 'self' data:",
-  "connect-src 'self'",
-  "media-src 'self'",
-  "frame-src 'self'",
+  "script-src 'self' 'strict-dynamic' https://sdk.mercadopago.com https://http2.mlstatic.com",
+  "style-src 'self' 'unsafe-inline' https://sdk.mercadopago.com https://http2.mlstatic.com",
+  `img-src 'self' data: blob: https://images.unsplash.com https://cdn.example.com https://*.mercadopago.com https://*.mercadolibre.com https://*.mercadolivre.com ${supabaseUrl}`,
+  "font-src 'self' data: https://http2.mlstatic.com",
+  `connect-src 'self' https://api.mercadopago.com https://*.mercadopago.com https://http2.mlstatic.com https://*.mercadolibre.com https://api.mercadolibre.com ${supabaseUrl}`,
+  `media-src 'self' ${supabaseUrl}`,
+  "frame-src 'self' https://*.mercadopago.com https://*.mercadolibre.com https://*.mercadolivre.com",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -39,13 +41,13 @@ const cspProd = [
 
 const cspDev = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://images.unsplash.com https://cdn.example.com",
-  "font-src 'self' data:",
-  "connect-src 'self' ws: wss:",
-  "media-src 'self'",
-  "frame-src 'self'",
+  "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://sdk.mercadopago.com https://http2.mlstatic.com",
+  "style-src 'self' 'unsafe-inline' https://sdk.mercadopago.com https://http2.mlstatic.com",
+  `img-src 'self' data: blob: https://images.unsplash.com https://cdn.example.com https://*.mercadopago.com https://*.mercadolibre.com https://*.mercadolivre.com ${supabaseUrl}`,
+  "font-src 'self' data: https://http2.mlstatic.com",
+  `connect-src 'self' ws: wss: https://api.mercadopago.com https://*.mercadopago.com https://http2.mlstatic.com https://*.mercadolibre.com https://api.mercadolibre.com ${supabaseUrl}`,
+  `media-src 'self' ${supabaseUrl}`,
+  "frame-src 'self' https://*.mercadopago.com https://*.mercadolibre.com https://*.mercadolivre.com",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -61,6 +63,8 @@ const securityHeaders = isProd
       { key: 'X-DNS-Prefetch-Control', value: 'on' },
       { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), fullscreen=(self)' },
       { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+      { key: 'Cross-Origin-Opener-Policy', value: 'same-origin-allow-popups' },
+      { key: 'Cross-Origin-Resource-Policy', value: 'same-site' },
     ]
   : [
       // Em dev deixamos somente CSP relaxada para não quebrar HMR e overlay
@@ -77,12 +81,21 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "images.unsplash.com",
-        pathname: "**", // permite todas as paths do Unsplash
+        pathname: "**",
       },
       {
         protocol: "https",
         hostname: "cdn.example.com",
-        pathname: "**", // ajuste se quiser restringir ex: /images/**
+        pathname: "**",
+      },
+      // Supabase Storage — hostname específico do projeto (lido do env) + wildcard *.supabase.co como garantia
+      ...(supabaseHostname
+        ? [{ protocol: "https" as const, hostname: supabaseHostname, pathname: "**" }]
+        : []),
+      {
+        protocol: "https",
+        hostname: "*.supabase.co",
+        pathname: "/storage/v1/object/public/**",
       },
     ],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
@@ -101,6 +114,11 @@ const nextConfig: NextConfig = {
   reactStrictMode: true, // ativa warnings adicionais de React (já padrão em App Router mas explícito)
   compress: true, // gzip / brotli
   // swcMinify removido: já é padrão nas versões atuais do Next
+
+  /**
+   * Allow ngrok tunnels for local testing (dynamic dev origins)
+   */
+  allowedDevOrigins: ['*.ngrok-free.app', '*.ngrok.io', 'localhost'],
 
   /**
    * Experimental / performance

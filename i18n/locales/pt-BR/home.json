@@ -3,5 +3,41 @@
     "home": "Início",
     "products": "Produtos",
     "contact": "Contato"
+  },
+  "showcase": {
+    "logoAlt": "Logo da Serena Glasses"
+  },
+  "carousel": {
+    "prev": "Produto anterior",
+    "next": "Próximo produto",
+    "goTo": "Ir para produto"
+  },
+  "highlights": {
+    "freeShipping": "FRETE GRÁTIS",
+    "freeShippingDesc": "Em compras acima de R$ 199,00 para todo o Brasil",
+    "uvProtection": "PROTEÇÃO UV400",
+    "uvProtectionDesc": "Máxima proteção contra raios ultravioleta em todos os modelos",
+    "premiumQuality": "QUALIDADE PREMIUM",
+    "premiumQualityDesc": "Materiais de alta qualidade e design exclusivo"
+  },
+  "footer": {
+    "about": "Sobre a",
+    "siteMap": "Mapa do Site",
+    "followUs": "Siga-nos",
+    "credits": "Créditos",
+    "developedBy": "Desenvolvido por",
+    "allRightsReserved": "Todos os direitos reservados.",
+    "links": {
+      "home": "Início",
+      "sunGlasses": "Óculos Solares",
+      "miniDrop": "Mini Drop 2.0",
+      "outlet": "Outlet",
+      "promotions": "Promoções"
+    }
+  },
+  "newArrivals": {
+    "title": "Novidades",
+    "subtitle": "Acabou de chegar na Serena",
+    "viewAll": "Ver todos os modelos"
   }
 }

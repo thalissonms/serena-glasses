@@ -1,0 +1,77 @@
+{
+  "page": {
+    "colorLabel": "Cor:",
+    "addToCart": "Adicionar ao Carrinho",
+    "added": "✓ Adicionado!",
+    "buyNow": "Comprar Agora",
+    "delivery": {
+      "sectionTitle": "Entrega & Garantias",
+      "daily": {
+        "title": "Entrega diária",
+        "desc": "Enviamos todos os dias para Sete Lagoas e Contagem"
+      },
+      "exchange": {
+        "title": "Troca grátis",
+        "desc": "Não gostou? Troca sem custo em até 7 dias"
+      },
+      "uv": {
+        "title": "Proteção UV400",
+        "desc": "Lente policarbonato resistente com bloqueio total de raios UV"
+      }
+    }
+  },
+  "listing": {
+    "title": "Todos os Óculos",
+    "titleSunglasses": "Óculos Solares",
+    "titleMiniDrop": "Mini Drop 2.0",
+    "titleAccessories": "Acessórios",
+    "titleOutlet": "Outlet",
+    "titleSale": "Promoções",
+    "resultCount": "{{count}} produto encontrado",
+    "resultCount_plural": "{{count}} produtos encontrados",
+    "filterAll": "Todos",
+    "filterSunglasses": "Solares",
+    "filterMiniDrop": "Mini Drop",
+    "filterAccessories": "Acessórios",
+    "filterOutlet": "Outlet",
+    "filterSale": "Promoções",
+    "sortFeatured": "Destaque",
+    "sortNewest": "Mais Recentes",
+    "sortPriceAsc": "Menor Preço",
+    "sortPriceDesc": "Maior Preço",
+    "sortRating": "Avaliação",
+    "noResults": "Nenhum produto encontrado",
+    "noResultsDesc": "Tente remover alguns filtros para ver mais resultados"
+  },
+  "card": {
+    "newBadge": "New",
+    "outletBadge": "Outlet",
+    "soldOut": "Esgotado",
+    "addToFavorites": "Adicionar aos favoritos"
+  },
+  "description": {
+    "stats": {
+      "protectionLabel": "Proteção total",
+      "colorsLabel": "Cores exclusivas",
+      "weightLabel": "Levíssimo",
+      "exchangeLabel": "Troca grátis"
+    },
+    "specs": {
+      "title": "Especificações",
+      "format": "Formato",
+      "protection": "Proteção",
+      "lensMaterial": "Material lente",
+      "frame": "Armação",
+      "weight": "Peso",
+      "totalWidth": "Largura total"
+    },
+    "lookbook": {
+      "title": "Lookbook"
+    },
+    "reviews": {
+      "title": "Avaliações",
+      "count": "{{count}} avaliações",
+      "verified": "✓ Verificado"
+    }
+  }
+}

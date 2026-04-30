@@ -6,6 +6,8 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, '.'),
       '@features': path.resolve(__dirname, 'features'),
+      '@shared': path.resolve(__dirname, 'shared'),
+      '@i18n': path.resolve(__dirname, 'i18n'),
     }
   },
   test: {

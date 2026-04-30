@@ -5,8 +5,10 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { StackedPolaroids } from "./StackedPolaroids";
 import { useGeneratedStars } from "../utils/generatedStars";
+import { useTranslation } from "react-i18next";
+import { useTheme } from "@shared/providers/ThemeProvider";
 
-const productImages = [
+const polaroidImages = [
   "/products/1.png",
   "/products/2.png",
   "/products/3.png",
@@ -15,20 +17,24 @@ const productImages = [
   "/products/6.png",
 ];
 
-
 const Showcase = () => {
   const { stars, mounted } = useGeneratedStars(25);
+  const { t } = useTranslation("home");
+  const { theme, resolvedTheme } = useTheme();
+
+  const currentTheme = theme === "system" ? resolvedTheme : theme;
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-brand-pink bg-[url('/backgrounds/bg-clipper-gradient.png')] bg-no-repeat bg-cover bg-blend-multiply bg-center to-white/90 min-h-[600px] md:min-h-[900px] w-full -mt-24">
-      <div className="absolute bottom-0 z-10 w-full noise-overlay-blend" />
-
-      <div className="absolute inset-0 z-0 opacity-75">
-        <StackedPolaroids productImages={productImages} />
+    <section className="relative overflow-hidden bg-linear-to-b from-brand-pink bg-[url('/backgrounds/bg-clipper-gradient.png')] dark:bg-[url('/backgrounds/bg-clipper-gradient-dark.png')] bg-no-repeat bg-cover bg-blend-multiply dark:bg-blend-screen bg-center to-white/90 dark:to-brand-pink-bg-dark/10 h-[72.4vh] w-full -mt-24">
+      {/* Background polaroids (subdued) */}
+      <div className="absolute inset-0 z-0 opacity-50 dark:opacity-40">
+        <StackedPolaroids productImages={polaroidImages} />
       </div>
 
-      <div className="absolute bottom-0 z-30 w-full h-10 md:h-14 lg:h-18 xl:h-24 bg-gradient-to-t from-white via-white/40 to-transparent" />
+      {/* Bottom fade to background */}
+      <div className="absolute bottom-0 z-30 w-full h-2 md:h-4 lg:h-6 xl:h-8 bg-linear-to-t from-white dark:from-brand-pink-bg-dark via-white/40 dark:via-brand-pink-bg-dark/40 to-transparent" />
 
+      {/* Sparkle stars */}
       {mounted && (
         <div className="absolute inset-0 z-15">
           {stars.map((star, i) => (
@@ -57,29 +63,29 @@ const Showcase = () => {
         </div>
       )}
 
-      <div className="absolute inset-0 flex flex-col items-center z-40 backdrop-blur-[1px] px-4 sm:px-6 md:px-8 pt-16 sm:pt-20 md:pt-28 lg:pt-36 pb-10 sm:pb-14 md:pb-20">
+      {/* Hero content — Logo centralizada */}
+      <div className="absolute inset-0 z-40 flex items-center justify-center pt-24">
         <motion.div
-          initial={{ opacity: 0, scale: 0.7 }}
-          animate={{ opacity: 0.98, scale: 1 }}
-          transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="relative w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl 2xl:w-[50%] flex flex-col items-center gap-y-12 sm:gap-y-16 md:gap-y-20 lg:gap-y-24"
+          initial={{ opacity: 0, scale: 0.85, y: -30 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 1.0, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="relative"
         >
-          <motion.div
-            initial={{ y: -30, opacity: 0, rotate: -10 }}
-            animate={{ y: 0, opacity: 1, rotate: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-          >
-            <Image
-              src="/logos/logo-stick-gradient-main.png"
-              alt="Logo da Serena Glasses"
-              width={575}
-              height={575}
-              priority
-              className="w-52 sm:w-64 md:w-80 lg:w-96 xl:w-[28rem] 2xl:w-[32rem] object-contain drop-shadow-lg -rotate-4"
-              role="img"
-            />
-          </motion.div>
-          {/* <HeaderButton /> */}
+          <Image
+            src={
+              currentTheme === "dark"
+                ? "/logos/logo-stick-pink-main-dark.png"
+                : "/logos/logo-stick-gradient-main.png"
+            }
+            alt={t("showcase.logoAlt")}
+            width={900}
+            height={900}
+            priority
+            className="w-60 sm:w-68 md:w-80 lg:w-96 xl:w-md 2xl:w-32rem object-contain drop-shadow-2xl"
+            role="img"
+          />
+          {/* Glow behind logo */}
+          <div className="absolute inset-0 -z-10 blur-3xl opacity-30 bg-brand-pink dark:bg-brand-pink-dark rounded-full scale-75" />
         </motion.div>
       </div>
     </section>

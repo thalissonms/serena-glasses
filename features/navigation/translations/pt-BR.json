@@ -7,5 +7,9 @@
     "outlet": "OUTLET",
     "promotions": "PROMOÇÕES",
     "about": "SOBRE"
-  }
+  },
+  "mainNavigation": "Navegação principal",
+  "logoAlt": "Logo Serena Glasses",
+  "searchPlaceholder": "BUSCAR ÓCULOS...",
+  "polaroidAlt": "Óculos de sol"
 }

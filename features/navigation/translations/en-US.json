@@ -7,5 +7,9 @@
     "outlet": "OUTLET",
     "promotions": "PROMOTIONS",
     "about": "ABOUT"
-  }
+  },
+  "mainNavigation": "Main navigation",
+  "logoAlt": "Serena Glasses logo",
+  "searchPlaceholder": "SEARCH GLASSES...",
+  "polaroidAlt": "Sunglasses"
 }

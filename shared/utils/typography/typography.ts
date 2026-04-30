@@ -7,6 +7,7 @@ import {
   Beth_Ellen,
   Shrikhand,
   Inter,
+  Yellowtail,
 } from "next/font/google";
 
 // Configurando Inter (fonte principal para substituir a importação CSS)
@@ -57,6 +58,13 @@ export const bethEllen = Beth_Ellen({
   weight: "400", // Geralmente tem um único peso
 });
 
+export const yellowtail = Yellowtail({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-yellowtail",
+  weight: "400",
+});
+
 // Opcional: Você pode exportar um objeto para facilitar o uso no layout
 export const fontVariables = {
   inter: inter.variable,
@@ -65,7 +73,8 @@ export const fontVariables = {
   playfairDisplay: playfairDisplay.variable,
   bethEllen: bethEllen.variable,
   shrikhand: shrikhand.variable,
+  yellowtail: yellowtail.variable,
 };
 
 // Se você precisar de todas as classes de variáveis de uma vez
-export const allFontVariablesClassNames = `${inter.variable} ${poppins.variable} ${dancingScript.variable} ${playfairDisplay.variable} ${bethEllen.variable} ${shrikhand.variable}`;
+export const allFontVariablesClassNames = `${inter.variable} ${poppins.variable} ${dancingScript.variable} ${playfairDisplay.variable} ${bethEllen.variable} ${shrikhand.variable} ${yellowtail.variable}`;

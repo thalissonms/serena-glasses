@@ -161,11 +161,12 @@ function PolaroidWithLifecycle({ polaroid }: { polaroid: Polaroid }) {
 
 function PolaroidCard({ product }: { product: string }) {
   return (
-    <div className="w-24 h-32 sm:w-28 sm:h-36 md:w-36 md:h-48 lg:w-40 lg:h-52 xl:w-44 xl:h-56 noise-overlay-white noise-overlay-blend flex flex-col items-center pt-2 md:pt-3 rounded-sm shadow-lg cursor-pointer select-none hover:scale-110 hover:z-50 hover:rotate-0 transition-all duration-300 ease-out">
-      <div className="w-[87.5%] h-[70%] bg-pink-200 rounded-sm overflow-hidden relative border border-gray-100">
+    <div className="w-24 h-32 sm:w-28 sm:h-36 md:w-36 md:h-48 lg:w-40 lg:h-52 xl:w-44 xl:h-56 noise-overlay-white dark:noise-overlay-black noise-overlay-blend flex flex-col items-center pt-2 md:pt-3 rounded-sm shadow-lg cursor-pointer select-none hover:scale-110 hover:z-50 hover:rotate-0 transition-all duration-300 ease-out">
+      <div className="w-[87.5%] h-[70%] bg-pink-200 dark:bg-brand-pink-dark/20 rounded-sm overflow-hidden relative border border-gray-100 dark:border-black">
         <Image
           src={product}
-          alt="Óculos"
+          alt=""
+          role="presentation"
           fill
           className="object-contain p-1 md:p-1.5 sepia-50"
           draggable={false}
@@ -174,7 +175,7 @@ function PolaroidCard({ product }: { product: string }) {
       </div>
 
       <div className="flex-1 w-[87.5%] flex items-center justify-center">
-        <div className="w-10 sm:w-12 md:w-16 lg:w-18 xl:w-20 h-0.5 bg-gray-300 rounded-full opacity-40"></div>
+        <div className="w-10 sm:w-12 md:w-16 lg:w-18 xl:w-20 h-0.5 bg-gray-300 dark:bg-black rounded-full opacity-40"></div>
       </div>
 
       <div className="absolute inset-1 md:inset-1.5 border border-gray-100 rounded-sm pointer-events-none opacity-30"></div>

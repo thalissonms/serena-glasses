@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc *)",
+      "mcp__plugin_context-mode_context-mode__ctx_batch_execute",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(xargs grep *)",
+      "Bash(node -e \"const mp = require\\('mercadopago'\\); console.log\\(Object.keys\\(mp\\)\\)\")",
+      "Bash(node -e \"const { MercadoPagoConfig, PaymentRefund } = require\\('mercadopago'\\); const c = new MercadoPagoConfig\\({ accessToken: 'x' }\\); const r = new PaymentRefund\\(c\\); console.log\\(Object.getOwnPropertyNames\\(Object.getPrototypeOf\\(r\\)\\)\\)\")"
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "page": {
+    "colorLabel": "Color:",
+    "addToCart": "Add to Cart",
+    "added": "✓ Added!",
+    "buyNow": "Buy Now",
+    "delivery": {
+      "sectionTitle": "Shipping & Guarantees",
+      "daily": {
+        "title": "Daily shipping",
+        "desc": "We ship every day to Sete Lagoas and Contagem"
+      },
+      "exchange": {
+        "title": "Free returns",
+        "desc": "Not happy? Exchange for free within 7 days"
+      },
+      "uv": {
+        "title": "UV400 Protection",
+        "desc": "Resistant polycarbonate lens with full UV ray blocking"
+      }
+    }
+  },
+  "listing": {
+    "title": "All Glasses",
+    "titleSunglasses": "Sun Glasses",
+    "titleMiniDrop": "Mini Drop 2.0",
+    "titleAccessories": "Accessories",
+    "titleOutlet": "Outlet",
+    "titleSale": "Promotions",
+    "resultCount": "{{count}} product found",
+    "resultCount_plural": "{{count}} products found",
+    "filterAll": "All",
+    "filterSunglasses": "Sunglasses",
+    "filterMiniDrop": "Mini Drop",
+    "filterAccessories": "Accessories",
+    "filterOutlet": "Outlet",
+    "filterSale": "Promotions",
+    "sortFeatured": "Featured",
+    "sortNewest": "Newest",
+    "sortPriceAsc": "Price: Low to High",
+    "sortPriceDesc": "Price: High to Low",
+    "sortRating": "Top Rated",
+    "noResults": "No products found",
+    "noResultsDesc": "Try removing some filters to see more results"
+  },
+  "card": {
+    "newBadge": "New",
+    "outletBadge": "Outlet",
+    "soldOut": "Sold Out",
+    "addToFavorites": "Add to favorites"
+  },
+  "description": {
+    "stats": {
+      "protectionLabel": "Full protection",
+      "colorsLabel": "Exclusive colors",
+      "weightLabel": "Ultra-light",
+      "exchangeLabel": "Free returns"
+    },
+    "specs": {
+      "title": "Specifications",
+      "format": "Shape",
+      "protection": "Protection",
+      "lensMaterial": "Lens material",
+      "frame": "Frame",
+      "weight": "Weight",
+      "totalWidth": "Total width"
+    },
+    "lookbook": {
+      "title": "Lookbook"
+    },
+    "reviews": {
+      "title": "Reviews",
+      "count": "{{count}} reviews",
+      "verified": "✓ Verified"
+    }
+  }
+}

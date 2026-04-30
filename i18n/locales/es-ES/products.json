@@ -1,0 +1,77 @@
+{
+  "page": {
+    "colorLabel": "Color:",
+    "addToCart": "Añadir al Carrito",
+    "added": "✓ ¡Añadido!",
+    "buyNow": "Comprar Ahora",
+    "delivery": {
+      "sectionTitle": "Envío & Garantías",
+      "daily": {
+        "title": "Envío diario",
+        "desc": "Enviamos todos los días a Sete Lagoas y Contagem"
+      },
+      "exchange": {
+        "title": "Cambio gratis",
+        "desc": "¿No te gustó? Cambio sin costo en hasta 7 días"
+      },
+      "uv": {
+        "title": "Protección UV400",
+        "desc": "Lente de policarbonato resistente con bloqueo total de rayos UV"
+      }
+    }
+  },
+  "listing": {
+    "title": "Todos los Lentes",
+    "titleSunglasses": "Gafas de Sol",
+    "titleMiniDrop": "Mini Drop 2.0",
+    "titleAccessories": "Accesorios",
+    "titleOutlet": "Outlet",
+    "titleSale": "Promociones",
+    "resultCount": "{{count}} producto encontrado",
+    "resultCount_plural": "{{count}} productos encontrados",
+    "filterAll": "Todos",
+    "filterSunglasses": "Solares",
+    "filterMiniDrop": "Mini Drop",
+    "filterAccessories": "Accesorios",
+    "filterOutlet": "Outlet",
+    "filterSale": "Promociones",
+    "sortFeatured": "Destacados",
+    "sortNewest": "Más Recientes",
+    "sortPriceAsc": "Menor Precio",
+    "sortPriceDesc": "Mayor Precio",
+    "sortRating": "Mejor Valorados",
+    "noResults": "Ningún producto encontrado",
+    "noResultsDesc": "Intenta quitar algunos filtros para ver más resultados"
+  },
+  "card": {
+    "newBadge": "Nuevo",
+    "outletBadge": "Outlet",
+    "soldOut": "Agotado",
+    "addToFavorites": "Añadir a favoritos"
+  },
+  "description": {
+    "stats": {
+      "protectionLabel": "Protección total",
+      "colorsLabel": "Colores exclusivos",
+      "weightLabel": "Ultraliviano",
+      "exchangeLabel": "Cambio gratis"
+    },
+    "specs": {
+      "title": "Especificaciones",
+      "format": "Forma",
+      "protection": "Protección",
+      "lensMaterial": "Material de lente",
+      "frame": "Montura",
+      "weight": "Peso",
+      "totalWidth": "Ancho total"
+    },
+    "lookbook": {
+      "title": "Lookbook"
+    },
+    "reviews": {
+      "title": "Reseñas",
+      "count": "{{count}} reseñas",
+      "verified": "✓ Verificado"
+    }
+  }
+}

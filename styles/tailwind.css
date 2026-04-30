@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@variant dark (&:is(.dark *));
 
 /* =============================================
  * TAILWIND V4 CSS-FIRST THEME
@@ -39,6 +40,15 @@
 	--brand-black: #000000;
 	--brand-white: #FFFFFF;
 	--brand-blue: #31cfe9;
+	--brand-yellow: #ffa500;
+
+	/* Brand Colors Dark */
+	--brand-pink-dark: #3B2A32;
+	--brand-pink-bg-dark: #11050B;
+	--brand-black-dark: #1A0F14;
+	--brand-white-dark: #FFFFFF;
+	--brand-blue-dark: #31cfe9;
+	--brand-yellow-dark: #ffa500;
 
 	/* Colors */
 	--color-background: #ffffff;
@@ -69,6 +79,14 @@
 	--color-brand-black: var(--brand-black);
 	--color-brand-white: var(--brand-white);
 	--color-brand-blue: var(--brand-blue);
+	--color-brand-yellow: var(--brand-yellow);
+
+	--color-brand-pink-dark: var(--brand-pink-dark);
+	--color-brand-pink-bg-dark: var(--brand-pink-bg-dark);
+	--color-brand-black-dark: var(--brand-black-dark);
+	--color-brand-white-dark: var(--brand-white-dark);
+	--color-brand-blue-dark: var(--brand-blue-dark);
+	--color-brand-yellow-dark: var(--brand-yellow-dark);
 
 	/* Charts */
 	--color-chart-1: oklch(0.646 0.222 41.116);
@@ -94,6 +112,7 @@
 	--font-family-routhers: var(--font-routhers), 'Arial Black', sans-serif;
 	--font-family-jocham: var(--font-jocham), 'Impact', sans-serif;
 	--font-family-aisha: var(--font-aisha), 'Trebuchet MS', sans-serif;
+	--font-family-yellowtail: var(--font-yellowtail), 'Brush Script MT', cursive;
 
 	/* Text Scale */
 	--font-size-base: 1rem;
@@ -162,6 +181,7 @@ p, label, button, input { font-size: var(--font-size-base); line-height: 1.5; }
 .font-shrikhand { font-family: var(--font-family-shrikhand); font-weight: 400; letter-spacing: 0.02em; }
 .font-inter { font-family: var(--font-family-inter); }
 .font-poppins { font-family: var(--font-family-poppins); }
+.font-yellowtail { font-family: var(--font-family-yellowtail); }
 
 /* Animações (ex maps -> mantidos como custom props via inline style quando necessário) */
 @keyframes polaroid-appear {
@@ -196,6 +216,7 @@ p, label, button, input { font-size: var(--font-size-base); line-height: 1.5; }
 .noise-overlay { background: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500'%3E%3Cfilter id='noise' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeBlend mode='screen'/%3E%3C/filter%3E%3Crect width='500' height='500' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E"); mix-blend-mode: luminosity; }
 .glass-overlay-blend { background: url("/backgrounds/glasstexture.svg"); }
 .noise-overlay-white { background-color: var(--brand-white); }
+.noise-overlay-black { background-color: var(--brand-black-dark); }
 .text-shadow-highlight { position: relative; }
 .text-shadow-highlight::before { content: attr(data-text); position: absolute; top: 2px; left: 2px; color: #000; z-index: -1; }
 
@@ -207,4 +228,27 @@ p, label, button, input { font-size: var(--font-size-base); line-height: 1.5; }
 	[data-size] { width: calc(var(--size) * 1.2px) !important; height: calc(var(--size) * 1.2px) !important; }
 }
 
+
+/* Scroll Bar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FFF0FA;
+  border-left: 2px solid #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #FF00B6;
+  border: 2px solid #000;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #000;
+}
+* {
+  scrollbar-color: #FF00B6 #FFF0FA;
+  scrollbar-width: thin;
+}
 /* Fim do bundle CSS-first */

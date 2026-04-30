@@ -1,0 +1,110 @@
+{
+  "cart": {
+    "emptyTitle": "Tu carrito está vacío",
+    "emptyDesc": "Añade algunos productos para continuar",
+    "viewProducts": "Ver productos",
+    "removeItem": "Eliminar artículo"
+  },
+  "header": {
+    "myCart": "Mi carrito",
+    "item": "artículo",
+    "itemsPlural": "artículos",
+    "empty": "Vacío",
+    "finishing": "Finalizar pedido"
+  },
+  "breadcrumb": {
+    "cart": "Carrito",
+    "checkout": "Checkout"
+  },
+  "sidebar": {
+    "title": "Tu pedido",
+    "subtotal": "Subtotal",
+    "discount": "Descuento",
+    "coupon": {
+      "placeholder": "Código de cupón",
+      "apply": "Aplicar",
+      "remove": "Quitar",
+      "applied": "Cupón aplicado"
+    },
+    "shipping": "Envío",
+    "shippingFree": "Gratis",
+    "total": "Total",
+    "confirmOrder": "Confirmar pedido",
+    "finishOrder": "Finalizar pedido",
+    "continueShopping": "← Seguir comprando",
+    "securePayment": "Pago 100% seguro"
+  },
+  "identification": {
+    "title": "Identificación",
+    "fullName": "Nombre completo",
+    "fullNamePlaceholder": "Tu nombre",
+    "cpf": "CPF",
+    "birthDate": "Fecha de nacimiento",
+    "email": "E-mail",
+    "emailPlaceholder": "tu@email.com",
+    "phone": "Celular"
+  },
+  "address": {
+    "title": "Dirección de entrega",
+    "cep": "CEP",
+    "street": "Calle / Dirección",
+    "streetPlaceholder": "Ej: Calle de las Flores",
+    "number": "Número",
+    "numberPlaceholder": "123",
+    "complement": "Complemento",
+    "complementPlaceholder": "Apto, bloque... (opcional)",
+    "neighborhood": "Barrio",
+    "neighborhoodPlaceholder": "Tu barrio",
+    "city": "Ciudad",
+    "cityPlaceholder": "Tu ciudad",
+    "state": "Estado",
+    "statePlaceholder": "Selecciona"
+  },
+  "payment": {
+    "title": "Pago",
+    "card": "Tarjeta",
+    "pix": "PIX",
+    "boleto": "Boleto",
+    "cardNumber": "Número de tarjeta",
+    "cardNumberPlaceholder": "0000 0000 0000 0000",
+    "cardName": "Nombre en la tarjeta",
+    "cardNamePlaceholder": "Como aparece en la tarjeta",
+    "cardExpiry": "Vencimiento",
+    "cardExpiryPlaceholder": "MM/AA",
+    "cardCvv": "CVV",
+    "installments": "Cuotas",
+    "installmentOption": "{{count}}× de {{price}} sin interés",
+    "pixDescription": "El código QR se generará tras la confirmación del pedido. El pago se aprueba en hasta 5 minutos.",
+    "pixDiscount": "5% de descuento en PIX",
+    "boletoLeadIn": "El boleto se generará tras la confirmación y vencerá en",
+    "boletoDueDays": "3 días hábiles",
+    "boletoTrail": "El pedido se separa tras la confirmación del pago.",
+    "boletoNote": "El plazo de entrega comienza a contar sólo tras la confirmación del pago.",
+    "confirmOrder": "Confirmar pedido"
+  },
+  "validation": {
+    "fullNameMin": "Nombre obligatorio",
+    "cpfInvalid": "CPF inválido",
+    "birthDateRequired": "Fecha de nacimiento obligatoria",
+    "emailInvalid": "E-mail inválido",
+    "phoneInvalid": "Celular inválido",
+    "cepInvalid": "CEP inválido",
+    "streetRequired": "Calle obligatoria",
+    "numberRequired": "Número obligatorio",
+    "neighborhoodRequired": "Barrio obligatorio",
+    "cityRequired": "Ciudad obligatoria",
+    "stateRequired": "Estado obligatorio",
+    "cardNumberInvalid": "Número de tarjeta inválido",
+    "cardNameRequired": "Nombre en la tarjeta obligatorio",
+    "cardExpiryInvalid": "Vencimiento inválido (MM/AA)",
+    "cardCvvInvalid": "CVV inválido"
+  },
+  "success": {
+    "title": "¡Pedido Confirmado!",
+    "subtitle": "Gracias por tu compra",
+    "orderLabel": "Número de pedido",
+    "message": "Recibirás un correo con los detalles de tu pedido en breve.",
+    "continueShopping": "Seguir comprando",
+    "trackOrder": "Rastrear pedido"
+  }
+}

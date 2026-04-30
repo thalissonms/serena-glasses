@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -11,24 +15,44 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
-    "types": ["node"],
+    "types": [
+      "node"
+    ],
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./*"],
-      "@styles": ["./styles/*"],
-      "@config": ["./config/*"],
-      "@public/*": ["./public/*"],
-      "@components/*": ["./components/*"],
-      "@lib/*": ["./lib/*"],
-      "@features/*": ["./features/*"],
-      "@shared/*": ["./shared/*"],
-      "@i18n/*": ["./i18n/*"]
+      "@/*": [
+        "./*"
+      ],
+      "@styles": [
+        "./styles/*"
+      ],
+      "@config": [
+        "./config/*"
+      ],
+      "@public/*": [
+        "./public/*"
+      ],
+      "@components/*": [
+        "./components/*"
+      ],
+      "@lib/*": [
+        "./lib/*"
+      ],
+      "@features/*": [
+        "./features/*"
+      ],
+      "@shared/*": [
+        "./shared/*"
+      ],
+      "@i18n/*": [
+        "./i18n/*"
+      ]
     }
   },
   "include": [
@@ -37,7 +61,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "./styles/**/*.css",
-    "./src/types/globals.d.ts"
+    "./src/types/globals.d.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

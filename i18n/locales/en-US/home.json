@@ -3,5 +3,41 @@
     "home": "Home",
     "products": "Products",
     "contact": "Contact"
+  },
+  "showcase": {
+    "logoAlt": "Serena Glasses logo"
+  },
+  "carousel": {
+    "prev": "Previous product",
+    "next": "Next product",
+    "goTo": "Go to product"
+  },
+  "highlights": {
+    "freeShipping": "FREE SHIPPING",
+    "freeShippingDesc": "On orders over R$ 199.00 shipped across Brazil",
+    "uvProtection": "UV400 PROTECTION",
+    "uvProtectionDesc": "Maximum protection against ultraviolet rays on all models",
+    "premiumQuality": "PREMIUM QUALITY",
+    "premiumQualityDesc": "High-quality materials and exclusive design"
+  },
+  "footer": {
+    "about": "About",
+    "siteMap": "Sitemap",
+    "followUs": "Follow us",
+    "credits": "Credits",
+    "developedBy": "Developed by",
+    "allRightsReserved": "All rights reserved.",
+    "links": {
+      "home": "Home",
+      "sunGlasses": "Sunglasses",
+      "miniDrop": "Mini Drop 2.0",
+      "outlet": "Outlet",
+      "promotions": "Promotions"
+    }
+  },
+  "newArrivals": {
+    "title": "New Arrivals",
+    "subtitle": "Just landed at Serena",
+    "viewAll": "View all styles"
   }
 }

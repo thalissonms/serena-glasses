@@ -1,0 +1,110 @@
+{
+  "cart": {
+    "emptyTitle": "Your cart is empty",
+    "emptyDesc": "Add some products to continue",
+    "viewProducts": "View products",
+    "removeItem": "Remove item"
+  },
+  "header": {
+    "myCart": "My cart",
+    "item": "item",
+    "itemsPlural": "items",
+    "empty": "Empty",
+    "finishing": "Finishing order"
+  },
+  "breadcrumb": {
+    "cart": "Cart",
+    "checkout": "Checkout"
+  },
+  "sidebar": {
+    "title": "Your order",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "coupon": {
+      "placeholder": "Coupon code",
+      "apply": "Apply",
+      "remove": "Remove",
+      "applied": "Coupon applied"
+    },
+    "shipping": "Shipping",
+    "shippingFree": "Free",
+    "total": "Total",
+    "confirmOrder": "Confirm order",
+    "finishOrder": "Checkout",
+    "continueShopping": "← Continue shopping",
+    "securePayment": "100% secure payment"
+  },
+  "identification": {
+    "title": "Identification",
+    "fullName": "Full name",
+    "fullNamePlaceholder": "Your name",
+    "cpf": "CPF",
+    "birthDate": "Date of birth",
+    "email": "E-mail",
+    "emailPlaceholder": "your@email.com",
+    "phone": "Phone"
+  },
+  "address": {
+    "title": "Shipping address",
+    "cep": "ZIP code",
+    "street": "Street",
+    "streetPlaceholder": "Ex: Flower Street",
+    "number": "Number",
+    "numberPlaceholder": "123",
+    "complement": "Complement",
+    "complementPlaceholder": "Apt, suite... (optional)",
+    "neighborhood": "Neighborhood",
+    "neighborhoodPlaceholder": "Your neighborhood",
+    "city": "City",
+    "cityPlaceholder": "Your city",
+    "state": "State",
+    "statePlaceholder": "Select"
+  },
+  "payment": {
+    "title": "Payment",
+    "card": "Card",
+    "pix": "PIX",
+    "boleto": "Boleto",
+    "cardNumber": "Card number",
+    "cardNumberPlaceholder": "0000 0000 0000 0000",
+    "cardName": "Name on card",
+    "cardNamePlaceholder": "As it appears on the card",
+    "cardExpiry": "Expiry",
+    "cardExpiryPlaceholder": "MM/YY",
+    "cardCvv": "CVV",
+    "installments": "Installments",
+    "installmentOption": "{{count}}× of {{price}} no interest",
+    "pixDescription": "The QR Code will be generated after order confirmation. Payment is approved within 5 minutes.",
+    "pixDiscount": "5% PIX discount",
+    "boletoLeadIn": "The boleto will be generated after confirmation and expires in",
+    "boletoDueDays": "3 business days",
+    "boletoTrail": "The order is processed after payment confirmation.",
+    "boletoNote": "Delivery time starts counting only after payment confirmation.",
+    "confirmOrder": "Confirm order"
+  },
+  "validation": {
+    "fullNameMin": "Full name required",
+    "cpfInvalid": "Invalid CPF",
+    "birthDateRequired": "Birth date required",
+    "emailInvalid": "Invalid email",
+    "phoneInvalid": "Invalid phone number",
+    "cepInvalid": "Invalid ZIP code",
+    "streetRequired": "Street required",
+    "numberRequired": "Number required",
+    "neighborhoodRequired": "Neighborhood required",
+    "cityRequired": "City required",
+    "stateRequired": "State required",
+    "cardNumberInvalid": "Invalid card number",
+    "cardNameRequired": "Name on card required",
+    "cardExpiryInvalid": "Invalid expiry date (MM/YY)",
+    "cardCvvInvalid": "Invalid CVV"
+  },
+  "success": {
+    "title": "Order Confirmed!",
+    "subtitle": "Thank you for your purchase",
+    "orderLabel": "Order number",
+    "message": "You will receive an email with your order details shortly.",
+    "continueShopping": "Continue shopping",
+    "trackOrder": "Track order"
+  }
+}
