@@ -1,7 +1,7 @@
 ﻿import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getSupabaseServer } from "@shared/lib/supabase/server";
-import { mpPayment } from "@shared/lib/mercadopago/server";
+import { getMpPayment } from "@shared/lib/mercadopago/server";
 import { checkStockAvailability } from "@features/checkout/services/stockAvailability.service";
 import { validateCoupon } from "@features/coupons/services/couponValidation.service";
 import { PaymentMethod } from "@features/checkout/enums/checkout.enum";
@@ -297,7 +297,7 @@ export async function POST(request: NextRequest) {
 
   try {
     if (payment.method === PaymentMethod.PIX) {
-      const mpRes = await mpPayment.create({
+      const mpRes = await getMpPayment().create({
         body: {
           transaction_amount: amountBRL,
           description,
@@ -330,7 +330,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (payment.method === PaymentMethod.Boleto) {
-      const mpRes = await mpPayment.create({
+      const mpRes = await getMpPayment().create({
         body: {
           transaction_amount: amountBRL,
           description,
@@ -374,7 +374,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (payment.method === PaymentMethod.Card && cardToken) {
-      const mpRes = await mpPayment.create({
+      const mpRes = await getMpPayment().create({
         body: {
           transaction_amount: amountBRL,
           description,

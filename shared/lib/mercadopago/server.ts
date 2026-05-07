@@ -1,15 +1,20 @@
 import MercadoPagoConfig, { Payment, PaymentRefund } from "mercadopago";
 
-if (!process.env.MP_ACCESS_TOKEN) {
-  throw new Error("MP_ACCESS_TOKEN environment variable is required");
+let _payment: Payment | null = null;
+let _refund: PaymentRefund | null = null;
+
+function getMpConfig(): MercadoPagoConfig {
+  const token = process.env.MP_ACCESS_TOKEN;
+  if (!token) throw new Error("MP_ACCESS_TOKEN environment variable is required");
+  return new MercadoPagoConfig({ accessToken: token, options: { timeout: 15000 } });
 }
 
-const token = process.env.MP_ACCESS_TOKEN;
+export function getMpPayment(): Payment {
+  if (!_payment) _payment = new Payment(getMpConfig());
+  return _payment;
+}
 
-const mpConfig = new MercadoPagoConfig({
-  accessToken: token,
-  options: { timeout: 15000 },
-});
-
-export const mpPayment = new Payment(mpConfig);
-export const mpRefund = new PaymentRefund(mpConfig);
+export function getMpRefund(): PaymentRefund {
+  if (!_refund) _refund = new PaymentRefund(getMpConfig());
+  return _refund;
+}

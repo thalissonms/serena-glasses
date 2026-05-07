@@ -1,7 +1,7 @@
 ﻿import { NextRequest, NextResponse } from "next/server";
 import { createHmac, timingSafeEqual } from "crypto";
 import { getSupabaseServer } from "@shared/lib/supabase/server";
-import { mpPayment } from "@shared/lib/mercadopago/server";
+import { getMpPayment } from "@shared/lib/mercadopago/server";
 
 const MP_STATUS_MAP: Record<string, string> = {
   approved: "paid",
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
     const paymentId = body.data?.id;
     if (!paymentId) return NextResponse.json({ ok: true });
 
-    const payment = await mpPayment.get({ id: paymentId });
+    const payment = await getMpPayment().get({ id: paymentId });
 
     const orderId = payment.external_reference;
     if (!orderId) return NextResponse.json({ ok: true });

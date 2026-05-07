@@ -1,6 +1,6 @@
 ﻿import { NextResponse } from "next/server";
 import { getSupabaseServer } from "@shared/lib/supabase/server";
-import { mpRefund } from "@shared/lib/mercadopago/server";
+import { getMpRefund } from "@shared/lib/mercadopago/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
 import { meRequest } from "@shared/lib/melhor-envio/client";
 import { sendOrderCancelledEmail } from "@features/emails/services/sendOrderEmail";
@@ -56,7 +56,7 @@ export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
   }
 
   try {
-    await mpRefund.create({ payment_id: Number(mpId), requestOptions: {} });
+    await getMpRefund().create({ payment_id: Number(mpId), requestOptions: {} });
   } catch (err: any) {
     const msg = err?.cause?.message ?? err?.message ?? String(err);
     console.error("[admin/refund] MP refund error:", msg);
