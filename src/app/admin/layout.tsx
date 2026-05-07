@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import { Toaster } from "sonner";
 import AdminShell from "@features/admin/components/AdminShell";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = { title: "Admin — Serena Glasses" };
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
