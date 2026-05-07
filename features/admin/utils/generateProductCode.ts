@@ -5,7 +5,7 @@ const FALLBACK_PREFIX = "PRD";
 function prefixFromSlug(slug: string): string {
   const clean = slug
     .normalize("NFD")
-    .replace(/[Ì€-Í¯]/g, "")
+    .replace(new RegExp("[\\u0300-\\u036f]", "g"), "")
     .toUpperCase()
     .replace(/[^A-Z0-9]/g, "");
   return clean.slice(0, 3) || FALLBACK_PREFIX;
@@ -49,7 +49,7 @@ export async function generateNextProductCode(categoryId: string | null | undefi
 export function generateVariantCode(productCode: string, colorName: string): string {
   const colorAbbr = colorName
     .normalize("NFD")
-    .replace(/[Ì€-Í¯]/g, "")
+    .replace(new RegExp("[\\u0300-\\u036f]", "g"), "")
     .toUpperCase()
     .replace(/[^A-Z0-9]/g, "")
     .slice(0, 3) || "VAR";
