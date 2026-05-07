@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { headers } from "next/headers";
 import "../../styles/tailwind.css";
 import { allFontVariablesClassNames, localFontVariablesClassNames } from "@shared/utils/typography";
 import { Footer } from "@shared/components/layout";
@@ -74,7 +75,11 @@ export default async function RootLayout({
       ? i18n.options.fallbackLng
       : undefined;
 
-  const pixels = await getSetting("pixels").catch(() => null);
+  const [headersList, pixels] = await Promise.all([
+    headers(),
+    getSetting("pixels").catch(() => null),
+  ]);
+  const nonce = headersList.get("x-nonce") ?? undefined;
 
   return (
     <html
@@ -83,11 +88,11 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-        <Script src="https://sdk.mercadopago.com/js/v2" strategy="afterInteractive" />
+        <script nonce={nonce} dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <Script src="https://sdk.mercadopago.com/js/v2" strategy="afterInteractive" nonce={nonce} />
 
         {pixels?.meta_pixel_id && (
-          <Script id="meta-pixel" strategy="afterInteractive">{`
+          <Script id="meta-pixel" strategy="afterInteractive" nonce={nonce}>{`
             !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
             n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
             n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
@@ -102,8 +107,9 @@ export default async function RootLayout({
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${pixels.ga4_id}`}
               strategy="afterInteractive"
+              nonce={nonce}
             />
-            <Script id="ga4" strategy="afterInteractive">{`
+            <Script id="ga4" strategy="afterInteractive" nonce={nonce}>{`
               window.dataLayer=window.dataLayer||[];
               function gtag(){dataLayer.push(arguments);}
               gtag('js',new Date());
@@ -113,7 +119,7 @@ export default async function RootLayout({
         )}
 
         {pixels?.tiktok_pixel_id && (
-          <Script id="tiktok-pixel" strategy="afterInteractive">{`
+          <Script id="tiktok-pixel" strategy="afterInteractive" nonce={nonce}>{`
             !function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];
             ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"];
             ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};

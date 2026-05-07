@@ -17,46 +17,11 @@ const SUPPORTED_LOCALES = (process.env.NEXT_PUBLIC_I18N_LOCALES || "pt-BR,en-US,
 const isProd = process.env.NODE_ENV === 'production';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
 const supabaseHostname = supabaseUrl ? new URL(supabaseUrl).hostname : '';
-const allowedDevOrigins = ['*.ngrok-free.app', '*.ngrok.io', 'localhost', '192.168.25.35'];
-/**
- * CSP Produção (mais rígida) e CSP Desenvolvimento (relaxada para HMR / overlay):
- * - Dev precisa de: 'unsafe-eval' e às vezes inline scripts do overlay + websockets (ws:, wss:, blob:)
- * - Prod remove eval/inline e mantém política estrita.
- */
-const cspProd = [
-  "default-src 'self'",
-  "script-src 'self' 'strict-dynamic' https://sdk.mercadopago.com https://http2.mlstatic.com",
-  "style-src 'self' 'unsafe-inline' https://sdk.mercadopago.com https://http2.mlstatic.com",
-  `img-src 'self' data: blob: https://images.unsplash.com https://cdn.example.com https://*.mercadopago.com https://*.mercadolibre.com https://*.mercadolivre.com ${supabaseUrl}`,
-  "font-src 'self' data: https://http2.mlstatic.com",
-  `connect-src 'self' https://api.mercadopago.com https://*.mercadopago.com https://http2.mlstatic.com https://*.mercadolibre.com https://api.mercadolibre.com ${supabaseUrl}`,
-  `media-src 'self' ${supabaseUrl}`,
-  "frame-src 'self' https://*.mercadopago.com https://*.mercadolibre.com https://*.mercadolivre.com",
-  "object-src 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-  "frame-ancestors 'self'",
-  "upgrade-insecure-requests",
-].join('; ');
 
-const cspDev = [
-  "default-src 'self'",
-  "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://sdk.mercadopago.com https://http2.mlstatic.com",
-  "style-src 'self' 'unsafe-inline' https://sdk.mercadopago.com https://http2.mlstatic.com",
-  `img-src 'self' data: blob: https://images.unsplash.com https://cdn.example.com https://*.mercadopago.com https://*.mercadolibre.com https://*.mercadolivre.com ${supabaseUrl}`,
-  "font-src 'self' data: https://http2.mlstatic.com",
-  `connect-src 'self' ws: wss: https://api.mercadopago.com https://*.mercadopago.com https://http2.mlstatic.com https://*.mercadolibre.com https://api.mercadolibre.com ${supabaseUrl}`,
-  `media-src 'self' ${supabaseUrl}`,
-  "frame-src 'self' https://*.mercadopago.com https://*.mercadolibre.com https://*.mercadolivre.com",
-  "object-src 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-  "frame-ancestors 'self'",
-].join('; ');
-
+// CSP is handled dynamically per-request in src/proxy.ts (nonce-based).
+// Only static security headers live here.
 const securityHeaders = isProd
   ? [
-      { key: 'Content-Security-Policy', value: cspProd },
       { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
       { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
       { key: 'X-Content-Type-Options', value: 'nosniff' },
@@ -66,10 +31,7 @@ const securityHeaders = isProd
       { key: 'Cross-Origin-Opener-Policy', value: 'same-origin-allow-popups' },
       { key: 'Cross-Origin-Resource-Policy', value: 'same-site' },
     ]
-  : [
-      // Em dev deixamos somente CSP relaxada para não quebrar HMR e overlay
-      { key: 'Content-Security-Policy', value: cspDev },
-    ];
+  : [];
 
 const nextConfig: NextConfig = {
   /**
