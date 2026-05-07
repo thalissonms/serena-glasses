@@ -55,7 +55,7 @@ function toColorSlug(name: string): string {
   return name
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[Ì€-Í¯]/g, "")
+    .replace(new RegExp("[\\u0300-\\u036f]", "g"), "")
     .replace(/\s+/g, "-");
 }
 
