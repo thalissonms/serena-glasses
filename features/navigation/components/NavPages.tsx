@@ -5,22 +5,36 @@ import clsx from "clsx";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { isActive, isNavActive } from "../utils/isActive";
-import { useNavPages } from "../hooks/useNavPages";
+import { useCategories } from "@features/categories/hooks/useCategories";
+import type { CategoryWithSubs } from "@features/categories/types/category.types";
 
-type Page = ReturnType<typeof useNavPages>[number];
+function categoryToPage(c: CategoryWithSubs, lang: string): { href: string; label: string } {
+  const href = c.kind === "flag" && c.href_override ? c.href_override : `/products?category=${c.slug}`;
+  const label =
+    lang.startsWith("en") && c.name_en
+      ? c.name_en
+      : lang.startsWith("es") && c.name_es
+        ? c.name_es
+        : c.name_pt;
+  return { href, label };
+}
+
+type Page = { href: string; label: string };
 
 export const NavPages = () => {
-  const pages = useNavPages();
+  const { data: categories } = useCategories();
+  const { i18n, t } = useTranslation("nav");
+  const pages: Page[] = (categories ?? []).map((c) => categoryToPage(c, i18n.language));
+
   return (
-    <Suspense fallback={<NavPagesFallback pages={pages} />}>
-      <NavPagesInner pages={pages} />
+    <Suspense fallback={<NavPagesFallback pages={pages} t={t} />}>
+      <NavPagesInner pages={pages} t={t} />
     </Suspense>
   );
 };
 
-function NavPagesFallback({ pages }: { pages: Page[] }) {
+function NavPagesFallback({ pages, t }: { pages: Page[]; t: (k: string) => string }) {
   const pathname = usePathname();
-  const { t } = useTranslation("nav");
   return (
     <nav aria-label={t("mainNavigation")} className="hidden lg:block">
       <ul className="flex items-center gap-6">
@@ -33,10 +47,9 @@ function NavPagesFallback({ pages }: { pages: Page[] }) {
   );
 }
 
-function NavPagesInner({ pages }: { pages: Page[] }) {
+function NavPagesInner({ pages, t }: { pages: Page[]; t: (k: string) => string }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { t } = useTranslation("nav");
   return (
     <nav aria-label={t("mainNavigation")} className="hidden lg:block">
       <ul className="flex items-center gap-6">
@@ -60,7 +73,7 @@ function NavItem({ item, active }: { item: Page; active: boolean }) {
           active && "rotate-2 shadow-[5px_5px_0px_#000] dark:shadow-brand-pink dark:border-brand-pink",
         )}
       />
-      <Link 
+      <Link
         href={item.href}
         aria-current={active ? "page" : undefined}
         prefetch

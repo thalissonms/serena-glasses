@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import ProductEditForm from "@features/admin/components/ProductEditForm";
 import { getProductForEdit } from "@features/admin/services/productEdit.service";
 import {
-  PRODUCT_CATEGORIES,
   FRAME_SHAPES,
   FRAME_MATERIALS,
   LENS_TYPES,
@@ -32,6 +31,7 @@ export default async function AdminProductEditPage({ params }: Props) {
     <div className="p-8">
       <ProductEditForm
         productId={product.id}
+        productCode={product.code}
         variants={product.variants}
         images={product.images}
         videoUrl={product.video_url}
@@ -42,7 +42,7 @@ export default async function AdminProductEditPage({ params }: Props) {
           short_description: product.short_description ?? "",
           price: product.price,
           compare_at_price: product.compare_at_price ?? null,
-          category: asEnum(PRODUCT_CATEGORIES, product.category) ?? "sunglasses",
+          category_id: (product as { category_id?: string }).category_id ?? undefined,
           frame_shape: asEnum(FRAME_SHAPES, product.frame_shape),
           frame_material: asEnum(FRAME_MATERIALS, product.frame_material),
           lens_type: asEnum(LENS_TYPES, product.lens_type),

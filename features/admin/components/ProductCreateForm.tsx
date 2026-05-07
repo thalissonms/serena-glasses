@@ -10,8 +10,7 @@ import {
   productCreateSchema,
   type ProductCreateInput,
 } from "@features/admin/schemas/productCreate.schema";
-import { PRODUCT_CATEGORIES } from "@features/admin/schemas/productEdit.schema";
-import { CATEGORY_LABEL } from "../consts/products.const";
+import { useCategories } from "@features/categories/hooks/useCategories";
 
 function slugify(str: string): string {
   return str
@@ -28,6 +27,7 @@ export default function ProductCreateForm() {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [slugManual, setSlugManual] = useState(false);
+  const { data: categories = [] } = useCategories();
 
   const {
     register,
@@ -36,7 +36,7 @@ export default function ProductCreateForm() {
     formState: { errors },
   } = useForm<ProductCreateInput>({
     resolver: zodResolver(productCreateSchema),
-    defaultValues: { category: "sunglasses", price: 0 },
+    defaultValues: { price: 0 },
   });
 
   function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -102,13 +102,16 @@ export default function ProductCreateForm() {
           />
         </Field>
 
-        <Field label="Categoria" error={errors.category?.message}>
-          <select {...register("category")} className={inputCls}>
-            {PRODUCT_CATEGORIES.map((c) => (
-              <option key={c} value={c} className="bg-[#0f0f0f]">
-                {CATEGORY_LABEL[c] ?? c}
-              </option>
-            ))}
+        <Field label="Categoria" error={errors.category_id?.message}>
+          <select {...register("category_id")} className={inputCls}>
+            <option value="">Sem categoria</option>
+            {categories
+              .filter((c) => c.kind === "category")
+              .map((c) => (
+                <option key={c.id} value={c.id} className="bg-[#0f0f0f]">
+                  {c.name_pt}
+                </option>
+              ))}
           </select>
         </Field>
 

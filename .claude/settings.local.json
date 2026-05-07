@@ -10,10 +10,25 @@
       "Bash(node -e \"const { MercadoPagoConfig, PaymentRefund } = require\\('mercadopago'\\); const c = new MercadoPagoConfig\\({ accessToken: 'x' }\\); const r = new PaymentRefund\\(c\\); console.log\\(Object.getOwnPropertyNames\\(Object.getPrototypeOf\\(r\\)\\)\\)\")",
       "PowerShell(Get-ChildItem \"c:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\" -Name | Where-Object { $_ -match \"CLAUDE|CODE_ORG|AGENTS|\\\\.md$\" })",
       "Bash(Select-String -Pattern \"Showcase|NewArrivals|ProductCard|ProductsPageContent\")",
-      "Bash(ls AGENT/ 2>/dev/null || mkdir -p AGENT)"
+      "Bash(ls AGENT/ 2>/dev/null || mkdir -p AGENT)",
+      "Bash(mkdir -p \"c:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\src\\\\app\\\\api\\\\site-settings\\\\[key]\")",
+      "Bash(mkdir -p \"c:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\src\\\\app\\\\api\\\\admin\\\\site-settings\\\\[key]\")",
+      "Bash(mkdir -p \"c:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\src\\\\app\\\\api\\\\admin\\\\categories\\\\[id]\\\\subcategories\")",
+      "Bash(mkdir -p \"c:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\src\\\\app\\\\api\\\\admin\\\\subcategories\\\\[id]\")",
+      "Bash(mkdir -p \"c:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\src\\\\app\\\\api\\\\admin\\\\categories\\\\[id]\")",
+      "Bash(mkdir -p \"c:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\src\\\\app\\\\admin\\\\categories\\\\new\" && mkdir -p \"c:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\src\\\\app\\\\admin\\\\categories\\\\[id]\\\\edit\")",
+      "Bash(mkdir -p \"c:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\src\\\\app\\\\api\\\\admin\\\\home-stories\\\\[id]\")",
+      "Bash(mkdir -p \"c:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\src\\\\app\\\\admin\\\\stories\\\\[id]\\\\edit\")",
+      "Bash(mkdir -p \"c:/Users/Thalisson/Documents/Serena/serena-glasses/src/app/api/admin/home-stories/[id]\")",
+      "Bash(mkdir -p \"c:/Users/Thalisson/Documents/Serena/serena-glasses/src/app/admin/stories/[id]/edit\")",
+      "Bash(mkdir -p \"c:/Users/Thalisson/Documents/Serena/serena-glasses/src/app/api/admin/site-banners/[id]\")",
+      "Bash(mkdir -p \"c:/Users/Thalisson/Documents/Serena/serena-glasses/src/app/admin/banners/[id]/edit\")",
+      "PowerShell(npx tsc --noEmit 2>&1)"
     ],
     "additionalDirectories": [
-      "c:\\Users\\Thalisson\\Documents\\Serena\\serena-glasses\\AGENT"
+      "c:\\Users\\Thalisson\\Documents\\Serena\\serena-glasses\\AGENT",
+      "c:\\Users\\Thalisson\\Documents\\Serena\\serena-glasses\\src\\app\\api\\admin\\categories\\[id]",
+      "c:\\Users\\Thalisson\\Documents\\Serena\\serena-glasses\\src\\app\\admin\\categories\\[id]"
     ]
   }
 }

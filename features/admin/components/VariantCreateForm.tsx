@@ -44,7 +44,11 @@ export default function VariantCreateForm({ productId }: Props) {
     const res = await fetch(`/api/admin/products/${productId}/variants`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ color_name: colorName.trim(), color_hex: colorHex, in_stock: inStock }),
+      body: JSON.stringify({
+        color_name: colorName.trim(),
+        color_hex: colorHex,
+        in_stock: inStock,
+      }),
     });
 
     if (res.ok) {
@@ -83,7 +87,6 @@ export default function VariantCreateForm({ productId }: Props) {
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        {/* Nome */}
         <div className="flex flex-col gap-1">
           <label className="font-poppins text-[10px] font-bold uppercase tracking-wider text-gray-400">
             Nome da cor
@@ -99,7 +102,6 @@ export default function VariantCreateForm({ productId }: Props) {
           />
         </div>
 
-        {/* Hex */}
         <div className="flex flex-col gap-1">
           <label className="font-poppins text-[10px] font-bold uppercase tracking-wider text-gray-400">
             Cor (hex)
@@ -123,7 +125,10 @@ export default function VariantCreateForm({ productId }: Props) {
         </div>
       </div>
 
-      {/* In stock */}
+      <p className="font-inter text-[11px] text-gray-500">
+        O código da variante é gerado automaticamente a partir do código do produto e da cor.
+      </p>
+
       <label className="inline-flex items-center gap-2 cursor-pointer">
         <input
           type="checkbox"

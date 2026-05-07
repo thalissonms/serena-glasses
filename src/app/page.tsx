@@ -1,12 +1,17 @@
 import { SerenaCollageBackground } from "@shared/components/layout";
 import Showcase from "@features/home/components/Showcase";
 import { NewArrivals } from "@features/home/components/NewArrivals";
-import { getAllProducts, getNewProducts } from "@features/products/services/productService";
+import {
+  getAllProducts,
+  getNewProducts,
+} from "@features/products/services/productService";
 import NewArrivalsMobile from "@features/home/components/mobile/NewArrivalsMobile";
 
 export default async function HomePage() {
-  const newProducts = await getNewProducts();
-  const allProducts = await getAllProducts()
+  const [newProducts, allProducts] = await Promise.all([
+    getNewProducts(),
+    getAllProducts(),
+  ]);
 
   return (
     <>

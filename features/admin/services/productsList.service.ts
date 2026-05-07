@@ -14,6 +14,7 @@ type DbProductRow = {
   id: string;
   name: string;
   slug: string;
+  code: string | null;
   price: number;
   active: boolean;
   featured: boolean;
@@ -34,7 +35,7 @@ export async function getProductsList(): Promise<ProductType[]> {
     .from("products")
     .select(
       `
-      id, name, slug, price, active, featured, category, is_new, is_sale, is_outlet,
+      id, name, slug, code, price, active, featured, category, is_new, is_sale, is_outlet,
       product_images (url, alt, position),
       product_variants (id, color_name, color_hex, in_stock, stock_quantity)
       `,
@@ -64,6 +65,7 @@ export async function getProductsList(): Promise<ProductType[]> {
     id: p.id,
     name: p.name,
     slug: p.slug,
+    code: p.code,
     price: p.price,
     active: p.active,
     featured: p.featured,

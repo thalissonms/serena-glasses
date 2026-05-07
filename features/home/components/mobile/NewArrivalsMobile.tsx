@@ -31,11 +31,11 @@ const NewArrivalsMobile = ({
         <FilterCategories />
         {news ? (
           <>
-            <VideoReelsMobile products={products} />
+            <VideoReelsMobile />
             <Y2KDivider className="-mx-4 px-20" />
           </>
         ) : (
-          <FilterSubCategories title={category} />
+          <FilterSubCategories title={category} categorySlug={category} />
         )}
 
         {products.map((product, i) => (

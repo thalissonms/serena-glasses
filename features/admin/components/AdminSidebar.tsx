@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, ShoppingBag, Package, Tag, LogOut } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Package, Tag, LogOut, Settings, FolderTree, PlaySquare, Megaphone } from "lucide-react";
 import { supabase } from "@shared/lib/supabase/client";
 import Logo from "@shared/components/layout/Logos/Logo";
 
@@ -9,7 +9,11 @@ const NAV = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { href: "/admin/orders", label: "Pedidos", icon: ShoppingBag, exact: false },
   { href: "/admin/products", label: "Produtos", icon: Package, exact: false },
+  { href: "/admin/categories", label: "Categorias", icon: FolderTree, exact: false },
   { href: "/admin/coupons", label: "Cupons", icon: Tag, exact: false },
+  { href: "/admin/stories", label: "Stories", icon: PlaySquare, exact: false },
+  { href: "/admin/banners", label: "Banners", icon: Megaphone, exact: false },
+  { href: "/admin/settings", label: "Configurações", icon: Settings, exact: false },
 ];
 
 export default function AdminSidebar() {

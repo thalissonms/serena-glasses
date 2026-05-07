@@ -20,7 +20,8 @@ export const productPatchSchema = z.object({
   price: z.number().int().nonnegative().optional(),
   compare_at_price: z.number().int().nonnegative().nullable().optional(),
 
-  category: z.enum(PRODUCT_CATEGORIES).optional(),
+  category_id: z.string().uuid().optional(),
+  subcategory_ids: z.array(z.string().uuid()).optional(),
   frame_shape: z.enum(FRAME_SHAPES).nullable().optional(),
   frame_material: z.enum(FRAME_MATERIALS).nullable().optional(),
   lens_type: z.enum(LENS_TYPES).nullable().optional(),

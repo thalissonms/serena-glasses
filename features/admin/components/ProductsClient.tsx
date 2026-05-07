@@ -36,7 +36,7 @@ export default function ProductsClient({ products }: { products: ProductType[] }
           <table className="w-full">
             <thead>
               <tr className="border-b border-white/10">
-                {["Produto", "Cores", "Categoria", "Preço", "Estoque", "Status", "Flags", ""].map(
+                {["Produto", "Código", "Cores", "Categoria", "Preço", "Estoque", "Status", "Flags", ""].map(
                   (h) => (
                     <th
                       key={h}
@@ -81,6 +81,9 @@ export default function ProductsClient({ products }: { products: ProductType[] }
                           </p>
                         </div>
                       </div>
+                    </td>
+                    <td className="px-5 py-4 font-mono text-[11px] text-gray-400 whitespace-nowrap">
+                      {product.code ?? <span className="text-gray-700">—</span>}
                     </td>
                     <td className="px-5 py-4">
                       {product.product_variants.length > 0 ? (
@@ -176,7 +179,7 @@ export default function ProductsClient({ products }: { products: ProductType[] }
               {products.length === 0 && (
                 <tr>
                   <td
-                    colSpan={8}
+                    colSpan={9}
                     className="px-5 py-12 text-center font-inter text-sm text-gray-600"
                   >
                     Nenhum produto encontrado.

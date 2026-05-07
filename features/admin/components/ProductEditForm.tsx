@@ -10,30 +10,31 @@ import VariantStockEditor from "./VariantStockEditor";
 import VariantCreateForm from "./VariantCreateForm";
 import ImageUploader from "./ImageUploader";
 import VideoUploader from "./VideoUploader";
-import { CATEGORY_LABEL } from "../consts/products.const";
 import type { VariantWithStockInterface } from "../types/productVariant.interface";
 import type { ProductImageInterface } from "../types/productImage.interface";
 import {
   productPatchSchema,
   type ProductPatchInput,
-  PRODUCT_CATEGORIES,
   FRAME_SHAPES,
   FRAME_MATERIALS,
   LENS_TYPES,
 } from "@features/admin/schemas/productEdit.schema";
+import { useCategories } from "@features/categories/hooks/useCategories";
 
 interface Props {
   productId: string;
+  productCode: string | null;
   initial: ProductPatchInput & { name: string; slug: string };
   variants: VariantWithStockInterface[];
   images: ProductImageInterface[];
   videoUrl: string | null;
 }
 
-export default function ProductEditForm({ productId, initial, variants, images, videoUrl }: Props) {
+export default function ProductEditForm({ productId, productCode, initial, variants, images, videoUrl }: Props) {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const { data: categories = [] } = useCategories();
 
   const {
     register,
@@ -117,13 +118,25 @@ export default function ProductEditForm({ productId, initial, variants, images, 
         <Field label="Slug (URL)" error={errors.slug?.message} hint="apenas a-z, 0-9, hífens">
           <input {...register("slug")} className={inputCls} />
         </Field>
-        <Field label="Categoria" error={errors.category?.message}>
-          <select {...register("category")} className={inputCls}>
-            {PRODUCT_CATEGORIES.map((c) => (
-              <option key={c} value={c} className="bg-[#0f0f0f]">
-                {CATEGORY_LABEL[c] ?? c}
-              </option>
-            ))}
+        <Field label="Código do produto" hint="gerado automaticamente">
+          <input
+            value={productCode ?? "—"}
+            readOnly
+            disabled
+            className={`${inputCls} font-mono cursor-not-allowed opacity-70`}
+          />
+        </Field>
+
+        <Field label="Categoria" error={errors.category_id?.message}>
+          <select {...register("category_id")} className={inputCls}>
+            <option value="">Sem categoria</option>
+            {categories
+              .filter((c) => c.kind === "category")
+              .map((c) => (
+                <option key={c.id} value={c.id} className="bg-[#0f0f0f]">
+                  {c.name_pt}
+                </option>
+              ))}
           </select>
         </Field>
         <Field label="Descrição curta" error={errors.short_description?.message}>

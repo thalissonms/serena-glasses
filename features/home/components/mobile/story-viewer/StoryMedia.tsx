@@ -1,24 +1,24 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { Product } from "@features/products/types";
+import type { HomeStory } from "@features/home/types/homeStory.types";
 import { useDoubleTap } from "@features/products/hooks/useDoubleTap";
 import { useSwipe } from "@features/products/hooks/useSwipe";
 import { useWishlist, useToggleWishlist } from "@features/wishlist/hooks/useWishlist";
 
 interface StoryMediaProps {
-  product: Product;
+  story: HomeStory;
   onPrev: () => void;
   onNext: () => void;
   onPauseChange: (paused: boolean) => void;
   onDurationChange?: (ms: number) => void;
 }
 
-export function StoryMedia({ product, onPrev, onNext, onPauseChange, onDurationChange }: StoryMediaProps) {
+export function StoryMedia({ story, onPrev, onNext, onPauseChange, onDurationChange }: StoryMediaProps) {
   const { t } = useTranslation("home");
   const videoRef = useRef<HTMLVideoElement>(null);
   const [showBurst, setShowBurst] = useState(false);
@@ -27,19 +27,16 @@ export function StoryMedia({ product, onPrev, onNext, onPauseChange, onDurationC
   const { data: wishlistItems = [] } = useWishlist();
   const { mutate: toggle } = useToggleWishlist();
 
-  const primaryImage = useMemo(
-    () => product.images.find((img) => img.isPrimary) ?? product.images[0],
-    [product.images],
-  );
-
-  const isWishlisted = wishlistItems.some((item) => item.product_id === product.id);
+  const isProduct = story.kind === "product" && !!story.productId;
+  const isWishlisted = wishlistItems.some((item) => item.product_id === story.productId);
 
   useEffect(() => {
     setHasError(false);
-  }, [product.id]);
+  }, [story.id]);
 
   function handleWishlist() {
-    toggle({ productId: product.id, isWishlisted });
+    if (!isProduct || !story.productId) return;
+    toggle({ productId: story.productId, isWishlisted });
     if (!isWishlisted) {
       setShowBurst(true);
       setTimeout(() => setShowBurst(false), 700);
@@ -66,10 +63,9 @@ export function StoryMedia({ product, onPrev, onNext, onPauseChange, onDurationC
     if (v?.paused) v.play().catch(() => {});
   };
 
-  // Auto-play; trata AbortError e remount rápido
   useEffect(() => {
     const v = videoRef.current;
-    if (!v || !product.videoUrl) return;
+    if (!v || story.mediaType !== "video") return;
     let cancelled = false;
     const tryPlay = async () => {
       try {
@@ -84,9 +80,8 @@ export function StoryMedia({ product, onPrev, onNext, onPauseChange, onDurationC
       cancelled = true;
       v.pause();
     };
-  }, [product.videoUrl]);
+  }, [story.mediaType, story.mediaUrl]);
 
-  // Pausa o timer durante buffering do vídeo
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
@@ -112,11 +107,11 @@ export function StoryMedia({ product, onPrev, onNext, onPauseChange, onDurationC
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
-
-      {primaryImage && (
+      {/* Poster / imagem base */}
+      {(story.posterUrl ?? (story.mediaType === "image" ? story.mediaUrl : null)) && (
         <Image
-          src={primaryImage.url}
-          alt={primaryImage.alt}
+          src={(story.posterUrl ?? story.mediaUrl)!}
+          alt={story.title}
           fill
           sizes="100vw"
           className="object-cover"
@@ -124,10 +119,10 @@ export function StoryMedia({ product, onPrev, onNext, onPauseChange, onDurationC
         />
       )}
 
-      {product.videoUrl && !hasError && (
+      {story.mediaType === "video" && !hasError && (
         <video
           ref={videoRef}
-          src={product.videoUrl}
+          src={story.mediaUrl}
           preload="metadata"
           muted
           playsInline
@@ -140,7 +135,7 @@ export function StoryMedia({ product, onPrev, onNext, onPauseChange, onDurationC
 
       <div className="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
 
-      {!product.inStock && (
+      {isProduct && !story.productInStock && (
         <div className="absolute inset-0 bg-red-900/80 flex items-center justify-center z-10 pointer-events-none">
           <span className="text-white text-xl font-shrikhand -rotate-6 tracking-widest drop-shadow-lg">
             {t("storyViewer.soldOut")}
@@ -150,11 +145,11 @@ export function StoryMedia({ product, onPrev, onNext, onPauseChange, onDurationC
 
       <div className="absolute bottom-4 inset-x-0 px-4 z-10 pointer-events-none">
         <p className="text-white font-shrikhand text-lg text-center drop-shadow-lg truncate">
-          {product.name}
+          {story.title}
         </p>
-        {product.shortDescription && (
+        {story.subtitle && (
           <p className="text-white/70 text-xs text-center font-aisha italic mt-0.5 line-clamp-2">
-            {product.shortDescription}
+            {story.subtitle}
           </p>
         )}
       </div>

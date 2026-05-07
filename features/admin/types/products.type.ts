@@ -10,6 +10,7 @@ export interface ProductType {
   id: string;
   name: string;
   slug: string;
+  code: string | null;
   price: number;
   active: boolean;
   featured: boolean;

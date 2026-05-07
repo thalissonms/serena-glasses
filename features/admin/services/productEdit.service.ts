@@ -7,6 +7,7 @@ export interface ProductEditData {
   id: string;
   name: string;
   slug: string;
+  code: string | null;
   description: string | null;
   short_description: string | null;
   price: number;
@@ -33,7 +34,7 @@ export async function getProductForEdit(id: string): Promise<ProductEditData | n
     .from("products")
     .select(
       `
-      id, name, slug, description, short_description,
+      id, name, slug, code, description, short_description,
       price, compare_at_price, category,
       frame_shape, frame_material, lens_type,
       uv_protection, weight, dimensions,
@@ -98,6 +99,7 @@ export async function getProductForEdit(id: string): Promise<ProductEditData | n
     id: product.id,
     name: product.name,
     slug: product.slug,
+    code: product.code,
     description: product.description,
     short_description: product.short_description,
     price: product.price,

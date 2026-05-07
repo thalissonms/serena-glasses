@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { supabaseServer } from "@shared/lib/supabase/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
 import { productPatchSchema } from "@features/admin/schemas/productEdit.schema";

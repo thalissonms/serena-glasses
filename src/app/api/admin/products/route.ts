@@ -1,7 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { supabaseServer } from "@shared/lib/supabase/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
 import { productCreateSchema } from "@features/admin/schemas/productCreate.schema";
+import { generateNextProductCode } from "@features/admin/utils/generateProductCode";
+
+const CODE_RETRY_LIMIT = 5;
 
 export const POST = withAdmin(async (req) => {
   const body = await req.json().catch(() => null);
@@ -20,16 +23,28 @@ export const POST = withAdmin(async (req) => {
     .select("id")
     .eq("slug", parsed.data.slug)
     .maybeSingle();
-
   if (existing) return NextResponse.json({ error: "Slug já em uso" }, { status: 409 });
 
-  const { data, error } = await supabaseServer
-    .from("products")
-    .insert({ ...parsed.data, active: false })
-    .select("id")
-    .single();
+  for (let attempt = 0; attempt < CODE_RETRY_LIMIT; attempt++) {
+    const code = await generateNextProductCode(parsed.data.category_id);
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    const { data, error } = await supabaseServer
+      .from("products")
+      .insert({ ...parsed.data, code, active: false })
+      .select("id, code")
+      .single();
 
-  return NextResponse.json({ id: data.id }, { status: 201 });
+    if (!error) return NextResponse.json({ id: data.id, code: data.code }, { status: 201 });
+
+    const isUniqueViolation =
+      error.code === "23505" || /duplicate key value/i.test(error.message);
+    if (!isUniqueViolation) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+  }
+
+  return NextResponse.json(
+    { error: "Não foi possível gerar código único após várias tentativas" },
+    { status: 500 },
+  );
 });

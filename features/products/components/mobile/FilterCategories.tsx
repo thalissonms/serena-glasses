@@ -1,34 +1,76 @@
 "use client";
 import { Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import {
   Glasses,
   Sparkles,
+  Stars,
   Gem,
   Tag,
   Percent,
+  Heart,
+  ShoppingBag,
+  Search,
+  Eye,
+  Sun,
+  Moon,
+  CloudSun,
+  Aperture,
+  Focus,
+  Disc3,
+  Music,
+  Headphones,
+  Camera,
+  Wand2,
+  Flame,
+  Zap,
+  Award,
+  Crown,
+  Gift,
+  Package,
+  Boxes,
+  Layers,
+  Palette,
+  Flower2,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { useNavPages } from "@features/navigation/hooks/useNavPages";
 import { isNavActive } from "@features/navigation/utils/isActive";
 import { CategoryChip } from "@features/navigation/components";
+import { useCategories } from "@features/categories/hooks/useCategories";
+import type { CategoryWithSubs } from "@features/categories/types/category.types";
 
-type Page = ReturnType<typeof useNavPages>[number];
+const ICON_MAP: Record<string, LucideIcon> = {
+  Glasses, Sparkles, Stars, Gem, Tag, Percent, Heart, ShoppingBag, Search, Eye,
+  Sun, Moon, CloudSun, Aperture, Focus, Disc3, Music, Headphones, Camera, Wand2,
+  Flame, Zap, Award, Crown, Gift, Package, Boxes, Layers, Palette, Flower2,
+};
 
-function getIconForHref(href: string): LucideIcon {
-  if (href.includes("category=sunglasses")) return Glasses;
-  if (href.includes("category=miniDrop")) return Sparkles;
-  if (href.includes("category=accessories")) return Gem;
-  if (href.includes("outlet=true")) return Tag;
-  if (href.includes("sale=true")) return Percent;
-  return Glasses;
+type Page = { href: string; label: string };
+
+function categoryToPage(c: CategoryWithSubs, lang: string): Page {
+  const href = c.kind === "flag" && c.href_override ? c.href_override : `/products?category=${c.slug}`;
+  const label =
+    lang.startsWith("en") && c.name_en
+      ? c.name_en
+      : lang.startsWith("es") && c.name_es
+        ? c.name_es
+        : c.name_pt;
+  return { href, label };
 }
 
-function FilterChips({ pages }: { pages: Page[] }) {
+function FilterChips({
+  categories,
+  lang,
+}: {
+  categories: CategoryWithSubs[];
+  lang: string;
+}) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const filtered = pages.filter((p) => p.href !== "/");
-  const anyActive = filtered.some((p) => isNavActive(pathname, searchParams, p.href));
+  const anyActive = categories.some((c) =>
+    isNavActive(pathname, searchParams, categoryToPage(c, lang).href),
+  );
 
   return (
     <div className="flex flex-row gap-3 overflow-x-auto px-4 py-3 scrollbar-hide">
@@ -37,22 +79,34 @@ function FilterChips({ pages }: { pages: Page[] }) {
         active={!anyActive}
         allChip
       />
-      {filtered.map((item) => (
-        <CategoryChip
-          key={item.href}
-          item={item}
-          icon={getIconForHref(item.href)}
-          active={isNavActive(pathname, searchParams, item.href)}
-        />
-      ))}
+      {categories.map((c) => {
+        const page = categoryToPage(c, lang);
+        const Icon = ICON_MAP[c.icon_name] ?? Glasses;
+        return (
+          <CategoryChip
+            key={c.id}
+            item={page}
+            icon={Icon}
+            active={isNavActive(pathname, searchParams, page.href)}
+          />
+        );
+      })}
     </div>
   );
 }
 
-function FilterChipsFallback({ pages }: { pages: Page[] }) {
+function FilterChipsFallback({
+  categories,
+  lang,
+}: {
+  categories: CategoryWithSubs[];
+  lang: string;
+}) {
   const pathname = usePathname();
-  const filtered = pages.filter((p) => p.href !== "/");
-  const anyActive = filtered.some((p) => pathname === p.href.split("?")[0] && p.href.includes("?"));
+  const anyActive = categories.some((c) => {
+    const href = categoryToPage(c, lang).href;
+    return pathname === href.split("?")[0] && href.includes("?");
+  });
 
   return (
     <div className="flex flex-row gap-3 overflow-x-auto px-4 py-3 scrollbar-hide">
@@ -61,25 +115,30 @@ function FilterChipsFallback({ pages }: { pages: Page[] }) {
         active={!anyActive}
         allChip
       />
-      {filtered.map((item) => (
-        <CategoryChip
-          key={item.href}
-          item={item}
-          icon={getIconForHref(item.href)}
-          active={pathname === item.href.split("?")[0]}
-        />
-      ))}
+      {categories.map((c) => {
+        const page = categoryToPage(c, lang);
+        const Icon = ICON_MAP[c.icon_name] ?? Glasses;
+        return (
+          <CategoryChip
+            key={c.id}
+            item={page}
+            icon={Icon}
+            active={pathname === page.href.split("?")[0]}
+          />
+        );
+      })}
     </div>
   );
 }
 
 const FilterProducts = () => {
-  const pages = useNavPages();
+  const { i18n } = useTranslation("nav");
+  const { data: categories = [] } = useCategories();
 
   return (
     <nav className="mt-16">
-      <Suspense fallback={<FilterChipsFallback pages={pages} />}>
-        <FilterChips pages={pages} />
+      <Suspense fallback={<FilterChipsFallback categories={categories} lang={i18n.language} />}>
+        <FilterChips categories={categories} lang={i18n.language} />
       </Suspense>
     </nav>
   );

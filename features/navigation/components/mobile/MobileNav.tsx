@@ -1,27 +1,41 @@
 "use client";
 import { Suspense } from "react";
-import { useNavPages } from "../../hooks/useNavPages";
 import { usePathname, useSearchParams } from "next/navigation";
 import clsx from "clsx";
 import Link from "next/link";
 import { isActive, isNavActive } from "../../utils/isActive";
 import { Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useCategories } from "@features/categories/hooks/useCategories";
+import type { CategoryWithSubs } from "@features/categories/types/category.types";
 
-type Page = ReturnType<typeof useNavPages>[number];
+type Page = { href: string; label: string };
+
+function categoryToPage(c: CategoryWithSubs, lang: string): Page {
+  const href = c.kind === "flag" && c.href_override ? c.href_override : `/products?category=${c.slug}`;
+  const label =
+    lang.startsWith("en") && c.name_en
+      ? c.name_en
+      : lang.startsWith("es") && c.name_es
+        ? c.name_es
+        : c.name_pt;
+  return { href, label };
+}
 
 export const MobileNav = () => {
-  const pages = useNavPages();
+  const { data: categories } = useCategories();
+  const { i18n, t } = useTranslation("nav");
+  const pages: Page[] = (categories ?? []).map((c) => categoryToPage(c, i18n.language));
+
   return (
-    <Suspense fallback={<MobileNavFallback pages={pages} />}>
-      <MobileNavInner pages={pages} />
+    <Suspense fallback={<MobileNavFallback pages={pages} t={t} />}>
+      <MobileNavInner pages={pages} t={t} />
     </Suspense>
   );
 };
 
-function MobileNavFallback({ pages }: { pages: Page[] }) {
+function MobileNavFallback({ pages, t }: { pages: Page[]; t: (k: string) => string }) {
   const pathname = usePathname();
-  const { t } = useTranslation("nav");
   return (
     <MobileNavUI
       pages={pages}
@@ -31,10 +45,9 @@ function MobileNavFallback({ pages }: { pages: Page[] }) {
   );
 }
 
-function MobileNavInner({ pages }: { pages: Page[] }) {
+function MobileNavInner({ pages, t }: { pages: Page[]; t: (k: string) => string }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { t } = useTranslation("nav");
   return (
     <MobileNavUI
       pages={pages}
