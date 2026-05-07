@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { SerenaCollageBackground } from "@shared/components/layout";
 import Showcase from "@features/home/components/Showcase";
 import { NewArrivals } from "@features/home/components/NewArrivals";

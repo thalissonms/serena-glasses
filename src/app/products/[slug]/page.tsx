@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { notFound } from "next/navigation";
 import { getProductBySlug } from "@features/products/services/productService";
 import ProductPageContent from "@features/products/components/ProductPageContent";

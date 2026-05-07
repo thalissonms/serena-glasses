@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getAllProducts } from "@features/products/services/productService";
 import {
   filterAndSortProducts,

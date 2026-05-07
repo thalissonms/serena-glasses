@@ -1,4 +1,6 @@
-﻿import { getSupabaseServer } from "@shared/lib/supabase/server";
+﻿export const dynamic = "force-dynamic";
+
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import OrderTrackForm from "@features/orders/components/OrderTrackForm";
 import OrderTrackResult from "@features/orders/components/OrderTrackResult";
 
