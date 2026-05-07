@@ -1,14 +1,6 @@
 import { notFound } from "next/navigation";
-import {
-  getAllProducts,
-  getProductBySlug,
-} from "@features/products/services/productService";
+import { getProductBySlug } from "@features/products/services/productService";
 import ProductPageContent from "@features/products/components/ProductPageContent";
-
-export async function generateStaticParams() {
-  const products = await getAllProducts();
-  return products.map((p) => ({ slug: p.slug }));
-}
 
 export default async function ProductPage({
   params,
