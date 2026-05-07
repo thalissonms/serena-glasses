@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Star } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import { useReviewsOverlay } from "@features/products/hooks/useReviewsOverlay";
 
 export function ReviewsOverlay() {
@@ -133,7 +134,7 @@ const MOCK_REVIEWS = [
   { name: "Julia M.", city: "BH", stars: 5, text: "Melhor compra do ano! Super elegante.", date: "2 sem", verified: false },
 ];
 
-function ReviewsPlaceholder({ t }: { t: (key: string, opts?: object) => string }) {
+function ReviewsPlaceholder({ t }: { t: TFunction }) {
   return (
     <div className="flex flex-col gap-4">
       {MOCK_REVIEWS.map((review, i) => (
