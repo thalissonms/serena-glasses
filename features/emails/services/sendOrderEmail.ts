@@ -9,7 +9,11 @@ import {
   buildOrderPaymentRetryEmail,
 } from "../templates/orderTemplates";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let _resend: Resend | null = null;
+function getResend(): Resend {
+  if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY);
+  return _resend;
+}
 
 function isResendConfigured(): boolean {
   const key = process.env.RESEND_API_KEY;
@@ -43,10 +47,10 @@ export async function sendOrderConfirmationEmail(params: SendConfirmationParams)
     .eq("id", orderId)
     .single();
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: getFrom(),
     to: email,
-    subject: `Pagamento confirmado #${orderNumber} âœ¦ Serena Glasses`,
+    subject: `Pagamento confirmado #${orderNumber} ✦ Serena Glasses`,
     html: buildOrderConfirmedEmail({
       orderNumber,
       name,
@@ -67,10 +71,10 @@ export async function sendOrderConfirmationEmail(params: SendConfirmationParams)
 export async function sendOrderReceivedEmail(params: { orderNumber: string; name: string; email: string }): Promise<void> {
   if (!isResendConfigured()) return;
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: getFrom(),
     to: params.email,
-    subject: `Pedido recebido #${params.orderNumber} âœ¦ Serena Glasses`,
+    subject: `Pedido recebido #${params.orderNumber} ✦ Serena Glasses`,
     html: buildOrderReceivedEmail({ orderNumber: params.orderNumber, name: params.name }),
   });
 }
@@ -84,10 +88,10 @@ export async function sendOrderShippedEmail(params: {
 }): Promise<void> {
   if (!isResendConfigured()) return;
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: getFrom(),
     to: params.email,
-    subject: `Pedido enviado #${params.orderNumber} ðŸšš Serena Glasses`,
+    subject: `Pedido enviado #${params.orderNumber} 🚚 Serena Glasses`,
     html: buildOrderShippedEmail(params),
   });
 }
@@ -99,10 +103,10 @@ export async function sendOrderDeliveredEmail(params: {
 }): Promise<void> {
   if (!isResendConfigured()) return;
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: getFrom(),
     to: params.email,
-    subject: `Pedido entregue #${params.orderNumber} âœ¦ Serena Glasses`,
+    subject: `Pedido entregue #${params.orderNumber} ✦ Serena Glasses`,
     html: buildOrderDeliveredEmail({ orderNumber: params.orderNumber, name: params.name }),
   });
 }
@@ -112,10 +116,10 @@ export async function sendOrderPaymentRetryEmail(params: { orderNumber: string; 
 
   const shopUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "";
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: getFrom(),
     to: params.email,
-    subject: `Tente novamente o pagamento #${params.orderNumber} âœ¦ Serena Glasses`,
+    subject: `Tente novamente o pagamento #${params.orderNumber} ✦ Serena Glasses`,
     html: buildOrderPaymentRetryEmail({ orderNumber: params.orderNumber, name: params.name, shopUrl }),
   });
 }
@@ -123,10 +127,10 @@ export async function sendOrderPaymentRetryEmail(params: { orderNumber: string; 
 export async function sendOrderCancelledEmail(params: { orderNumber: string; name: string; email: string }): Promise<void> {
   if (!isResendConfigured()) return;
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: getFrom(),
     to: params.email,
-    subject: `Pedido cancelado #${params.orderNumber} âœ¦ Serena Glasses`,
+    subject: `Pedido cancelado #${params.orderNumber} ✦ Serena Glasses`,
     html: buildOrderCancelledEmail({ orderNumber: params.orderNumber, name: params.name }),
   });
 }
