@@ -39,5 +39,28 @@
     "title": "Novedades",
     "subtitle": "Recién llegado a Serena",
     "viewAll": "Ver todos los modelos"
+  },
+  "reels": {
+    "title": "News",
+    "subtitle": "los lentes en movimiento",
+    "dotLabel": "Ir al video {{number}}"
+  },
+  "catalog": {
+    "ariaLabel": "Catálogo de productos"
+  },
+  "storyViewer": {
+    "close": "Cerrar",
+    "story": "Story {{current}} de {{total}}",
+    "like": "Me gusta",
+    "unlike": "Quitar de favoritos",
+    "reviews": "Ver reseñas",
+    "share": "Compartir",
+    "comment": "Ver producto",
+    "soldOut": "AGOTADO",
+    "tapLeft": "Story anterior",
+    "tapRight": "Siguiente story",
+    "title": "Visualizador de stories",
+    "loading": "Cargando video…",
+    "videoError": "No se pudo reproducir el video"
   }
 }

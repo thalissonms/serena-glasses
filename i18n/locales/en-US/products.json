@@ -7,8 +7,8 @@
     "delivery": {
       "sectionTitle": "Shipping & Guarantees",
       "daily": {
-        "title": "Daily shipping",
-        "desc": "We ship every day to Sete Lagoas and Contagem"
+        "title": " Shipping within 2 business days.",
+        "desc": " We ship within 2 business days throughout Brazil."
       },
       "exchange": {
         "title": "Free returns",
@@ -48,6 +48,19 @@
     "outletBadge": "Outlet",
     "soldOut": "Sold Out",
     "addToFavorites": "Add to favorites"
+  },
+  "feed": {
+    "actionLike": "Favorite",
+    "actionComment": "View reviews of",
+    "actionShare": "Share",
+    "actionSave": "Save",
+    "viewReviews": "View all {{count}} reviews",
+    "reviewsTitle": "Reviews",
+    "reviewsClose": "Close reviews",
+    "writeReview": "Write a review",
+    "actionView": "View product",
+    "unavailable": "Unavailable",
+    "soldOut": "Sold Out"
   },
   "description": {
     "stats": {

@@ -4,7 +4,9 @@ import {
   buildOrderConfirmedEmail,
   buildOrderReceivedEmail,
   buildOrderShippedEmail,
+  buildOrderDeliveredEmail,
   buildOrderCancelledEmail,
+  buildOrderPaymentRetryEmail,
 } from "../templates/orderTemplates";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -87,6 +89,34 @@ export async function sendOrderShippedEmail(params: {
     to: params.email,
     subject: `Pedido enviado #${params.orderNumber} 🚚 Serena Glasses`,
     html: buildOrderShippedEmail(params),
+  });
+}
+
+export async function sendOrderDeliveredEmail(params: {
+  orderNumber: string;
+  name: string;
+  email: string;
+}): Promise<void> {
+  if (!isResendConfigured()) return;
+
+  await resend.emails.send({
+    from: getFrom(),
+    to: params.email,
+    subject: `Pedido entregue #${params.orderNumber} ✦ Serena Glasses`,
+    html: buildOrderDeliveredEmail({ orderNumber: params.orderNumber, name: params.name }),
+  });
+}
+
+export async function sendOrderPaymentRetryEmail(params: { orderNumber: string; name: string; email: string }): Promise<void> {
+  if (!isResendConfigured()) return;
+
+  const shopUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "";
+
+  await resend.emails.send({
+    from: getFrom(),
+    to: params.email,
+    subject: `Tente novamente o pagamento #${params.orderNumber} ✦ Serena Glasses`,
+    html: buildOrderPaymentRetryEmail({ orderNumber: params.orderNumber, name: params.name, shopUrl }),
   });
 }
 

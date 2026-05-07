@@ -1,10 +1,3 @@
-/**
- * Tipos do domínio de Produto — modelados para banco NoSQL (documento).
- *
- * Padrão: subdocumentos embutidos (images, variants, rating, seo)
- * para leitura rápida sem joins. Campos desnormalizados de propósito.
- */
-
 // ─── Enums / Literais ───────────────────────────────────────────────
 
 export type ProductCategory =

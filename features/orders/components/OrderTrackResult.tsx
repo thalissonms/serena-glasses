@@ -1,4 +1,4 @@
-import { MapPin, CreditCard, Package, Truck } from "lucide-react";
+import { MapPin, CreditCard, Package, Truck, Radio } from "lucide-react";
 import { formatPrice } from "@features/products/utils/formatPrice";
 
 const STATUS_CONFIG: Record<string, { label: string; bg: string; text: string }> = {
@@ -24,6 +24,13 @@ interface OrderItem {
   quantity: number;
 }
 
+interface TrackingEvent {
+  id: string;
+  occurred_at: string;
+  description: string;
+  location?: string | null;
+}
+
 interface Order {
   order_number: string;
   status: string;
@@ -47,9 +54,10 @@ interface Order {
 
 interface OrderTrackResultProps {
   order: Order;
+  trackingEvents?: TrackingEvent[];
 }
 
-export default function OrderTrackResult({ order }: OrderTrackResultProps) {
+export default function OrderTrackResult({ order, trackingEvents = [] }: OrderTrackResultProps) {
   const status = STATUS_CONFIG[order.status] ?? STATUS_CONFIG.pending;
   const createdAt = new Date(order.created_at).toLocaleDateString("pt-BR", {
     day: "2-digit",
@@ -93,6 +101,42 @@ export default function OrderTrackResult({ order }: OrderTrackResultProps) {
             {order.tracking_carrier && (
               <p className="font-inter text-xs text-gray-500 dark:text-gray-400 mt-0.5">{order.tracking_carrier}</p>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Tracking timeline */}
+      {trackingEvents.length > 0 && (
+        <div className="border-4 border-black dark:border-purple-500 shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#a855f7] bg-white dark:bg-[#1a1a1a]">
+          <div className="flex items-center gap-2 px-5 py-4 border-b-2 border-black dark:border-purple-500/50">
+            <Radio size={14} className="text-purple-500" />
+            <h2 className="font-poppins font-black text-xs uppercase tracking-wider">Histórico de rastreio</h2>
+          </div>
+          <div className="px-5 py-4">
+            <ol className="relative border-l-2 border-black dark:border-purple-500/40 ml-2 space-y-0">
+              {trackingEvents.map((ev, idx) => {
+                const date = new Date(ev.occurred_at);
+                const dateStr = date.toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" });
+                const timeStr = date.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+                const isFirst = idx === 0;
+                return (
+                  <li key={ev.id} className="ml-4 pb-5 last:pb-0">
+                    <span
+                      className={`absolute -left-2.5 mt-1 h-4 w-4 border-2 border-black dark:border-purple-500 ${isFirst ? "bg-purple-500" : "bg-white dark:bg-[#1a1a1a]"}`}
+                    />
+                    <p className="font-poppins font-bold text-sm text-black dark:text-white leading-snug">
+                      {ev.description}
+                    </p>
+                    {ev.location && (
+                      <p className="font-inter text-xs text-gray-500 dark:text-gray-400 mt-0.5">{ev.location}</p>
+                    )}
+                    <p className="font-inter text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+                      {dateStr} às {timeStr}
+                    </p>
+                  </li>
+                );
+              })}
+            </ol>
           </div>
         </div>
       )}

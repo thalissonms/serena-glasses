@@ -30,10 +30,12 @@ function CheckoutContent() {
   const { handleSubmit, watch } = useCheckoutForm();
   const { t } = useTranslation("checkout");
   const router = useRouter();
-  const { items, appliedCoupon, clearCart } = useCartStore();
+  const { items, appliedCoupon, selectedShipping, clearCart } = useCartStore();
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
   const discount = appliedCoupon?.discount_applied_cents ?? 0;
-  const total = Math.max(0, subtotal - discount);
+  const isFreeShippingCoupon = appliedCoupon?.discount_type === "free_shipping";
+  const shippingPrice = isFreeShippingCoupon ? 0 : (selectedShipping?.price ?? 0);
+  const total = Math.max(0, subtotal - discount + shippingPrice);
   const paymentMethod = watch("payment.method");
 
   const { isReady, createCardToken } = useMpCardToken();
@@ -54,6 +56,12 @@ function CheckoutContent() {
     setIsSubmitting(true);
     setSubmitError(null);
     setCardError(null);
+
+    if (!selectedShipping) {
+      setSubmitError("Selecione uma opção de frete antes de continuar.");
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       let cardToken: string | undefined;
@@ -101,6 +109,9 @@ function CheckoutContent() {
           items,
           couponCode: appliedCoupon?.code ?? null,
           anonymousId: getAnonymousId(),
+          shippingServiceId: selectedShipping.id,
+          shippingServiceName: selectedShipping.name,
+          shippingPrice: isFreeShippingCoupon ? 0 : selectedShipping.price,
           ...(cardToken && {
             cardToken,
             cardPaymentMethodId,

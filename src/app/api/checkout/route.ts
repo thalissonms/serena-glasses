@@ -10,6 +10,9 @@ import {
   sendOrderConfirmationEmail,
   sendOrderReceivedEmail,
 } from "@features/emails/services/sendOrderEmail";
+import { calculateShippingOptions } from "@shared/lib/melhor-envio/shipping";
+import { lookupCep } from "@shared/lib/viacep";
+import { slugifyCity } from "@shared/utils/slugifyCity";
 
 // ─── Server-side validation schema ────────────────────────────────────────────
 // Card fields are stripped on the client before POST — only method + installments arrive.
@@ -39,8 +42,8 @@ const checkoutBodySchema = z.object({
   items: z
     .array(
       z.object({
-        variantId: z.string().uuid(),
-        productId: z.string().uuid(),
+        variantId: z.string().regex(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/i),
+        productId: z.string().regex(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/i),
         name: z.string().min(1),
         price: z.number().positive(),
         quantity: z.number().int().min(1).max(20),
@@ -53,6 +56,9 @@ const checkoutBodySchema = z.object({
     .max(50),
   couponCode: z.string().nullable().optional(),
   anonymousId: z.string().optional(),
+  shippingServiceId: z.number().int().positive(),
+  shippingServiceName: z.string().min(1),
+  shippingPrice: z.number().min(0),
   cardToken: z.string().optional(),
   cardPaymentMethodId: z.string().optional(),
   cardInstallments: z.number().int().min(1).max(12).optional(),
@@ -108,7 +114,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { formData, items, couponCode, anonymousId, cardToken, cardPaymentMethodId, cardInstallments } = parsed.data;
+  const { formData, items, couponCode, anonymousId, shippingServiceId, shippingServiceName, shippingPrice, cardToken, cardPaymentMethodId, cardInstallments } = parsed.data;
   const { identification, address, payment } = formData;
 
   // Cartão requer token
@@ -128,24 +134,33 @@ export async function POST(request: NextRequest) {
   const variantIds = items.map((i) => i.variantId);
   const { data: dbVariants, error: priceError } = await supabaseServer
     .from("product_variants")
-    .select("id, products(price)")
+    .select("id, products(price, weight)")
     .in("id", variantIds);
 
   if (priceError || !dbVariants) {
-    console.error("[checkout] price fetch error:", priceError?.message);
     return NextResponse.json({ error: "Failed to verify prices" }, { status: 500 });
   }
 
   const dbPriceByCentavos: Record<string, number> = {};
+  const dbWeightByVariant: Record<string, number> = {};
   for (const v of dbVariants) {
     const product = Array.isArray(v.products) ? v.products[0] : v.products;
     if (product && typeof product.price === "number") {
       dbPriceByCentavos[v.id] = Math.round(product.price);
     }
+    if (product && typeof (product as { weight?: number }).weight === "number") {
+      dbWeightByVariant[v.id] = (product as { weight: number }).weight;
+    }
   }
 
   if (items.some((i) => dbPriceByCentavos[i.variantId] == null)) {
     return NextResponse.json({ error: "Produto não encontrado" }, { status: 404 });
+  }
+
+  const missingWeight = items.find((i) => dbWeightByVariant[i.variantId] == null);
+  if (missingWeight) {
+    console.error("[checkout] weight not set for variant:", missingWeight.variantId);
+    return NextResponse.json({ error: "Produto sem peso cadastrado — contate suporte" }, { status: 500 });
   }
 
   const serverSubtotal = items.reduce(
@@ -156,6 +171,7 @@ export async function POST(request: NextRequest) {
   // Cupom server-side
   let serverDiscount = 0;
   let appliedCouponId: string | null = null;
+  let isFreeShippingCoupon = false;
 
   if (couponCode) {
     const couponResult = await validateCoupon({
@@ -171,9 +187,38 @@ export async function POST(request: NextRequest) {
 
     serverDiscount = couponResult.coupon.discount_applied_cents;
     appliedCouponId = couponResult.coupon.coupon_id;
+    // discount_type already loaded by validateCoupon — no extra DB round-trip needed
+    isFreeShippingCoupon = couponResult.coupon.discount_type === "free_shipping";
   }
 
-  const serverTotal = Math.max(0, serverSubtotal - serverDiscount);
+  // Validação server-side do frete — recalcula e rejeita tampering
+  let serverShipping = 0;
+  try {
+    const resolvedVariants = items.map((i) => ({
+      variantId: i.variantId,
+      quantity: i.quantity,
+      weightG: dbWeightByVariant[i.variantId],
+      priceCents: dbPriceByCentavos[i.variantId],
+    }));
+    const cepInfo = await lookupCep(address.cep);
+    const citySlug = cepInfo ? slugifyCity(cepInfo.city, cepInfo.state) : undefined;
+    const options = await calculateShippingOptions(address.cep, resolvedVariants, citySlug);
+    const matchedOption = options.find((o) => o.id === shippingServiceId);
+
+    if (!matchedOption) {
+      return NextResponse.json({ error: "Opção de frete inválida." }, { status: 400 });
+    }
+    const expectedPrice = isFreeShippingCoupon ? 0 : matchedOption.price;
+    if (Math.abs(expectedPrice - shippingPrice) > 1) {
+      return NextResponse.json({ error: "Preço de frete divergente. Refaça a cotação." }, { status: 400 });
+    }
+    serverShipping = expectedPrice;
+  } catch (err) {
+    console.error("[checkout] shipping validation:", err instanceof Error ? err.message : String(err));
+    return NextResponse.json({ error: "Erro ao validar frete. Tente novamente." }, { status: 502 });
+  }
+
+  const serverTotal = Math.max(0, serverSubtotal - serverDiscount + serverShipping);
   const orderNumber = generateOrderNumber();
 
   const now = Date.now();
@@ -206,8 +251,10 @@ export async function POST(request: NextRequest) {
       installments: payment.installments ? parseInt(payment.installments, 10) : 1,
       subtotal: serverSubtotal,
       discount: serverDiscount,
-      shipping: 0,
+      shipping: serverShipping,
       total: serverTotal,
+      shipping_service_id: shippingServiceId,
+      shipping_service_name: shippingServiceName,
       coupon_code: couponCode ?? null,
       anonymous_id: anonymousId || null,
       expires_at: expiresAt,
@@ -216,11 +263,10 @@ export async function POST(request: NextRequest) {
     .single();
 
   if (orderError) {
-    console.error("[checkout] order insert error:", orderError.message);
     return NextResponse.json({ error: "Failed to create order" }, { status: 500 });
   }
 
-  const { error: itemsError } = await supabaseServer.from("order_items").insert(
+  await supabaseServer.from("order_items").insert(
     items.map((item) => ({
       order_id: order.id,
       product_id: item.productId,
@@ -233,16 +279,13 @@ export async function POST(request: NextRequest) {
     })),
   );
 
-  if (itemsError) console.error("[checkout] order_items insert error:", itemsError.message);
-
   if (appliedCouponId && serverDiscount > 0) {
-    const { error: usageError } = await supabaseServer.from("coupon_usages").insert({
+    await supabaseServer.from("coupon_usages").insert({
       coupon_id: appliedCouponId,
       order_id: order.id,
       email: identification.email.toLowerCase().trim(),
       discount_applied_cents: serverDiscount,
     });
-    if (usageError) console.error("[checkout] coupon_usages insert error:", usageError.message);
   }
 
   // ─── Mercado Pago ──────────────────────────────────────────────────────────
@@ -266,12 +309,11 @@ export async function POST(request: NextRequest) {
         requestOptions: { idempotencyKey: order.id },
       });
 
-      // Email de "aguardando pagamento"
       sendOrderReceivedEmail({
         orderNumber,
         name: firstName,
         email: identification.email,
-      }).catch((err) => console.error("[checkout] received email error:", err));
+      }).catch(() => {});
 
       const txData = (mpRes as any).point_of_interaction?.transaction_data;
       return NextResponse.json({
@@ -315,7 +357,7 @@ export async function POST(request: NextRequest) {
         orderNumber,
         name: firstName,
         email: identification.email,
-      }).catch((err) => console.error("[checkout] received email error:", err));
+      }).catch(() => {});
 
       const txDetails = (mpRes as any).transaction_details;
       const barcode = (mpRes as any).barcode?.content ?? "";
@@ -359,7 +401,7 @@ export async function POST(request: NextRequest) {
           name: firstName,
           email: identification.email,
           orderId: order.id,
-        }).catch((err) => console.error("[checkout] confirmation email error:", err));
+        }).catch(() => {});
 
         return NextResponse.json({ orderNumber, payment: { type: "card", status: "approved" } });
       }
@@ -388,8 +430,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ orderNumber, payment: { type: "card", status: mpStatus } });
     }
   } catch (mpErr: any) {
-    const errMsg = mpErr?.cause?.message ?? mpErr?.message ?? String(mpErr);
-    console.error("[checkout] MP payment error:", errMsg);
+    const errMsg = mpErr?.message ?? String(mpErr);
     await supabaseServer.from("orders").update({
       status: "payment_failed",
       payment_error: { message: errMsg },

@@ -161,7 +161,7 @@ export function SerenaCollageBackground({ children, className = "" }: SerenaColl
   }
 
   return (
-    <div className={`relative overflow-hidden ${className}`}>
+    <div className={`relative overflow-hidden ${className} bg-linear-to-b from-brand-pink bg-[url('/backgrounds/bg-clipper-gradient.png')] dark:bg-[url('/backgrounds/bg-clipper-gradient-dark.png')] bg-no-repeat bg-cover bg-blend-multiply dark:bg-blend-screen bg-center to-white/90 dark:to-brand-pink-bg-dark/10`}>
       {/* Newspaper clippings background pattern */}
       <div className="absolute inset-0 opacity-15">
         {/* Base newspaper texture */}
@@ -268,7 +268,9 @@ export function SerenaCollageBackground({ children, className = "" }: SerenaColl
                 top: `${photo.top}%`,
                 left: `${photo.left}%`,
                 transform: `rotate(${photo.rotation}deg)`,
-                zIndex: 10 + index
+                zIndex: 10 + index,
+                opacity: 0.2,
+                filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'                
               }}
             >
               {/* Tape strips */}
@@ -367,8 +369,8 @@ export function SerenaCollageBackground({ children, className = "" }: SerenaColl
             }}
           >
             <div className="relative">
-              <div className="w-8 h-8 bg-[#FF00B6] opacity-80 border-2 border-white shadow-md transform rotate-45" />
-              <div className="absolute inset-0 w-8 h-8 bg-[#FEB6DE] opacity-60 border border-white transform -rotate-12" />
+              <div className="w-8 h-8 opacity-80 border-2 border-white shadow-md transform rotate-45" />
+              <div className="absolute inset-0 w-8 h-8  opacity-60 border border-white transform -rotate-12" />
             </div>
           </div>
         ))}

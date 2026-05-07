@@ -25,7 +25,7 @@ const Showcase = () => {
   const currentTheme = theme === "system" ? resolvedTheme : theme;
 
   return (
-    <section className="relative overflow-hidden bg-linear-to-b from-brand-pink bg-[url('/backgrounds/bg-clipper-gradient.png')] dark:bg-[url('/backgrounds/bg-clipper-gradient-dark.png')] bg-no-repeat bg-cover bg-blend-multiply dark:bg-blend-screen bg-center to-white/90 dark:to-brand-pink-bg-dark/10 h-[72.4vh] w-full -mt-24">
+    <section className="relative overflow-hidden h-[72.4vh] w-full -mt-24">
       {/* Background polaroids (subdued) */}
       <div className="absolute inset-0 z-0 opacity-50 dark:opacity-40">
         <StackedPolaroids productImages={polaroidImages} />

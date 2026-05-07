@@ -131,12 +131,14 @@ export async function validateCoupon(input: ValidateCouponInput): Promise<Valida
 
   // 9. Calcula desconto sobre o subtotal elegível
   let discount: number;
-  if (coupon.discount_type === "percentage") {
+  if (coupon.discount_type === "free_shipping") {
+    discount = 0; // desconto de subtotal é zero — frete é zerado no checkout
+  } else if (coupon.discount_type === "percentage") {
     discount = Math.floor((eligibleSubtotal * coupon.discount_value) / 100);
   } else {
     discount = Math.min(coupon.discount_value, eligibleSubtotal);
   }
-  if (coupon.max_discount_cents != null) {
+  if (coupon.max_discount_cents != null && coupon.discount_type !== "free_shipping") {
     discount = Math.min(discount, coupon.max_discount_cents);
   }
 

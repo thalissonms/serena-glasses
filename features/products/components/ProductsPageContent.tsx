@@ -55,7 +55,7 @@ export function ProductsPageContent({ products, params }: ProductsPageContentPro
   ];
 
   return (
-    <main className="w-full min-h-screen bg-[#FFF0FA] dark:bg-[#0a0a0a] text-black dark:text-white py-12 px-4 sm:px-8 lg:px-20 transition-colors">
+    <main className="w-full min-h-screen bg-brand-pink-light/40 dark:bg-brand-pink-bg-dark text-black dark:text-white py-12 px-4 sm:px-8 lg:px-20 transition-colors">
       <div className="max-w-7xl mx-auto mb-8">
         <span className="font-jocham text-5xl sm:text-6xl text-brand-pink leading-none block">
           {getTitle()}

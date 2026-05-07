@@ -7,8 +7,8 @@
     "delivery": {
       "sectionTitle": "Envío & Garantías",
       "daily": {
-        "title": "Envío diario",
-        "desc": "Enviamos todos los días a Sete Lagoas y Contagem"
+        "title": " Envío en 2 días hábiles.",
+        "desc": " Realizamos envíos en un plazo de 2 días hábiles a todo Brasil."
       },
       "exchange": {
         "title": "Cambio gratis",
@@ -48,6 +48,19 @@
     "outletBadge": "Outlet",
     "soldOut": "Agotado",
     "addToFavorites": "Añadir a favoritos"
+  },
+  "feed": {
+    "actionLike": "Favoritar",
+    "actionComment": "Ver reseñas de",
+    "actionShare": "Compartir",
+    "actionSave": "Guardar",
+    "viewReviews": "Ver las {{count}} reseñas",
+    "reviewsTitle": "Reseñas",
+    "reviewsClose": "Cerrar reseñas",
+    "writeReview": "Escribir reseña",
+    "actionView": "Ver producto",
+    "unavailable": "No disponible",
+    "soldOut": "Agotado"
   },
   "description": {
     "stats": {

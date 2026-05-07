@@ -106,7 +106,7 @@ export default function ProductDescription({ product }: ProductDescriptionProps)
   const specs = buildSpecs(product);
 
   return (
-    <section className="w-full max-w-[95vw] mx-auto px-20 pb-24 flex flex-col gap-20 bg-white dark:bg-[#0a0a0a] py-10 transition-colors">
+    <section className="w-full max-w-[96vw] mx-auto px-4 pb-12 md:px-20 md:pb-24 flex flex-col gap-10 md:gap-20 bg-white dark:bg-[#0a0a0a] py-10 transition-colors">
       <div className="flex items-center gap-4">
         <div className="flex-1 h-0.75 bg-black dark:bg-brand-pink" />
         <span className="text-xs font-black uppercase tracking-[0.3em] text-brand-pink px-2">

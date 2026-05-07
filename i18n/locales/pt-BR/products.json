@@ -7,8 +7,8 @@
     "delivery": {
       "sectionTitle": "Entrega & Garantias",
       "daily": {
-        "title": "Entrega diária",
-        "desc": "Enviamos todos os dias para Sete Lagoas e Contagem"
+        "title": "Envio em até 2 dias úteis",
+        "desc": "Enviamos em até 2 dias úteis para todo o Brasil"
       },
       "exchange": {
         "title": "Troca grátis",
@@ -48,6 +48,19 @@
     "outletBadge": "Outlet",
     "soldOut": "Esgotado",
     "addToFavorites": "Adicionar aos favoritos"
+  },
+  "feed": {
+    "actionLike": "Favoritar",
+    "actionComment": "Ver avaliações de",
+    "actionShare": "Compartilhar",
+    "actionSave": "Salvar",
+    "viewReviews": "Ver todas as {{count}} avaliações",
+    "reviewsTitle": "Avaliações",
+    "reviewsClose": "Fechar avaliações",
+    "writeReview": "Escrever avaliação",
+    "actionView": "Ver produto",
+    "unavailable": "Indisponível",
+    "soldOut": "Esgotado"
   },
   "description": {
     "stats": {

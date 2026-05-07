@@ -85,8 +85,8 @@ export default function CouponCreateForm() {
       {/* Tipo de desconto */}
       <div>
         <label className={labelClass}>Tipo de desconto *</label>
-        <div className="flex gap-3">
-          {(["percentage", "fixed"] as const).map((type) => (
+        <div className="flex gap-3 flex-wrap">
+          {(["percentage", "fixed", "free_shipping"] as const).map((type) => (
             <label key={type} className="flex items-center gap-2 cursor-pointer">
               <input
                 type="radio"
@@ -95,49 +95,51 @@ export default function CouponCreateForm() {
                 className="accent-brand-pink"
               />
               <span className="font-poppins text-sm text-white">
-                {type === "percentage" ? "Percentual (%)" : "Valor fixo (R$)"}
+                {type === "percentage" ? "Percentual (%)" : type === "fixed" ? "Valor fixo (R$)" : "Frete grátis"}
               </span>
             </label>
           ))}
         </div>
       </div>
 
-      {/* Valor do desconto — fix: fixed entra em R$ e é convertido no onSubmit */}
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className={labelClass}>
-            {discountType === "percentage" ? "Desconto (%) *" : "Desconto (R$) *"}
-          </label>
-          <input
-            type="number"
-            min="1"
-            step={discountType === "percentage" ? "1" : "0.01"}
-            max={discountType === "percentage" ? "100" : undefined}
-            {...register("discount_value", { valueAsNumber: true })}
-            className={inputClass}
-            placeholder={discountType === "percentage" ? "10" : "50,00"}
-          />
-          {discountType === "fixed" && (
-            <p className={hintClass}>Digite o valor em reais. Ex: 50 = R$50,00</p>
-          )}
-          {errors.discount_value && (
-            <p className={errorClass}>{errors.discount_value.message}</p>
-          )}
+      {/* Valor do desconto — oculto quando free_shipping */}
+      {discountType !== "free_shipping" && (
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className={labelClass}>
+              {discountType === "percentage" ? "Desconto (%) *" : "Desconto (R$) *"}
+            </label>
+            <input
+              type="number"
+              min="1"
+              step={discountType === "percentage" ? "1" : "0.01"}
+              max={discountType === "percentage" ? "100" : undefined}
+              {...register("discount_value", { valueAsNumber: true })}
+              className={inputClass}
+              placeholder={discountType === "percentage" ? "10" : "50,00"}
+            />
+            {discountType === "fixed" && (
+              <p className={hintClass}>Digite o valor em reais. Ex: 50 = R$50,00</p>
+            )}
+            {errors.discount_value && (
+              <p className={errorClass}>{errors.discount_value.message}</p>
+            )}
+          </div>
+          <div>
+            <label className={labelClass}>Desconto máximo (R$)</label>
+            <input
+              type="number"
+              step="0.01"
+              {...register("max_discount_cents", {
+                setValueAs: (v) => (v === "" || v == null ? null : Math.round(parseFloat(v) * 100)),
+              })}
+              className={inputClass}
+              placeholder="Sem limite"
+            />
+            <p className={hintClass}>Teto para cupons percentuais</p>
+          </div>
         </div>
-        <div>
-          <label className={labelClass}>Desconto máximo (R$)</label>
-          <input
-            type="number"
-            step="0.01"
-            {...register("max_discount_cents", {
-              setValueAs: (v) => (v === "" || v == null ? null : Math.round(parseFloat(v) * 100)),
-            })}
-            className={inputClass}
-            placeholder="Sem limite"
-          />
-          <p className={hintClass}>Teto para cupons percentuais</p>
-        </div>
-      </div>
+      )}
 
       {/* Pedido mínimo */}
       <div>

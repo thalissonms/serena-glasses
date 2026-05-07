@@ -1,4 +1,4 @@
-export type CouponDiscountType = "percentage" | "fixed";
+export type CouponDiscountType = "percentage" | "fixed" | "free_shipping";
 export type CouponAppliesTo = "all" | "products" | "categories";
 
 export interface CouponInterface {

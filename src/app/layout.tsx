@@ -12,6 +12,8 @@ import { siteConfig } from "@shared/config";
 import { Nav } from "@features/navigation/components/Nav";
 import { QueryProvider } from "@shared/providers/QueryProvider";
 import { ThemeProvider } from "@shared/providers/ThemeProvider";
+import NavBottom from "@features/navigation/components/mobile/NavBottom";
+import { ReviewsOverlay } from "@features/products/components/ReviewsOverlay";
 
 // Script anti-FOUC: aplica a classe dark no <html> ANTES do React hydratar
 const themeInitScript = `
@@ -71,7 +73,7 @@ export default function RootLayout({
   return (
     <html
       lang={initialLang}
-      className={`${allFontVariablesClassNames} ${localFontVariablesClassNames}`}
+      className={`${allFontVariablesClassNames} ${localFontVariablesClassNames} scroll-smooth`}
       suppressHydrationWarning
     >
       <head>
@@ -85,6 +87,8 @@ export default function RootLayout({
               <Nav />
               <main className="min-h-screen">{children}</main>
               <Footer />
+              <NavBottom />
+              <ReviewsOverlay />
             </I18nProvider>
           </QueryProvider>
         </ThemeProvider>

@@ -17,10 +17,13 @@ const OrderSummarySidebar = ({
   const { t } = useTranslation("checkout");
   const items = useCartStore((state) => state.items);
   const appliedCoupon = useCartStore((state) => state.appliedCoupon);
+  const selectedShipping = useCartStore((state) => state.selectedShipping);
 
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
   const discount = appliedCoupon?.discount_applied_cents ?? 0;
-  const total = Math.max(0, subtotal - discount);
+  const isFreeShippingCoupon = appliedCoupon?.discount_type === "free_shipping";
+  const shippingPrice = isFreeShippingCoupon ? 0 : (selectedShipping?.price ?? 0);
+  const total = Math.max(0, subtotal - discount + shippingPrice);
 
   return (
     <div className="flex flex-col gap-4 sticky top-6">
@@ -78,7 +81,27 @@ const OrderSummarySidebar = ({
 
           <div className="flex justify-between">
             <span className="text-gray-600 dark:text-gray-400">{t("sidebar.shipping")}</span>
-            <span className="font-semibold text-green-600 dark:text-green-400">{t("sidebar.shippingFree")}</span>
+            {!selectedShipping && !isFreeShippingCoupon ? (
+              <span className="text-gray-400 dark:text-gray-500 text-xs font-normal">
+                {isFinished ? "Calcular no endereço" : t("sidebar.shippingFree")}
+              </span>
+            ) : shippingPrice === 0 ? (
+              <span className="flex items-center gap-1.5">
+                {selectedShipping && selectedShipping.original_price > 0 && !isFreeShippingCoupon && (
+                  <span className="font-inter text-xs line-through text-gray-400 dark:text-gray-500">
+                    {formatPrice(selectedShipping.original_price)}
+                  </span>
+                )}
+                {isFreeShippingCoupon && selectedShipping && selectedShipping.price > 0 && (
+                  <span className="font-inter text-xs line-through text-gray-400 dark:text-gray-500">
+                    {formatPrice(selectedShipping.price)}
+                  </span>
+                )}
+                <span className="font-semibold text-green-600 dark:text-green-400">Grátis</span>
+              </span>
+            ) : (
+              <span className="font-semibold">{formatPrice(shippingPrice)}</span>
+            )}
           </div>
         </div>
 

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { supabaseServer } from "@shared/lib/supabase/server";
 import { mpRefund } from "@shared/lib/mercadopago/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
+import { meRequest } from "@shared/lib/melhor-envio/client";
 import { sendOrderCancelledEmail } from "@features/emails/services/sendOrderEmail";
 
 export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
@@ -9,7 +10,7 @@ export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
 
   const { data: order, error: fetchError } = await supabaseServer
     .from("orders")
-    .select("id, order_number, status, mp_payment_id, full_name, email")
+    .select("id, order_number, status, mp_payment_id, full_name, email, me_order_id, me_status")
     .eq("id", id)
     .single();
 
@@ -34,6 +35,24 @@ export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
       { error: "ID de pagamento MP não encontrado neste pedido" },
       { status: 422 },
     );
+  }
+
+  // Cancel ME label if generated but not yet posted (G4)
+  const meOrderId = (order as any).me_order_id as string | null;
+  const meStatus = (order as any).me_status as string | null;
+  if (meOrderId && meStatus === "generated") {
+    try {
+      await meRequest("POST", "/api/v2/me/shipment/cancel", { orders: [meOrderId] });
+      await supabaseServer
+        .from("orders")
+        .update({ me_order_id: null, me_label_url: null, me_status: "canceled" })
+        .eq("id", id);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error("[admin/refund] ME cancel error (non-fatal):", msg);
+    }
+  } else if (meOrderId && meStatus === "posted") {
+    console.warn(`[admin/refund] order ${id} label already posted — skipping ME cancel`);
   }
 
   try {

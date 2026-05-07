@@ -39,5 +39,28 @@
     "title": "New Arrivals",
     "subtitle": "Just landed at Serena",
     "viewAll": "View all styles"
+  },
+  "reels": {
+    "title": "News",
+    "subtitle": "glasses in motion",
+    "dotLabel": "Go to video {{number}}"
+  },
+  "catalog": {
+    "ariaLabel": "Product catalog"
+  },
+  "storyViewer": {
+    "close": "Close",
+    "story": "Story {{current}} of {{total}}",
+    "like": "Like",
+    "unlike": "Remove from favorites",
+    "reviews": "See reviews",
+    "share": "Share",
+    "comment": "View product",
+    "soldOut": "SOLD OUT",
+    "tapLeft": "Previous story",
+    "tapRight": "Next story",
+    "title": "Story viewer",
+    "loading": "Loading video…",
+    "videoError": "Could not play video"
   }
 }

@@ -66,7 +66,9 @@ export default function CouponInput() {
               {appliedCoupon.code}
             </span>
             <p className="font-inter text-[11px] text-gray-500 dark:text-gray-400">
-              -{formatPrice(appliedCoupon.discount_applied_cents)}
+              {appliedCoupon.discount_type === "free_shipping"
+                ? "Frete grátis"
+                : `-${formatPrice(appliedCoupon.discount_applied_cents)}`}
             </p>
           </div>
         </div>

@@ -7,7 +7,13 @@
       "Bash(npm run *)",
       "Bash(xargs grep *)",
       "Bash(node -e \"const mp = require\\('mercadopago'\\); console.log\\(Object.keys\\(mp\\)\\)\")",
-      "Bash(node -e \"const { MercadoPagoConfig, PaymentRefund } = require\\('mercadopago'\\); const c = new MercadoPagoConfig\\({ accessToken: 'x' }\\); const r = new PaymentRefund\\(c\\); console.log\\(Object.getOwnPropertyNames\\(Object.getPrototypeOf\\(r\\)\\)\\)\")"
+      "Bash(node -e \"const { MercadoPagoConfig, PaymentRefund } = require\\('mercadopago'\\); const c = new MercadoPagoConfig\\({ accessToken: 'x' }\\); const r = new PaymentRefund\\(c\\); console.log\\(Object.getOwnPropertyNames\\(Object.getPrototypeOf\\(r\\)\\)\\)\")",
+      "PowerShell(Get-ChildItem \"c:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\" -Name | Where-Object { $_ -match \"CLAUDE|CODE_ORG|AGENTS|\\\\.md$\" })",
+      "Bash(Select-String -Pattern \"Showcase|NewArrivals|ProductCard|ProductsPageContent\")",
+      "Bash(ls AGENT/ 2>/dev/null || mkdir -p AGENT)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\Thalisson\\Documents\\Serena\\serena-glasses\\AGENT"
     ]
   }
 }

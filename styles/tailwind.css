@@ -113,6 +113,7 @@
 	--font-family-jocham: var(--font-jocham), 'Impact', sans-serif;
 	--font-family-aisha: var(--font-aisha), 'Trebuchet MS', sans-serif;
 	--font-family-yellowtail: var(--font-yellowtail), 'Brush Script MT', cursive;
+	--font-family-jersey: var(--font-jersey), 'Courier New', monospace;
 
 	/* Text Scale */
 	--font-size-base: 1rem;
@@ -182,6 +183,11 @@ p, label, button, input { font-size: var(--font-size-base); line-height: 1.5; }
 .font-inter { font-family: var(--font-family-inter); }
 .font-poppins { font-family: var(--font-family-poppins); }
 .font-yellowtail { font-family: var(--font-family-yellowtail); }
+.font-jersey { font-family: var(--font-family-jersey); }
+
+/* Scrollbar utility */
+.scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
 
 /* Animações (ex maps -> mantidos como custom props via inline style quando necessário) */
 @keyframes polaroid-appear {

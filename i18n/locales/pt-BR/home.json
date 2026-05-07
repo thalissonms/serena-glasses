@@ -39,5 +39,28 @@
     "title": "Novidades",
     "subtitle": "Acabou de chegar na Serena",
     "viewAll": "Ver todos os modelos"
+  },
+  "reels": {
+    "title": "News",
+    "subtitle": "os óculos em movimento",
+    "dotLabel": "Ir para vídeo {{number}}"
+  },
+  "catalog": {
+    "ariaLabel": "Catálogo de produtos"
+  },
+  "storyViewer": {
+    "close": "Fechar",
+    "story": "Story {{current}} de {{total}}",
+    "like": "Favoritar",
+    "unlike": "Remover dos favoritos",
+    "reviews": "Ver avaliações",
+    "share": "Compartilhar",
+    "comment": "Comentar",
+    "soldOut": "ESGOTADO",
+    "tapLeft": "Story anterior",
+    "tapRight": "Próximo story",
+    "title": "Visualizador de stories",
+    "loading": "Carregando vídeo…",
+    "videoError": "Não foi possível reproduzir o vídeo"
   }
 }

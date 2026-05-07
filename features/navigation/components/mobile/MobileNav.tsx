@@ -1,10 +1,10 @@
 "use client";
 import { Suspense } from "react";
-import { useNavPages } from "../hooks/useNavPages";
+import { useNavPages } from "../../hooks/useNavPages";
 import { usePathname, useSearchParams } from "next/navigation";
 import clsx from "clsx";
 import Link from "next/link";
-import { isActive, isNavActive } from "../utils/isActive";
+import { isActive, isNavActive } from "../../utils/isActive";
 import { Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 

@@ -17,7 +17,7 @@ const SUPPORTED_LOCALES = (process.env.NEXT_PUBLIC_I18N_LOCALES || "pt-BR,en-US,
 const isProd = process.env.NODE_ENV === 'production';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
 const supabaseHostname = supabaseUrl ? new URL(supabaseUrl).hostname : '';
-
+const allowedDevOrigins = ['*.ngrok-free.app', '*.ngrok.io', 'localhost', '192.168.25.35'];
 /**
  * CSP Produção (mais rígida) e CSP Desenvolvimento (relaxada para HMR / overlay):
  * - Dev precisa de: 'unsafe-eval' e às vezes inline scripts do overlay + websockets (ws:, wss:, blob:)
@@ -118,7 +118,7 @@ const nextConfig: NextConfig = {
   /**
    * Allow ngrok tunnels for local testing (dynamic dev origins)
    */
-  allowedDevOrigins: ['*.ngrok-free.app', '*.ngrok.io', 'localhost'],
+  allowedDevOrigins: ['*.ngrok-free.app', '*.ngrok.io', 'localhost', '192.168.25.35'],
 
   /**
    * Experimental / performance

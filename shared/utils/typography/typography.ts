@@ -8,6 +8,7 @@ import {
   Shrikhand,
   Inter,
   Yellowtail,
+  Jersey_10,
 } from "next/font/google";
 
 // Configurando Inter (fonte principal para substituir a importação CSS)
@@ -65,6 +66,13 @@ export const yellowtail = Yellowtail({
   weight: "400",
 });
 
+export const jerseyTen = Jersey_10({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-jersey",
+  weight: "400",
+});
+
 // Opcional: Você pode exportar um objeto para facilitar o uso no layout
 export const fontVariables = {
   inter: inter.variable,
@@ -74,7 +82,8 @@ export const fontVariables = {
   bethEllen: bethEllen.variable,
   shrikhand: shrikhand.variable,
   yellowtail: yellowtail.variable,
+  jerseyTen: jerseyTen.variable,
 };
 
 // Se você precisar de todas as classes de variáveis de uma vez
-export const allFontVariablesClassNames = `${inter.variable} ${poppins.variable} ${dancingScript.variable} ${playfairDisplay.variable} ${bethEllen.variable} ${shrikhand.variable} ${yellowtail.variable}`;
+export const allFontVariablesClassNames = `${inter.variable} ${poppins.variable} ${dancingScript.variable} ${playfairDisplay.variable} ${bethEllen.variable} ${shrikhand.variable} ${yellowtail.variable} ${jerseyTen.variable}`;

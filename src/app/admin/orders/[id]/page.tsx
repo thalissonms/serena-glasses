@@ -6,6 +6,7 @@ import { ArrowLeft, MapPin, CreditCard, Package, Truck } from "lucide-react";
 import OrderStatusUpdater from "@features/admin/components/OrderStatusUpdater";
 import RefundButton from "@features/admin/components/RefundButton";
 import RetryPaymentButton from "@features/admin/components/RetryPaymentButton";
+import GenerateLabelButton from "@features/admin/components/GenerateLabelButton";
 import { PAYMENT_LABEL } from "@features/admin/consts/orders.const";
 
 function formatBRL(cents: number) {
@@ -22,7 +23,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
 
   const { data: order } = await supabaseServer
     .from("orders")
-    .select("*, order_items(*)")
+    .select("*, order_items(*), me_order_id, me_label_url, me_status, shipping_service_id, shipping_service_name")
     .eq("id", id)
     .single();
 
@@ -66,8 +67,39 @@ export default async function AdminOrderDetailPage({ params }: Props) {
             hasMpPaymentId={!!(order as any).mp_payment_id}
           />
           <RetryPaymentButton orderId={id} currentStatus={order.status} />
+          <GenerateLabelButton
+            orderId={id}
+            currentStatus={order.status}
+            meOrderId={(order as any).me_order_id ?? null}
+            meLabelUrl={(order as any).me_label_url ?? null}
+            shippingServiceId={(order as any).shipping_service_id ?? null}
+          />
         </div>
       </div>
+
+      {((order as any).shipping_service_name || (order as any).me_status) && (
+        <div className="bg-[#0f0f0f] border-2 border-purple-500/20 p-4 mb-4 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <Truck size={14} className="text-purple-400 shrink-0" />
+            <div>
+              <p className="font-poppins font-black text-xs text-gray-400 uppercase tracking-widest mb-1">
+                Envio
+              </p>
+              {(order as any).shipping_service_name && (
+                <p className="font-inter text-sm text-white">{(order as any).shipping_service_name}</p>
+              )}
+            </div>
+          </div>
+          {(order as any).me_status && (
+            <span className="font-poppins font-black text-[10px] uppercase tracking-widest border px-2 py-1 border-purple-500/40 text-purple-400">
+              {(order as any).me_status === "generated" && "Etiqueta gerada"}
+              {(order as any).me_status === "posted" && "Postado"}
+              {(order as any).me_status === "delivered" && "Entregue"}
+              {(order as any).me_status === "canceled" && "Etiqueta cancelada"}
+            </span>
+          )}
+        </div>
+      )}
 
       {((order as any).tracking_code || (order as any).tracking_carrier) && (
         <div className="bg-[#0f0f0f] border-2 border-purple-500/30 p-4 mb-4 flex items-center gap-3">

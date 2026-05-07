@@ -27,7 +27,7 @@ export function NewArrivals({ products }: { products: Product[] }) {
               {t("newArrivals.title")}
             </h1> */}
 
-            <p className="font-poppins text-xs sm:text-sm uppercase tracking-[0.3em] text-gray-500 dark:text-gray-400 font-semibold">
+            <p className="font-poppins text-xs sm:text-sm uppercase tracking-[0.3em] text-gray-500 dark:text-brand-pink-light font-semibold">
               {t("newArrivals.subtitle")}
             </p>
 

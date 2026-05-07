@@ -148,6 +148,56 @@ export function buildOrderShippedEmail(params: { orderNumber: string; name: stri
     </td></tr>`);
 }
 
+export function buildOrderPaymentRetryEmail(params: Pick<OrderEmailParams, "orderNumber" | "name"> & { shopUrl: string }): string {
+  const { orderNumber, name, shopUrl } = params;
+  return wrapInLayout(`
+    <tr><td style="padding:32px;">
+      <p style="margin:0 0 8px;font-size:16px;color:#111;">Olá, <strong>${name}</strong>!</p>
+      <p style="margin:0 0 24px;font-size:14px;color:#555;line-height:1.6;">
+        Não conseguimos processar o pagamento do seu pedido. Pode ter sido um problema com o cartão, saldo insuficiente ou uma autorização do seu banco.
+      </p>
+      <p style="margin:0 0 24px;font-size:14px;color:#555;line-height:1.6;">
+        Mas calma — <strong>seu pedido continua reservado</strong> e você pode tentar de novo agora com outro cartão ou via PIX.
+      </p>
+      <div style="background:#FFF0FA;border:2px solid #000;padding:16px 20px;display:inline-block;margin-bottom:24px;">
+        <p style="margin:0 0 4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#888;">Número do pedido</p>
+        <p style="margin:0;font-size:20px;font-weight:900;font-family:'Poppins',sans-serif;color:#111;">#${orderNumber}</p>
+      </div>
+      <div style="margin:0 0 28px;">
+        <a href="${shopUrl}" style="display:inline-block;background:#FF00B6;color:#fff;text-decoration:none;font-family:'Poppins',sans-serif;font-weight:900;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:14px 28px;border:2px solid #000;box-shadow:4px 4px 0 #000;">
+          Tentar novamente →
+        </a>
+      </div>
+      <p style="margin:0 0 0;font-size:12px;color:#aaa;line-height:1.6;">
+        Se não houver pagamento em 2 dias, o pedido será cancelado automaticamente para liberar o estoque.
+      </p>
+      <p style="margin:20px 0 0;font-size:12px;color:#aaa;text-align:center;line-height:1.6;">
+        Dúvidas? Fale com a gente pelo Instagram <strong>@serenaglasses</strong>
+      </p>
+    </td></tr>`);
+}
+
+export function buildOrderDeliveredEmail(params: { orderNumber: string; name: string }): string {
+  const { orderNumber, name } = params;
+  return wrapInLayout(`
+    <tr><td style="padding:32px;">
+      <p style="margin:0 0 8px;font-size:16px;color:#111;">Olá, <strong>${name}</strong>!</p>
+      <p style="margin:0 0 24px;font-size:14px;color:#555;line-height:1.6;">
+        Seu pedido foi entregue! Esperamos que você adore seus novos óculos.
+      </p>
+      <div style="background:#FFF0FA;border:2px solid #000;padding:16px 20px;display:inline-block;margin-bottom:24px;">
+        <p style="margin:0 0 4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#888;">Número do pedido</p>
+        <p style="margin:0;font-size:20px;font-weight:900;font-family:'Poppins',sans-serif;color:#111;">#${orderNumber}</p>
+      </div>
+      <p style="margin:0 0 24px;font-size:14px;color:#555;line-height:1.6;">
+        Curtiu? Compartilhe sua foto com a gente no Instagram <strong>@serenaglasses</strong> e marque seus amigos!
+      </p>
+      <p style="margin:0;font-size:12px;color:#aaa;text-align:center;line-height:1.6;">
+        Dúvidas? Fale com a gente pelo Instagram <strong>@serenaglasses</strong>
+      </p>
+    </td></tr>`);
+}
+
 export function buildOrderCancelledEmail(params: Pick<OrderEmailParams, "orderNumber" | "name">): string {
   const { orderNumber, name } = params;
   return wrapInLayout(`

@@ -16,6 +16,8 @@ export default async function OrderTrackPage({ searchParams }: Props) {
   let orderData = null;
   let notFound = false;
 
+  let trackingEvents: { id: string; occurred_at: string; description: string; location?: string | null }[] = [];
+
   if (order && email) {
     const { data } = await supabaseServer
       .from("orders")
@@ -24,8 +26,19 @@ export default async function OrderTrackPage({ searchParams }: Props) {
       .eq("email", email.trim().toLowerCase())
       .maybeSingle();
 
-    if (data) orderData = data;
-    else notFound = true;
+    if (data) {
+      orderData = data;
+
+      const { data: events } = await supabaseServer
+        .from("order_tracking_events")
+        .select("id, occurred_at, description, location")
+        .eq("order_id", data.id)
+        .order("occurred_at", { ascending: false });
+
+      trackingEvents = events ?? [];
+    } else {
+      notFound = true;
+    }
   }
 
   return (
@@ -38,7 +51,7 @@ export default async function OrderTrackPage({ searchParams }: Props) {
       }}
     >
       <OrderTrackForm defaultOrder={order} defaultEmail={email} notFound={notFound} />
-      {orderData && <OrderTrackResult order={orderData} />}
+      {orderData && <OrderTrackResult order={orderData} trackingEvents={trackingEvents} />}
     </main>
   );
 }

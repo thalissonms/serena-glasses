@@ -9,8 +9,8 @@ const couponBaseSchema = z.object({
     .max(40, "Máximo 40 caracteres")
     .regex(codeRegex, "Use apenas A-Z, 0-9, _ ou -"),
   description: z.string().max(200).nullable().optional(),
-  discount_type: z.enum(["percentage", "fixed"]),
-  discount_value: z.number().int().positive("Deve ser maior que 0"),
+  discount_type: z.enum(["percentage", "fixed", "free_shipping"]),
+  discount_value: z.number().int().nonnegative("Deve ser ≥ 0"),
   max_discount_cents: z.number().int().nonnegative().nullable().optional(),
   min_order_cents: z.number().int().nonnegative().default(0),
   first_purchase_only: z.boolean().default(false),
@@ -25,6 +25,10 @@ const couponBaseSchema = z.object({
 });
 
 export const couponCreateSchema = couponBaseSchema
+  .refine(
+    (d) => d.discount_type === "free_shipping" || d.discount_value > 0,
+    { message: "Deve ser maior que 0", path: ["discount_value"] },
+  )
   .refine(
     (d) => d.discount_type !== "percentage" || d.discount_value <= 100,
     { message: "Percentual não pode ser maior que 100", path: ["discount_value"] },

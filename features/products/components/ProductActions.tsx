@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { Product } from "@features/products/types/product.types";
 import { useCartStore } from "@features/cart/store/cart.store";
+import { useRouter } from "next/navigation";
 
 interface ProductActionsProps {
   product: Product;
@@ -14,6 +15,7 @@ export default function ProductActions({ product, selectedColorIndex }: ProductA
   const { t } = useTranslation("products");
   const [added, setAdded] = useState(false);
   const addItem = useCartStore((state) => state.addItem);
+  const router = useRouter();
 
   const uniqueColors = product.variants.filter(
     (v, i, arr) => arr.findIndex((x) => x.color.slug === v.color.slug) === i,
@@ -22,7 +24,7 @@ export default function ProductActions({ product, selectedColorIndex }: ProductA
   const primaryImage = product.images.find((img) => img.isPrimary) ?? product.images[0];
   const image = activeVariant?.images[0] ?? primaryImage?.url ?? "";
 
-  function handleAddToCart() {
+  function handleAddToCart(add:boolean = true) {
     if (!activeVariant) return;
     addItem({
       variantId: activeVariant.id,
@@ -35,25 +37,32 @@ export default function ProductActions({ product, selectedColorIndex }: ProductA
       image,
       color: activeVariant.color,
     });
-    setAdded(true);
+    if (add) setAdded(true);
     setTimeout(() => setAdded(false), 2000);
+  }
+  function handleBuyNow() {
+    handleAddToCart(false);
+    router.push("/cart");
   }
 
   return (
-    <div className="flex flex-col gap-3 mt-4">
+    <div className="flex flex-col gap-4 mt-4">
       <button
-        onClick={handleAddToCart}
+        onClick={() => handleAddToCart()}
         disabled={!activeVariant?.inStock}
         className={clsx(
-          "w-full py-5 text-sm font-black uppercase tracking-widest border-4 border-black dark:border-brand-pink transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
+          "w-full py-5 text-sm font-black uppercase tracking-widest border-4 border-black dark:border-brand-pink-light transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-black",
           added
-            ? "bg-green-400 text-black shadow-[4px_4px_0_#000] translate-y-0.5"
-            : "bg-brand-pink text-white shadow-[6px_6px_0_#000] hover:translate-y-0.5 hover:shadow-[4px_4px_0_#000] active:translate-y-1",
+            ? "bg-green-400 dark:border-green-100 text-black shadow-[4px_4px_0] translate-y-0.5"
+            : "bg-brand-pink dark:bg-brand-pink text-white dark:text-white dark:hover:text-brand-pink-light shadow-[6px_6px_0] dark:shadow-brand-blue hover:translate-y-0.5 hover:shadow-[4px_4px_0] active:translate-y-1",
         )}
       >
         {added ? t("page.added") : t("page.addToCart")}
       </button>
-      <button className="w-full py-4 text-sm font-black uppercase tracking-widest border-4 border-black dark:border-brand-pink bg-black dark:bg-[#1a1a1a] text-white shadow-[6px_6px_0_#FF00B6] hover:translate-y-0.5 hover:shadow-[4px_4px_0_#FF00B6] transition-all active:translate-y-1 cursor-pointer">
+      <button
+        onClick={handleBuyNow}
+        className="w-full py-4 text-sm font-black uppercase tracking-widest border-4 border-black dark:border-brand-pink-light bg-black dark:bg-brand-black-dark text-white shadow-[6px_6px_0_#FF00B6] hover:translate-y-0.5 hover:shadow-[4px_4px_0_#FF00B6] transition-all active:translate-y-1 cursor-pointer"
+      >
         {t("page.buyNow")}
       </button>
     </div>
