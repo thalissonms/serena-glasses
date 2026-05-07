@@ -1,5 +1,5 @@
 ﻿import { redirect } from "next/navigation";
-import { creategetSupabaseServerAuthClient } from "@shared/lib/supabase/server-auth";
+import { createSupabaseServerAuthClient } from "@shared/lib/supabase/server-auth";
 
 /**
  * Lista de e-mails admin (server-only).
@@ -26,7 +26,7 @@ export type AdminUser = { id: string; email: string };
  * Retorna null se nÃ£o autorizado (route handler retorna 401).
  */
 export async function getAdminFromCookies(): Promise<AdminUser | null> {
-  const supabase = await creategetSupabaseServer()AuthClient();
+  const supabase = await createSupabaseServerAuthClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user?.email || !isAdminEmail(user.email)) return null;

@@ -9,7 +9,7 @@ import { createServerClient } from "@supabase/ssr";
  * Para queries que precisam ignorar RLS (catÃ¡logo pÃºblico, admin com service_role),
  * continuar usando `getSupabaseServer()` de `./server.ts`.
  */
-export async function creategetSupabaseServer()AuthClient() {
+export async function createSupabaseServerAuthClient() {
   const cookieStore = await cookies();
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
