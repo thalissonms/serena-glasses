@@ -1,4 +1,4 @@
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { STOCK_RESERVING_STATUSES } from "../consts/products.const";
 import type { VariantWithStockInterface } from "../types/productVariant.interface";
 import type { ProductImageInterface } from "../types/productImage.interface";
@@ -30,7 +30,7 @@ export interface ProductEditData {
 }
 
 export async function getProductForEdit(id: string): Promise<ProductEditData | null> {
-  const { data: product } = await supabaseServer
+  const { data: product } = await getSupabaseServer()
     .from("products")
     .select(
       `
@@ -62,7 +62,7 @@ export async function getProductForEdit(id: string): Promise<ProductEditData | n
 
   const reservedByVariant = new Map<string, number>();
   if (variantIds.length > 0) {
-    const { data: itemsData } = await supabaseServer
+    const { data: itemsData } = await getSupabaseServer()
       .from("order_items")
       .select("variant_id, quantity, orders!inner(status)")
       .in("variant_id", variantIds)

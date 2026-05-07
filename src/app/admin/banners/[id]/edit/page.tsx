@@ -1,5 +1,5 @@
-import { requireAdmin } from "@shared/lib/auth/admin";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { requireAdmin } from "@shared/lib/auth/admin";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { notFound } from "next/navigation";
 import BannerEditForm from "@features/admin/components/BannerEditForm";
 import type { SiteBannerRow } from "@features/home/types/siteBanner.types";
@@ -8,7 +8,7 @@ export default async function AdminBannerEditPage({ params }: { params: Promise<
   await requireAdmin();
   const { id } = await params;
 
-  const { data } = await supabaseServer
+  const { data } = await getSupabaseServer()
     .from("site_banners")
     .select("*")
     .eq("id", id)

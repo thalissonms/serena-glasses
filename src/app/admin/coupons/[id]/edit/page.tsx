@@ -1,5 +1,5 @@
-import { requireAdmin } from "@shared/lib/auth/admin";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { requireAdmin } from "@shared/lib/auth/admin";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -15,8 +15,8 @@ export default async function AdminCouponEditPage({ params }: Props) {
   const { id } = await params;
 
   const [{ data: coupon }, { count: usageCount }] = await Promise.all([
-    supabaseServer.from("coupons").select("*").eq("id", id).single(),
-    supabaseServer
+    getSupabaseServer().from("coupons").select("*").eq("id", id).single(),
+    getSupabaseServer()
       .from("coupon_usages")
       .select("*", { count: "exact", head: true })
       .eq("coupon_id", id),

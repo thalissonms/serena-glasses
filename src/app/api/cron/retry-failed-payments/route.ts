@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { sendOrderPaymentRetryEmail } from "@features/emails/services/sendOrderEmail";
 
 const BATCH_SIZE = 100;
-const RETRY_DELAY_MS = 2 * 60 * 60 * 1000; // 2h após falha antes de notificar
+const RETRY_DELAY_MS = 2 * 60 * 60 * 1000; // 2h apÃ³s falha antes de notificar
 const RETRY_WINDOW_MS = 2 * 24 * 60 * 60 * 1000; // 2 dias para o cliente refazer o pedido
 
 export async function GET(request: NextRequest) {
@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
 
   const threshold = new Date(Date.now() - RETRY_DELAY_MS).toISOString();
 
-  const { data: failed, error } = await supabaseServer
+  const { data: failed, error } = await getSupabaseServer()
     .from("orders")
     .select("id, order_number, email, full_name")
     .eq("status", "payment_failed")
@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
   const newExpiresAt = new Date(Date.now() + RETRY_WINDOW_MS).toISOString();
   const now = new Date().toISOString();
 
-  const { error: updateError } = await supabaseServer
+  const { error: updateError } = await getSupabaseServer()
     .from("orders")
     .update({
       status: "pending",
@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Update failed" }, { status: 500 });
   }
 
-  // Fire-and-forget — email failures don't rollback the status reset
+  // Fire-and-forget â€” email failures don't rollback the status reset
   await Promise.allSettled(
     failed.map((order) => {
       const [first] = order.full_name.split(" ");

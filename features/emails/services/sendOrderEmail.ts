@@ -1,5 +1,5 @@
-import { Resend } from "resend";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { Resend } from "resend";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import {
   buildOrderConfirmedEmail,
   buildOrderReceivedEmail,
@@ -32,12 +32,12 @@ export async function sendOrderConfirmationEmail(params: SendConfirmationParams)
 
   const { orderNumber, name, email, orderId } = params;
 
-  const { data: items } = await supabaseServer
+  const { data: items } = await getSupabaseServer()
     .from("order_items")
     .select("product_name, color_name, quantity, price")
     .eq("order_id", orderId);
 
-  const { data: order } = await supabaseServer
+  const { data: order } = await getSupabaseServer()
     .from("orders")
     .select("subtotal, discount, total, coupon_code")
     .eq("id", orderId)
@@ -46,7 +46,7 @@ export async function sendOrderConfirmationEmail(params: SendConfirmationParams)
   await resend.emails.send({
     from: getFrom(),
     to: email,
-    subject: `Pagamento confirmado #${orderNumber} ✦ Serena Glasses`,
+    subject: `Pagamento confirmado #${orderNumber} âœ¦ Serena Glasses`,
     html: buildOrderConfirmedEmail({
       orderNumber,
       name,
@@ -70,7 +70,7 @@ export async function sendOrderReceivedEmail(params: { orderNumber: string; name
   await resend.emails.send({
     from: getFrom(),
     to: params.email,
-    subject: `Pedido recebido #${params.orderNumber} ✦ Serena Glasses`,
+    subject: `Pedido recebido #${params.orderNumber} âœ¦ Serena Glasses`,
     html: buildOrderReceivedEmail({ orderNumber: params.orderNumber, name: params.name }),
   });
 }
@@ -87,7 +87,7 @@ export async function sendOrderShippedEmail(params: {
   await resend.emails.send({
     from: getFrom(),
     to: params.email,
-    subject: `Pedido enviado #${params.orderNumber} 🚚 Serena Glasses`,
+    subject: `Pedido enviado #${params.orderNumber} ðŸšš Serena Glasses`,
     html: buildOrderShippedEmail(params),
   });
 }
@@ -102,7 +102,7 @@ export async function sendOrderDeliveredEmail(params: {
   await resend.emails.send({
     from: getFrom(),
     to: params.email,
-    subject: `Pedido entregue #${params.orderNumber} ✦ Serena Glasses`,
+    subject: `Pedido entregue #${params.orderNumber} âœ¦ Serena Glasses`,
     html: buildOrderDeliveredEmail({ orderNumber: params.orderNumber, name: params.name }),
   });
 }
@@ -115,7 +115,7 @@ export async function sendOrderPaymentRetryEmail(params: { orderNumber: string; 
   await resend.emails.send({
     from: getFrom(),
     to: params.email,
-    subject: `Tente novamente o pagamento #${params.orderNumber} ✦ Serena Glasses`,
+    subject: `Tente novamente o pagamento #${params.orderNumber} âœ¦ Serena Glasses`,
     html: buildOrderPaymentRetryEmail({ orderNumber: params.orderNumber, name: params.name, shopUrl }),
   });
 }
@@ -126,7 +126,7 @@ export async function sendOrderCancelledEmail(params: { orderNumber: string; nam
   await resend.emails.send({
     from: getFrom(),
     to: params.email,
-    subject: `Pedido cancelado #${params.orderNumber} ✦ Serena Glasses`,
+    subject: `Pedido cancelado #${params.orderNumber} âœ¦ Serena Glasses`,
     html: buildOrderCancelledEmail({ orderNumber: params.orderNumber, name: params.name }),
   });
 }

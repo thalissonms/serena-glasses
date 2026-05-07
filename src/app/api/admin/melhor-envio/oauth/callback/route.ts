@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { getAdminFromCookies } from "@shared/lib/auth/admin";
-import { supabaseServer } from "@shared/lib/supabase/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { getMeBaseUrl } from "@shared/lib/melhor-envio/client";
 
 export async function GET(request: NextRequest) {
@@ -73,7 +73,7 @@ export async function GET(request: NextRequest) {
   }
 
   // Persist refresh_token in app_secrets (upsert)
-  const { error: dbError } = await supabaseServer.from("app_secrets").upsert(
+  const { error: dbError } = await getSupabaseServer().from("app_secrets").upsert(
     { key: "me_refresh_token", value: tokenData.refresh_token, updated_at: new Date().toISOString() },
     { onConflict: "key" },
   );

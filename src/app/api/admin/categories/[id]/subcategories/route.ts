@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
-import { supabaseServer } from "@shared/lib/supabase/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { subcategoryCreateSchema } from "@features/admin/schemas/category.schema";
 
 export const POST = withAdmin<{ id: string }>(async (req, { params }) => {
@@ -16,7 +16,7 @@ export const POST = withAdmin<{ id: string }>(async (req, { params }) => {
     );
   }
 
-  const { data: existing } = await supabaseServer
+  const { data: existing } = await getSupabaseServer()
     .from("subcategories")
     .select("id")
     .eq("category_id", category_id)
@@ -24,7 +24,7 @@ export const POST = withAdmin<{ id: string }>(async (req, { params }) => {
     .maybeSingle();
   if (existing) return NextResponse.json({ error: "Slug já em uso nesta categoria" }, { status: 409 });
 
-  const { data, error } = await supabaseServer
+  const { data, error } = await getSupabaseServer()
     .from("subcategories")
     .insert({ ...parsed.data, category_id })
     .select("id")

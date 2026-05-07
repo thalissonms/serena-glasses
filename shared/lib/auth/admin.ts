@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
-import { createSupabaseServerAuthClient } from "@shared/lib/supabase/server-auth";
+﻿import { redirect } from "next/navigation";
+import { creategetSupabaseServerAuthClient } from "@shared/lib/supabase/server-auth";
 
 /**
  * Lista de e-mails admin (server-only).
@@ -22,11 +22,11 @@ export function isAdminEmail(email: string | null | undefined): boolean {
 export type AdminUser = { id: string; email: string };
 
 /**
- * API Routes — valida session via cookie e checa allowlist.
- * Retorna null se não autorizado (route handler retorna 401).
+ * API Routes â€” valida session via cookie e checa allowlist.
+ * Retorna null se nÃ£o autorizado (route handler retorna 401).
  */
 export async function getAdminFromCookies(): Promise<AdminUser | null> {
-  const supabase = await createSupabaseServerAuthClient();
+  const supabase = await creategetSupabaseServer()AuthClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user?.email || !isAdminEmail(user.email)) return null;
@@ -35,8 +35,8 @@ export async function getAdminFromCookies(): Promise<AdminUser | null> {
 }
 
 /**
- * Server Components — valida cookie de session e checa allowlist.
- * Redireciona pra /admin/login se não autorizado.
+ * Server Components â€” valida cookie de session e checa allowlist.
+ * Redireciona pra /admin/login se nÃ£o autorizado.
  */
 export async function requireAdmin(): Promise<AdminUser> {
   const admin = await getAdminFromCookies();

@@ -1,4 +1,4 @@
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { STOCK_RESERVING_STATUSES } from "../consts/products.const";
 import type { ProductType } from "../types/products.type";
 
@@ -31,7 +31,7 @@ type DbProductRow = {
  * Calcula reserved/available a partir de order_items + orders (status != cancelled).
  */
 export async function getProductsList(): Promise<ProductType[]> {
-  const { data: productsData } = await supabaseServer
+  const { data: productsData } = await getSupabaseServer()
     .from("products")
     .select(
       `
@@ -49,7 +49,7 @@ export async function getProductsList(): Promise<ProductType[]> {
   // Agrega quantidade reservada por variant_id (status != cancelled)
   const reservedByVariant = new Map<string, number>();
   if (variantIds.length > 0) {
-    const { data: itemsData } = await supabaseServer
+    const { data: itemsData } = await getSupabaseServer()
       .from("order_items")
       .select("variant_id, quantity, orders!inner(status)")
       .in("variant_id", variantIds)

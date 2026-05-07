@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { supabaseServer } from "@shared/lib/supabase/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
 
 const imagePatchSchema = z.object({
@@ -27,7 +27,7 @@ export const PATCH = withAdmin<{ id: string; imageId: string }>(async (req, { pa
     );
   }
 
-  const { error } = await supabaseServer
+  const { error } = await getSupabaseServer()
     .from("product_images")
     .update(parsed.data)
     .eq("id", imageId);
@@ -39,7 +39,7 @@ export const PATCH = withAdmin<{ id: string; imageId: string }>(async (req, { pa
 export const DELETE = withAdmin<{ id: string; imageId: string }>(async (_req, { params }) => {
   const { id, imageId } = await params;
 
-  const { data: image } = await supabaseServer
+  const { data: image } = await getSupabaseServer()
     .from("product_images")
     .select("url")
     .eq("id", imageId)
@@ -50,10 +50,10 @@ export const DELETE = withAdmin<{ id: string; imageId: string }>(async (_req, { 
 
   const storagePath = storagePathFromUrl(image.url);
   if (storagePath) {
-    await supabaseServer.storage.from("product-images").remove([storagePath]);
+    await getSupabaseServer().storage.from("product-images").remove([storagePath]);
   }
 
-  const { error } = await supabaseServer.from("product_images").delete().eq("id", imageId);
+  const { error } = await getSupabaseServer().from("product_images").delete().eq("id", imageId);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
   return NextResponse.json({ ok: true });

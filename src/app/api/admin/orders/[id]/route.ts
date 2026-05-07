@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
 import { ORDER_STATUSES } from "@features/admin/consts/orders.const";
 
@@ -30,7 +30,7 @@ export const PATCH = withAdmin<{ id: string }>(async (req, { params }) => {
 
   // Dispara email de envio quando muda para shipped
   if (status === "shipped") {
-    const { data: order } = await supabaseServer
+    const { data: order } = await getSupabaseServer()
       .from("orders")
       .select("order_number, full_name, email")
       .eq("id", id)
@@ -50,7 +50,7 @@ export const PATCH = withAdmin<{ id: string }>(async (req, { params }) => {
 
   // Dispara email de cancelamento
   if (status === "cancelled") {
-    const { data: order } = await supabaseServer
+    const { data: order } = await getSupabaseServer()
       .from("orders")
       .select("order_number, full_name, email")
       .eq("id", id)
@@ -66,7 +66,7 @@ export const PATCH = withAdmin<{ id: string }>(async (req, { params }) => {
     }
   }
 
-  const { error } = await supabaseServer
+  const { error } = await getSupabaseServer()
     .from("orders")
     .update(updateFields)
     .eq("id", id);

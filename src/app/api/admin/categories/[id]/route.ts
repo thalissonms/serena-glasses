@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
-import { supabaseServer } from "@shared/lib/supabase/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { categoryPatchSchema } from "@features/admin/schemas/category.schema";
 
 export const PATCH = withAdmin<{ id: string }>(async (req, { params }) => {
@@ -16,14 +16,14 @@ export const PATCH = withAdmin<{ id: string }>(async (req, { params }) => {
     );
   }
 
-  const { error } = await supabaseServer.from("categories").update(parsed.data).eq("id", id);
+  const { error } = await getSupabaseServer().from("categories").update(parsed.data).eq("id", id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ ok: true });
 });
 
 export const DELETE = withAdmin<{ id: string }>(async (_req, { params }) => {
   const { id } = await params;
-  const { error } = await supabaseServer
+  const { error } = await getSupabaseServer()
     .from("categories")
     .update({ active: false })
     .eq("id", id);

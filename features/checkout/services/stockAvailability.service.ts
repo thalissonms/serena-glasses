@@ -1,4 +1,4 @@
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { STOCK_RESERVING_STATUSES } from "@features/admin/consts/products.const";
 
 export interface StockShortageItem {
@@ -19,7 +19,7 @@ interface CheckItem {
  * Verifica disponibilidade de cada item antes de criar pedido.
  * Retorna lista de itens com problema (vazia = OK pra prosseguir).
  *
- * Não usa lock transacional — race condition aceita por ora (MVP).
+ * NÃ£o usa lock transacional â€” race condition aceita por ora (MVP).
  */
 export async function checkStockAvailability(
   items: CheckItem[],
@@ -28,12 +28,12 @@ export async function checkStockAvailability(
 
   const variantIds = items.map((i) => i.variantId);
 
-  const { data: variantsData } = await supabaseServer
+  const { data: variantsData } = await getSupabaseServer()
     .from("product_variants")
     .select("id, color_name, stock_quantity, in_stock, product_id, products(name)")
     .in("id", variantIds);
 
-  const { data: itemsData } = await supabaseServer
+  const { data: itemsData } = await getSupabaseServer()
     .from("order_items")
     .select("variant_id, quantity, orders!inner(status)")
     .in("variant_id", variantIds)
@@ -65,7 +65,7 @@ export async function checkStockAvailability(
       shortages.push({
         variantId: item.variantId,
         productName: item.productName ?? "Produto",
-        colorName: "—",
+        colorName: "â€”",
         requested: item.quantity,
         available: 0,
       });

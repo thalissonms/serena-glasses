@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
-import { supabaseServer } from "@shared/lib/supabase/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { siteBannerCreateSchema } from "@features/admin/schemas/siteBanner.schema";
 import { getSiteBannersList } from "@features/admin/services/siteBannersList.service";
 
@@ -26,7 +26,7 @@ export const POST = withAdmin(async (req) => {
     );
   }
 
-  const { data: row, error } = await supabaseServer
+  const { data: row, error } = await getSupabaseServer()
     .from("site_banners")
     .insert(parsed.data)
     .select()

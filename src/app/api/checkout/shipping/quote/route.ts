@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { supabaseServer } from "@shared/lib/supabase/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { lookupCep } from "@shared/lib/viacep";
 import { slugifyCity } from "@shared/utils/slugifyCity";
 import { calculateShippingOptions, type VariantQuoteInput } from "@shared/lib/melhor-envio/shipping";
@@ -41,13 +41,13 @@ export async function POST(request: NextRequest) {
 
   const parsed = quoteSchema.safeParse(rawBody);
   if (!parsed.success) {
-    return NextResponse.json({ error: "Dados inválidos", issues: parsed.error.issues }, { status: 400 });
+    return NextResponse.json({ error: "Dados invÃ¡lidos", issues: parsed.error.issues }, { status: 400 });
   }
 
   const { cep, items } = parsed.data;
   const key = cacheKey(cep, items);
 
-  // Cache lookup — Redis preferred, in-memory fallback
+  // Cache lookup â€” Redis preferred, in-memory fallback
   if (redis) {
     const cached = await redis.get<ShippingQuoteOption[]>(key);
     if (cached) return NextResponse.json({ options: cached });
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Fetch weights + prices from DB
-  const { data: dbVariants, error: dbErr } = await supabaseServer
+  const { data: dbVariants, error: dbErr } = await getSupabaseServer()
     .from("product_variants")
     .select("id, products(price, weight)")
     .in("id", items.map((i) => i.variantId));
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
   const resolvedVariants: VariantQuoteInput[] = [];
   for (const item of items) {
     const info = variantMap.get(item.variantId);
-    if (!info) return NextResponse.json({ error: "Produto não encontrado" }, { status: 404 });
+    if (!info) return NextResponse.json({ error: "Produto nÃ£o encontrado" }, { status: 404 });
     resolvedVariants.push({ variantId: item.variantId, quantity: item.quantity, ...info });
   }
 

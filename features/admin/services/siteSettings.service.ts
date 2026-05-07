@@ -1,4 +1,4 @@
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { getSupabaseServer } from "@shared/lib/supabase/server";
 import type { SettingKey, SettingValue } from "@features/admin/schemas/siteSettings.schema";
 
 export interface SiteSettingRow {
@@ -9,7 +9,7 @@ export interface SiteSettingRow {
 }
 
 export async function getSetting<K extends SettingKey>(key: K): Promise<SettingValue<K> | null> {
-  const { data, error } = await supabaseServer
+  const { data, error } = await getSupabaseServer()
     .from("site_settings")
     .select("value")
     .eq("key", key)
@@ -20,7 +20,7 @@ export async function getSetting<K extends SettingKey>(key: K): Promise<SettingV
 }
 
 export async function getAllSettings(): Promise<Record<string, unknown>> {
-  const { data, error } = await supabaseServer
+  const { data, error } = await getSupabaseServer()
     .from("site_settings")
     .select("key, value, description, updated_at")
     .order("key", { ascending: true });
@@ -30,7 +30,7 @@ export async function getAllSettings(): Promise<Record<string, unknown>> {
 }
 
 export async function getAllSettingRows(): Promise<SiteSettingRow[]> {
-  const { data, error } = await supabaseServer
+  const { data, error } = await getSupabaseServer()
     .from("site_settings")
     .select("key, value, description, updated_at")
     .order("key", { ascending: true });

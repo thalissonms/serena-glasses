@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { sendOrderCancelledEmail } from "@features/emails/services/sendOrderEmail";
 
 const BATCH_SIZE = 100;
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { data: expired, error } = await supabaseServer
+  const { data: expired, error } = await getSupabaseServer()
     .from("orders")
     .select("id, order_number, email, full_name, payment_method")
     .eq("status", "pending")
@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
   const ids = expired.map((o) => o.id);
   const now = new Date().toISOString();
 
-  const { error: updateError } = await supabaseServer
+  const { error: updateError } = await getSupabaseServer()
     .from("orders")
     .update({ status: "cancelled", cancelled_at: now, cancel_reason: "expired" })
     .in("id", ids);
@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Update failed" }, { status: 500 });
   }
 
-  // Fire-and-forget — email failures don't rollback the cancellation
+  // Fire-and-forget â€” email failures don't rollback the cancellation
   await Promise.allSettled(
     expired.map((order) => {
       const [first] = order.full_name.split(" ");

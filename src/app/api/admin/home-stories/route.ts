@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
-import { supabaseServer } from "@shared/lib/supabase/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { homeStoryCreateSchema } from "@features/admin/schemas/homeStory.schema";
 import { getHomeStoriesList } from "@features/admin/services/homeStoriesList.service";
 
@@ -29,7 +29,7 @@ export const POST = withAdmin(async (req) => {
   let insertPayload: Record<string, unknown>;
 
   if (parsed.data.kind === "product") {
-    const { data: product, error: lookupErr } = await supabaseServer
+    const { data: product, error: lookupErr } = await getSupabaseServer()
       .from("products")
       .select("id")
       .eq("code", parsed.data.product_code)
@@ -40,7 +40,7 @@ export const POST = withAdmin(async (req) => {
     }
     if (!product) {
       return NextResponse.json(
-        { error: `Produto com código "${parsed.data.product_code}" não encontrado` },
+        { error: `Produto com cÃ³digo "${parsed.data.product_code}" nÃ£o encontrado` },
         { status: 404 },
       );
     }
@@ -51,7 +51,7 @@ export const POST = withAdmin(async (req) => {
     insertPayload = parsed.data;
   }
 
-  const { data: row, error } = await supabaseServer
+  const { data: row, error } = await getSupabaseServer()
     .from("home_stories")
     .insert(insertPayload)
     .select()

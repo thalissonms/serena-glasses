@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { NextResponse } from "next/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { meRequest } from "@shared/lib/melhor-envio/client";
 import { getStorePackage } from "@shared/lib/melhor-envio/env";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
@@ -19,7 +19,7 @@ function getEnv(key: string): string {
 export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
   const { id } = await params;
 
-  const { data: order, error: fetchErr } = await supabaseServer
+  const { data: order, error: fetchErr } = await getSupabaseServer()
     .from("orders")
     .select(
       "id, order_number, status, full_name, email, phone, cpf, street, street_number, complement, neighborhood, city, state, cep, shipping_service_id, me_order_id, total",
@@ -74,7 +74,7 @@ export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
   }
 
   // Fetch order_items with variant weights via join
-  const { data: items, error: itemsErr } = await supabaseServer
+  const { data: items, error: itemsErr } = await getSupabaseServer()
     .from("order_items")
     .select("product_name, quantity, price, product_variants(products(weight))")
     .eq("order_id", id);
@@ -193,7 +193,7 @@ export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
     return NextResponse.json({ error: `Erro ao gerar etiqueta: ${msg}` }, { status: 502 });
   }
 
-  const { error: updateErr } = await supabaseServer
+  const { error: updateErr } = await getSupabaseServer()
     .from("orders")
     .update({
       me_order_id: meOrderId,
@@ -217,7 +217,7 @@ export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
 export const DELETE = withAdmin<{ id: string }>(async (_req, { params }) => {
   const { id } = await params;
 
-  const { data: order, error: fetchErr } = await supabaseServer
+  const { data: order, error: fetchErr } = await getSupabaseServer()
     .from("orders")
     .select("id, me_order_id, me_status")
     .eq("id", id)
@@ -248,7 +248,7 @@ export const DELETE = withAdmin<{ id: string }>(async (_req, { params }) => {
     return NextResponse.json({ error: `Erro ao cancelar etiqueta: ${msg}` }, { status: 502 });
   }
 
-  await supabaseServer
+  await getSupabaseServer()
     .from("orders")
     .update({
       me_order_id: null,

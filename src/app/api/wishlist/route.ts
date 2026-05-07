@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 
 export async function GET(req: NextRequest) {
   const anonymous_id = req.nextUrl.searchParams.get("anonymous_id");
   if (!anonymous_id) return NextResponse.json([]);
 
-  const { data, error } = await supabaseServer
+  const { data, error } = await getSupabaseServer()
     .from("wishlist_items")
     .select(`
       id,
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
   if (!anonymous_id || !product_id)
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
 
-  const { data: existing } = await supabaseServer
+  const { data: existing } = await getSupabaseServer()
     .from("wishlist_items")
     .select("id")
     .eq("anonymous_id", anonymous_id)
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
 
   if (existing) return NextResponse.json({ ok: true });
 
-  const { error } = await supabaseServer
+  const { error } = await getSupabaseServer()
     .from("wishlist_items")
     .insert({ anonymous_id, product_id });
 
@@ -48,7 +48,7 @@ export async function DELETE(req: NextRequest) {
   if (!anonymous_id || !product_id)
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
 
-  const { error } = await supabaseServer
+  const { error } = await getSupabaseServer()
     .from("wishlist_items")
     .delete()
     .eq("anonymous_id", anonymous_id)

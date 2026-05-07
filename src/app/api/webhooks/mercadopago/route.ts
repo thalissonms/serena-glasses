@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { createHmac, timingSafeEqual } from "crypto";
-import { supabaseServer } from "@shared/lib/supabase/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { mpPayment } from "@shared/lib/mercadopago/server";
 
 const MP_STATUS_MAP: Record<string, string> = {
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
       updateFields.paid_at = new Date().toISOString();
     }
 
-    const { data: order } = await supabaseServer
+    const { data: order } = await getSupabaseServer()
       .from("orders")
       .update(updateFields)
       .eq("id", orderId)

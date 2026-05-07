@@ -1,4 +1,4 @@
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { STOCK_RESERVING_STATUSES } from "@features/admin/consts/products.const";
 import { COUPON_ERRORS } from "@features/coupons/consts/coupon.const";
 import type { AppliedCouponInterface } from "@features/coupons/types/coupon.interface";
@@ -18,7 +18,7 @@ export async function validateCoupon(input: ValidateCouponInput): Promise<Valida
   const { code, items, email, cpf } = input;
 
   // 1. Busca cupom (case-insensitive)
-  const { data: coupon } = await supabaseServer
+  const { data: coupon } = await getSupabaseServer()
     .from("coupons")
     .select("*")
     .eq("code", code.toUpperCase().trim())
@@ -34,15 +34,15 @@ export async function validateCoupon(input: ValidateCouponInput): Promise<Valida
     return { ok: false, error: COUPON_ERRORS.EXPIRED };
   }
 
-  // 3. Busca preços e categorias do banco (server-side — não confia no client)
+  // 3. Busca preÃ§os e categorias do banco (server-side â€” nÃ£o confia no client)
   const variantIds = items.map((i) => i.variantId);
-  const { data: dbVariants } = await supabaseServer
+  const { data: dbVariants } = await getSupabaseServer()
     .from("product_variants")
     .select("id, product_id, products(id, price, category)")
     .in("id", variantIds);
 
   const priceMap: Record<string, number> = {};
-  // chave: variantId → categoria do produto (para filtro de categorias)
+  // chave: variantId â†’ categoria do produto (para filtro de categorias)
   const categoryByVariant: Record<string, string | null> = {};
   for (const v of dbVariants ?? []) {
     const product = Array.isArray(v.products) ? v.products[0] : v.products;
@@ -52,7 +52,7 @@ export async function validateCoupon(input: ValidateCouponInput): Promise<Valida
     }
   }
 
-  // 4. Filtra itens elegíveis conforme applies_to
+  // 4. Filtra itens elegÃ­veis conforme applies_to
   let eligibleItems = items;
   if (coupon.applies_to === "products" && coupon.applicable_product_ids?.length) {
     const allowed = new Set(coupon.applicable_product_ids as string[]);
@@ -71,14 +71,14 @@ export async function validateCoupon(input: ValidateCouponInput): Promise<Valida
     0,
   );
 
-  // 5. Pedido mínimo (sobre os itens elegíveis)
+  // 5. Pedido mÃ­nimo (sobre os itens elegÃ­veis)
   if (eligibleSubtotal < coupon.min_order_cents) {
     return { ok: false, error: COUPON_ERRORS.MIN_ORDER };
   }
 
   // 6. Limite total de usos
   if (coupon.usage_limit_total != null) {
-    const { count } = await supabaseServer
+    const { count } = await getSupabaseServer()
       .from("coupon_usages")
       .select("*", { count: "exact", head: true })
       .eq("coupon_id", coupon.id);
@@ -91,7 +91,7 @@ export async function validateCoupon(input: ValidateCouponInput): Promise<Valida
   if (email) {
     const normalizedEmail = email.toLowerCase().trim();
 
-    const { count: emailCount } = await supabaseServer
+    const { count: emailCount } = await getSupabaseServer()
       .from("coupon_usages")
       .select("*", { count: "exact", head: true })
       .eq("coupon_id", coupon.id)
@@ -100,19 +100,19 @@ export async function validateCoupon(input: ValidateCouponInput): Promise<Valida
       return { ok: false, error: COUPON_ERRORS.USAGE_LIMIT_USER };
     }
 
-    // 8. Primeira compra apenas — checa por email E por CPF (OR: qualquer um bloqueia)
+    // 8. Primeira compra apenas â€” checa por email E por CPF (OR: qualquer um bloqueia)
     if (coupon.first_purchase_only) {
       const normalizedCpf = cpf?.replace(/\D/g, "") ?? null;
 
       const checks = [
-        supabaseServer
+        getSupabaseServer()
           .from("orders")
           .select("*", { count: "exact", head: true })
           .eq("email", normalizedEmail)
           .in("status", STOCK_RESERVING_STATUSES as unknown as string[]),
         ...(normalizedCpf
           ? [
-              supabaseServer
+              getSupabaseServer()
                 .from("orders")
                 .select("*", { count: "exact", head: true })
                 .eq("cpf", normalizedCpf)
@@ -129,10 +129,10 @@ export async function validateCoupon(input: ValidateCouponInput): Promise<Valida
     }
   }
 
-  // 9. Calcula desconto sobre o subtotal elegível
+  // 9. Calcula desconto sobre o subtotal elegÃ­vel
   let discount: number;
   if (coupon.discount_type === "free_shipping") {
-    discount = 0; // desconto de subtotal é zero — frete é zerado no checkout
+    discount = 0; // desconto de subtotal Ã© zero â€” frete Ã© zerado no checkout
   } else if (coupon.discount_type === "percentage") {
     discount = Math.floor((eligibleSubtotal * coupon.discount_value) / 100);
   } else {

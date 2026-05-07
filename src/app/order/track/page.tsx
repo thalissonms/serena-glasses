@@ -1,4 +1,4 @@
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { getSupabaseServer } from "@shared/lib/supabase/server";
 import OrderTrackForm from "@features/orders/components/OrderTrackForm";
 import OrderTrackResult from "@features/orders/components/OrderTrackResult";
 
@@ -19,7 +19,7 @@ export default async function OrderTrackPage({ searchParams }: Props) {
   let trackingEvents: { id: string; occurred_at: string; description: string; location?: string | null }[] = [];
 
   if (order && email) {
-    const { data } = await supabaseServer
+    const { data } = await getSupabaseServer()
       .from("orders")
       .select("*, order_items(*)")
       .eq("order_number", order.trim().toUpperCase())
@@ -29,7 +29,7 @@ export default async function OrderTrackPage({ searchParams }: Props) {
     if (data) {
       orderData = data;
 
-      const { data: events } = await supabaseServer
+      const { data: events } = await getSupabaseServer()
         .from("order_tracking_events")
         .select("id, occurred_at, description, location")
         .eq("order_id", data.id)

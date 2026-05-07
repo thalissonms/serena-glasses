@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { meRequest } from "@shared/lib/melhor-envio/client";
 import type { MeTrackingResponse } from "@shared/lib/melhor-envio/types";
 
@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
   }
 
   // Fetch shipped orders that have a ME order id (not yet delivered)
-  const { data: eligible, error } = await supabaseServer
+  const { data: eligible, error } = await getSupabaseServer()
     .from("orders")
     .select("id, order_number, full_name, email, me_order_id, delivery_email_sent_at")
     .eq("status", "shipped")
@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
 
     // Upsert new tracking events
     if (tracking.events && tracking.events.length > 0) {
-      const { data: existing } = await supabaseServer
+      const { data: existing } = await getSupabaseServer()
         .from("order_tracking_events")
         .select("occurred_at")
         .eq("order_id", order.id);
@@ -73,7 +73,7 @@ export async function GET(request: NextRequest) {
         }));
 
       if (newEvents.length > 0) {
-        await supabaseServer.from("order_tracking_events").insert(newEvents);
+        await getSupabaseServer().from("order_tracking_events").insert(newEvents);
       }
     }
 
@@ -87,7 +87,7 @@ export async function GET(request: NextRequest) {
       };
       if (sendEmail) updateFields.delivery_email_sent_at = now;
 
-      await supabaseServer.from("orders").update(updateFields).eq("id", order.id);
+      await getSupabaseServer().from("orders").update(updateFields).eq("id", order.id);
 
       if (sendEmail) {
         const { sendOrderDeliveredEmail } = await import(

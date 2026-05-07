@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { NextResponse } from "next/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
 import { variantCreateSchema } from "@features/admin/schemas/variantCreate.schema";
 import { uniqueVariantCode } from "@features/admin/utils/generateProductCode";
@@ -17,7 +17,7 @@ export const POST = withAdmin<{ id: string }>(async (req, { params }) => {
     );
   }
 
-  const { data: product } = await supabaseServer
+  const { data: product } = await getSupabaseServer()
     .from("products")
     .select("code")
     .eq("id", id)
@@ -27,7 +27,7 @@ export const POST = withAdmin<{ id: string }>(async (req, { params }) => {
     ? await uniqueVariantCode(product.code, parsed.data.color_name)
     : null;
 
-  const { data, error } = await supabaseServer
+  const { data, error } = await getSupabaseServer()
     .from("product_variants")
     .insert({
       product_id: id,

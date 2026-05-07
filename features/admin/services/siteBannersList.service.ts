@@ -1,8 +1,8 @@
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { getSupabaseServer } from "@shared/lib/supabase/server";
 import type { SiteBannerRow } from "@features/home/types/siteBanner.types";
 
 export async function getSiteBannersList(): Promise<SiteBannerRow[]> {
-  const { data, error } = await supabaseServer
+  const { data, error } = await getSupabaseServer()
     .from("site_banners")
     .select("*")
     .order("display_order", { ascending: true });
@@ -12,7 +12,7 @@ export async function getSiteBannersList(): Promise<SiteBannerRow[]> {
 }
 
 export async function getActiveSiteBanners(_lang = "pt"): Promise<SiteBannerRow[]> {
-  const { data, error } = await supabaseServer
+  const { data, error } = await getSupabaseServer()
     .from("site_banners")
     .select("*")
     .eq("active", true)

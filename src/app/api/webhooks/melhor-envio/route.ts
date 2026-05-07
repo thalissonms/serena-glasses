@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import type { MeWebhookEvent } from "@shared/lib/melhor-envio/types";
 
-// ME does not support HMAC signing — auth via secret token in URL query param
+// ME does not support HMAC signing â€” auth via secret token in URL query param
 function verifyToken(request: NextRequest): boolean {
   const secret = process.env.MELHOR_ENVIO_WEBHOOK_SECRET;
   if (!secret) return process.env.NODE_ENV !== "production";
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
 
     if (!meOrderId) return NextResponse.json({ ok: true });
 
-    const { data: order } = await supabaseServer
+    const { data: order } = await getSupabaseServer()
       .from("orders")
       .select("id, order_number, full_name, email, me_status, delivery_email_sent_at")
       .eq("me_order_id", meOrderId)
@@ -44,10 +44,10 @@ export async function POST(request: NextRequest) {
 
     switch (event) {
       case "order.posted": {
-        // Only send shipped email once — idempotency via me_status
+        // Only send shipped email once â€” idempotency via me_status
         const alreadyPosted = order.me_status === "posted";
 
-        await supabaseServer
+        await getSupabaseServer()
           .from("orders")
           .update({
             status: "shipped",
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
           updateFields.delivery_email_sent_at = now;
         }
 
-        await supabaseServer.from("orders").update(updateFields).eq("id", order.id);
+        await getSupabaseServer().from("orders").update(updateFields).eq("id", order.id);
 
         if (sendDeliveredEmail) {
           const { sendOrderDeliveredEmail } = await import(
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
       }
 
       case "order.canceled": {
-        await supabaseServer
+        await getSupabaseServer()
           .from("orders")
           .update({ me_status: "canceled", updated_at: now })
           .eq("id", order.id);
@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
         if (incomingEvents.length === 0) break;
 
         // Fetch existing occurred_at values to avoid duplicates (no unique constraint in DB)
-        const { data: existing } = await supabaseServer
+        const { data: existing } = await getSupabaseServer()
           .from("order_tracking_events")
           .select("occurred_at")
           .eq("order_id", order.id);
@@ -129,7 +129,7 @@ export async function POST(request: NextRequest) {
           }));
 
         if (newEvents.length > 0) {
-          await supabaseServer.from("order_tracking_events").insert(newEvents);
+          await getSupabaseServer().from("order_tracking_events").insert(newEvents);
         }
         break;
       }
@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ ok: true });
   } catch (err) {
-    // Always return 200 — 500 would cause ME to retry indefinitely
+    // Always return 200 â€” 500 would cause ME to retry indefinitely
     console.error("[webhook/me] error:", (err as Error)?.message ?? String(err));
     return NextResponse.json({ ok: true });
   }

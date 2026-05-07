@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { NextResponse } from "next/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
 import { validateUpload } from "@shared/utils/validateUpload";
 
@@ -22,7 +22,7 @@ export const POST = withAdmin<{ id: string }>(async (req, { params }) => {
   });
   if (uploadError) return uploadError;
 
-  const { data: product } = await supabaseServer
+  const { data: product } = await getSupabaseServer()
     .from("products")
     .select("video_url")
     .eq("id", id)
@@ -30,13 +30,13 @@ export const POST = withAdmin<{ id: string }>(async (req, { params }) => {
 
   if (product?.video_url) {
     const oldPath = storagePathFromUrl(product.video_url);
-    if (oldPath) await supabaseServer.storage.from("product-videos").remove([oldPath]);
+    if (oldPath) await getSupabaseServer().storage.from("product-videos").remove([oldPath]);
   }
 
   const ext = file!.name.split(".").pop() ?? "mp4";
   const path = `${id}/${Date.now()}.${ext}`;
 
-  const { error: storageError } = await supabaseServer.storage
+  const { error: storageError } = await getSupabaseServer().storage
     .from("product-videos")
     .upload(path, new Uint8Array(await file!.arrayBuffer()), {
       contentType: file!.type,
@@ -45,9 +45,9 @@ export const POST = withAdmin<{ id: string }>(async (req, { params }) => {
 
   if (storageError) return NextResponse.json({ error: storageError.message }, { status: 500 });
 
-  const { data: urlData } = supabaseServer.storage.from("product-videos").getPublicUrl(path);
+  const { data: urlData } = getSupabaseServer().storage.from("product-videos").getPublicUrl(path);
 
-  const { error } = await supabaseServer
+  const { error } = await getSupabaseServer()
     .from("products")
     .update({ video_url: urlData.publicUrl })
     .eq("id", id);
@@ -59,7 +59,7 @@ export const POST = withAdmin<{ id: string }>(async (req, { params }) => {
 export const DELETE = withAdmin<{ id: string }>(async (_req, { params }) => {
   const { id } = await params;
 
-  const { data: product } = await supabaseServer
+  const { data: product } = await getSupabaseServer()
     .from("products")
     .select("video_url")
     .eq("id", id)
@@ -67,10 +67,10 @@ export const DELETE = withAdmin<{ id: string }>(async (_req, { params }) => {
 
   if (product?.video_url) {
     const path = storagePathFromUrl(product.video_url);
-    if (path) await supabaseServer.storage.from("product-videos").remove([path]);
+    if (path) await getSupabaseServer().storage.from("product-videos").remove([path]);
   }
 
-  const { error } = await supabaseServer
+  const { error } = await getSupabaseServer()
     .from("products")
     .update({ video_url: null })
     .eq("id", id);

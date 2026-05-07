@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { NextResponse } from "next/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
 import { validateUpload } from "@shared/utils/validateUpload";
 
@@ -25,7 +25,7 @@ export const POST = withAdmin(async (req) => {
   const ext = file!.name.split(".").pop()?.toLowerCase() ?? (isImage ? "jpg" : "mp4");
   const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
 
-  const { error: storageError } = await supabaseServer.storage
+  const { error: storageError } = await getSupabaseServer().storage
     .from("home-stories")
     .upload(path, new Uint8Array(await file!.arrayBuffer()), {
       contentType: file!.type,
@@ -36,7 +36,7 @@ export const POST = withAdmin(async (req) => {
     return NextResponse.json({ error: storageError.message }, { status: 500 });
   }
 
-  const { data: urlData } = supabaseServer.storage.from("home-stories").getPublicUrl(path);
+  const { data: urlData } = getSupabaseServer().storage.from("home-stories").getPublicUrl(path);
 
   return NextResponse.json({ url: urlData.publicUrl, path }, { status: 201 });
 });

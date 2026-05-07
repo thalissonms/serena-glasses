@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
-import { supabaseServer } from "@shared/lib/supabase/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { SETTING_SCHEMAS, type SettingKey } from "@features/admin/schemas/siteSettings.schema";
 
 export const PATCH = withAdmin<{ key: string }>(async (req, { params }) => {
@@ -22,7 +22,7 @@ export const PATCH = withAdmin<{ key: string }>(async (req, { params }) => {
     );
   }
 
-  const { error } = await supabaseServer
+  const { error } = await getSupabaseServer()
     .from("site_settings")
     .update({ value: parsed.data, updated_at: new Date().toISOString() })
     .eq("key", key);

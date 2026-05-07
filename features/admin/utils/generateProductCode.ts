@@ -1,11 +1,11 @@
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { getSupabaseServer } from "@shared/lib/supabase/server";
 
 const FALLBACK_PREFIX = "PRD";
 
 function prefixFromSlug(slug: string): string {
   const clean = slug
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
+    .replace(/[Ì€-Í¯]/g, "")
     .toUpperCase()
     .replace(/[^A-Z0-9]/g, "");
   return clean.slice(0, 3) || FALLBACK_PREFIX;
@@ -13,7 +13,7 @@ function prefixFromSlug(slug: string): string {
 
 async function resolvePrefix(categoryId: string | null | undefined): Promise<string> {
   if (!categoryId) return FALLBACK_PREFIX;
-  const { data } = await supabaseServer
+  const { data } = await getSupabaseServer()
     .from("categories")
     .select("slug")
     .eq("id", categoryId)
@@ -23,7 +23,7 @@ async function resolvePrefix(categoryId: string | null | undefined): Promise<str
 }
 
 async function nextSequence(prefix: string): Promise<number> {
-  const { data } = await supabaseServer
+  const { data } = await getSupabaseServer()
     .from("products")
     .select("code")
     .like("code", `${prefix}-%`)
@@ -49,7 +49,7 @@ export async function generateNextProductCode(categoryId: string | null | undefi
 export function generateVariantCode(productCode: string, colorName: string): string {
   const colorAbbr = colorName
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
+    .replace(/[Ì€-Í¯]/g, "")
     .toUpperCase()
     .replace(/[^A-Z0-9]/g, "")
     .slice(0, 3) || "VAR";
@@ -59,7 +59,7 @@ export function generateVariantCode(productCode: string, colorName: string): str
 export async function uniqueVariantCode(productCode: string, colorName: string): Promise<string> {
   const base = generateVariantCode(productCode, colorName);
 
-  const { data } = await supabaseServer
+  const { data } = await getSupabaseServer()
     .from("product_variants")
     .select("variant_code")
     .like("variant_code", `${base}%`);

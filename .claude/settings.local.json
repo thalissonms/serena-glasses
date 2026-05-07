@@ -23,7 +23,10 @@
       "Bash(mkdir -p \"c:/Users/Thalisson/Documents/Serena/serena-glasses/src/app/admin/stories/[id]/edit\")",
       "Bash(mkdir -p \"c:/Users/Thalisson/Documents/Serena/serena-glasses/src/app/api/admin/site-banners/[id]\")",
       "Bash(mkdir -p \"c:/Users/Thalisson/Documents/Serena/serena-glasses/src/app/admin/banners/[id]/edit\")",
-      "PowerShell(npx tsc --noEmit 2>&1)"
+      "PowerShell(npx tsc --noEmit 2>&1)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Thalisson\\Documents\\Serena\\serena-glasses\\AGENT",

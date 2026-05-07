@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { NextResponse } from "next/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { mpRefund } from "@shared/lib/mercadopago/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
 import { meRequest } from "@shared/lib/melhor-envio/client";
@@ -8,7 +8,7 @@ import { sendOrderCancelledEmail } from "@features/emails/services/sendOrderEmai
 export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
   const { id } = await params;
 
-  const { data: order, error: fetchError } = await supabaseServer
+  const { data: order, error: fetchError } = await getSupabaseServer()
     .from("orders")
     .select("id, order_number, status, mp_payment_id, full_name, email, me_order_id, me_status")
     .eq("id", id)
@@ -43,7 +43,7 @@ export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
   if (meOrderId && meStatus === "generated") {
     try {
       await meRequest("POST", "/api/v2/me/shipment/cancel", { orders: [meOrderId] });
-      await supabaseServer
+      await getSupabaseServer()
         .from("orders")
         .update({ me_order_id: null, me_label_url: null, me_status: "canceled" })
         .eq("id", id);
@@ -67,7 +67,7 @@ export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
   }
 
   const now = new Date().toISOString();
-  const { error: updateError } = await supabaseServer
+  const { error: updateError } = await getSupabaseServer()
     .from("orders")
     .update({
       status: "refunded",

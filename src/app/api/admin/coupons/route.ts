@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
 import { couponCreateSchema } from "@features/admin/schemas/couponCreate.schema";
 
 export const GET = withAdmin(async () => {
-  const { data, error } = await supabaseServer
+  const { data, error } = await getSupabaseServer()
     .from("coupons")
     .select("*")
     .order("created_at", { ascending: false });
@@ -27,15 +27,15 @@ export const POST = withAdmin(async (req) => {
 
   const code = parsed.data.code.toUpperCase().trim();
 
-  const { data: existing } = await supabaseServer
+  const { data: existing } = await getSupabaseServer()
     .from("coupons")
     .select("id")
     .eq("code", code)
     .maybeSingle();
 
-  if (existing) return NextResponse.json({ error: "Código já em uso" }, { status: 409 });
+  if (existing) return NextResponse.json({ error: "CÃ³digo jÃ¡ em uso" }, { status: 409 });
 
-  const { data, error } = await supabaseServer
+  const { data, error } = await getSupabaseServer()
     .from("coupons")
     .insert({ ...parsed.data, code })
     .select("id")

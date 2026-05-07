@@ -1,5 +1,5 @@
-import { requireAdmin } from "@shared/lib/auth/admin";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { requireAdmin } from "@shared/lib/auth/admin";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { notFound } from "next/navigation";
 import StoryEditForm from "@features/admin/components/StoryEditForm";
 import type { HomeStoryRow } from "@features/home/types/homeStory.types";
@@ -8,7 +8,7 @@ export default async function AdminStoryEditPage({ params }: { params: Promise<{
   await requireAdmin();
   const { id } = await params;
 
-  const { data } = await supabaseServer
+  const { data } = await getSupabaseServer()
     .from("home_stories")
     .select("*")
     .eq("id", id)

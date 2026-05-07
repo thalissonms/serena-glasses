@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
-import { supabaseServer } from "@shared/lib/supabase/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { getCategoriesWithSubs } from "@features/admin/services/categoriesList.service";
 import { categoryCreateSchema } from "@features/admin/schemas/category.schema";
 
@@ -26,14 +26,14 @@ export const POST = withAdmin(async (req) => {
     );
   }
 
-  const { data: existing } = await supabaseServer
+  const { data: existing } = await getSupabaseServer()
     .from("categories")
     .select("id")
     .eq("slug", parsed.data.slug)
     .maybeSingle();
-  if (existing) return NextResponse.json({ error: "Slug já em uso" }, { status: 409 });
+  if (existing) return NextResponse.json({ error: "Slug jÃ¡ em uso" }, { status: 409 });
 
-  const { data, error } = await supabaseServer
+  const { data, error } = await getSupabaseServer()
     .from("categories")
     .insert(parsed.data)
     .select("id")

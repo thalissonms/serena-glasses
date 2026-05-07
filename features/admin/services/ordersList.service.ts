@@ -1,4 +1,4 @@
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { getSupabaseServer } from "@shared/lib/supabase/server";
 import type { OrderInterface } from "../types/orders.interface";
 
 export interface OrderFilters {
@@ -22,7 +22,7 @@ export async function getOrdersList(filters: OrderFilters = {}): Promise<OrdersL
   const { q, status, from, to, page = 1 } = filters;
   const offset = (page - 1) * PAGE_SIZE;
 
-  let query = supabaseServer
+  let query = getSupabaseServer()
     .from("orders")
     .select(
       "id, order_number, full_name, email, total, payment_method, status, created_at",
@@ -35,7 +35,7 @@ export async function getOrdersList(filters: OrderFilters = {}): Promise<OrdersL
   if (from) query = query.gte("created_at", `${from}T00:00:00`);
   if (to) query = query.lte("created_at", `${to}T23:59:59`);
   if (q) {
-    // Vírgulas e parênteses quebram o parser de .or() — sanitiza
+    // VÃ­rgulas e parÃªnteses quebram o parser de .or() â€” sanitiza
     const safeQ = q.replace(/[,()]/g, "");
     if (safeQ) {
       query = query.or(

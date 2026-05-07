@@ -1,5 +1,5 @@
-import { requireAdmin } from "@shared/lib/auth/admin";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { requireAdmin } from "@shared/lib/auth/admin";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { notFound } from "next/navigation";
 import CategoryEditForm from "@features/admin/components/CategoryEditForm";
 import type { CategoryWithSubs } from "@features/categories/types/category.types";
@@ -12,14 +12,14 @@ export default async function AdminCategoryEditPage({
   await requireAdmin();
   const { id } = await params;
 
-  const { data: cat } = await supabaseServer
+  const { data: cat } = await getSupabaseServer()
     .from("categories")
     .select("*")
     .eq("id", id)
     .maybeSingle();
   if (!cat) notFound();
 
-  const { data: subs } = await supabaseServer
+  const { data: subs } = await getSupabaseServer()
     .from("subcategories")
     .select("*")
     .eq("category_id", id)

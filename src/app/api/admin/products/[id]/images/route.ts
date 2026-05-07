@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { NextResponse } from "next/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
 import { validateUpload } from "@shared/utils/validateUpload";
 
@@ -16,7 +16,7 @@ export const POST = withAdmin<{ id: string }>(async (req, { params }) => {
   });
   if (uploadError) return uploadError;
 
-  const { data: existing } = await supabaseServer
+  const { data: existing } = await getSupabaseServer()
     .from("product_images")
     .select("position")
     .eq("product_id", id)
@@ -28,7 +28,7 @@ export const POST = withAdmin<{ id: string }>(async (req, { params }) => {
   const ext = file!.name.split(".").pop() ?? "jpg";
   const path = `${id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
 
-  const { error: storageError } = await supabaseServer.storage
+  const { error: storageError } = await getSupabaseServer().storage
     .from("product-images")
     .upload(path, new Uint8Array(await file!.arrayBuffer()), {
       contentType: file!.type,
@@ -37,16 +37,16 @@ export const POST = withAdmin<{ id: string }>(async (req, { params }) => {
 
   if (storageError) return NextResponse.json({ error: storageError.message }, { status: 500 });
 
-  const { data: urlData } = supabaseServer.storage.from("product-images").getPublicUrl(path);
+  const { data: urlData } = getSupabaseServer().storage.from("product-images").getPublicUrl(path);
 
-  const { data, error: dbError } = await supabaseServer
+  const { data, error: dbError } = await getSupabaseServer()
     .from("product_images")
     .insert({ product_id: id, url: urlData.publicUrl, alt: null, position: nextPosition })
     .select("id, url, alt, position")
     .single();
 
   if (dbError) {
-    await supabaseServer.storage.from("product-images").remove([path]);
+    await getSupabaseServer().storage.from("product-images").remove([path]);
     return NextResponse.json({ error: dbError.message }, { status: 500 });
   }
 

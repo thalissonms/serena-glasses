@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { NextResponse } from "next/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
 
 // Resets a payment_failed order to pending so the customer can retry.
@@ -7,7 +7,7 @@ import { withAdmin } from "@shared/lib/auth/withAdmin";
 export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
   const { id } = await params;
 
-  const { data: order } = await supabaseServer
+  const { data: order } = await getSupabaseServer()
     .from("orders")
     .select("status, payment_method")
     .eq("id", id)
@@ -21,7 +21,7 @@ export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
   // Give 24 h for all methods; customer will start a new checkout
   const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
-  const { error } = await supabaseServer
+  const { error } = await getSupabaseServer()
     .from("orders")
     .update({
       status: "pending",

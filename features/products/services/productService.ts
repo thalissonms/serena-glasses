@@ -1,4 +1,4 @@
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { STOCK_RESERVING_STATUSES } from "@features/admin/consts/products.const";
 import type { Product, ProductVariant, ProductImage, ProductColor } from "../types/product.types";
 
@@ -55,7 +55,7 @@ function toColorSlug(name: string): string {
   return name
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
+    .replace(/[Ì€-Í¯]/g, "")
     .replace(/\s+/g, "-");
 }
 
@@ -135,14 +135,14 @@ function mapProduct(p: DbProduct, reservedByVariant: Map<string, number>): Produ
 const SELECT = "*, product_variants(*), product_images(*)";
 
 /**
- * Busca quantidade reservada (em pedidos não-cancelados) por variant_id.
+ * Busca quantidade reservada (em pedidos nÃ£o-cancelados) por variant_id.
  * Usado pra calcular `available = stock_quantity - reserved`.
  */
 async function loadReservedByVariant(variantIds: string[]): Promise<Map<string, number>> {
   const map = new Map<string, number>();
   if (variantIds.length === 0) return map;
 
-  const { data } = await supabaseServer
+  const { data } = await getSupabaseServer()
     .from("order_items")
     .select("variant_id, quantity, orders!inner(status)")
     .in("variant_id", variantIds)
@@ -161,7 +161,7 @@ async function enrichWithStock(products: DbProduct[]): Promise<Product[]> {
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
-  const { data, error } = await supabaseServer
+  const { data, error } = await getSupabaseServer()
     .from("products")
     .select(SELECT)
     .eq("slug", slug)
@@ -174,7 +174,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
 }
 
 export async function getAllProducts(): Promise<Product[]> {
-  const { data, error } = await supabaseServer
+  const { data, error } = await getSupabaseServer()
     .from("products")
     .select(SELECT)
     .eq("active", true)
@@ -185,7 +185,7 @@ export async function getAllProducts(): Promise<Product[]> {
 }
 
 export async function getFeaturedProducts(): Promise<Product[]> {
-  const { data, error } = await supabaseServer
+  const { data, error } = await getSupabaseServer()
     .from("products")
     .select(SELECT)
     .eq("active", true)
@@ -197,7 +197,7 @@ export async function getFeaturedProducts(): Promise<Product[]> {
 }
 
 export async function getNewProducts(): Promise<Product[]> {
-  const { data, error } = await supabaseServer
+  const { data, error } = await getSupabaseServer()
     .from("products")
     .select(SELECT)
     .eq("active", true)

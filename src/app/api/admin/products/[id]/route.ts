@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { NextResponse } from "next/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
 import { productPatchSchema } from "@features/admin/schemas/productEdit.schema";
 
@@ -21,7 +21,7 @@ export const PATCH = withAdmin<{ id: string }>(async (req, { params }) => {
   }
 
   if (parsed.data.slug) {
-    const { data: existing } = await supabaseServer
+    const { data: existing } = await getSupabaseServer()
       .from("products")
       .select("id")
       .eq("slug", parsed.data.slug)
@@ -30,7 +30,7 @@ export const PATCH = withAdmin<{ id: string }>(async (req, { params }) => {
     if (existing) return NextResponse.json({ error: "Slug já em uso" }, { status: 409 });
   }
 
-  const { error } = await supabaseServer.from("products").update(parsed.data).eq("id", id);
+  const { error } = await getSupabaseServer().from("products").update(parsed.data).eq("id", id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
   return NextResponse.json({ ok: true });
@@ -39,7 +39,7 @@ export const PATCH = withAdmin<{ id: string }>(async (req, { params }) => {
 export const DELETE = withAdmin<{ id: string }>(async (_req, { params }) => {
   const { id } = await params;
 
-  const { error } = await supabaseServer
+  const { error } = await getSupabaseServer()
     .from("products")
     .update({ active: false })
     .eq("id", id);

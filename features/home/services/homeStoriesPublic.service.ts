@@ -1,4 +1,4 @@
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { getSupabaseServer } from "@shared/lib/supabase/server";
 import type { HomeStory, HomeStoryRow } from "@features/home/types/homeStory.types";
 
 function resolveStory(row: HomeStoryRow, product: Record<string, unknown> | null, lang: string): HomeStory | null {
@@ -38,7 +38,7 @@ function resolveStory(row: HomeStoryRow, product: Record<string, unknown> | null
       ctaUrl: row.cta_url ?? "#",
       ctaLabel:
         l === "en" ? (row.cta_label_en ?? row.cta_label_pt ?? "See more")
-        : l === "es" ? (row.cta_label_es ?? row.cta_label_pt ?? "Ver más")
+        : l === "es" ? (row.cta_label_es ?? row.cta_label_pt ?? "Ver mÃ¡s")
         : (row.cta_label_pt ?? "Saiba mais"),
       title:
         l === "en" ? (row.title_en ?? row.title_pt ?? "")
@@ -57,7 +57,7 @@ function resolveStory(row: HomeStoryRow, product: Record<string, unknown> | null
 }
 
 export async function getPublicHomeStories(lang = "pt"): Promise<HomeStory[]> {
-  const { data: allRows, error } = await supabaseServer
+  const { data: allRows, error } = await getSupabaseServer()
     .from("home_stories")
     .select("*")
     .eq("active", true)
@@ -81,7 +81,7 @@ export async function getPublicHomeStories(lang = "pt"): Promise<HomeStory[]> {
 
   let productMap = new Map<string, Record<string, unknown>>();
   if (productIds.length > 0) {
-    const { data: products } = await supabaseServer
+    const { data: products } = await getSupabaseServer()
       .from("products")
       .select("id, slug, name, short_description, video_url, active, category_id, product_images(url, alt, position), categories(icon_name)")
       .in("id", productIds);

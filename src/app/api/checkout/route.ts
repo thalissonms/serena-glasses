@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { supabaseServer } from "@shared/lib/supabase/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { mpPayment } from "@shared/lib/mercadopago/server";
 import { checkStockAvailability } from "@features/checkout/services/stockAvailability.service";
 import { validateCoupon } from "@features/coupons/services/couponValidation.service";
@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
 
   // Preços server-side — não confia nos valores do cliente
   const variantIds = items.map((i) => i.variantId);
-  const { data: dbVariants, error: priceError } = await supabaseServer
+  const { data: dbVariants, error: priceError } = await getSupabaseServer()
     .from("product_variants")
     .select("id, products(price, weight)")
     .in("id", variantIds);
@@ -230,7 +230,7 @@ export async function POST(request: NextRequest) {
         : null;
 
   // Cria pedido
-  const { data: order, error: orderError } = await supabaseServer
+  const { data: order, error: orderError } = await getSupabaseServer()
     .from("orders")
     .insert({
       order_number: orderNumber,
@@ -266,7 +266,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Failed to create order" }, { status: 500 });
   }
 
-  await supabaseServer.from("order_items").insert(
+  await getSupabaseServer().from("order_items").insert(
     items.map((item) => ({
       order_id: order.id,
       product_id: item.productId,
@@ -280,7 +280,7 @@ export async function POST(request: NextRequest) {
   );
 
   if (appliedCouponId && serverDiscount > 0) {
-    await supabaseServer.from("coupon_usages").insert({
+    await getSupabaseServer().from("coupon_usages").insert({
       coupon_id: appliedCouponId,
       order_id: order.id,
       email: identification.email.toLowerCase().trim(),
@@ -391,7 +391,7 @@ export async function POST(request: NextRequest) {
       const mpStatus = mpRes.status;
 
       if (mpStatus === "approved") {
-        await supabaseServer
+        await getSupabaseServer()
           .from("orders")
           .update({ status: "paid", paid_at: new Date().toISOString(), mp_payment_id: String(mpRes.id) })
           .eq("id", order.id);
@@ -408,7 +408,7 @@ export async function POST(request: NextRequest) {
 
       if (mpStatus === "rejected") {
         const statusDetail = (mpRes as any).status_detail ?? "cc_rejected_other_reason";
-        await supabaseServer.from("orders").update({
+        await getSupabaseServer().from("orders").update({
           status: "payment_failed",
           mp_payment_id: String(mpRes.id),
           payment_error: { status_detail: statusDetail, mp_status: mpStatus },
@@ -431,7 +431,7 @@ export async function POST(request: NextRequest) {
     }
   } catch (mpErr: any) {
     const errMsg = mpErr?.message ?? String(mpErr);
-    await supabaseServer.from("orders").update({
+    await getSupabaseServer().from("orders").update({
       status: "payment_failed",
       payment_error: { message: errMsg },
     }).eq("id", order.id);

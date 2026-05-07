@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { NextResponse } from "next/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
 import { productCreateSchema } from "@features/admin/schemas/productCreate.schema";
 import { generateNextProductCode } from "@features/admin/utils/generateProductCode";
@@ -18,17 +18,17 @@ export const POST = withAdmin(async (req) => {
     );
   }
 
-  const { data: existing } = await supabaseServer
+  const { data: existing } = await getSupabaseServer()
     .from("products")
     .select("id")
     .eq("slug", parsed.data.slug)
     .maybeSingle();
-  if (existing) return NextResponse.json({ error: "Slug já em uso" }, { status: 409 });
+  if (existing) return NextResponse.json({ error: "Slug jÃ¡ em uso" }, { status: 409 });
 
   for (let attempt = 0; attempt < CODE_RETRY_LIMIT; attempt++) {
     const code = await generateNextProductCode(parsed.data.category_id);
 
-    const { data, error } = await supabaseServer
+    const { data, error } = await getSupabaseServer()
       .from("products")
       .insert({ ...parsed.data, code, active: false })
       .select("id, code")
@@ -44,7 +44,7 @@ export const POST = withAdmin(async (req) => {
   }
 
   return NextResponse.json(
-    { error: "Não foi possível gerar código único após várias tentativas" },
+    { error: "NÃ£o foi possÃ­vel gerar cÃ³digo Ãºnico apÃ³s vÃ¡rias tentativas" },
     { status: 500 },
   );
 });

@@ -1,4 +1,4 @@
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { requireAdmin } from "@shared/lib/auth/admin";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -21,7 +21,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
   await requireAdmin();
   const { id } = await params;
 
-  const { data: order } = await supabaseServer
+  const { data: order } = await getSupabaseServer()
     .from("orders")
     .select("*, order_items(*), me_order_id, me_label_url, me_status, shipping_service_id, shipping_service_name")
     .eq("id", id)

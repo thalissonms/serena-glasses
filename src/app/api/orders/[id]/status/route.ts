@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import { supabaseServer } from "@shared/lib/supabase/server";
+﻿import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseServer } from "@shared/lib/supabase/server";
 
 // Polling endpoint — retorna apenas o status do pedido.
 // Não requer autenticação mas o orderId é um UUID opaco — difícil de adivinhar.
@@ -9,7 +9,7 @@ export async function GET(
 ) {
   const { id } = await params;
 
-  const { data, error } = await supabaseServer
+  const { data, error } = await getSupabaseServer()
     .from("orders")
     .select("status")
     .eq("id", id)

@@ -1,4 +1,4 @@
-import { cookies } from "next/headers";
+﻿import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 
 /**
@@ -6,10 +6,10 @@ import { createServerClient } from "@supabase/ssr";
  * Usar em Server Components / Server Actions / Route Handlers
  * quando precisar do user autenticado (auth via cookie).
  *
- * Para queries que precisam ignorar RLS (catálogo público, admin com service_role),
- * continuar usando `supabaseServer` de `./server.ts`.
+ * Para queries que precisam ignorar RLS (catÃ¡logo pÃºblico, admin com service_role),
+ * continuar usando `getSupabaseServer()` de `./server.ts`.
  */
-export async function createSupabaseServerAuthClient() {
+export async function creategetSupabaseServer()AuthClient() {
   const cookieStore = await cookies();
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -31,7 +31,7 @@ export async function createSupabaseServerAuthClient() {
             }),
           );
         } catch {
-          // Server Component: cookies não podem ser setados aqui.
+          // Server Component: cookies nÃ£o podem ser setados aqui.
         }
       },
     },
