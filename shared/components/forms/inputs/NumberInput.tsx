@@ -1,6 +1,6 @@
 "use client";
 import clsx from "clsx";
-import { InputError, InputLabel, inputCls } from "./_shared";
+import { InputError, InputLabel, inputCls, type InputVariant } from "./_shared";
 
 export interface NumberInputProps {
   label?: string;
@@ -14,7 +14,9 @@ export interface NumberInputProps {
   id?: string;
   min?: number;
   max?: number;
+  step?: number | string;
   className?: string;
+  variant?: InputVariant;
 }
 
 export function NumberInput({
@@ -29,17 +31,20 @@ export function NumberInput({
   id,
   min,
   max,
+  step,
   className,
+  variant,
 }: NumberInputProps) {
   return (
     <div className={clsx("flex flex-col", className)}>
-      {label && <InputLabel htmlFor={id} label={label} required={required} />}
+      {label && <InputLabel htmlFor={id} label={label} required={required} variant={variant} />}
       <input
         id={id}
         type="number"
         value={value}
         min={min}
         max={max}
+        step={step}
         onChange={(e) => onChange?.(e.target.value)}
         onBlur={onBlur}
         placeholder={placeholder}
@@ -47,9 +52,10 @@ export function NumberInput({
         className={inputCls(
           error,
           "[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
+          variant,
         )}
       />
-      <InputError message={error} />
+      <InputError message={error} variant={variant} />
     </div>
   );
 }

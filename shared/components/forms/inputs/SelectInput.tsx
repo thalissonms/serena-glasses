@@ -1,6 +1,6 @@
 "use client";
 import clsx from "clsx";
-import { InputError, InputLabel, inputCls } from "./_shared";
+import { InputError, InputLabel, inputCls, type InputVariant } from "./_shared";
 
 export interface SelectOption {
   value: string;
@@ -19,6 +19,7 @@ export interface SelectInputProps {
   error?: string;
   id?: string;
   className?: string;
+  variant?: InputVariant;
 }
 
 export function SelectInput({
@@ -33,17 +34,18 @@ export function SelectInput({
   error,
   id,
   className,
+  variant,
 }: SelectInputProps) {
   return (
     <div className={clsx("flex flex-col", className)}>
-      {label && <InputLabel htmlFor={id} label={label} required={required} />}
+      {label && <InputLabel htmlFor={id} label={label} required={required} variant={variant} />}
       <select
         id={id}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
         onBlur={onBlur}
         disabled={disabled}
-        className={inputCls(error, "cursor-pointer appearance-none")}
+        className={inputCls(error, "cursor-pointer appearance-none", variant)}
       >
         {placeholder && <option value="">{placeholder}</option>}
         {options.map((opt) => (
@@ -52,7 +54,7 @@ export function SelectInput({
           </option>
         ))}
       </select>
-      <InputError message={error} />
+      <InputError message={error} variant={variant} />
     </div>
   );
 }

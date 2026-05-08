@@ -1,6 +1,6 @@
 "use client";
 import clsx from "clsx";
-import { InputError, InputLabel, applyMask, inputCls } from "./_shared";
+import { InputError, InputLabel, applyMask, inputCls, type InputVariant } from "./_shared";
 
 export interface MaskedInputProps {
   label?: string;
@@ -14,6 +14,7 @@ export interface MaskedInputProps {
   error?: string;
   id?: string;
   className?: string;
+  variant?: InputVariant;
 }
 
 export function MaskedInput({
@@ -28,6 +29,7 @@ export function MaskedInput({
   error,
   id,
   className,
+  variant,
 }: MaskedInputProps) {
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     onChange?.(applyMask(e.target.value, pattern));
@@ -35,7 +37,7 @@ export function MaskedInput({
 
   return (
     <div className={clsx("flex flex-col", className)}>
-      {label && <InputLabel htmlFor={id} label={label} required={required} />}
+      {label && <InputLabel htmlFor={id} label={label} required={required} variant={variant} />}
       <input
         id={id}
         type="text"
@@ -45,9 +47,9 @@ export function MaskedInput({
         placeholder={placeholder ?? pattern.replace(/#/g, "0")}
         disabled={disabled}
         maxLength={pattern.length}
-        className={inputCls(error)}
+        className={inputCls(error, undefined, variant)}
       />
-      <InputError message={error} />
+      <InputError message={error} variant={variant} />
     </div>
   );
 }

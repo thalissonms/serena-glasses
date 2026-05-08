@@ -1,7 +1,7 @@
 "use client";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
-import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
+import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import { InputError, InputLabel, inputCls, type InputVariant } from "./_shared";
 
 const MONTHS = [
@@ -12,18 +12,19 @@ const WEEKDAYS = ["D", "S", "T", "Q", "Q", "S", "S"];
 
 function parseISO(iso: string | undefined): Date | null {
   if (!iso) return null;
-  const d = new Date(iso + "T12:00:00");
+  const d = new Date(iso);
   return isNaN(d.getTime()) ? null : d;
-}
-
-function toISO(d: Date): string {
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
 function formatDisplay(iso: string | undefined): string {
   const d = parseISO(iso);
   if (!d) return "";
-  return `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}/${d.getFullYear()}`;
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const yyyy = d.getFullYear();
+  const hh = String(d.getHours()).padStart(2, "0");
+  const min = String(d.getMinutes()).padStart(2, "0");
+  return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
 }
 
 function buildDayCells(year: number, month: number): (number | null)[] {
@@ -34,7 +35,7 @@ function buildDayCells(year: number, month: number): (number | null)[] {
   return cells;
 }
 
-export interface DateInputProps {
+export interface DateTimeInputProps {
   label?: string;
   placeholder?: string;
   value?: string;
@@ -51,9 +52,9 @@ export interface DateInputProps {
   variant?: InputVariant;
 }
 
-export function DateInput({
+export function DateTimeInput({
   label,
-  placeholder = "DD/MM/AAAA",
+  placeholder = "DD/MM/AAAA HH:MM",
   value,
   onChange,
   onBlur,
@@ -66,7 +67,7 @@ export function DateInput({
   openUpward = false,
   className,
   variant = "checkout",
-}: DateInputProps) {
+}: DateTimeInputProps) {
   const today = new Date();
   const parsed = parseISO(value);
 
@@ -74,6 +75,8 @@ export function DateInput({
   const [mode, setMode] = useState<"days" | "months" | "years">("days");
   const [viewYear, setViewYear] = useState(parsed?.getFullYear() ?? today.getFullYear());
   const [viewMonth, setViewMonth] = useState(parsed?.getMonth() ?? today.getMonth());
+  const [hour, setHour] = useState(parsed?.getHours() ?? 0);
+  const [minute, setMinute] = useState(parsed?.getMinutes() ?? 0);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -88,15 +91,36 @@ export function DateInput({
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, [onBlur]);
 
+  useEffect(() => {
+    if (parsed) {
+      setHour(parsed.getHours());
+      setMinute(parsed.getMinutes());
+    }
+  }, [value]);
+
   function open() {
     if (disabled) return;
     setMode("days");
     setIsOpen((v) => !v);
   }
 
+  function commit(year: number, month: number, day: number, h: number, m: number) {
+    const d = new Date(year, month, day, h, m, 0, 0);
+    onChange?.(d.toISOString());
+  }
+
   function selectDay(day: number) {
-    onChange?.(toISO(new Date(viewYear, viewMonth, day)));
-    setIsOpen(false);
+    commit(viewYear, viewMonth, day, hour, minute);
+  }
+
+  function changeHour(h: number) {
+    setHour(h);
+    if (parsed) commit(parsed.getFullYear(), parsed.getMonth(), parsed.getDate(), h, minute);
+  }
+
+  function changeMinute(m: number) {
+    setMinute(m);
+    if (parsed) commit(parsed.getFullYear(), parsed.getMonth(), parsed.getDate(), hour, m);
   }
 
   function prevMonth() {
@@ -145,7 +169,11 @@ export function DateInput({
     ? "p-1 border-2 border-white/20 text-white hover:bg-brand-pink hover:text-white hover:border-brand-pink transition-all"
     : "p-1 border-2 border-black hover:bg-brand-pink hover:text-white hover:border-brand-pink transition-all";
 
-  const dividerCls = isAdmin ? "mt-3 pt-2 border-t border-white/10 text-center" : "mt-3 pt-2 border-t-2 border-black text-center";
+  const dividerCls = isAdmin ? "mt-3 pt-2 border-t border-white/10" : "mt-3 pt-2 border-t-2 border-black";
+
+  const timeSelectCls = isAdmin
+    ? "bg-[#0a0a0a] border-2 border-white/10 text-white font-mono text-sm px-2 py-1 outline-none focus:border-brand-pink"
+    : "bg-white border-2 border-black font-mono text-sm px-2 py-1 outline-none focus:border-brand-pink";
 
   return (
     <div ref={containerRef} className={clsx("flex flex-col relative", className)}>
@@ -295,23 +323,32 @@ export function DateInput({
                 ))}
               </div>
 
-              <div className={dividerCls}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    const iso = toISO(today);
-                    onChange?.(iso);
-                    setViewYear(today.getFullYear());
-                    setViewMonth(today.getMonth());
-                    setIsOpen(false);
-                  }}
-                  className={clsx(
-                    "font-poppins text-xs font-black uppercase tracking-wider hover:text-brand-pink transition-colors",
-                    isAdmin ? "text-gray-500" : "text-gray-400",
-                  )}
+              {/* Time picker */}
+              <div className={clsx(dividerCls, "flex items-center justify-center gap-2 mt-3")}>
+                <Clock size={13} className={isAdmin ? "text-gray-500" : "text-gray-400"} />
+                <select
+                  value={hour}
+                  onChange={(e) => changeHour(parseInt(e.target.value, 10))}
+                  className={timeSelectCls}
                 >
-                  Hoje
-                </button>
+                  {Array.from({ length: 24 }, (_, i) => (
+                    <option key={i} value={i}>
+                      {String(i).padStart(2, "0")}
+                    </option>
+                  ))}
+                </select>
+                <span className={isAdmin ? "text-white font-bold" : "font-bold"}>:</span>
+                <select
+                  value={minute}
+                  onChange={(e) => changeMinute(parseInt(e.target.value, 10))}
+                  className={timeSelectCls}
+                >
+                  {Array.from({ length: 60 }, (_, i) => (
+                    <option key={i} value={i}>
+                      {String(i).padStart(2, "0")}
+                    </option>
+                  ))}
+                </select>
               </div>
             </>
           )}

@@ -1,6 +1,6 @@
 "use client";
 import clsx from "clsx";
-import { InputError, InputLabel, inputCls } from "./_shared";
+import { InputError, InputLabel, inputCls, type InputVariant } from "./_shared";
 
 export interface TextInputProps {
   label?: string;
@@ -15,6 +15,7 @@ export interface TextInputProps {
   id?: string;
   autoComplete?: string;
   className?: string;
+  variant?: InputVariant;
 }
 
 export function TextInput({
@@ -30,10 +31,11 @@ export function TextInput({
   id,
   autoComplete,
   className,
+  variant,
 }: TextInputProps) {
   return (
     <div className={clsx("flex flex-col", className)}>
-      {label && <InputLabel htmlFor={id} label={label} required={required} />}
+      {label && <InputLabel htmlFor={id} label={label} required={required} variant={variant} />}
       <input
         id={id}
         type={type}
@@ -43,9 +45,9 @@ export function TextInput({
         placeholder={placeholder}
         disabled={disabled}
         autoComplete={autoComplete}
-        className={inputCls(error)}
+        className={inputCls(error, undefined, variant)}
       />
-      <InputError message={error} />
+      <InputError message={error} variant={variant} />
     </div>
   );
 }

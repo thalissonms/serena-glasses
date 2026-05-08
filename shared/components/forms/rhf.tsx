@@ -14,6 +14,8 @@ import { SelectInput, type SelectInputProps } from "./inputs/SelectInput";
 import { CheckboxInput, type CheckboxInputProps } from "./inputs/CheckboxInput";
 import { PhoneInput, type PhoneInputProps } from "./inputs/PhoneInput";
 import { DateInput, type DateInputProps } from "./inputs/DateInput";
+import { DateTimeInput, type DateTimeInputProps } from "./inputs/DateTimeInput";
+import { PriceInput, type PriceInputProps } from "./inputs/PriceInput";
 
 type RHF<T> = Omit<T, "value" | "onChange" | "onBlur" | "error"> & {
   name: string;
@@ -57,7 +59,7 @@ export function RHFNumberInput({ name, rules, id, ...props }: RHF<NumberInputPro
           {...props}
           id={id ?? name}
           value={field.value ?? ""}
-          onChange={field.onChange}
+          onChange={(v) => field.onChange(v === "" ? undefined : Number(v))}
           onBlur={field.onBlur}
           error={fieldState.error?.message}
         />
@@ -243,6 +245,57 @@ export function RHFDateInput({ name, rules, id, ...props }: RHF<DateInputProps>)
           {...props}
           id={id ?? name}
           value={field.value ?? ""}
+          onChange={field.onChange}
+          onBlur={field.onBlur}
+          error={fieldState.error?.message}
+        />
+      )}
+    />
+  );
+}
+
+// ─── DateTime ──────────────────────────────────────────────────────────
+
+export function RHFDateTimeInput({ name, rules, id, ...props }: RHF<DateTimeInputProps>) {
+  const { control } = useFormContext();
+  return (
+    <Controller
+      name={name}
+      control={control}
+      rules={rules}
+      render={({ field, fieldState }) => (
+        <DateTimeInput
+          {...props}
+          id={id ?? name}
+          value={field.value ?? ""}
+          onChange={field.onChange}
+          onBlur={field.onBlur}
+          error={fieldState.error?.message}
+        />
+      )}
+    />
+  );
+}
+
+// ─── Price (cents) ─────────────────────────────────────────────────────
+
+type RHFPrice = Omit<PriceInputProps, "value" | "onChange" | "onBlur" | "error"> & {
+  name: string;
+  rules?: RegisterOptions;
+};
+
+export function RHFPriceInput({ name, rules, id, ...props }: RHFPrice) {
+  const { control } = useFormContext();
+  return (
+    <Controller
+      name={name}
+      control={control}
+      rules={rules}
+      render={({ field, fieldState }) => (
+        <PriceInput
+          {...props}
+          id={id ?? name}
+          value={field.value ?? 0}
           onChange={field.onChange}
           onBlur={field.onBlur}
           error={fieldState.error?.message}

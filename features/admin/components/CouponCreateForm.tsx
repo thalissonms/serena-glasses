@@ -1,27 +1,28 @@
 "use client";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { couponCreateSchema, type CouponCreateInput } from "@features/admin/schemas/couponCreate.schema";
+import { couponCreateSchema } from "@features/admin/schemas/couponCreate.schema";
+import {
+  RHFTextInput,
+  RHFSelectInput,
+  RHFNumberInput,
+  RHFPriceInput,
+  RHFDateTimeInput,
+  RHFCheckboxInput,
+} from "@shared/components/forms/rhf";
 
 const labelClass = "font-poppins text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 block";
-const inputClass = "w-full bg-[#1a1a1a] border-2 border-white/10 text-white font-inter text-sm px-3 py-2 outline-none focus:border-brand-pink transition-colors";
-const errorClass = "font-inter text-xs text-red-400 mt-1";
-const hintClass = "font-inter text-[11px] text-gray-500 mt-1";
 
 export default function CouponCreateForm() {
   const router = useRouter();
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors, isSubmitting },
-  } = useForm({
+  const methods = useForm({
     resolver: zodResolver(couponCreateSchema),
     defaultValues: {
       discount_type: "percentage",
+      discount_value: 0,
       applies_to: "all",
       min_order_cents: 0,
       usage_limit_per_email: 1,
@@ -30,23 +31,30 @@ export default function CouponCreateForm() {
     },
   });
 
+  const { handleSubmit, watch, setValue, register, formState: { errors, isSubmitting } } = methods;
+
   const discountType = watch("discount_type");
   const appliesTo = watch("applies_to");
+  const code = watch("code");
 
-  async function onSubmit(data: CouponCreateInput) {
-    // Converte discount_value de R$ para centavos quando tipo é "fixed"
-    const payload: CouponCreateInput = {
-      ...data,
-      discount_value:
-        data.discount_type === "fixed"
-          ? Math.round(data.discount_value * 100)
-          : data.discount_value,
-    };
+  useEffect(() => {
+    if (discountType === "free_shipping") {
+      setValue("discount_value", 0, { shouldValidate: true });
+      setValue("free_shipping", true);
+    }
+  }, [discountType, setValue]);
 
+  useEffect(() => {
+    if (code && code !== code.toUpperCase()) {
+      setValue("code", code.toUpperCase(), { shouldValidate: false });
+    }
+  }, [code, setValue]);
+
+  async function onSubmit(data: unknown) {
     const res = await fetch("/api/admin/coupons", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(data),
     });
 
     if (res.status === 409) { toast.error("Código já em uso"); return; }
@@ -58,222 +66,183 @@ export default function CouponCreateForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 max-w-2xl">
-      {/* Código — fix: onChange via register para não sobrescrever o handler do RHF */}
-      <div>
-        <label className={labelClass}>Código *</label>
-        <input
-          {...register("code", {
-            onChange: (e) => setValue("code", e.target.value.toUpperCase()),
-          })}
-          className={inputClass}
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 max-w-2xl">
+        {/* Código */}
+        <RHFTextInput
+          name="code"
+          label="Código"
+          required
           placeholder="EX: BEMVINDO10"
+          variant="admin"
         />
-        {errors.code && <p className={errorClass}>{errors.code.message}</p>}
-      </div>
 
-      {/* Descrição */}
-      <div>
-        <label className={labelClass}>Descrição (interna)</label>
-        <input
-          {...register("description")}
-          className={inputClass}
+        {/* Descrição */}
+        <RHFTextInput
+          name="description"
+          label="Descrição (interna)"
           placeholder="Uso interno — não aparece para o cliente"
+          variant="admin"
         />
-      </div>
 
-      {/* Tipo de desconto */}
-      <div>
-        <label className={labelClass}>Tipo de desconto *</label>
-        <div className="flex gap-3 flex-wrap">
-          {(["percentage", "fixed", "free_shipping"] as const).map((type) => (
-            <label key={type} className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                value={type}
-                {...register("discount_type")}
-                className="accent-brand-pink"
+        {/* Tipo de desconto */}
+        <div>
+          <label className={labelClass}>Tipo de desconto *</label>
+          <div className="flex gap-3 flex-wrap">
+            {(["percentage", "fixed", "free_shipping"] as const).map((type) => (
+              <label key={type} className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  value={type}
+                  {...register("discount_type")}
+                  className="accent-brand-pink"
+                />
+                <span className="font-poppins text-sm text-white">
+                  {type === "percentage" ? "Percentual (%)" : type === "fixed" ? "Valor fixo (R$)" : "Frete grátis"}
+                </span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Valor do desconto */}
+        {discountType === "percentage" && (
+          <div className="grid grid-cols-2 gap-4">
+            <RHFNumberInput
+              name="discount_value"
+              label="Desconto (%)"
+              required
+              min={1}
+              max={100}
+              step={1}
+              placeholder="10"
+              variant="admin"
+            />
+            <RHFPriceInput
+              name="max_discount_cents"
+              label="Desconto máximo"
+              hint="Teto para cupons percentuais"
+              variant="admin"
+            />
+          </div>
+        )}
+
+        {discountType === "fixed" && (
+          <RHFPriceInput
+            name="discount_value"
+            label="Desconto"
+            required
+            variant="admin"
+          />
+        )}
+
+        {/* Pedido mínimo */}
+        <RHFPriceInput
+          name="min_order_cents"
+          label="Valor mínimo do pedido"
+          hint="0 = sem mínimo"
+          variant="admin"
+        />
+
+        {/* Aplica a */}
+        <div>
+          <RHFSelectInput
+            name="applies_to"
+            label="Aplica a"
+            required
+            variant="admin"
+            options={[
+              { value: "all", label: "Todos os produtos" },
+              { value: "products", label: "Produtos específicos" },
+              { value: "categories", label: "Categorias específicas" },
+            ]}
+          />
+          {appliesTo === "products" && (
+            <div className="mt-2">
+              <p className="font-inter text-xs text-gray-400 mb-1">IDs dos produtos (um por linha)</p>
+              <textarea
+                className="w-full bg-[#1a1a1a] border-2 border-white/10 text-white font-mono text-xs px-3 py-2 outline-none focus:border-brand-pink h-24 resize-none"
+                placeholder={"uuid-do-produto-1\nuuid-do-produto-2"}
+                onChange={(e) => {
+                  const ids = e.target.value.split("\n").map((s) => s.trim()).filter(Boolean);
+                  setValue("applicable_product_ids", ids, { shouldValidate: true });
+                }}
               />
-              <span className="font-poppins text-sm text-white">
-                {type === "percentage" ? "Percentual (%)" : type === "fixed" ? "Valor fixo (R$)" : "Frete grátis"}
-              </span>
-            </label>
-          ))}
+              {errors.applicable_product_ids && (
+                <p className="font-inter text-xs text-red-400 mt-1">
+                  {errors.applicable_product_ids.message as string}
+                </p>
+              )}
+            </div>
+          )}
+          {appliesTo === "categories" && (
+            <div className="mt-2">
+              <p className="font-inter text-xs text-gray-400 mb-1">
+                Categorias (uma por linha — mesmo valor de products.category)
+              </p>
+              <textarea
+                className="w-full bg-[#1a1a1a] border-2 border-white/10 text-white font-mono text-xs px-3 py-2 outline-none focus:border-brand-pink h-24 resize-none"
+                placeholder={"solar\nreceituario"}
+                onChange={(e) => {
+                  const cats = e.target.value.split("\n").map((s) => s.trim()).filter(Boolean);
+                  setValue("applicable_categories", cats, { shouldValidate: true });
+                }}
+              />
+              {errors.applicable_categories && (
+                <p className="font-inter text-xs text-red-400 mt-1">
+                  {errors.applicable_categories.message as string}
+                </p>
+              )}
+            </div>
+          )}
         </div>
-      </div>
 
-      {/* Valor do desconto — oculto quando free_shipping */}
-      {discountType !== "free_shipping" && (
+        {/* Limites */}
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className={labelClass}>
-              {discountType === "percentage" ? "Desconto (%) *" : "Desconto (R$) *"}
-            </label>
-            <input
-              type="number"
-              min="1"
-              step={discountType === "percentage" ? "1" : "0.01"}
-              max={discountType === "percentage" ? "100" : undefined}
-              {...register("discount_value", { valueAsNumber: true })}
-              className={inputClass}
-              placeholder={discountType === "percentage" ? "10" : "50,00"}
-            />
-            {discountType === "fixed" && (
-              <p className={hintClass}>Digite o valor em reais. Ex: 50 = R$50,00</p>
-            )}
-            {errors.discount_value && (
-              <p className={errorClass}>{errors.discount_value.message}</p>
-            )}
-          </div>
-          <div>
-            <label className={labelClass}>Desconto máximo (R$)</label>
-            <input
-              type="number"
-              step="0.01"
-              {...register("max_discount_cents", {
-                setValueAs: (v) => (v === "" || v == null ? null : Math.round(parseFloat(v) * 100)),
-              })}
-              className={inputClass}
-              placeholder="Sem limite"
-            />
-            <p className={hintClass}>Teto para cupons percentuais</p>
-          </div>
-        </div>
-      )}
-
-      {/* Pedido mínimo */}
-      <div>
-        <label className={labelClass}>Valor mínimo do pedido (R$)</label>
-        <input
-          type="number"
-          step="0.01"
-          {...register("min_order_cents", {
-            setValueAs: (v) => (v === "" ? 0 : Math.round(parseFloat(v) * 100)),
-          })}
-          className={inputClass}
-          placeholder="0 = sem mínimo"
-        />
-      </div>
-
-      {/* Aplica a */}
-      <div>
-        <label className={labelClass}>Aplica a *</label>
-        <select {...register("applies_to")} className={inputClass}>
-          <option value="all">Todos os produtos</option>
-          <option value="products">Produtos específicos</option>
-          <option value="categories">Categorias específicas</option>
-        </select>
-        {appliesTo === "products" && (
-          <div className="mt-2">
-            <p className="font-inter text-xs text-gray-400 mb-1">IDs dos produtos (um por linha)</p>
-            <textarea
-              className={`${inputClass} font-mono text-xs h-24 resize-none`}
-              placeholder={"uuid-do-produto-1\nuuid-do-produto-2"}
-              onChange={(e) => {
-                const ids = e.target.value.split("\n").map((s) => s.trim()).filter(Boolean);
-                setValue("applicable_product_ids", ids, { shouldValidate: true });
-              }}
-            />
-            {errors.applicable_product_ids && (
-              <p className={errorClass}>{errors.applicable_product_ids.message}</p>
-            )}
-          </div>
-        )}
-        {appliesTo === "categories" && (
-          <div className="mt-2">
-            <p className="font-inter text-xs text-gray-400 mb-1">
-              Categorias (uma por linha — mesmo valor de products.category)
-            </p>
-            <textarea
-              className={`${inputClass} font-mono text-xs h-24 resize-none`}
-              placeholder={"solar\nreceituario"}
-              onChange={(e) => {
-                const cats = e.target.value.split("\n").map((s) => s.trim()).filter(Boolean);
-                setValue("applicable_categories", cats, { shouldValidate: true });
-              }}
-            />
-            {errors.applicable_categories && (
-              <p className={errorClass}>{errors.applicable_categories.message}</p>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Limites */}
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className={labelClass}>Limite total de usos</label>
-          <input
-            type="number"
-            {...register("usage_limit_total", {
-              setValueAs: (v) => (v === "" || v == null ? null : parseInt(v, 10)),
-            })}
-            className={inputClass}
+          <RHFNumberInput
+            name="usage_limit_total"
+            label="Limite total de usos"
             placeholder="Ilimitado"
+            min={1}
+            variant="admin"
+          />
+          <RHFNumberInput
+            name="usage_limit_per_email"
+            label="Limite por email"
+            required
+            min={1}
+            variant="admin"
           />
         </div>
-        <div>
-          <label className={labelClass}>Limite por email *</label>
-          {/* fix: sem defaultValue aqui — já está no defaultValues do RHF */}
-          <input
-            type="number"
-            {...register("usage_limit_per_email", { valueAsNumber: true })}
-            className={inputClass}
-          />
-        </div>
-      </div>
 
-      {/* Validade — fix: converte datetime-local para ISO com timezone */}
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className={labelClass}>Válido de</label>
-          <input
-            type="datetime-local"
-            {...register("valid_from", {
-              setValueAs: (v) => (v ? new Date(v).toISOString() : undefined),
-            })}
-            className={inputClass}
+        {/* Validade */}
+        <div className="grid grid-cols-2 gap-4">
+          <RHFDateTimeInput
+            name="valid_from"
+            label="Válido de"
+            variant="admin"
+          />
+          <RHFDateTimeInput
+            name="valid_until"
+            label="Válido até"
+            variant="admin"
           />
         </div>
-        <div>
-          <label className={labelClass}>Válido até</label>
-          <input
-            type="datetime-local"
-            {...register("valid_until", {
-              setValueAs: (v) => (v ? new Date(v).toISOString() : null),
-            })}
-            className={inputClass}
-          />
+
+        {/* Flags */}
+        <div className="flex flex-col gap-3">
+          <RHFCheckboxInput name="first_purchase_only" label="Apenas primeira compra" />
+          <RHFCheckboxInput name="free_shipping" label="Frete grátis (combina com desconto)" />
         </div>
-      </div>
 
-      {/* Flags */}
-      <div className="flex flex-col gap-3">
-        <label className="flex items-center gap-3 cursor-pointer">
-          <input
-            type="checkbox"
-            {...register("first_purchase_only")}
-            className="accent-brand-pink w-4 h-4"
-          />
-          <span className="font-poppins text-sm text-white">Apenas primeira compra</span>
-        </label>
-        <label className="flex items-center gap-3 cursor-pointer">
-          <input
-            type="checkbox"
-            {...register("free_shipping")}
-            className="accent-brand-pink w-4 h-4"
-          />
-          <span className="font-poppins text-sm text-white">Frete grátis</span>
-        </label>
-      </div>
-
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="self-start px-8 py-3 border-4 border-brand-pink bg-brand-pink text-white font-poppins font-black text-sm uppercase tracking-widest shadow-[4px_4px_0_#000] hover:translate-y-0.5 hover:shadow-[2px_2px_0_#000] transition-all disabled:opacity-60"
-      >
-        {isSubmitting ? "Criando..." : "Criar cupom"}
-      </button>
-    </form>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="self-start px-8 py-3 border-4 border-brand-pink bg-brand-pink text-white font-poppins font-black text-sm uppercase tracking-widest shadow-[4px_4px_0_#000] hover:translate-y-0.5 hover:shadow-[2px_2px_0_#000] transition-all disabled:opacity-60"
+        >
+          {isSubmitting ? "Criando..." : "Criar cupom"}
+        </button>
+      </form>
+    </FormProvider>
   );
 }
