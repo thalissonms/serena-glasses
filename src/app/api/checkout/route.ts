@@ -1,4 +1,14 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+/**
+ * API Route: POST /api/checkout — cria pedido e processa pagamento via Mercado Pago.
+ *
+ * Sem orderId: cria order + chama MP (fluxo original).
+ * Com orderId: modo retry — valida tentativas, muda status para pending, chama MP de novo.
+ * Contador payment_attempts incrementado apenas para payment_method=card.
+ * coupon_usages inserido só na aprovação (não antes do MP), com guard de duplicação.
+ *
+ * Usado em: src/app/checkout/page.tsx.
+ */
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { getMpPayment } from "@shared/lib/mercadopago/server";
@@ -13,10 +23,10 @@ import {
 import { calculateShippingOptions } from "@shared/lib/melhor-envio/shipping";
 import { lookupCep } from "@shared/lib/viacep";
 import { slugifyCity } from "@shared/utils/slugifyCity";
+import { classifyMpError, userMessageFor, MAX_ATTEMPTS } from "@features/checkout/services/paymentRetry";
 
-// ─── Server-side validation schema ────────────────────────────────────────────
-// Card fields are stripped on the client before POST — only method + installments arrive.
 const checkoutBodySchema = z.object({
+  orderId: z.string().uuid().optional(),
   formData: z.object({
     identification: z.object({
       fullName: z.string().min(2),
@@ -63,7 +73,6 @@ const checkoutBodySchema = z.object({
   cardInstallments: z.number().int().min(1).max(12).optional(),
 });
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 function generateOrderNumber(): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let result = "SRN-";
@@ -92,11 +101,41 @@ function getNotificationUrl(): string {
 }
 
 // PIX QR codes expire after 30 min (BR standard); Boleto expires after 2 days.
-// The cron job queries WHERE status='pending' AND expires_at < now() every 5 min.
 const PIX_WINDOW_MS    = 30 * 60 * 1000;
 const BOLETO_WINDOW_MS = 2 * 24 * 60 * 60 * 1000;
 
-// ─── Handler ──────────────────────────────────────────────────────────────────
+async function insertCouponUsageIfNeeded(
+  orderId: string,
+  couponId: string,
+  email: string,
+  discountCents: number,
+) {
+  const { count } = await getSupabaseServer()
+    .from("coupon_usages")
+    .select("id", { count: "exact", head: true })
+    .eq("order_id", orderId);
+
+  if (!count || count === 0) {
+    await getSupabaseServer().from("coupon_usages").insert({
+      coupon_id: couponId,
+      order_id: orderId,
+      email: email.toLowerCase().trim(),
+      discount_applied_cents: discountCents,
+    });
+  }
+}
+
+async function cancelOrder(orderId: string, reason: string) {
+  await getSupabaseServer()
+    .from("orders")
+    .update({
+      status: "cancelled",
+      cancelled_at: new Date().toISOString(),
+      cancel_reason: reason,
+    })
+    .eq("id", orderId);
+}
+
 export async function POST(request: NextRequest) {
   let rawBody: unknown;
   try {
@@ -113,15 +152,195 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { formData, items, couponCode, anonymousId, shippingServiceId, shippingServiceName, shippingPrice, cardToken, cardPaymentMethodId, cardInstallments } = parsed.data;
+  const {
+    orderId: retryOrderId,
+    formData,
+    items,
+    couponCode,
+    anonymousId,
+    shippingServiceId,
+    shippingServiceName,
+    shippingPrice,
+    cardToken,
+    cardPaymentMethodId,
+    cardInstallments,
+  } = parsed.data;
   const { identification, address, payment } = formData;
 
-  // Cartão requer token
   if (payment.method === PaymentMethod.Card && !cardToken) {
     return NextResponse.json({ error: "Token do cartão ausente." }, { status: 400 });
   }
 
-  // Validação de estoque
+  // ─── Modo retry: orderId fornecido ────────────────────────────────────────
+  if (retryOrderId) {
+    const { data: existingOrder, error: fetchError } = await getSupabaseServer()
+      .from("orders")
+      .select("id, status, payment_attempts, order_number, full_name, email, coupon_code, discount, payment_method, total")
+      .eq("id", retryOrderId)
+      .single();
+
+    if (fetchError || !existingOrder) {
+      return NextResponse.json({ error: "Pedido não encontrado." }, { status: 404 });
+    }
+
+    if (existingOrder.status === "paid") {
+      return NextResponse.json(
+        { ok: false, kind: "cancelled", orderId: retryOrderId, attempts: existingOrder.payment_attempts, maxAttempts: MAX_ATTEMPTS, errorMessage: "Pedido já pago." },
+        { status: 422 },
+      );
+    }
+
+    if (existingOrder.status === "cancelled") {
+      return NextResponse.json(
+        { ok: false, kind: "cancelled", orderId: retryOrderId, attempts: existingOrder.payment_attempts, maxAttempts: MAX_ATTEMPTS, errorMessage: "Pedido cancelado." },
+        { status: 422 },
+      );
+    }
+
+    if (existingOrder.payment_attempts >= MAX_ATTEMPTS) {
+      await cancelOrder(retryOrderId, "payment_attempts_exhausted");
+      return NextResponse.json(
+        {
+          ok: false,
+          kind: "cancelled",
+          orderId: retryOrderId,
+          attempts: existingOrder.payment_attempts,
+          maxAttempts: MAX_ATTEMPTS,
+          errorMessage: "Pedido cancelado após múltiplas falhas de pagamento. Você pode criar um novo pedido com outro cartão.",
+        },
+        { status: 422 },
+      );
+    }
+
+    // Volta para pending antes de chamar o MP
+    await getSupabaseServer()
+      .from("orders")
+      .update({ status: "pending" })
+      .eq("id", retryOrderId);
+
+    const nextAttempt = existingOrder.payment_attempts + 1;
+    const idempotencyKey = `${retryOrderId}-${nextAttempt}`;
+    const payer = buildMpPayer(identification);
+    const orderNumber = existingOrder.order_number;
+    const firstName = payer.first_name;
+
+    try {
+      const mpRes = await getMpPayment().create({
+        body: {
+          transaction_amount: existingOrder.total / 100,
+          description: `Serena Glasses #${orderNumber}`,
+          token: cardToken,
+          payment_method_id: cardPaymentMethodId,
+          installments: Number(cardInstallments ?? 1),
+          external_reference: retryOrderId,
+          notification_url: getNotificationUrl(),
+          payer,
+        },
+        requestOptions: { idempotencyKey },
+      });
+
+      // Incrementa payment_attempts (independente de sucesso/falha)
+      await getSupabaseServer()
+        .from("orders")
+        .update({ payment_attempts: nextAttempt, mp_payment_id: String(mpRes.id) })
+        .eq("id", retryOrderId);
+
+      const mpStatus = mpRes.status;
+
+      if (mpStatus === "approved") {
+        await getSupabaseServer()
+          .from("orders")
+          .update({ status: "paid", paid_at: new Date().toISOString() })
+          .eq("id", retryOrderId);
+
+        if (existingOrder.coupon_code && existingOrder.discount > 0) {
+          const { data: coupon } = await getSupabaseServer()
+            .from("coupons")
+            .select("id")
+            .eq("code", existingOrder.coupon_code)
+            .single();
+
+          if (coupon) {
+            await insertCouponUsageIfNeeded(retryOrderId, coupon.id, existingOrder.email, existingOrder.discount);
+          }
+        }
+
+        await sendOrderConfirmationEmail({
+          orderNumber,
+          name: firstName,
+          email: existingOrder.email,
+          orderId: retryOrderId,
+        }).catch((err) => console.error("[checkout/retry] email error:", err));
+
+        return NextResponse.json({
+          ok: true,
+          kind: "approved",
+          orderId: retryOrderId,
+          orderNumber,
+          attempts: nextAttempt,
+          maxAttempts: MAX_ATTEMPTS,
+          payment: { type: "card", status: "approved" },
+        });
+      }
+
+      if (mpStatus === "rejected") {
+        const statusDetail = (mpRes as any).status_detail ?? "cc_rejected_other_reason";
+        const kind = classifyMpError(statusDetail);
+
+        await getSupabaseServer()
+          .from("orders")
+          .update({
+            status: kind === "definitive_rejection" ? "cancelled" : "payment_failed",
+            ...(kind === "definitive_rejection" && { cancelled_at: new Date().toISOString(), cancel_reason: "payment_attempts_exhausted" }),
+            payment_error: { status_detail: statusDetail, mp_status: mpStatus },
+          })
+          .eq("id", retryOrderId);
+
+        const shouldCancelAfterMaxAttempts = nextAttempt >= MAX_ATTEMPTS && kind === "data_error";
+        if (shouldCancelAfterMaxAttempts) {
+          await cancelOrder(retryOrderId, "payment_attempts_exhausted");
+        }
+
+        const isCancelled = kind === "definitive_rejection" || shouldCancelAfterMaxAttempts;
+
+        return NextResponse.json({
+          ok: false,
+          kind: isCancelled ? "cancelled" : kind,
+          orderId: retryOrderId,
+          attempts: nextAttempt,
+          maxAttempts: MAX_ATTEMPTS,
+          errorMessage: isCancelled
+            ? "Pedido cancelado após múltiplas falhas de pagamento. Você pode criar um novo pedido com outro cartão."
+            : userMessageFor(kind, nextAttempt),
+        }, { status: 422 });
+      }
+
+      // in_process / pending
+      return NextResponse.json({
+        ok: true,
+        kind: "approved",
+        orderId: retryOrderId,
+        orderNumber,
+        attempts: nextAttempt,
+        maxAttempts: MAX_ATTEMPTS,
+        payment: { type: "card", status: mpStatus },
+      });
+    } catch (mpErr: any) {
+      const errMsg = mpErr?.message ?? String(mpErr);
+      await getSupabaseServer()
+        .from("orders")
+        .update({ status: "payment_failed", payment_error: { message: errMsg } })
+        .eq("id", retryOrderId);
+
+      return NextResponse.json(
+        { error: "Erro ao processar pagamento. Tente novamente." },
+        { status: 502 },
+      );
+    }
+  }
+
+  // ─── Fluxo original: criação de novo pedido ───────────────────────────────
+
   const shortages = await checkStockAvailability(
     items.map((i) => ({ variantId: i.variantId, quantity: i.quantity, productName: i.name })),
   );
@@ -129,7 +348,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Estoque insuficiente", shortages }, { status: 409 });
   }
 
-  // Preços server-side — não confia nos valores do cliente
   const variantIds = items.map((i) => i.variantId);
   const { data: dbVariants, error: priceError } = await getSupabaseServer()
     .from("product_variants")
@@ -167,7 +385,6 @@ export async function POST(request: NextRequest) {
     0,
   );
 
-  // Cupom server-side
   let serverDiscount = 0;
   let appliedCouponId: string | null = null;
   let isFreeShippingCoupon = false;
@@ -186,11 +403,9 @@ export async function POST(request: NextRequest) {
 
     serverDiscount = couponResult.coupon.discount_applied_cents;
     appliedCouponId = couponResult.coupon.coupon_id;
-    // discount_type already loaded by validateCoupon — no extra DB round-trip needed
     isFreeShippingCoupon = couponResult.coupon.discount_type === "free_shipping";
   }
 
-  // Validação server-side do frete — recalcula e rejeita tampering
   let serverShipping = 0;
   try {
     const resolvedVariants = items.map((i) => ({
@@ -228,7 +443,6 @@ export async function POST(request: NextRequest) {
         ? new Date(now + BOLETO_WINDOW_MS).toISOString()
         : null;
 
-  // Cria pedido
   const { data: order, error: orderError } = await getSupabaseServer()
     .from("orders")
     .insert({
@@ -237,7 +451,6 @@ export async function POST(request: NextRequest) {
       full_name: identification.fullName,
       email: identification.email,
       cpf: identification.cpf,
-
       phone: identification.phone || null,
       cep: address.cep,
       street: address.street,
@@ -257,6 +470,7 @@ export async function POST(request: NextRequest) {
       coupon_code: couponCode ?? null,
       anonymous_id: anonymousId || null,
       expires_at: expiresAt,
+      payment_attempts: 0,
     })
     .select("id")
     .single();
@@ -278,16 +492,8 @@ export async function POST(request: NextRequest) {
     })),
   );
 
-  if (appliedCouponId && serverDiscount > 0) {
-    await getSupabaseServer().from("coupon_usages").insert({
-      coupon_id: appliedCouponId,
-      order_id: order.id,
-      email: identification.email.toLowerCase().trim(),
-      discount_applied_cents: serverDiscount,
-    });
-  }
+  // coupon_usages NÃO é inserido aqui — só na aprovação (abaixo para cartão, ou no webhook para PIX/Boleto)
 
-  // ─── Mercado Pago ──────────────────────────────────────────────────────────
   const payer = buildMpPayer(identification);
   const amountBRL = serverTotal / 100;
   const description = `Serena Glasses #${orderNumber}`;
@@ -351,7 +557,6 @@ export async function POST(request: NextRequest) {
         requestOptions: { idempotencyKey: order.id },
       });
 
-      // Email de "aguardando pagamento"
       await sendOrderReceivedEmail({
         orderNumber,
         name: firstName,
@@ -373,6 +578,9 @@ export async function POST(request: NextRequest) {
     }
 
     if (payment.method === PaymentMethod.Card && cardToken) {
+      // Primeira tentativa: attempt number = 1
+      const idempotencyKey = `${order.id}-1`;
+
       const mpRes = await getMpPayment().create({
         body: {
           transaction_amount: amountBRL,
@@ -384,16 +592,26 @@ export async function POST(request: NextRequest) {
           notification_url: notificationUrl,
           payer,
         },
-        requestOptions: { idempotencyKey: order.id },
+        requestOptions: { idempotencyKey },
       });
 
       const mpStatus = mpRes.status;
 
+      // Incrementa payment_attempts para 1
+      await getSupabaseServer()
+        .from("orders")
+        .update({ payment_attempts: 1, mp_payment_id: String(mpRes.id) })
+        .eq("id", order.id);
+
       if (mpStatus === "approved") {
         await getSupabaseServer()
           .from("orders")
-          .update({ status: "paid", paid_at: new Date().toISOString(), mp_payment_id: String(mpRes.id) })
+          .update({ status: "paid", paid_at: new Date().toISOString() })
           .eq("id", order.id);
+
+        if (appliedCouponId && serverDiscount > 0) {
+          await insertCouponUsageIfNeeded(order.id, appliedCouponId, identification.email, serverDiscount);
+        }
 
         await sendOrderConfirmationEmail({
           orderNumber,
@@ -402,31 +620,70 @@ export async function POST(request: NextRequest) {
           orderId: order.id,
         }).catch((err) => console.error("[checkout] email error:", err));
 
-        return NextResponse.json({ orderNumber, payment: { type: "card", status: "approved" } });
+        return NextResponse.json({
+          ok: true,
+          kind: "approved",
+          orderId: order.id,
+          orderNumber,
+          attempts: 1,
+          maxAttempts: MAX_ATTEMPTS,
+          payment: { type: "card", status: "approved" },
+        });
       }
 
       if (mpStatus === "rejected") {
         const statusDetail = (mpRes as any).status_detail ?? "cc_rejected_other_reason";
-        await getSupabaseServer().from("orders").update({
-          status: "payment_failed",
-          mp_payment_id: String(mpRes.id),
-          payment_error: { status_detail: statusDetail, mp_status: mpStatus },
-        }).eq("id", order.id);
-        const reasons: Record<string, string> = {
-          cc_rejected_insufficient_amount: "Saldo insuficiente.",
-          cc_rejected_bad_filled_card_number: "Número do cartão inválido.",
-          cc_rejected_bad_filled_security_code: "CVV inválido.",
-          cc_rejected_bad_filled_date: "Data de vencimento inválida.",
-          cc_rejected_call_for_authorize: "Entre em contato com o banco para autorizar.",
-        };
-        return NextResponse.json(
-          { error: reasons[statusDetail] ?? "Pagamento recusado. Tente outro cartão." },
-          { status: 422 },
-        );
+        const kind = classifyMpError(statusDetail);
+
+        if (kind === "definitive_rejection") {
+          await getSupabaseServer()
+            .from("orders")
+            .update({
+              status: "cancelled",
+              cancelled_at: new Date().toISOString(),
+              cancel_reason: "payment_attempts_exhausted",
+              payment_error: { status_detail: statusDetail, mp_status: mpStatus },
+            })
+            .eq("id", order.id);
+
+          return NextResponse.json({
+            ok: false,
+            kind: "cancelled",
+            orderId: order.id,
+            attempts: 1,
+            maxAttempts: MAX_ATTEMPTS,
+            errorMessage: "Pedido cancelado após múltiplas falhas de pagamento. Você pode criar um novo pedido com outro cartão.",
+          }, { status: 422 });
+        }
+
+        await getSupabaseServer()
+          .from("orders")
+          .update({
+            status: "payment_failed",
+            payment_error: { status_detail: statusDetail, mp_status: mpStatus },
+          })
+          .eq("id", order.id);
+
+        return NextResponse.json({
+          ok: false,
+          kind,
+          orderId: order.id,
+          attempts: 1,
+          maxAttempts: MAX_ATTEMPTS,
+          errorMessage: userMessageFor(kind, 1),
+        }, { status: 422 });
       }
 
       // in_process / pending
-      return NextResponse.json({ orderNumber, payment: { type: "card", status: mpStatus } });
+      return NextResponse.json({
+        ok: true,
+        kind: "approved",
+        orderId: order.id,
+        orderNumber,
+        attempts: 1,
+        maxAttempts: MAX_ATTEMPTS,
+        payment: { type: "card", status: mpStatus },
+      });
     }
   } catch (mpErr: any) {
     const errMsg = mpErr?.message ?? String(mpErr);
@@ -440,5 +697,5 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  return NextResponse.json({ orderNumber });
+  return NextResponse.json({ orderNumber, orderId: order.id });
 }

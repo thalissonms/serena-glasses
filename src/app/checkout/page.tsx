@@ -22,13 +22,15 @@ import { getAnonymousId } from "@shared/utils/anonymousId";
 import { formatPrice } from "@features/products/utils/formatPrice";
 import { y2kToast } from "@shared/lib/y2kToast";
 
+const DRAFT_KEY = "serena.checkout-draft";
+
 type CheckoutPhase =
   | { status: "form" }
   | { status: "pix"; orderNumber: string; orderId: string; qrCodeBase64: string; pixCopyPaste: string; totalBRL: string }
   | { status: "boleto"; orderNumber: string; orderId: string; boletoUrl: string; barcode: string; totalBRL: string };
 
 function CheckoutContent() {
-  const { handleSubmit, watch } = useCheckoutForm();
+  const { handleSubmit, watch, setValue } = useCheckoutForm();
   const { t } = useTranslation("checkout");
   const router = useRouter();
   const { items, appliedCoupon, selectedShipping, clearCart } = useCartStore();
@@ -46,11 +48,66 @@ function CheckoutContent() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const completingRef = useRef(false);
 
+  // orderId do pedido em retry (null = criar novo)
+  const [pendingOrderId, setPendingOrderId] = useState<string | null>(null);
+  // Número da tentativa atual (null = não houve falha ainda)
+  const [cardRetryCount, setCardRetryCount] = useState<number | null>(null);
+
+  // Restaura rascunho do sessionStorage ao montar
+  useEffect(() => {
+    const raw = sessionStorage.getItem(DRAFT_KEY);
+    if (!raw) return;
+    try {
+      const draft = JSON.parse(raw) as {
+        identification?: Partial<CheckoutFormData["identification"]>;
+        address?: Partial<CheckoutFormData["address"]>;
+      };
+      if (draft.identification) {
+        const id = draft.identification;
+        if (id.fullName) setValue("identification.fullName", id.fullName);
+        if (id.cpf)      setValue("identification.cpf", id.cpf);
+        if (id.email)    setValue("identification.email", id.email);
+        if (id.phone)    setValue("identification.phone", id.phone);
+      }
+      if (draft.address) {
+        const a = draft.address;
+        if (a.cep)          setValue("address.cep", a.cep);
+        if (a.street)       setValue("address.street", a.street);
+        if (a.number)       setValue("address.number", a.number);
+        if (a.complement)   setValue("address.complement", a.complement);
+        if (a.neighborhood) setValue("address.neighborhood", a.neighborhood);
+        if (a.city)         setValue("address.city", a.city);
+        if (a.state)        setValue("address.state", a.state);
+      }
+    } catch {}
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Salva rascunho sempre que identificação ou endereço mudam
+  useEffect(() => {
+    const { unsubscribe } = watch((values) => {
+      if (!values.identification && !values.address) return;
+      sessionStorage.setItem(
+        DRAFT_KEY,
+        JSON.stringify({ identification: values.identification, address: values.address }),
+      );
+    });
+    return () => unsubscribe();
+  }, [watch]);
+
   useEffect(() => {
     if (!completingRef.current && items.length <= 0) {
       router.push("/cart");
     }
   }, [items, router]);
+
+  function clearCardFields() {
+    setValue("payment.cardNumber", "");
+    setValue("payment.cardName", "");
+    setValue("payment.cardExpiry", "");
+    setValue("payment.cardCvv", "");
+    setCardRetryCount(null);
+  }
 
   async function onSubmit(formData: CheckoutFormData) {
     setIsSubmitting(true);
@@ -66,7 +123,6 @@ function CheckoutContent() {
       let cardToken: string | undefined;
       let cardPaymentMethodId: string | undefined;
 
-      // Tokenizar cartão client-side (dados nunca chegam ao nosso backend)
       if (paymentMethod === PaymentMethod.Card) {
         if (!isReady) {
           y2kToast.error("Serviço de pagamento não carregado. Recarregue a página.");
@@ -100,7 +156,7 @@ function CheckoutContent() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          // Strip campos sensíveis de cartão — nunca enviamos para o servidor
+          ...(pendingOrderId && { orderId: pendingOrderId }),
           formData: {
             ...formData,
             payment: { method: formData.payment.method, installments: formData.payment.installments },
@@ -119,23 +175,48 @@ function CheckoutContent() {
         }),
       });
 
-      const result = await res.json();
+      const result = await res.json().catch(() => ({}));
 
-      if (!res.ok) {
+      // Erros antes do MP (stock, preço, frete, etc.)
+      if (!res.ok && !result.kind) {
         y2kToast.error(result.error ?? "Erro ao processar pedido. Tente novamente.");
         setIsSubmitting(false);
         return;
       }
 
       if (paymentMethod === PaymentMethod.Card) {
-        if (result.payment?.status === "approved") {
+        const kind = result.kind as string | undefined;
+
+        if (kind === "approved" || result.payment?.status === "approved") {
           completingRef.current = true;
+          sessionStorage.removeItem(DRAFT_KEY);
           clearCart();
           router.push(`/checkout/success?order=${result.orderNumber}`);
-        } else {
-          y2kToast.error(result.error ?? "Pagamento não aprovado. Tente outro cartão.");
-          setIsSubmitting(false);
+          return;
         }
+
+        if (kind === "cancelled") {
+          y2kToast.error(
+            result.errorMessage ??
+              "Pedido cancelado após múltiplas falhas de pagamento. Você pode criar um novo pedido com outro cartão.",
+          );
+          setPendingOrderId(null);
+          setCardRetryCount(null);
+          setIsSubmitting(false);
+          return;
+        }
+
+        if (kind === "data_error") {
+          y2kToast.error(result.errorMessage ?? "Pagamento recusado. Verifique os dados do cartão.");
+          setPendingOrderId(result.orderId);
+          setCardRetryCount(result.attempts);
+          setIsSubmitting(false);
+          return;
+        }
+
+        // Fallback (in_process, etc.)
+        y2kToast.error(result.error ?? "Pagamento não aprovado. Tente outro cartão.");
+        setIsSubmitting(false);
         return;
       }
 
@@ -239,7 +320,11 @@ function CheckoutContent() {
         >
           <IdentificationModule />
           <AddressModule />
-          <PaymentModule subtotal={total} />
+          <PaymentModule
+            subtotal={total}
+            retryCount={cardRetryCount}
+            onRetry={clearCardFields}
+          />
 
           {submitError && (
             <p className="text-red-600 dark:text-red-400 font-poppins text-sm font-semibold border-2 border-red-400 dark:border-red-700 bg-red-50 dark:bg-red-950/30 px-4 py-3">
