@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Send, CheckCircle, XCircle } from "lucide-react";
 import {
   freeShippingSchema,
   maintenanceSchema,
@@ -355,6 +355,75 @@ function PopupCaptureForm({ initial }: { initial: SettingValue<"popup_capture"> 
   );
 }
 
+function TestEmailSection() {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<{ ok: boolean; message: string; detail?: string } | null>(null);
+
+  async function handleSend() {
+    if (!email.trim()) return;
+    setLoading(true);
+    setResult(null);
+    try {
+      const res = await fetch("/api/admin/test-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ to: email.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setResult({ ok: false, message: data.error ?? "Erro desconhecido", detail: data.detail ? JSON.stringify(data.detail, null, 2) : undefined });
+      } else {
+        setResult({ ok: true, message: `Enviado! ID: ${data.id} · De: ${data.from}` });
+      }
+    } catch (err) {
+      setResult({ ok: false, message: err instanceof Error ? err.message : "Erro de rede" });
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="flex flex-col gap-4 mt-4">
+      <p className="font-inter text-xs text-gray-400">
+        Envia um email de teste via Resend para diagnosticar problemas de configuração.
+      </p>
+      <div className="flex gap-2">
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSend()}
+          placeholder="seu@email.com"
+          className={inputClass + " flex-1"}
+        />
+        <button
+          type="button"
+          onClick={handleSend}
+          disabled={loading || !email.trim()}
+          className="flex items-center gap-2 px-4 py-2 border-4 border-brand-pink bg-brand-pink text-white font-poppins font-black text-xs uppercase tracking-widest shadow-[4px_4px_0_#000] hover:translate-y-0.5 hover:shadow-[2px_2px_0_#000] transition-all disabled:opacity-60"
+        >
+          <Send size={13} />
+          {loading ? "Enviando..." : "Enviar"}
+        </button>
+      </div>
+      {result && (
+        <div className={`flex flex-col gap-2 p-3 border-2 ${result.ok ? "border-green-600 bg-green-900/20" : "border-red-600 bg-red-900/20"}`}>
+          <div className="flex items-center gap-2">
+            {result.ok
+              ? <CheckCircle size={14} className="text-green-400 shrink-0" />
+              : <XCircle size={14} className="text-red-400 shrink-0" />}
+            <p className="font-inter text-sm text-white">{result.message}</p>
+          </div>
+          {result.detail && (
+            <pre className="font-mono text-[11px] text-gray-400 whitespace-pre-wrap break-all bg-black/40 p-2">{result.detail}</pre>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 interface Props {
   initialRows: SiteSettingRow[];
 }
@@ -435,6 +504,10 @@ export default function SiteSettingsClient({ initialRows }: Props) {
                 Configuração não encontrada no banco. Rode a migration v1.6.0.
               </p>
             )}
+          </Section>
+
+          <Section title="Teste de Email" description="Diagnóstico do Resend — envia um email de teste">
+            <TestEmailSection />
           </Section>
         </div>
       </div>
