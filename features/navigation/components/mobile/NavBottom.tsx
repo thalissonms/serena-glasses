@@ -5,18 +5,14 @@ import { usePathname } from "next/navigation";
 import {
   Home,
   Search,
-  Heart,
   ShoppingBag,
-  User,
 } from "lucide-react";
 import clsx from "clsx";
 
 const NAV_ITEMS = [
   { href: "/", icon: Home, label: "Início" },
   { href: "/products", icon: Search, label: "Buscar" },
-  { href: "/wishlist", icon: Heart, label: "Favoritos" },
   { href: "/cart", icon: ShoppingBag, label: "Sacola" },
-  { href: "/account", icon: User, label: "Perfil" },
 ];
 
 export default function NavBottom() {
