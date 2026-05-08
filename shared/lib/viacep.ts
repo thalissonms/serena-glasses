@@ -1,4 +1,6 @@
 interface ViaCepResult {
+  street: string;
+  neighborhood: string;
   city: string;
   state: string;
 }
@@ -24,7 +26,12 @@ export async function lookupCep(cep: string): Promise<ViaCepResult | null> {
       cache.set(clean, { value: null, expiresAt: Date.now() + TTL });
       return null;
     }
-    const result: ViaCepResult = { city: data.localidade as string, state: data.uf as string };
+    const result: ViaCepResult = {
+      street: (data.logradouro as string) ?? "",
+      neighborhood: (data.bairro as string) ?? "",
+      city: (data.localidade as string) ?? "",
+      state: (data.uf as string) ?? "",
+    };
     cache.set(clean, { value: result, expiresAt: Date.now() + TTL });
     return result;
   } catch {

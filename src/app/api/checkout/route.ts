@@ -21,7 +21,6 @@ const checkoutBodySchema = z.object({
     identification: z.object({
       fullName: z.string().min(2),
       cpf: z.string().length(14),
-      birthDate: z.string().min(1),
       email: z.string().email(),
       phone: z.string().min(8),
     }),
@@ -238,7 +237,7 @@ export async function POST(request: NextRequest) {
       full_name: identification.fullName,
       email: identification.email,
       cpf: identification.cpf,
-      birth_date: identification.birthDate || null,
+
       phone: identification.phone || null,
       cep: address.cep,
       street: address.street,

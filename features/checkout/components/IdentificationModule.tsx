@@ -1,7 +1,7 @@
 "use client";
 import { useTranslation } from "react-i18next";
 import { SectionHeader } from "./SectionHeader";
-import { RHFTextInput, RHFCPFInput, RHFDateInput, RHFPhoneInput } from "@shared/components/forms";
+import { RHFTextInput, RHFCPFInput, RHFPhoneInput } from "@shared/components/forms";
 
 export function IdentificationModule() {
   const { t } = useTranslation("checkout");
@@ -18,11 +18,6 @@ export function IdentificationModule() {
           className="sm:col-span-2"
         />
         <RHFCPFInput name="identification.cpf" label={t("identification.cpf")} required />
-        <RHFDateInput
-          name="identification.birthDate"
-          label={t("identification.birthDate")}
-          required
-        />
         <RHFTextInput
           name="identification.email"
           label={t("identification.email")}

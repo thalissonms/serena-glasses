@@ -8,6 +8,7 @@ import { RHFTextInput, RHFCEPInput, RHFSelectInput } from "@shared/components/fo
 import { ShippingOptions } from "./ShippingOptions";
 import { useCartStore } from "@features/cart/store/cart.store";
 import { useCheckoutForm } from "../providers/checkout.rhf";
+import { useCepAutofill } from "../hooks/useCepAutofill";
 import type { ShippingQuoteOption } from "@shared/lib/melhor-envio/types";
 
 const STATE_OPTIONS = Object.values(BrazilianState).map((s) => ({ value: s, label: s }));
@@ -18,13 +19,12 @@ export function AddressModule() {
   const cep = useWatch({ control, name: "address.cep" }) as string;
   const items = useCartStore((s) => s.items);
   const setSelectedShipping = useCartStore((s) => s.setSelectedShipping);
+  const { lockedFields } = useCepAutofill();
 
   const [quoteOptions, setQuoteOptions] = useState<ShippingQuoteOption[]>([]);
   const [quoteLoading, setQuoteLoading] = useState(false);
   const [quoteError, setQuoteError] = useState<string | null>(null);
 
-  // Stable serialization of items — Zustand array ref changes on every render even with same
-  // content, which would fire a new quote request on each keystroke in unrelated fields
   const itemsKey = JSON.stringify(
     items.map((i) => ({ variantId: i.variantId, quantity: i.quantity })),
   );
@@ -63,7 +63,6 @@ export function AddressModule() {
           } else {
             const opts = data.options ?? [];
             setQuoteOptions(opts);
-            // Auto-seleciona se só houver uma opção
             if (opts.length === 1) {
               setSelectedShipping(opts[0]);
             } else {
@@ -101,6 +100,7 @@ export function AddressModule() {
           placeholder={t("address.streetPlaceholder")}
           required
           className="sm:col-span-2"
+          disabled={lockedFields.has("street")}
         />
         <RHFTextInput
           name="address.number"
@@ -118,18 +118,21 @@ export function AddressModule() {
           label={t("address.neighborhood")}
           placeholder={t("address.neighborhoodPlaceholder")}
           required
+          disabled={lockedFields.has("neighborhood")}
         />
         <RHFTextInput
           name="address.city"
           label={t("address.city")}
           placeholder={t("address.cityPlaceholder")}
           required
+          disabled={lockedFields.has("city")}
         />
         <RHFSelectInput
           name="address.state"
           label={t("address.state")}
           options={[{ value: "", label: t("address.statePlaceholder") }, ...STATE_OPTIONS]}
           required
+          disabled={lockedFields.has("state")}
         />
 
         <ShippingOptions

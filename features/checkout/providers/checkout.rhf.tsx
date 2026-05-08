@@ -11,7 +11,6 @@ const DEFAULT_VALUES: CheckoutFormData = {
   identification: {
     fullName: "",
     cpf: "",
-    birthDate: "",
     email: "",
     phone: "",
   },

@@ -39,7 +39,6 @@
     "fullName": "Full name",
     "fullNamePlaceholder": "Your name",
     "cpf": "CPF",
-    "birthDate": "Date of birth",
     "email": "E-mail",
     "emailPlaceholder": "your@email.com",
     "phone": "Phone"
@@ -85,7 +84,6 @@
   "validation": {
     "fullNameMin": "Full name required",
     "cpfInvalid": "Invalid CPF",
-    "birthDateRequired": "Birth date required",
     "emailInvalid": "Invalid email",
     "phoneInvalid": "Invalid phone number",
     "cepInvalid": "Invalid ZIP code",

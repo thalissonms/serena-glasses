@@ -39,7 +39,6 @@
     "fullName": "Nombre completo",
     "fullNamePlaceholder": "Tu nombre",
     "cpf": "CPF",
-    "birthDate": "Fecha de nacimiento",
     "email": "E-mail",
     "emailPlaceholder": "tu@email.com",
     "phone": "Celular"
@@ -85,7 +84,6 @@
   "validation": {
     "fullNameMin": "Nombre obligatorio",
     "cpfInvalid": "CPF inválido",
-    "birthDateRequired": "Fecha de nacimiento obligatoria",
     "emailInvalid": "E-mail inválido",
     "phoneInvalid": "Celular inválido",
     "cepInvalid": "CEP inválido",

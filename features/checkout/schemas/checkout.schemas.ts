@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { PaymentMethod } from "../enums/checkout.enum";
 import { BrazilianState } from "@shared/location/location.enum";
-import { isValidCPF, isValidBRPhone, isValidBirthDate } from "@shared/utils/validators";
+import { isValidCPF, isValidBRPhone } from "@shared/utils/validators";
 
 export function buildCheckoutSchema(t: (key: string) => string) {
   const identification = z.object({
@@ -10,10 +10,6 @@ export function buildCheckoutSchema(t: (key: string) => string) {
       .string()
       .length(14, t("checkout:validation.cpfInvalid"))
       .refine((v) => isValidCPF(v), t("checkout:validation.cpfInvalid")),
-    birthDate: z
-      .string()
-      .min(1, t("checkout:validation.birthDateRequired"))
-      .refine((v) => isValidBirthDate(v), t("checkout:validation.birthDateRequired")),
     email: z.string().email(t("checkout:validation.emailInvalid")),
     phone: z
       .string()
