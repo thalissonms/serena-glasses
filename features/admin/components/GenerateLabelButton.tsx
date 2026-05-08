@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Printer, Tag } from "lucide-react";
+import { Loader2, Printer, Tag, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 
 interface Props {
@@ -27,6 +27,7 @@ export default function GenerateLabelButton({
   const [hasLabel, setHasLabel] = useState(!!meOrderId);
 
   const canGenerate = currentStatus === "paid" && !hasLabel && !!shippingServiceId;
+  const urlPending = hasLabel && !labelUrl;
 
   if (!canGenerate && !hasLabel) return null;
 
@@ -40,11 +41,30 @@ export default function GenerateLabelButton({
       const data = await res.json();
       setLabelUrl(data.me_label_url);
       setHasLabel(true);
-      toast.success("Etiqueta gerada com sucesso!");
+      toast.success(data.me_label_url ? "Etiqueta gerada com sucesso!" : "Etiqueta gerada. URL sendo processada pelo ME.");
       router.refresh();
     } else {
       const body = await res.json().catch(() => ({}));
       toast.error(body.error ?? "Falha ao gerar etiqueta");
+    }
+
+    setLoading(false);
+  }
+
+  async function handleFetchUrl() {
+    setLoading(true);
+
+    const res = await fetch(`/api/admin/orders/${orderId}/shipment`, { method: "GET" });
+    const data = await res.json().catch(() => ({}));
+
+    if (res.ok && data.me_label_url) {
+      setLabelUrl(data.me_label_url);
+      toast.success("URL da etiqueta obtida!");
+      router.refresh();
+    } else if (res.status === 202) {
+      toast.info(data.error ?? "Etiqueta ainda sendo processada. Tente em alguns segundos.");
+    } else {
+      toast.error(data.error ?? "Falha ao buscar URL da etiqueta");
     }
 
     setLoading(false);
@@ -61,6 +81,19 @@ export default function GenerateLabelButton({
         <Printer size={11} />
         Imprimir etiqueta
       </a>
+    );
+  }
+
+  if (urlPending) {
+    return (
+      <button
+        onClick={handleFetchUrl}
+        disabled={loading}
+        className="flex items-center gap-1.5 px-3 py-1.5 font-poppins text-xs font-bold uppercase tracking-wider border-2 border-yellow-500/40 text-yellow-400 hover:border-yellow-500 hover:text-yellow-300 transition-colors disabled:opacity-40"
+      >
+        {loading ? <Loader2 size={10} className="animate-spin" /> : <RefreshCw size={11} />}
+        Buscar URL da etiqueta
+      </button>
     );
   }
 

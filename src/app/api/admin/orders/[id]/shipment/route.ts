@@ -5,6 +5,26 @@ import { getStorePackage } from "@shared/lib/melhor-envio/env";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
 import type { MeCartCreateRequest, MeCartCreateResponse } from "@shared/lib/melhor-envio/types";
 
+export const maxDuration = 60;
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+async function fetchLabelUrl(meOrderId: string): Promise<string | null> {
+  // ME generate is async — poll print up to 5x with growing delays
+  const delays = [2000, 3000, 4000, 5000, 6000];
+  for (const delay of delays) {
+    await sleep(delay);
+    const printRes = await meRequest<Record<string, string>>("POST", "/api/v2/me/shipment/print", {
+      mode: "private",
+      orders: [meOrderId],
+    });
+    const url = printRes[meOrderId];
+    if (url && url.startsWith("http")) return url;
+    console.warn("[admin/shipment] print not ready yet, retrying. printRes:", JSON.stringify(printRes));
+  }
+  return null;
+}
+
 const REQUIRED_STORE_VARS = [
   "STORE_NAME", "STORE_PHONE", "STORE_EMAIL", "STORE_DOCUMENT",
   "STORE_STREET", "STORE_NUMBER", "STORE_DISTRICT", "STORE_CITY", "STORE_CEP",
@@ -174,7 +194,7 @@ export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
   };
 
   let meOrderId: string;
-  let labelUrl: string;
+  let labelUrl: string | null;
 
   try {
     // 1. Add to cart
@@ -184,18 +204,11 @@ export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
     // 2. Checkout — debits saldo
     await meRequest("POST", "/api/v2/me/shipment/checkout", { orders: [meOrderId] });
 
-    // 3. Generate label
+    // 3. Generate label (async on ME's side)
     await meRequest("POST", "/api/v2/me/shipment/generate", { orders: [meOrderId] });
 
-    // 4. Get print URL — ME returns Record<orderId, url>, not { url: string }
-    const printRes = await meRequest<Record<string, string>>("POST", "/api/v2/me/shipment/print", {
-      mode: "private",
-      orders: [meOrderId],
-    });
-    labelUrl = printRes[meOrderId];
-    if (!labelUrl) {
-      throw new Error(`ME print response missing URL for order ${meOrderId}`);
-    }
+    // 4. Poll for print URL — ME generates labels asynchronously
+    labelUrl = await fetchLabelUrl(meOrderId);
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     console.error("[admin/shipment] ME error:", msg);
@@ -208,11 +221,15 @@ export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
     return NextResponse.json({ error: `Erro ao gerar etiqueta: ${msg}` }, { status: 502 });
   }
 
+  if (!labelUrl) {
+    console.warn("[admin/shipment] label URL not ready after all retries — saving me_order_id without URL");
+  }
+
   const { error: updateErr } = await getSupabaseServer()
     .from("orders")
     .update({
       me_order_id: meOrderId,
-      me_label_url: labelUrl,
+      me_label_url: labelUrl ?? null,
       me_status: "generated",
       updated_at: new Date().toISOString(),
     })
@@ -227,6 +244,42 @@ export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
   }
 
   return NextResponse.json({ ok: true, me_order_id: meOrderId, me_label_url: labelUrl });
+});
+
+export const GET = withAdmin<{ id: string }>(async (_req, { params }) => {
+  const { id } = await params;
+
+  const { data: order } = await getSupabaseServer()
+    .from("orders")
+    .select("id, me_order_id, me_label_url")
+    .eq("id", id)
+    .single();
+
+  if (!order) return NextResponse.json({ error: "Pedido não encontrado" }, { status: 404 });
+
+  const meOrderId = (order as any).me_order_id as string | null;
+  if (!meOrderId) return NextResponse.json({ error: "Nenhuma etiqueta gerada" }, { status: 422 });
+
+  const printRes = await meRequest<Record<string, string>>("POST", "/api/v2/me/shipment/print", {
+    mode: "private",
+    orders: [meOrderId],
+  });
+
+  const labelUrl = printRes[meOrderId];
+  if (!labelUrl || !labelUrl.startsWith("http")) {
+    console.warn("[admin/shipment/GET] URL still not ready. printRes:", JSON.stringify(printRes));
+    return NextResponse.json(
+      { error: "Etiqueta ainda sendo processada pelo Melhor Envio. Aguarde alguns segundos e tente novamente." },
+      { status: 202 },
+    );
+  }
+
+  await getSupabaseServer()
+    .from("orders")
+    .update({ me_label_url: labelUrl, updated_at: new Date().toISOString() })
+    .eq("id", id);
+
+  return NextResponse.json({ ok: true, me_label_url: labelUrl });
 });
 
 export const DELETE = withAdmin<{ id: string }>(async (_req, { params }) => {
