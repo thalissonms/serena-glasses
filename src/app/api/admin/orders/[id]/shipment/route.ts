@@ -73,35 +73,47 @@ export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
     );
   }
 
-  // Fetch order_items with variant weights via join
+  // Fetch order_items
   const { data: items, error: itemsErr } = await getSupabaseServer()
     .from("order_items")
-    .select("product_name, quantity, price, product_variants(products(weight))")
+    .select("product_name, quantity, price, variant_id")
     .eq("order_id", id);
 
   if (itemsErr || !items || items.length === 0) {
     return NextResponse.json({ error: "Itens do pedido não encontrados" }, { status: 404 });
   }
 
+  // Fetch variant weights separately (avoids relying on FK declarations in Supabase schema)
+  const variantIds = items.map((i) => i.variant_id).filter(Boolean) as string[];
+  const { data: variants } = await getSupabaseServer()
+    .from("product_variants")
+    .select("id, product_id")
+    .in("id", variantIds);
+
+  const productIds = [...new Set((variants ?? []).map((v) => v.product_id).filter(Boolean))] as string[];
+  const { data: products } = await getSupabaseServer()
+    .from("products")
+    .select("id, weight")
+    .in("id", productIds);
+
+  const weightByVariant = new Map<string, number | null>();
+  for (const v of variants ?? []) {
+    const prod = (products ?? []).find((p) => p.id === v.product_id);
+    weightByVariant.set(v.id, prod?.weight ?? null);
+  }
+
   // Calculate total weight — missing weight is a hard error (not a silent fallback)
   const pkg = getStorePackage();
   let itemWeightG = 0;
   for (const item of items) {
-    const pv = Array.isArray(item.product_variants)
-      ? item.product_variants[0]
-      : item.product_variants;
-    const prod = pv
-      ? Array.isArray((pv as any).products)
-        ? (pv as any).products[0]
-        : (pv as any).products
-      : null;
-    if (!prod?.weight) {
+    const weight = item.variant_id ? weightByVariant.get(item.variant_id) : null;
+    if (!weight) {
       return NextResponse.json(
         { error: `Peso não definido para: ${item.product_name}` },
         { status: 500 },
       );
     }
-    itemWeightG += prod.weight * item.quantity;
+    itemWeightG += weight * item.quantity;
   }
   const totalWeightKg = (itemWeightG + pkg.weightG) / 1000;
 
