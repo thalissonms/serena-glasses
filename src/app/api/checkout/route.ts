@@ -313,7 +313,7 @@ export async function POST(request: NextRequest) {
         orderNumber,
         name: firstName,
         email: identification.email,
-      }).catch(() => {});
+      }).catch((err) => console.error("[checkout] email error:", err));
 
       const txData = (mpRes as any).point_of_interaction?.transaction_data;
       return NextResponse.json({
@@ -357,7 +357,7 @@ export async function POST(request: NextRequest) {
         orderNumber,
         name: firstName,
         email: identification.email,
-      }).catch(() => {});
+      }).catch((err) => console.error("[checkout] email error:", err));
 
       const txDetails = (mpRes as any).transaction_details;
       const barcode = (mpRes as any).barcode?.content ?? "";
@@ -401,7 +401,7 @@ export async function POST(request: NextRequest) {
           name: firstName,
           email: identification.email,
           orderId: order.id,
-        }).catch(() => {});
+        }).catch((err) => console.error("[checkout] email error:", err));
 
         return NextResponse.json({ orderNumber, payment: { type: "card", status: "approved" } });
       }

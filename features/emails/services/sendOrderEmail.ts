@@ -9,10 +9,8 @@ import {
   buildOrderPaymentRetryEmail,
 } from "../templates/orderTemplates";
 
-let _resend: Resend | null = null;
 function getResend(): Resend {
-  if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY);
-  return _resend;
+  return new Resend(process.env.RESEND_API_KEY);
 }
 
 function isResendConfigured(): boolean {
@@ -31,9 +29,20 @@ export interface SendConfirmationParams {
   orderId: string;
 }
 
-export async function sendOrderConfirmationEmail(params: SendConfirmationParams): Promise<void> {
-  if (!isResendConfigured()) return;
+async function send(tag: string, payload: Parameters<Resend["emails"]["send"]>[0]): Promise<void> {
+  if (!isResendConfigured()) {
+    console.warn(`[email:${tag}] Resend not configured — skipping`);
+    return;
+  }
+  const result = await getResend().emails.send(payload);
+  if (result.error) {
+    console.error(`[email:${tag}] Resend error →`, result.error);
+  } else {
+    console.log(`[email:${tag}] sent id=${result.data?.id} to=${payload.to}`);
+  }
+}
 
+export async function sendOrderConfirmationEmail(params: SendConfirmationParams): Promise<void> {
   const { orderNumber, name, email, orderId } = params;
 
   const { data: items } = await getSupabaseServer()
@@ -47,7 +56,7 @@ export async function sendOrderConfirmationEmail(params: SendConfirmationParams)
     .eq("id", orderId)
     .single();
 
-  await getResend().emails.send({
+  await send("confirmation", {
     from: getFrom(),
     to: email,
     subject: `Pagamento confirmado #${orderNumber} ✦ Serena Glasses`,
@@ -69,9 +78,7 @@ export async function sendOrderConfirmationEmail(params: SendConfirmationParams)
 }
 
 export async function sendOrderReceivedEmail(params: { orderNumber: string; name: string; email: string }): Promise<void> {
-  if (!isResendConfigured()) return;
-
-  await getResend().emails.send({
+  await send("received", {
     from: getFrom(),
     to: params.email,
     subject: `Pedido recebido #${params.orderNumber} ✦ Serena Glasses`,
@@ -86,9 +93,7 @@ export async function sendOrderShippedEmail(params: {
   trackingCode?: string;
   carrier?: string;
 }): Promise<void> {
-  if (!isResendConfigured()) return;
-
-  await getResend().emails.send({
+  await send("shipped", {
     from: getFrom(),
     to: params.email,
     subject: `Pedido enviado #${params.orderNumber} 🚚 Serena Glasses`,
@@ -101,9 +106,7 @@ export async function sendOrderDeliveredEmail(params: {
   name: string;
   email: string;
 }): Promise<void> {
-  if (!isResendConfigured()) return;
-
-  await getResend().emails.send({
+  await send("delivered", {
     from: getFrom(),
     to: params.email,
     subject: `Pedido entregue #${params.orderNumber} ✦ Serena Glasses`,
@@ -112,11 +115,8 @@ export async function sendOrderDeliveredEmail(params: {
 }
 
 export async function sendOrderPaymentRetryEmail(params: { orderNumber: string; name: string; email: string }): Promise<void> {
-  if (!isResendConfigured()) return;
-
   const shopUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "";
-
-  await getResend().emails.send({
+  await send("payment-retry", {
     from: getFrom(),
     to: params.email,
     subject: `Tente novamente o pagamento #${params.orderNumber} ✦ Serena Glasses`,
@@ -125,9 +125,7 @@ export async function sendOrderPaymentRetryEmail(params: { orderNumber: string; 
 }
 
 export async function sendOrderCancelledEmail(params: { orderNumber: string; name: string; email: string }): Promise<void> {
-  if (!isResendConfigured()) return;
-
-  await getResend().emails.send({
+  await send("cancelled", {
     from: getFrom(),
     to: params.email,
     subject: `Pedido cancelado #${params.orderNumber} ✦ Serena Glasses`,
