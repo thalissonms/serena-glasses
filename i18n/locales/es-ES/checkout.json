@@ -57,7 +57,9 @@
     "city": "Ciudad",
     "cityPlaceholder": "Tu ciudad",
     "state": "Estado",
-    "statePlaceholder": "Selecciona"
+    "statePlaceholder": "Selecciona",
+    "searchCep": "Buscar CEP",
+    "searching": "Buscando..."
   },
   "payment": {
     "title": "Pago",

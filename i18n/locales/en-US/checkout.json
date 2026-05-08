@@ -57,7 +57,9 @@
     "city": "City",
     "cityPlaceholder": "Your city",
     "state": "State",
-    "statePlaceholder": "Select"
+    "statePlaceholder": "Select",
+    "searchCep": "Search ZIP",
+    "searching": "Searching..."
   },
   "payment": {
     "title": "Payment",
