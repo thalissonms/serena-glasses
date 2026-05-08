@@ -9,17 +9,25 @@ export const maxDuration = 60;
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+function extractUrlFromPrintRes(printRes: Record<string, unknown>, meOrderId: string): string | null {
+  // ME may key by UUID, protocol, or other format — search for any http URL value
+  const byId = printRes[meOrderId];
+  if (typeof byId === "string" && byId.startsWith("http")) return byId;
+  const anyUrl = Object.values(printRes).find((v) => typeof v === "string" && v.startsWith("http"));
+  return (anyUrl as string) ?? null;
+}
+
 async function fetchLabelUrl(meOrderId: string): Promise<string | null> {
   // ME generate is async — poll print up to 5x with growing delays
   const delays = [2000, 3000, 4000, 5000, 6000];
   for (const delay of delays) {
     await sleep(delay);
-    const printRes = await meRequest<Record<string, string>>("POST", "/api/v2/me/shipment/print", {
+    const printRes = await meRequest<Record<string, unknown>>("POST", "/api/v2/me/shipment/print", {
       mode: "private",
       orders: [meOrderId],
     });
-    const url = printRes[meOrderId];
-    if (url && url.startsWith("http")) return url;
+    const url = extractUrlFromPrintRes(printRes, meOrderId);
+    if (url) return url;
     console.warn("[admin/shipment] print not ready yet, retrying. printRes:", JSON.stringify(printRes));
   }
   return null;
@@ -260,14 +268,14 @@ export const GET = withAdmin<{ id: string }>(async (_req, { params }) => {
   const meOrderId = (order as any).me_order_id as string | null;
   if (!meOrderId) return NextResponse.json({ error: "Nenhuma etiqueta gerada" }, { status: 422 });
 
-  const printRes = await meRequest<Record<string, string>>("POST", "/api/v2/me/shipment/print", {
+  const printRes = await meRequest<Record<string, unknown>>("POST", "/api/v2/me/shipment/print", {
     mode: "private",
     orders: [meOrderId],
   });
 
-  const labelUrl = printRes[meOrderId];
-  if (!labelUrl || !labelUrl.startsWith("http")) {
-    console.warn("[admin/shipment/GET] URL still not ready. printRes:", JSON.stringify(printRes));
+  const labelUrl = extractUrlFromPrintRes(printRes, meOrderId);
+  if (!labelUrl) {
+    console.warn("[admin/shipment/GET] URL not found. meOrderId:", meOrderId, "printRes:", JSON.stringify(printRes));
     return NextResponse.json(
       { error: "Etiqueta ainda sendo processada pelo Melhor Envio. Aguarde alguns segundos e tente novamente." },
       { status: 202 },
