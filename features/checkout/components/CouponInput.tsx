@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { X, Tag, Loader2 } from "lucide-react";
-import { toast } from "sonner";
+import { y2kToast } from "@shared/lib/y2kToast";
 import { useCartStore } from "@features/cart/store/cart.store";
 import { formatPrice } from "@features/products/utils/formatPrice";
 
@@ -36,7 +36,7 @@ export default function CouponInput() {
       const data = await res.json();
 
       if (!data.ok) {
-        toast.error(data.error ?? "Cupom inválido");
+        y2kToast.error(data.error ?? "Cupom inválido");
         return;
       }
 
@@ -48,9 +48,9 @@ export default function CouponInput() {
         discount_applied_cents: data.discount_applied_cents,
       });
       setCode("");
-      toast.success(`Cupom ${data.code} aplicado!`);
+      y2kToast.success(`Cupom ${data.code} aplicado!`);
     } catch {
-      toast.error("Erro ao validar cupom");
+      y2kToast.error("Erro ao validar cupom");
     } finally {
       setLoading(false);
     }

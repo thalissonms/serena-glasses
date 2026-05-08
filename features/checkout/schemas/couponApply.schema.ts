@@ -4,8 +4,8 @@ export const couponApplySchema = z.object({
   code: z.string().min(1).max(40),
   items: z.array(
     z.object({
-      variantId: z.string().uuid(),
-      productId: z.string().uuid().optional(),
+      variantId: z.string().guid(),
+      productId: z.string().guid().optional(),
       quantity: z.number().int().positive(),
     }),
   ),

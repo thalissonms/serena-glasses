@@ -123,7 +123,7 @@ export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
       name: getEnv("STORE_NAME"),
       phone: getEnv("STORE_PHONE"),
       email: getEnv("STORE_EMAIL"),
-      document: getEnv("STORE_DOCUMENT"),
+      document: getEnv("STORE_DOCUMENT").replace(/\D/g, ""),
       address: getEnv("STORE_STREET"),
       number: getEnv("STORE_NUMBER"),
       complement: process.env.STORE_COMPLEMENT ?? "",

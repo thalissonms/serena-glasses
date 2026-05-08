@@ -18,6 +18,7 @@ import { ReviewsOverlay } from "@features/products/components/ReviewsOverlay";
 import { TopBanner } from "@shared/components/layout/TopBanner";
 import { WhatsAppFloat } from "@shared/components/WhatsAppFloat";
 import { CapturePopupTrigger } from "@shared/components/CapturePopupTrigger";
+import { Y2KToaster } from "@shared/components/Y2KToaster";
 import { getSetting } from "@features/admin/services/siteSettings.service";
 
 // Script anti-FOUC: aplica a classe dark no <html> ANTES do React hydratar
@@ -146,6 +147,7 @@ export default async function RootLayout({
               <ReviewsOverlay />
               <WhatsAppFloat />
               <CapturePopupTrigger />
+              <Y2KToaster />
             </I18nProvider>
           </QueryProvider>
         </ThemeProvider>

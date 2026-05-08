@@ -9,10 +9,9 @@ import { RHFTextInput, RHFSelectInput, RHFMaskedInput } from "@shared/components
 
 interface PaymentModuleProps {
   subtotal: number;
-  cardError?: string | null;
 }
 
-export function PaymentModule({ subtotal, cardError }: PaymentModuleProps) {
+export function PaymentModule({ subtotal }: PaymentModuleProps) {
   const { watch, setValue } = useCheckoutForm();
   const { t } = useTranslation("checkout");
   const paymentMethod = watch("payment.method");
@@ -90,11 +89,6 @@ export function PaymentModule({ subtotal, cardError }: PaymentModuleProps) {
             required
             className="sm:col-span-2"
           />
-          {cardError && (
-            <p className="sm:col-span-2 text-red-600 dark:text-red-400 font-poppins text-sm font-semibold border-2 border-red-400 dark:border-red-700 bg-red-50 dark:bg-red-950/30 px-4 py-3">
-              {cardError}
-            </p>
-          )}
         </div>
       )}
 

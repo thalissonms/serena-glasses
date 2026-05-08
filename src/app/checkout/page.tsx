@@ -20,6 +20,7 @@ import { PaymentMethod } from "@features/checkout/enums/checkout.enum";
 import { useMpCardToken } from "@features/checkout/hooks/useMpCardToken";
 import { getAnonymousId } from "@shared/utils/anonymousId";
 import { formatPrice } from "@features/products/utils/formatPrice";
+import { y2kToast } from "@shared/lib/y2kToast";
 
 type CheckoutPhase =
   | { status: "form" }
@@ -43,7 +44,6 @@ function CheckoutContent() {
   const [phase, setPhase] = useState<CheckoutPhase>({ status: "form" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [cardError, setCardError] = useState<string | null>(null);
   const completingRef = useRef(false);
 
   useEffect(() => {
@@ -55,7 +55,6 @@ function CheckoutContent() {
   async function onSubmit(formData: CheckoutFormData) {
     setIsSubmitting(true);
     setSubmitError(null);
-    setCardError(null);
 
     if (!selectedShipping) {
       setSubmitError("Selecione uma opção de frete antes de continuar.");
@@ -70,7 +69,7 @@ function CheckoutContent() {
       // Tokenizar cartão client-side (dados nunca chegam ao nosso backend)
       if (paymentMethod === PaymentMethod.Card) {
         if (!isReady) {
-          setSubmitError("Serviço de pagamento não carregado. Recarregue a página.");
+          y2kToast.error("Serviço de pagamento não carregado. Recarregue a página.");
           setIsSubmitting(false);
           return;
         }
@@ -91,7 +90,7 @@ function CheckoutContent() {
           cardToken = tokenResult.token;
           cardPaymentMethodId = tokenResult.paymentMethodId;
         } catch (err: any) {
-          setCardError(err?.message ?? "Dados do cartão inválidos. Verifique e tente novamente.");
+          y2kToast.error(err?.message ?? "Dados do cartão inválidos. Verifique e tente novamente.");
           setIsSubmitting(false);
           return;
         }
@@ -123,7 +122,7 @@ function CheckoutContent() {
       const result = await res.json();
 
       if (!res.ok) {
-        setSubmitError(result.error ?? "Erro ao processar pedido. Tente novamente.");
+        y2kToast.error(result.error ?? "Erro ao processar pedido. Tente novamente.");
         setIsSubmitting(false);
         return;
       }
@@ -134,7 +133,7 @@ function CheckoutContent() {
           clearCart();
           router.push(`/checkout/success?order=${result.orderNumber}`);
         } else {
-          setCardError(result.error ?? "Pagamento não aprovado. Tente outro cartão.");
+          y2kToast.error(result.error ?? "Pagamento não aprovado. Tente outro cartão.");
           setIsSubmitting(false);
         }
         return;
@@ -164,7 +163,7 @@ function CheckoutContent() {
         return;
       }
     } catch {
-      setSubmitError("Não foi possível finalizar o pedido. Tente novamente.");
+      y2kToast.error("Não foi possível finalizar o pedido. Tente novamente.");
     } finally {
       setIsSubmitting(false);
     }
@@ -240,7 +239,7 @@ function CheckoutContent() {
         >
           <IdentificationModule />
           <AddressModule />
-          <PaymentModule subtotal={total} cardError={cardError} />
+          <PaymentModule subtotal={total} />
 
           {submitError && (
             <p className="text-red-600 dark:text-red-400 font-poppins text-sm font-semibold border-2 border-red-400 dark:border-red-700 bg-red-50 dark:bg-red-950/30 px-4 py-3">
