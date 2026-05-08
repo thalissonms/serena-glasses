@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
           const { sendOrderShippedEmail } = await import(
             "@features/emails/services/sendOrderEmail"
           );
-          sendOrderShippedEmail({
+          await sendOrderShippedEmail({
             orderNumber: order.order_number,
             name: order.full_name.split(" ")[0],
             email: order.email,
@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
           const { sendOrderDeliveredEmail } = await import(
             "@features/emails/services/sendOrderEmail"
           );
-          sendOrderDeliveredEmail({
+          await sendOrderDeliveredEmail({
             orderNumber: order.order_number,
             name: order.full_name.split(" ")[0],
             email: order.email,

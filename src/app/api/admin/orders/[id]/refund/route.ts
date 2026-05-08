@@ -82,7 +82,7 @@ export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
     return NextResponse.json({ error: "Reembolso processado mas falha ao atualizar pedido" }, { status: 500 });
   }
 
-  sendOrderCancelledEmail({
+  await sendOrderCancelledEmail({
     orderNumber: order.order_number,
     name: order.full_name.split(" ")[0],
     email: order.email,

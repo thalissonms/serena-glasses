@@ -93,7 +93,7 @@ export async function GET(request: NextRequest) {
         const { sendOrderDeliveredEmail } = await import(
           "@features/emails/services/sendOrderEmail"
         );
-        sendOrderDeliveredEmail({
+        await sendOrderDeliveredEmail({
           orderNumber: order.order_number,
           name: order.full_name.split(" ")[0],
           email: order.email,

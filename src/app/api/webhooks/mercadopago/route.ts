@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
     // Dispara email de confirmação para PIX/Boleto pagos via webhook
     if (newStatus === "paid" && order && order.payment_method !== "card") {
       const { sendOrderConfirmationEmail } = await import("@features/emails/services/sendOrderEmail");
-      sendOrderConfirmationEmail({
+      await sendOrderConfirmationEmail({
         orderNumber: order.order_number,
         name: order.full_name.split(" ")[0],
         email: order.email,

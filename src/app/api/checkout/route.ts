@@ -309,7 +309,7 @@ export async function POST(request: NextRequest) {
         requestOptions: { idempotencyKey: order.id },
       });
 
-      sendOrderReceivedEmail({
+      await sendOrderReceivedEmail({
         orderNumber,
         name: firstName,
         email: identification.email,
@@ -353,7 +353,7 @@ export async function POST(request: NextRequest) {
       });
 
       // Email de "aguardando pagamento"
-      sendOrderReceivedEmail({
+      await sendOrderReceivedEmail({
         orderNumber,
         name: firstName,
         email: identification.email,
@@ -396,7 +396,7 @@ export async function POST(request: NextRequest) {
           .update({ status: "paid", paid_at: new Date().toISOString(), mp_payment_id: String(mpRes.id) })
           .eq("id", order.id);
 
-        sendOrderConfirmationEmail({
+        await sendOrderConfirmationEmail({
           orderNumber,
           name: firstName,
           email: identification.email,

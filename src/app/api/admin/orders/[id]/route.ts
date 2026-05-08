@@ -38,7 +38,7 @@ export const PATCH = withAdmin<{ id: string }>(async (req, { params }) => {
 
     if (order) {
       const { sendOrderShippedEmail } = await import("@features/emails/services/sendOrderEmail");
-      sendOrderShippedEmail({
+      await sendOrderShippedEmail({
         orderNumber: order.order_number,
         name: order.full_name.split(" ")[0],
         email: order.email,
@@ -58,7 +58,7 @@ export const PATCH = withAdmin<{ id: string }>(async (req, { params }) => {
 
     if (order) {
       const { sendOrderCancelledEmail } = await import("@features/emails/services/sendOrderEmail");
-      sendOrderCancelledEmail({
+      await sendOrderCancelledEmail({
         orderNumber: order.order_number,
         name: order.full_name.split(" ")[0],
         email: order.email,
