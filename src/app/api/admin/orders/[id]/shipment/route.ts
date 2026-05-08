@@ -117,13 +117,16 @@ export const POST = withAdmin<{ id: string }>(async (_req, { params }) => {
   }
   const totalWeightKg = (itemWeightG + pkg.weightG) / 1000;
 
+  const storeDoc = getEnv("STORE_DOCUMENT").replace(/\D/g, "");
+  const isCnpj = storeDoc.length === 14;
+
   const cartBody: MeCartCreateRequest = {
     service: o.shipping_service_id,
     from: {
       name: getEnv("STORE_NAME"),
       phone: getEnv("STORE_PHONE"),
       email: getEnv("STORE_EMAIL"),
-      document: getEnv("STORE_DOCUMENT").replace(/\D/g, ""),
+      ...(isCnpj ? { company_document: storeDoc } : { document: storeDoc }),
       address: getEnv("STORE_STREET"),
       number: getEnv("STORE_NUMBER"),
       complement: process.env.STORE_COMPLEMENT ?? "",
