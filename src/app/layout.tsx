@@ -17,7 +17,7 @@ import { Nav } from "@features/navigation/components/Nav";
 import { QueryProvider } from "@shared/providers/QueryProvider";
 import { ThemeProvider } from "@shared/providers/ThemeProvider";
 import NavBottom from "@features/navigation/components/mobile/NavBottom";
-import ModalPresence from "@features/navigation/components/mobile/modals/ModalPresence";
+// import ModalPresence from "@features/navigation/components/mobile/modals/ModalPresence";
 import { ReviewsOverlay } from "@features/products/components/ReviewsOverlay";
 import { TopBanner } from "@shared/components/layout/TopBanner";
 import { WhatsAppFloat } from "@shared/components/WhatsAppFloat";
@@ -78,10 +78,10 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-  modal,
+  // modal,
 }: {
   children: React.ReactNode;
-  modal: React.ReactNode;
+  // modal: React.ReactNode;
 }) {
   const initialLang =
     typeof i18n.language === "string"
