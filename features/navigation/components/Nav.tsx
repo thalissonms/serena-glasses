@@ -3,7 +3,6 @@ import { NavLogo } from "./NavLogo";
 import { NavPages } from "./NavPages";
 import { NavSearch } from "./NavSearch";
 import { NavActions } from "./NavActions";
-import { NavMobileTopBar } from "./mobile/NavMobileTopBar";
 
 export const Nav = async () => {
   const h = await headers();
@@ -26,7 +25,6 @@ export const Nav = async () => {
           </div>
         </div>
       </header>
-      <NavMobileTopBar />
     </>
   );
 };

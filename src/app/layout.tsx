@@ -1,8 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { headers } from "next/headers";
 import "../../styles/tailwind.css";
-import { allFontVariablesClassNames, localFontVariablesClassNames } from "@shared/utils/typography";
+import {
+  allFontVariablesClassNames,
+  localFontVariablesClassNames,
+} from "@shared/utils/typography";
 import { Footer } from "@shared/components/layout";
 
 import i18n from "@i18n/i18n";
@@ -14,12 +17,14 @@ import { Nav } from "@features/navigation/components/Nav";
 import { QueryProvider } from "@shared/providers/QueryProvider";
 import { ThemeProvider } from "@shared/providers/ThemeProvider";
 import NavBottom from "@features/navigation/components/mobile/NavBottom";
+import ModalPresence from "@features/navigation/components/mobile/modals/ModalPresence";
 import { ReviewsOverlay } from "@features/products/components/ReviewsOverlay";
 import { TopBanner } from "@shared/components/layout/TopBanner";
 import { WhatsAppFloat } from "@shared/components/WhatsAppFloat";
 import { CapturePopupTrigger } from "@shared/components/CapturePopupTrigger";
 import { Y2KToaster } from "@shared/components/Y2KToaster";
 import { getSetting } from "@features/admin/services/siteSettings.service";
+import { NavMobileTopBar } from "@features/navigation/components/mobile/NavMobileTopBar";
 
 // Script anti-FOUC: aplica a classe dark no <html> ANTES do React hydratar
 const themeInitScript = `
@@ -32,6 +37,13 @@ const themeInitScript = `
   } catch (e) {}
 })();
 `;
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export const metadata: Metadata = {
   title: siteConfig.siteName,
@@ -66,15 +78,17 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
+  modal,
 }: {
   children: React.ReactNode;
+  modal: React.ReactNode;
 }) {
   const initialLang =
     typeof i18n.language === "string"
       ? i18n.language
       : typeof i18n.options.fallbackLng === "string"
-      ? i18n.options.fallbackLng
-      : undefined;
+        ? i18n.options.fallbackLng
+        : undefined;
 
   const [headersList, pixels] = await Promise.all([
     headers(),
@@ -89,8 +103,15 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <script nonce={nonce} dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-        <Script src="https://sdk.mercadopago.com/js/v2" strategy="afterInteractive" nonce={nonce} />
+        <script
+          nonce={nonce}
+          dangerouslySetInnerHTML={{ __html: themeInitScript }}
+        />
+        <Script
+          src="https://sdk.mercadopago.com/js/v2"
+          strategy="afterInteractive"
+          nonce={nonce}
+        />
 
         {pixels?.meta_pixel_id && (
           <Script id="meta-pixel" strategy="afterInteractive" nonce={nonce}>{`
@@ -139,9 +160,15 @@ export default async function RootLayout({
         <ThemeProvider>
           <QueryProvider>
             <I18nProvider>
-              <TopBanner />
+              <div className="sticky top-0 w-full z-50">
+                <TopBanner />
+                <NavMobileTopBar />
+              </div>
               <Nav />
-              <main className="min-h-screen">{children}</main>
+              <main className="min-h-screen">
+                {children}
+                {/* <ModalPresence modal={modal} /> */}
+              </main>
               <Footer />
               <NavBottom />
               <ReviewsOverlay />

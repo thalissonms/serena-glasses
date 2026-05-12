@@ -40,11 +40,22 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
         }}
         className="group cursor-pointer"
       >
-        <div className={clsx("relative bg-white dark:bg-[#1a1a1a] border-2 border-black dark:border-brand-pink-light shadow-brand-black-dark dark:shadow-brand-blue", !product.inStock ? "cursor-not-allowed opacity-70 shadow-[2px_2px_0px]" : "hover:shadow-brand-pink transition-all duration-300 hover:-translate-y-1 shadow-[4px_4px_0px]")}>
+        <div
+          className={clsx(
+            "relative bg-white dark:bg-[#1a1a1a] border-2 border-black dark:border-brand-pink-light shadow-brand-black-dark dark:shadow-brand-blue",
+            !product.inStock
+              ? "cursor-not-allowed opacity-70 shadow-[2px_2px_0px]"
+              : "hover:shadow-brand-pink transition-all duration-300 hover:-translate-y-1 shadow-[4px_4px_0px]",
+          )}
+        >
           {/* Badges */}
           <div className="absolute top-2 left-2 z-10 flex gap-1.5">
             {product.isNew && (
-              <span className={clsx("flex justify-center bg-brand-pink text-white text-[10px] sm:text-xs font-bold font-poppins uppercase px-2 py-0.5 border border-black shadow-[2px_2px_0px] shadow-brand-black-dark dark:shadow-brand-blue")}>
+              <span
+                className={clsx(
+                  "flex justify-center bg-brand-pink text-white text-[10px] sm:text-xs font-bold font-poppins uppercase px-2 py-0.5 border border-black shadow-[2px_2px_0px] shadow-brand-black-dark dark:shadow-brand-blue",
+                )}
+              >
                 {t("card.newBadge")}
               </span>
             )}
@@ -59,13 +70,14 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               </span>
             )}
           </div>
-
-          {/* Wishlist button */}
-          <WishlistButton
-            productId={product.id}
-            size={16}
-            className="absolute top-2 right-2 z-10 p-1.5 bg-white/80 dark:bg-brand-pink-dark border border-black hover:bg-brand-pink-light dark:hover:bg-brand-blue hover:text-white transition-colors cursor-pointer"
-          />
+            {/* Wishlist button */}
+            <div className="w-full absolute flex justify-end px-2 py-1 z-10">
+              <WishlistButton
+                productId={product.id}
+                size={16}
+                className="p-1.5 bg-white/80 dark:bg-brand-pink-dark border border-black hover:bg-brand-pink-light dark:hover:bg-brand-blue hover:text-white transition-colors cursor-pointer"
+              />
+            </div>
 
           {/* Image area */}
           <div className="relative aspect-square bg-pink-50/60 dark:bg-[#0a0a0a] overflow-hidden border-b-2 border-black dark:border-brand-pink-light/60">
@@ -74,7 +86,10 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
                 src={primaryImage.url}
                 alt={primaryImage.alt}
                 fill
-                className={clsx("object-contain p-4 sm:p-6  transition-transform duration-500", !product.inStock ? "grayscale" : "group-hover:scale-110")}
+                className={clsx(
+                  "object-contain p-4 sm:p-6  transition-transform duration-500",
+                  !product.inStock ? "grayscale" : "group-hover:scale-110",
+                )}
                 draggable={false}
               />
             ) : (
@@ -101,11 +116,23 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
 
           {/* Product info */}
           <div className="relative min-h-56 p-3 sm:p-4">
-            <p className={clsx("text-[10px] sm:text-xs font-poppins font-semibold text-brand-pink uppercase tracking-wider mb-1", !product.inStock ? "text-gray-400" : "text-brand-pink")}>
+            <p
+              className={clsx(
+                "text-[10px] sm:text-xs font-poppins font-semibold text-brand-pink uppercase tracking-wider mb-1",
+                !product.inStock ? "text-gray-400" : "text-brand-pink",
+              )}
+            >
               {FRAME_SHAPE_LABELS[product.frameShape]}
             </p>
 
-            <h3 className={clsx("font-poppins font-bold text-sm sm:text-base text-black dark:text-white leading-tight mb-1.5", !product.inStock ? "opacity-70" : "group-hover:text-brand-pink transition-colors duration-300")}>
+            <h3
+              className={clsx(
+                "font-poppins font-bold text-sm sm:text-base text-black dark:text-white leading-tight mb-1.5",
+                !product.inStock
+                  ? "opacity-70"
+                  : "group-hover:text-brand-pink transition-colors duration-300",
+              )}
+            >
               {product.name}
             </h3>
 

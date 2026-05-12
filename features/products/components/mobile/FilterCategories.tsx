@@ -41,15 +41,45 @@ import { useCategories } from "@features/categories/hooks/useCategories";
 import type { CategoryWithSubs } from "@features/categories/types/category.types";
 
 const ICON_MAP: Record<string, LucideIcon> = {
-  Glasses, Sparkles, Stars, Gem, Tag, Percent, Heart, ShoppingBag, Search, Eye,
-  Sun, Moon, CloudSun, Aperture, Focus, Disc3, Music, Headphones, Camera, Wand2,
-  Flame, Zap, Award, Crown, Gift, Package, Boxes, Layers, Palette, Flower2,
+  Glasses,
+  Sparkles,
+  Stars,
+  Gem,
+  Tag,
+  Percent,
+  Heart,
+  ShoppingBag,
+  Search,
+  Eye,
+  Sun,
+  Moon,
+  CloudSun,
+  Aperture,
+  Focus,
+  Disc3,
+  Music,
+  Headphones,
+  Camera,
+  Wand2,
+  Flame,
+  Zap,
+  Award,
+  Crown,
+  Gift,
+  Package,
+  Boxes,
+  Layers,
+  Palette,
+  Flower2,
 };
 
 type Page = { href: string; label: string };
 
 function categoryToPage(c: CategoryWithSubs, lang: string): Page {
-  const href = c.kind === "flag" && c.href_override ? c.href_override : `/products?category=${c.slug}`;
+  const href =
+    c.kind === "flag" && c.href_override
+      ? c.href_override
+      : `/products?category=${c.slug}`;
   const label =
     lang.startsWith("en") && c.name_en
       ? c.name_en
@@ -75,9 +105,9 @@ function FilterChips({
   return (
     <div className="flex flex-row gap-3 overflow-x-auto px-4 py-3 scrollbar-hide">
       <CategoryChip
-        item={{ href: "/products", label: "Todos" }}
-        active={!anyActive}
+        item={{ label: "Home", href: "/" }}
         allChip
+        active={!anyActive}
       />
       {categories.map((c) => {
         const page = categoryToPage(c, lang);
@@ -136,8 +166,12 @@ const FilterProducts = () => {
   const { data: categories = [] } = useCategories();
 
   return (
-    <nav className="mt-16">
-      <Suspense fallback={<FilterChipsFallback categories={categories} lang={i18n.language} />}>
+    <nav className="">
+      <Suspense
+        fallback={
+          <FilterChipsFallback categories={categories} lang={i18n.language} />
+        }
+      >
         <FilterChips categories={categories} lang={i18n.language} />
       </Suspense>
     </nav>

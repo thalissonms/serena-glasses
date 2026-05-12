@@ -284,7 +284,7 @@ export async function POST(request: NextRequest) {
       }
 
       if (mpStatus === "rejected") {
-        const statusDetail = (mpRes as any).status_detail ?? "cc_rejected_other_reason";
+        const statusDetail = (mpRes).status_detail ?? "cc_rejected_other_reason";
         const kind = classifyMpError(statusDetail);
 
         await getSupabaseServer()
@@ -325,8 +325,8 @@ export async function POST(request: NextRequest) {
         maxAttempts: MAX_ATTEMPTS,
         payment: { type: "card", status: mpStatus },
       });
-    } catch (mpErr: any) {
-      const errMsg = mpErr?.message ?? String(mpErr);
+    } catch (mpErr: unknown) {
+      const errMsg = mpErr instanceof Error ? mpErr.message : String(mpErr);
       await getSupabaseServer()
         .from("orders")
         .update({ status: "payment_failed", payment_error: { message: errMsg } })
@@ -520,7 +520,7 @@ export async function POST(request: NextRequest) {
         email: identification.email,
       }).catch((err) => console.error("[checkout] email error:", err));
 
-      const txData = (mpRes as any).point_of_interaction?.transaction_data;
+      const txData = (mpRes).point_of_interaction?.transaction_data;
       return NextResponse.json({
         orderNumber,
         orderId: order.id,
@@ -563,8 +563,8 @@ export async function POST(request: NextRequest) {
         email: identification.email,
       }).catch((err) => console.error("[checkout] email error:", err));
 
-      const txDetails = (mpRes as any).transaction_details;
-      const barcode = (mpRes as any).barcode?.content ?? "";
+      const txDetails = (mpRes).transaction_details;
+      const barcode = (mpRes as { barcode?: { content: string } }).barcode?.content ?? "";
       return NextResponse.json({
         orderNumber,
         orderId: order.id,
@@ -632,7 +632,7 @@ export async function POST(request: NextRequest) {
       }
 
       if (mpStatus === "rejected") {
-        const statusDetail = (mpRes as any).status_detail ?? "cc_rejected_other_reason";
+        const statusDetail = (mpRes as { status_detail?: string }).status_detail ?? "cc_rejected_other_reason";
         const kind = classifyMpError(statusDetail);
 
         if (kind === "definitive_rejection") {
@@ -685,8 +685,8 @@ export async function POST(request: NextRequest) {
         payment: { type: "card", status: mpStatus },
       });
     }
-  } catch (mpErr: any) {
-    const errMsg = mpErr?.message ?? String(mpErr);
+  } catch (mpErr: unknown) {
+    const errMsg = mpErr instanceof Error ? mpErr.message : String(mpErr);
     await getSupabaseServer().from("orders").update({
       status: "payment_failed",
       payment_error: { message: errMsg },

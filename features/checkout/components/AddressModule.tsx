@@ -101,7 +101,7 @@ export function AddressModule() {
             type="button"
             onClick={handleFetch}
             disabled={!canSearch}
-            className="w-full h-[42px] border-2 border-black dark:border-brand-pink bg-black dark:bg-brand-pink text-white dark:text-black font-bold text-sm shadow-[2px_2px_0_#FF00B6] dark:shadow-[2px_2px_0_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[2px_2px_0_#FF00B6] dark:disabled:hover:shadow-[2px_2px_0_#000]"
+            className="h-12 dark:border-brand-pink bg-brand-black dark:bg-brand-pink shadow-[1px_1px_0] shadow-brand-black border-2 border-brand-black text-white font-poppins text-xs font-black uppercase tracking-wider px-4 py-2 hover:bg-brand-pink hover:shadow-[4px_4px_0] dark:hover:bg-white dark:hover:text-black disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 cursor-pointer transition-all duration-300"
           >
             {cepLoading ? t("address.searching") : t("address.searchCep")}
           </button>

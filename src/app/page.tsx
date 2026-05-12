@@ -26,7 +26,7 @@ export default async function HomePage() {
         <div className="relative z-10 bg-white dark:bg-brand-pink-bg-dark hidden md:block">
           <NewArrivals products={newProducts} />
         </div>
-        <div className="md:hidden block">
+        <div className="md:hidden block max-w-[100vw]">
           <NewArrivalsMobile products={allProducts} />
         </div>
       </article>

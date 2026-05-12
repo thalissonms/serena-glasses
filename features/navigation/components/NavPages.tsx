@@ -28,6 +28,7 @@ export const NavPages = () => {
 
   return (
     <Suspense fallback={<NavPagesFallback pages={pages} t={t} />}>
+      
       <NavPagesInner pages={pages} t={t} />
     </Suspense>
   );
@@ -53,6 +54,7 @@ function NavPagesInner({ pages, t }: { pages: Page[]; t: (k: string) => string }
   return (
     <nav aria-label={t("mainNavigation")} className="hidden lg:block">
       <ul className="flex items-center gap-6">
+        <NavItem key="/" item={{ href: "/", label: t("home") }} active={isActive(usePathname(), "/")} />
         {pages.map((item) => {
           const active = isNavActive(pathname, searchParams, item.href);
           return <NavItem key={item.href} item={item} active={active} />;

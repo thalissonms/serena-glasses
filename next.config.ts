@@ -93,12 +93,12 @@ const nextConfig: NextConfig = {
    * Headers globais + cache estático para assets
    */
   async headers() {
-    return [
+    const headers = [
       // Segurança aplicada a todas as rotas (em dev apenas CSP simplificada; em prod conjunto completo)
-      {
+      ...(securityHeaders.length > 0 ? [{
         source: "/(.*)",
         headers: securityHeaders,
-      },
+      }] : []),
       // Cache longo para assets estáticos
       {
         source: "/:all*(svg|jpg|png|webp|avif|woff2)",
@@ -108,6 +108,7 @@ const nextConfig: NextConfig = {
         ],
       },
     ];
+    return headers;
   },
 };
 

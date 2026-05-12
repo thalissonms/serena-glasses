@@ -8,6 +8,7 @@ import ProductInfo from "./ProductInfo";
 import ProductMediaViewer from "./ProductMediaViewer";
 import { useTheme } from "@shared/providers/ThemeProvider";
 import ProductMediaViewerMobile from "./mobile/ProductMediaViewerMobile";
+import ProductActionsMobile from "./mobile/ProductActionsMobile";
 
 interface ProductPageContentProps {
   product: Product;
@@ -41,7 +42,7 @@ export default function ProductPageContent({
         backgroundRepeat: "repeat",
       }}
     >
-      <section className="max-w-[96vw] mx-auto px-4 py-6 md:px-20 md:py-10 grid-cols-1 md:grid-cols-[26.5rem_1fr] items-start hidden md:grid">
+      <section className="max-w-[96vw] mx-auto px-4 py-6 md:px-20 md:py-10 grid-cols-1 hidden md:grid-cols-[26.5rem_1fr] items-start md:grid">
         <ProductMediaViewer
           name={product.name}
           videoSrc={videoSrc}
@@ -64,20 +65,24 @@ export default function ProductPageContent({
           <ProductDelivery />
         </div>
       </section>
-
-      {/* Mobile Layout */}
-      <section className="md:hidden">
-        <ProductMediaViewerMobile
-          name={product.name}
-          videoSrc={videoSrc}
-          fallbackImageUrl={
-            product.images.find((img) => img.isPrimary)?.url ??
-            product.images[0]?.url
-          }
+        <ProductDescription product={product} />
+      <section className="md:hidden relative">
+        <ProductInfo
+          product={product}
+          selectedColor={selectedColor}
+          onColorChange={setSelectedColor}
         />
+        <div className="flex-1 flex flex-col gap-3 pl-0 pt-4 md:pl-20 md:pt-0 md:py-2">
+          <ProductDelivery />
+        </div>
+        <ProductDescription product={product} />
+        <div className="w-full h-22 bg-brand-pink-light/60 dark:bg-brand-pink-bg-dark/40 backdrop-blur-lg shadow-[-4px_-4px_6px] shadow-black/25 sticky bottom-14 py-4 px-4 z-50">
+          <ProductActionsMobile
+            product={product}
+            selectedColorIndex={selectedColor}
+          />
+        </div>
       </section>
-
-      {/* <ProductDescription product={product} /> */}
     </main>
   );
 }

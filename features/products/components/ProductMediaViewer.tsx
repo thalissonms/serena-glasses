@@ -42,7 +42,7 @@ export default function ProductMediaViewer({ name, videoSrc, fallbackImageUrl }:
       : textStyles[styleIndex];
 
   return (
-    <div className="relative w-full max-w-106 mx-auto md:mx-0 aspect-9/16 border-4 border-black dark:border-brand-pink-light shadow-[8px_8px_0px] shadow-brand-pink dark:shadow-brand-blue overflow-hidden bg-black">
+    <div className="relative w-full max-w-42 md:max-w-106 mx-auto md:mx-0 aspect-9/16 border-4 border-black dark:border-brand-pink-light shadow-[8px_8px_0px] shadow-brand-pink dark:shadow-brand-blue overflow-hidden bg-black">
       <AnimatePresence>
         {vidAnimation && (
           <motion.div

@@ -24,11 +24,17 @@ export const siteConfig = {
     type: "website",
   },
   twitter: {
-    card: "summary_large_image", 
+    card: "summary_large_image",
     site: "@serenatt",
     creator: "@D3CO08",
     title: "Serana Glasses - Boutique de Óculos Solar",
     description: "Serana Glasses - Boutique de Óculos Solar",
     images: ["/logo/logo-pink.svg"],
+  },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
   },
 } as const;

@@ -57,8 +57,8 @@ export function WishlistDropdown() {
                       {product.name}
                     </p>
                   </Link>
-                  <p className="font-yellowtail text-lg text-brand-pink leading-none mt-0.5">
-                    {formatPrice(Math.round(product.price * 100))}
+                  <p className="font-poppins font-semibold text-lg text-brand-pink leading-none mt-0.5">
+                    {formatPrice(Math.round(product.price))}
                   </p>
                 </div>
 

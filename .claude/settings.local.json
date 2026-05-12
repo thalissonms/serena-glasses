@@ -26,7 +26,8 @@
       "PowerShell(npx tsc --noEmit 2>&1)",
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "mcp__plugin_context-mode_context-mode__ctx_execute"
     ],
     "additionalDirectories": [
       "c:\\Users\\Thalisson\\Documents\\Serena\\serena-glasses\\AGENT",

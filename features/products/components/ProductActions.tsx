@@ -25,7 +25,7 @@ export default function ProductActions({ product, selectedColorIndex }: ProductA
   const image = activeVariant?.images[0] ?? primaryImage?.url ?? "";
 
   function handleAddToCart(add:boolean = true) {
-    if (!activeVariant) return;
+    if (!activeVariant?.inStock) return;
     addItem({
       variantId: activeVariant.id,
       productId: product.id,
@@ -41,6 +41,7 @@ export default function ProductActions({ product, selectedColorIndex }: ProductA
     setTimeout(() => setAdded(false), 2000);
   }
   function handleBuyNow() {
+    if (!activeVariant?.inStock) return;
     handleAddToCart(false);
     router.push("/cart");
   }
@@ -61,7 +62,8 @@ export default function ProductActions({ product, selectedColorIndex }: ProductA
       </button>
       <button
         onClick={handleBuyNow}
-        className="w-full py-4 text-sm font-black uppercase tracking-widest border-4 border-black dark:border-brand-pink-light bg-black dark:bg-brand-black-dark text-white shadow-[6px_6px_0_#FF00B6] hover:translate-y-0.5 hover:shadow-[4px_4px_0_#FF00B6] transition-all active:translate-y-1 cursor-pointer"
+        disabled={!activeVariant?.inStock}
+        className="w-full py-4 text-sm font-black uppercase tracking-widest border-4 border-black dark:border-brand-pink-light bg-black dark:bg-brand-black-dark text-white shadow-[6px_6px_0] shadow-brand-pink hover:translate-y-0.5 hover:shadow-[4px_4px_0] transition-all active:translate-y-1 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-zinc-400 disabled:dark:bg-zinc-600 disabled:text-zinc-200 disabled:shadow-[2px_2px_0px] disabled:hover:translate-y-0 disabled:hover:shadow-[2px_2px_0px]"
       >
         {t("page.buyNow")}
       </button>
