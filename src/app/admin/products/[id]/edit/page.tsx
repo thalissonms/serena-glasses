@@ -42,7 +42,7 @@ export default async function AdminProductEditPage({ params }: Props) {
           short_description: product.short_description ?? "",
           price: product.price,
           compare_at_price: product.compare_at_price ?? null,
-          category_id: (product as { category_id?: string }).category_id ?? undefined,
+          category_id: product.category_id ?? undefined,
           frame_shape: asEnum(FRAME_SHAPES, product.frame_shape),
           frame_material: asEnum(FRAME_MATERIALS, product.frame_material),
           lens_type: asEnum(LENS_TYPES, product.lens_type),

@@ -1,6 +1,7 @@
 ﻿import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { STOCK_RESERVING_STATUSES } from "../consts/products.const";
 import type { ProductType } from "../types/products.type";
+import type { CategoryRef } from "@features/products/types/product.types";
 
 type DbVariant = {
   id: string;
@@ -8,6 +9,14 @@ type DbVariant = {
   color_hex: string;
   in_stock: boolean;
   stock_quantity: number;
+};
+
+type DbCategoryRef = {
+  id: string;
+  slug: string;
+  name_pt: string;
+  name_en: string | null;
+  name_es: string | null;
 };
 
 type DbProductRow = {
@@ -18,13 +27,27 @@ type DbProductRow = {
   price: number;
   active: boolean;
   featured: boolean;
-  category: string;
+  category_id: string | null;
+  categories: DbCategoryRef | DbCategoryRef[] | null;
   is_new: boolean;
   is_sale: boolean;
   is_outlet: boolean;
   product_images: { url: string; alt: string | null; position: number }[] | null;
   product_variants: DbVariant[] | null;
 };
+
+function toCategoryRef(raw: DbProductRow["categories"]): CategoryRef | null {
+  const cat = Array.isArray(raw) ? raw[0] : raw;
+  return cat
+    ? {
+        id: cat.id,
+        slug: cat.slug,
+        name_pt: cat.name_pt,
+        name_en: cat.name_en,
+        name_es: cat.name_es,
+      }
+    : null;
+}
 
 /**
  * Lista produtos pro admin com estoque agregado por variante.
@@ -35,7 +58,8 @@ export async function getProductsList(): Promise<ProductType[]> {
     .from("products")
     .select(
       `
-      id, name, slug, code, price, active, featured, category, is_new, is_sale, is_outlet,
+      id, name, slug, code, price, active, featured, category_id, is_new, is_sale, is_outlet,
+      categories ( id, slug, name_pt, name_en, name_es ),
       product_images (url, alt, position),
       product_variants (id, color_name, color_hex, in_stock, stock_quantity)
       `,
@@ -69,7 +93,7 @@ export async function getProductsList(): Promise<ProductType[]> {
     price: p.price,
     active: p.active,
     featured: p.featured,
-    category: p.category,
+    category: toCategoryRef(p.categories),
     is_new: p.is_new,
     is_sale: p.is_sale,
     is_outlet: p.is_outlet,

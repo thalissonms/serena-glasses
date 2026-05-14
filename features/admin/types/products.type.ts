@@ -1,4 +1,5 @@
 import type { VariantWithStockInterface } from "./productVariant.interface";
+import type { CategoryRef } from "@features/products/types/product.types";
 
 export interface ProductImageType {
   url: string;
@@ -14,7 +15,7 @@ export interface ProductType {
   price: number;
   active: boolean;
   featured: boolean;
-  category: string;
+  category: CategoryRef | null;
   is_new: boolean;
   is_sale: boolean;
   is_outlet: boolean;

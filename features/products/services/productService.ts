@@ -1,6 +1,13 @@
 ﻿import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { STOCK_RESERVING_STATUSES } from "@features/admin/consts/products.const";
-import type { Product, ProductVariant, ProductImage, ProductColor } from "../types/product.types";
+import type {
+  Product,
+  ProductVariant,
+  ProductImage,
+  ProductColor,
+  CategoryRef,
+  SubcategoryRef,
+} from "../types/product.types";
 
 type DbVariant = {
   id: string;
@@ -17,6 +24,22 @@ type DbImage = {
   variant_id: string | null;
 };
 
+type DbCategoryRef = {
+  id: string;
+  slug: string;
+  name_pt: string;
+  name_en: string | null;
+  name_es: string | null;
+};
+
+type DbSubcategoryRef = DbCategoryRef & { display_order: number };
+
+type DbProductSubcategoryJoin = {
+  // Supabase pode retornar como array (1:N) ou objeto (1:1), dependendo da
+  // forma do FK. Aceitamos ambos e normalizamos no mapeamento.
+  subcategories: DbSubcategoryRef | DbSubcategoryRef[] | null;
+};
+
 type DbProduct = {
   id: string;
   slug: string;
@@ -25,7 +48,9 @@ type DbProduct = {
   short_description: string | null;
   price: number;
   compare_at_price: number | null;
-  category: string;
+  category_id: string | null;
+  categories: DbCategoryRef | DbCategoryRef[] | null;
+  product_subcategories: DbProductSubcategoryJoin[] | null;
   is_outlet: boolean;
   is_sale: boolean;
   is_new: boolean;
@@ -57,6 +82,40 @@ function toColorSlug(name: string): string {
     .normalize("NFD")
     .replace(new RegExp("[\\u0300-\\u036f]", "g"), "")
     .replace(/\s+/g, "-");
+}
+
+function pickCategoryRef(raw: DbProduct["categories"], productSlug: string): CategoryRef {
+  const cat = Array.isArray(raw) ? raw[0] : raw;
+  if (!cat) {
+    // Dado inconsistente: produto sem FK pra categories. Sinaliza pra cima
+    // ao invés de seguir silencioso — categoria é parte do contrato.
+    throw new Error(`Product "${productSlug}" has no category join row.`);
+  }
+  return {
+    id: cat.id,
+    slug: cat.slug,
+    name_pt: cat.name_pt,
+    name_en: cat.name_en,
+    name_es: cat.name_es,
+  };
+}
+
+function mapSubcategories(rows: DbProductSubcategoryJoin[] | null): SubcategoryRef[] {
+  if (!rows || rows.length === 0) return [];
+  const subs: SubcategoryRef[] = [];
+  for (const row of rows) {
+    const sub = Array.isArray(row.subcategories) ? row.subcategories[0] : row.subcategories;
+    if (!sub) continue;
+    subs.push({
+      id: sub.id,
+      slug: sub.slug,
+      name_pt: sub.name_pt,
+      name_en: sub.name_en,
+      name_es: sub.name_es,
+      display_order: sub.display_order,
+    });
+  }
+  return subs.sort((a, b) => a.display_order - b.display_order);
 }
 
 function mapProduct(p: DbProduct, reservedByVariant: Map<string, number>): Product {
@@ -102,7 +161,8 @@ function mapProduct(p: DbProduct, reservedByVariant: Map<string, number>): Produ
     price: Math.round(p.price),
     compareAtPrice: p.compare_at_price ? Math.round(p.compare_at_price) : undefined,
     currency: "BRL",
-    category: p.category as Product["category"],
+    category: pickCategoryRef(p.categories, p.slug),
+    subcategories: mapSubcategories(p.product_subcategories),
     frameShape: (p.frame_shape ?? "round") as Product["frameShape"],
     frameMaterial: (p.frame_material ?? "acetate") as Product["frameMaterial"],
     lensType: (p.lens_type ?? "solid") as Product["lensType"],
@@ -132,7 +192,13 @@ function mapProduct(p: DbProduct, reservedByVariant: Map<string, number>): Produ
   };
 }
 
-const SELECT = "*, product_variants(*), product_images(*)";
+const SELECT = `
+  *,
+  categories ( id, slug, name_pt, name_en, name_es ),
+  product_subcategories ( subcategories ( id, slug, name_pt, name_en, name_es, display_order ) ),
+  product_variants(*),
+  product_images(*)
+`;
 
 /**
  * Busca quantidade reservada (em pedidos nÃ£o-cancelados) por variant_id.

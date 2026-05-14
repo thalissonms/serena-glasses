@@ -2,6 +2,7 @@
 import { STOCK_RESERVING_STATUSES } from "../consts/products.const";
 import type { VariantWithStockInterface } from "../types/productVariant.interface";
 import type { ProductImageInterface } from "../types/productImage.interface";
+import type { CategoryRef } from "@features/products/types/product.types";
 
 export interface ProductEditData {
   id: string;
@@ -12,7 +13,8 @@ export interface ProductEditData {
   short_description: string | null;
   price: number;
   compare_at_price: number | null;
-  category: string;
+  category_id: string | null;
+  category: CategoryRef | null;
   frame_shape: string | null;
   frame_material: string | null;
   lens_type: string | null;
@@ -35,7 +37,8 @@ export async function getProductForEdit(id: string): Promise<ProductEditData | n
     .select(
       `
       id, name, slug, code, description, short_description,
-      price, compare_at_price, category,
+      price, compare_at_price, category_id,
+      categories ( id, slug, name_pt, name_en, name_es ),
       frame_shape, frame_material, lens_type,
       uv_protection, weight, dimensions,
       tags, included_accessories,
@@ -95,6 +98,26 @@ export async function getProductForEdit(id: string): Promise<ProductEditData | n
   const images: ProductImageInterface[] = [...((product.product_images ?? []) as DbImage[])]
     .sort((a, b) => a.position - b.position);
 
+  type DbCategoryRef = {
+    id: string;
+    slug: string;
+    name_pt: string;
+    name_en: string | null;
+    name_es: string | null;
+  };
+  const rawCategories = (product as { categories?: DbCategoryRef | DbCategoryRef[] | null })
+    .categories;
+  const categoryRow = Array.isArray(rawCategories) ? rawCategories[0] : rawCategories ?? null;
+  const category: CategoryRef | null = categoryRow
+    ? {
+        id: categoryRow.id,
+        slug: categoryRow.slug,
+        name_pt: categoryRow.name_pt,
+        name_en: categoryRow.name_en,
+        name_es: categoryRow.name_es,
+      }
+    : null;
+
   return {
     id: product.id,
     name: product.name,
@@ -104,7 +127,8 @@ export async function getProductForEdit(id: string): Promise<ProductEditData | n
     short_description: product.short_description,
     price: product.price,
     compare_at_price: product.compare_at_price,
-    category: product.category,
+    category_id: (product as { category_id: string | null }).category_id,
+    category,
     frame_shape: product.frame_shape,
     frame_material: product.frame_material,
     lens_type: product.lens_type,
