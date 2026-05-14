@@ -34,21 +34,24 @@ export async function validateCoupon(input: ValidateCouponInput): Promise<Valida
     return { ok: false, error: COUPON_ERRORS.EXPIRED };
   }
 
-  // 3. Busca preÃ§os e categorias do banco (server-side â€” nÃ£o confia no client)
+  // 3. Busca preços e categorias do banco (server-side — não confia no client)
   const variantIds = items.map((i) => i.variantId);
   const { data: dbVariants } = await getSupabaseServer()
     .from("product_variants")
-    .select("id, product_id, products(id, price, category)")
+    .select("id, product_id, products(id, price, category_id, categories(slug))")
     .in("id", variantIds);
 
   const priceMap: Record<string, number> = {};
-  // chave: variantId â†’ categoria do produto (para filtro de categorias)
+  // chave: variantId → slug da categoria do produto (resolvido via join)
   const categoryByVariant: Record<string, string | null> = {};
   for (const v of dbVariants ?? []) {
     const product = Array.isArray(v.products) ? v.products[0] : v.products;
     if (product && typeof product.price === "number") {
       priceMap[v.id] = Math.round(product.price);
-      categoryByVariant[v.id] = (product as { category?: string | null }).category ?? null;
+      const rawCat = (product as { categories?: { slug: string } | { slug: string }[] | null })
+        .categories;
+      const cat = Array.isArray(rawCat) ? rawCat[0] : rawCat;
+      categoryByVariant[v.id] = cat?.slug ?? null;
     }
   }
 

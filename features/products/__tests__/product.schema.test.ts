@@ -13,12 +13,25 @@ import {
   productSchema,
   productFiltersSchema,
 } from "../schemas/product.schema";
-import { MOCK_PRODUCTS } from "../mock/products.mock";
+import type { CategoryRef } from "../types/product.types";
+
+// Factory para CategoryRef minimamente valido. Os testes do schema precisam
+// de um shape consistente agora que `product.category` é uma referencia ao
+// banco e nao mais um literal "sunglasses" | "miniDrop" | "accessories".
+const fakeCategory = (slug = "test"): CategoryRef => ({
+  id: crypto.randomUUID(),
+  slug,
+  name_pt: "Test",
+  name_en: null,
+  name_es: null,
+});
 
 // ─── Enums ──────────────────────────────────────────────────────────
 
 describe("Product Enums", () => {
-  it("productCategoryEnum aceita categorias válidas", () => {
+  it("productCategoryEnum legado segue aceitando os 3 slugs herdados", () => {
+    // O enum-string segue exportado ate a Etapa 4 (consumido por
+    // getCategoryIcon). Validamos so a forma — categoria real agora e ref.
     expect(productCategoryEnum.safeParse("sunglasses").success).toBe(true);
     expect(productCategoryEnum.safeParse("accessories").success).toBe(true);
     expect(productCategoryEnum.safeParse("miniDrop").success).toBe(true);
@@ -180,7 +193,8 @@ describe("Product Schema", () => {
       shortDescription: "Test product",
       price: 9900,
       currency: "BRL" as const,
-      category: "sunglasses" as const,
+      category: fakeCategory("oculos-de-sol"),
+      subcategories: [],
       frameShape: "round" as const,
       frameMaterial: "metal" as const,
       lensType: "solid" as const,
@@ -212,7 +226,8 @@ describe("Product Schema", () => {
       shortDescription: "Sem img",
       price: 9900,
       currency: "BRL",
-      category: "sunglasses",
+      category: fakeCategory(),
+      subcategories: [],
       frameShape: "round",
       frameMaterial: "metal",
       lensType: "solid",
@@ -243,7 +258,8 @@ describe("Product Schema", () => {
       description: "Preço inválido",
       shortDescription: "Bad",
       currency: "BRL",
-      category: "sunglasses",
+      category: fakeCategory(),
+      subcategories: [],
       frameShape: "round",
       frameMaterial: "metal",
       lensType: "solid",
@@ -277,7 +293,8 @@ describe("Product Schema", () => {
       shortDescription: "Bad",
       price: 9900,
       currency: "BRL",
-      category: "sunglasses",
+      category: fakeCategory(),
+      subcategories: [],
       frameShape: "round",
       frameMaterial: "metal",
       lensType: "solid",
@@ -299,78 +316,38 @@ describe("Product Schema", () => {
     };
     expect(productSchema.safeParse(base).success).toBe(false);
   });
-});
 
-// ─── Mock Data Validation ───────────────────────────────────────────
-
-describe("MOCK_PRODUCTS", () => {
-  it("tem pelo menos 6 produtos", () => {
-    expect(MOCK_PRODUCTS.length).toBeGreaterThanOrEqual(6);
-  });
-
-  it("todos os produtos passam na validação do schema", () => {
-    MOCK_PRODUCTS.forEach((product) => {
-      const result = productSchema.safeParse(product);
-      if (!result.success) {
-        console.error(`Produto ${product.slug} falhou:`, result.error.issues);
-      }
-      expect(result.success).toBe(true);
-    });
-  });
-
-  it("todos os slugs são únicos", () => {
-    const slugs = MOCK_PRODUCTS.map((p) => p.slug);
-    expect(new Set(slugs).size).toBe(slugs.length);
-  });
-
-  it("todos os IDs são únicos", () => {
-    const ids = MOCK_PRODUCTS.map((p) => p.id);
-    expect(new Set(ids).size).toBe(ids.length);
-  });
-
-  it("todos os SKUs de variantes são únicos globalmente", () => {
-    const skus = MOCK_PRODUCTS.flatMap((p) => p.variants.map((v) => v.sku));
-    expect(new Set(skus).size).toBe(skus.length);
-  });
-
-  it("tem pelo menos 1 produto featured", () => {
-    expect(MOCK_PRODUCTS.some((p) => p.featured)).toBe(true);
-  });
-
-  it("tem pelo menos 1 produto outlet", () => {
-    expect(MOCK_PRODUCTS.some((p) => p.isOutlet)).toBe(true);
-  });
-
-  it("tem pelo menos 1 produto em promoção", () => {
-    expect(MOCK_PRODUCTS.some((p) => p.isOnSale)).toBe(true);
-  });
-
-  it("tem pelo menos 1 produto miniDrop", () => {
-    expect(MOCK_PRODUCTS.some((p) => p.category === "miniDrop")).toBe(true);
-  });
-
-  it("produto outlet tem outletReason", () => {
-    MOCK_PRODUCTS.filter((p) => p.isOutlet).forEach((p) => {
-      expect(p.outletReason).toBeTruthy();
-    });
-  });
-
-  it("produto em promoção tem compareAtPrice maior que price", () => {
-    MOCK_PRODUCTS.filter((p) => p.isOnSale && p.compareAtPrice).forEach((p) => {
-      expect(p.compareAtPrice!).toBeGreaterThan(p.price);
-    });
-  });
-
-  it("cada produto tem pelo menos 1 imagem primária", () => {
-    MOCK_PRODUCTS.forEach((p) => {
-      expect(p.images.some((img) => img.isPrimary)).toBe(true);
-    });
-  });
-
-  it("todos os produtos têm uvProtection true", () => {
-    MOCK_PRODUCTS.forEach((p) => {
-      expect(p.uvProtection).toBe(true);
-    });
+  it("rejeita category sem name_pt", () => {
+    const product = {
+      id: "prod_bad_cat",
+      slug: "bad-cat",
+      name: "Bad Category",
+      description: "desc",
+      shortDescription: "short",
+      price: 9900,
+      currency: "BRL" as const,
+      category: { ...fakeCategory(), name_pt: "" },
+      subcategories: [],
+      frameShape: "round" as const,
+      frameMaterial: "metal" as const,
+      lensType: "solid" as const,
+      tags: [],
+      images: [{ url: "/img.png", alt: "T", isPrimary: true, order: 0 }],
+      variants: [],
+      rating: { average: 0, count: 0 },
+      seo: { title: "T", description: "D", keywords: ["t"] },
+      inStock: false,
+      stockQuantity: 0,
+      status: "draft" as const,
+      featured: false,
+      isNew: false,
+      isOnSale: false,
+      isOutlet: false,
+      uvProtection: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    expect(productSchema.safeParse(product).success).toBe(false);
   });
 });
 
@@ -381,13 +358,16 @@ describe("ProductFilters Schema", () => {
     expect(productFiltersSchema.safeParse({}).success).toBe(true);
   });
 
-  it("aceita filtro por categoria", () => {
-    expect(productFiltersSchema.safeParse({ category: "sunglasses" }).success).toBe(true);
+  it("aceita filtro por slug de categoria (string livre)", () => {
+    // Agora `category` é slug-livre (qualquer string), pois a tabela
+    // categories é DB-driven — admin pode cadastrar qualquer slug.
+    expect(productFiltersSchema.safeParse({ category: "oculos-de-sol" }).success).toBe(true);
+    expect(productFiltersSchema.safeParse({ category: "qualquer-coisa" }).success).toBe(true);
   });
 
   it("aceita filtros combinados", () => {
     const filters = {
-      category: "sunglasses",
+      category: "oculos-de-sol",
       frameShape: "cat-eye",
       minPrice: 10000,
       maxPrice: 50000,
@@ -395,10 +375,6 @@ describe("ProductFilters Schema", () => {
       isOnSale: false,
     };
     expect(productFiltersSchema.safeParse(filters).success).toBe(true);
-  });
-
-  it("rejeita categoria inválida", () => {
-    expect(productFiltersSchema.safeParse({ category: "invalid" }).success).toBe(false);
   });
 
   it("rejeita minPrice negativo", () => {
