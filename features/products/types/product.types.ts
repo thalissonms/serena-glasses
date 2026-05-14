@@ -1,9 +1,26 @@
 // ─── Enums / Literais ───────────────────────────────────────────────
 
+// `ProductCategory` (enum-string) é resquício do schema pré-v1.7.0. Hoje a
+// categoria vive na tabela `categories` (vide `CategoryRef`). Mantido só
+// porque `getCategoryIcon.ts` ainda consome — removido na Etapa 4.
 export type ProductCategory =
   | "sunglasses"
   | "accessories"
   | "miniDrop";
+
+// ─── Refs de hierarquia (DB-driven, schema-aware) ───────────────────
+
+export interface CategoryRef {
+  id: string;
+  slug: string;
+  name_pt: string;
+  name_en: string | null;
+  name_es: string | null;
+}
+
+export interface SubcategoryRef extends CategoryRef {
+  display_order: number;
+}
 
 export type FrameShape =
   | "round"
@@ -100,7 +117,8 @@ export interface Product {
 
   // ── Classificação ──
 
-  category: ProductCategory;
+  category: CategoryRef;
+  subcategories: SubcategoryRef[];
   frameShape: FrameShape;
   frameMaterial: FrameMaterial;
   lensType: LensType;
@@ -155,7 +173,8 @@ export interface ProductCard {
   price: number;
   compareAtPrice?: number;
   currency: "BRL";
-  category: ProductCategory;
+  category: CategoryRef;
+  subcategories: SubcategoryRef[];
   primaryImage: ProductImage;
   rating: ProductRating;
   inStock: boolean;
@@ -168,7 +187,8 @@ export interface ProductCard {
 
 /** Filtros de busca de produtos */
 export interface ProductFilters {
-  category?: ProductCategory;
+  /** Slug da categoria (ex.: "oculos-de-sol"). */
+  category?: string;
   frameShape?: FrameShape;
   frameMaterial?: FrameMaterial;
   lensType?: LensType;
@@ -183,6 +203,13 @@ export interface ProductFilters {
   tags?: string[];
   search?: string;         // busca textual
 }
+
+export interface ProductInfoProps {
+  product: Product;
+  selectedColor: number;
+  onColorChange: (index: number) => void;
+}
+
 
 /** Opções de ordenação */
 export type ProductSortBy =

@@ -2,11 +2,27 @@ import z from "zod";
 
 // ─── Enums ──────────────────────────────────────────────────────────
 
+// Enum-string legado pré-v1.7.0. Hoje categoria é registro do banco (vide
+// categoryRefSchema). Mantido só pelo getCategoryIcon — removido na Etapa 4.
 export const productCategoryEnum = z.enum([
   "sunglasses",
   "accessories",
   "miniDrop",
 ]);
+
+// ─── Refs de hierarquia ─────────────────────────────────────────────
+
+export const categoryRefSchema = z.object({
+  id: z.string().uuid(),
+  slug: z.string().min(1),
+  name_pt: z.string().min(1),
+  name_en: z.string().nullable(),
+  name_es: z.string().nullable(),
+});
+
+export const subcategoryRefSchema = categoryRefSchema.extend({
+  display_order: z.number().int(),
+});
 
 export const frameShapeEnum = z.enum([
   "round",
@@ -100,7 +116,8 @@ export const productSchema = z.object({
   compareAtPrice: z.number().int().positive().optional(),
   currency: z.literal("BRL"),
 
-  category: productCategoryEnum,
+  category: categoryRefSchema,
+  subcategories: z.array(subcategoryRefSchema),
   frameShape: frameShapeEnum,
   frameMaterial: frameMaterialEnum,
   lensType: lensTypeEnum,
@@ -133,7 +150,7 @@ export const productSchema = z.object({
 // ─── Filtros ────────────────────────────────────────────────────────
 
 export const productFiltersSchema = z.object({
-  category: productCategoryEnum.optional(),
+  category: z.string().optional(),
   frameShape: frameShapeEnum.optional(),
   frameMaterial: frameMaterialEnum.optional(),
   lensType: lensTypeEnum.optional(),
