@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Pencil, Plus } from "lucide-react";
 import ProductFlagToggle from "./ProductFlagToggle";
 import StockBadge from "./StockBadge";
-import { CATEGORY_LABEL } from "../consts/products.const";
 import { sumProductStock } from "../utils/sumProductStock";
 import type { ProductType } from "../types/products.type";
 import { formatPrice } from "@features/products/utils/formatPrice";
@@ -107,7 +106,7 @@ export default function ProductsClient({ products }: { products: ProductType[] }
                       )}
                     </td>
                     <td className="px-5 py-4 font-poppins text-xs font-semibold text-gray-400 uppercase tracking-wider whitespace-nowrap">
-                      {CATEGORY_LABEL[product.category] ?? product.category}
+                      {product.category?.name_pt ?? "—"}
                     </td>
                     <td className="px-5 py-4 font-poppins font-semibold text-sm text-white whitespace-nowrap">
                       {formatPrice(product.price)}
