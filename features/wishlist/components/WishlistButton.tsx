@@ -9,6 +9,7 @@ interface WishlistButtonProps {
   productId: string;
   className?: string;
   size?: number;
+  tooltip?: boolean;
 }
 
 const PARTICLES: { x: number; y: number; rotate: number; scale: number }[] = [
@@ -23,7 +24,7 @@ const PARTICLES: { x: number; y: number; rotate: number; scale: number }[] = [
   { x: 24,  y: 38,  rotate: 28,  scale: 0.55 },
 ];
 
-export function WishlistButton({ productId, className, size = 16 }: WishlistButtonProps) {
+export function WishlistButton({ productId, className, size = 16, tooltip = true }: WishlistButtonProps) {
   const { t } = useTranslation("wishlist");
   const { data: items = [] } = useWishlist();
   const { mutate: toggle, isPending } = useToggleWishlist();
@@ -46,22 +47,22 @@ export function WishlistButton({ productId, className, size = 16 }: WishlistButt
 
   return (
     <div className="relative inline-flex items-center justify-center">
-      {/* Tooltip */}
-      <AnimatePresence>
-        {showTooltip && (
-          <motion.div
-            className="absolute -top-9 left-1/2 -translate-x-1/2 bg-brand-pink border-2 border-black dark:border-brand-pink-light text-white text-[11px] font-black uppercase tracking-wide px-2.5 py-1 shadow-[2px_4px_0px] shadow-black dark:shadow-brand-blue  whitespace-nowrap pointer-events-none z-50"
-            initial={{ opacity: 0, y: 6, scale: 0.85 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -4, scale: 0.9 }}
-            transition={{ duration: 0.2 }}
-          >
-            ♥ {t("button.added")}!!!
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {tooltip && (
+        <AnimatePresence>
+          {showTooltip && (
+            <motion.div
+              className="absolute -top-9 left-1/2 -translate-x-1/2 bg-brand-pink border-2 border-black dark:border-brand-pink-light text-white text-[11px] font-black uppercase tracking-wide px-2.5 py-1 shadow-[2px_4px_0px] shadow-black dark:shadow-brand-blue  whitespace-nowrap pointer-events-none z-50"
+              initial={{ opacity: 0, y: 6, scale: 0.85 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -4, scale: 0.9 }}
+              transition={{ duration: 0.2 }}
+            >
+              ♥ {t("button.added")}!!!
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
 
-      {/* Exploding heart particles */}
       <AnimatePresence>
         {burst &&
           PARTICLES.map((p, i) => (

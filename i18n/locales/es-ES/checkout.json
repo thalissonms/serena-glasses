@@ -1,9 +1,15 @@
 {
   "cart": {
+    "title": "Carrito",
     "emptyTitle": "Tu carrito está vacío",
     "emptyDesc": "Añade algunos productos para continuar",
     "viewProducts": "Ver productos",
-    "removeItem": "Eliminar artículo"
+    "removeItem": "Eliminar artículo",
+    "increaseQty": "Aumentar cantidad",
+    "decreaseQty": "Disminuir cantidad",
+    "total": "Total",
+    "checkout": "Finalizar pedido",
+    "back": "Volver"
   },
   "header": {
     "myCart": "Mi carrito",

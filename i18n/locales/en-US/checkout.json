@@ -1,9 +1,15 @@
 {
   "cart": {
+    "title": "Cart",
     "emptyTitle": "Your cart is empty",
     "emptyDesc": "Add some products to continue",
     "viewProducts": "View products",
-    "removeItem": "Remove item"
+    "removeItem": "Remove item",
+    "increaseQty": "Increase quantity",
+    "decreaseQty": "Decrease quantity",
+    "total": "Total",
+    "checkout": "Checkout",
+    "back": "Back"
   },
   "header": {
     "myCart": "My cart",

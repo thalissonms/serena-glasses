@@ -17,7 +17,7 @@ import { Nav } from "@features/navigation/components/Nav";
 import { QueryProvider } from "@shared/providers/QueryProvider";
 import { ThemeProvider } from "@shared/providers/ThemeProvider";
 import NavBottom from "@features/navigation/components/mobile/NavBottom";
-// import ModalPresence from "@features/navigation/components/mobile/modals/ModalPresence";
+import ModalPresence from "@features/navigation/components/mobile/modals/ModalPresence";
 import { ReviewsOverlay } from "@features/products/components/ReviewsOverlay";
 import { TopBanner } from "@shared/components/layout/TopBanner";
 import { WhatsAppFloat } from "@shared/components/WhatsAppFloat";
@@ -26,7 +26,6 @@ import { Y2KToaster } from "@shared/components/Y2KToaster";
 import { getSetting } from "@features/admin/services/siteSettings.service";
 import { NavMobileTopBar } from "@features/navigation/components/mobile/NavMobileTopBar";
 
-// Script anti-FOUC: aplica a classe dark no <html> ANTES do React hydratar
 const themeInitScript = `
 (function() {
   try {
@@ -78,10 +77,10 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-  // modal,
+  modal,
 }: {
   children: React.ReactNode;
-  // modal: React.ReactNode;
+  modal: React.ReactNode;
 }) {
   const initialLang =
     typeof i18n.language === "string"
@@ -165,10 +164,8 @@ export default async function RootLayout({
                 <NavMobileTopBar />
               </div>
               <Nav />
-              <main className="min-h-screen">
-                {children}
-                {/* <ModalPresence modal={modal} /> */}
-              </main>
+              <main className="min-h-screen">{children}</main>
+              <ModalPresence modal={modal} />
               <Footer />
               <NavBottom />
               <ReviewsOverlay />

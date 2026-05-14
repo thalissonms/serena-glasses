@@ -1,5 +1,5 @@
 export const siteConfig = {
-  siteName: "Serena Glasses ✨",
+  siteName: "Serena Glasses ✦",
   siteDescription: "Serana Glasses - Boutique de Óculos Solar",
   siteKeywords: "óculos, moda, estilo, música, rosa, loja, design, boutique",
   author: "Thalisson M. Silva",

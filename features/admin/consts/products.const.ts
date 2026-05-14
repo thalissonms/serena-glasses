@@ -1,9 +1,3 @@
-export const CATEGORY_LABEL: Record<string, string> = {
-  sunglasses: "Óculos de Sol",
-  accessories: "Acessórios",
-  miniDrop: "Mini Drop",
-};
-
 /** Status do pedido que reserva estoque (qualquer um EXCETO cancelled). */
 export const STOCK_RESERVING_STATUSES = [
   "pending",

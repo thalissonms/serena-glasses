@@ -1,5 +1,5 @@
 ﻿"use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -32,12 +32,26 @@ export default function ProductCreateForm() {
   const {
     register,
     handleSubmit,
+    watch,
     setValue,
     formState: { errors },
   } = useForm<ProductCreateInput>({
     resolver: zodResolver(productCreateSchema),
-    defaultValues: { price: 0 },
+    defaultValues: { price: 0, weight: 30 },
   });
+
+  const selectedCategoryId = watch("category_id");
+  const selectedCategory = categories.find((c) => c.id === selectedCategoryId);
+  const availableSubcategories = selectedCategory?.subcategories ?? [];
+
+  const isFirstCategoryRender = useRef(true);
+  useEffect(() => {
+    if (isFirstCategoryRender.current) {
+      isFirstCategoryRender.current = false;
+      return;
+    }
+    setValue("subcategory_ids", []);
+  }, [selectedCategoryId, setValue]);
 
   function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
     const name = e.target.value;
@@ -115,11 +129,38 @@ export default function ProductCreateForm() {
           </select>
         </Field>
 
+        {availableSubcategories.length > 0 && (
+          <Field label="Subcategorias">
+            <div className="flex flex-col gap-2 mt-1">
+              {availableSubcategories.map((sub) => (
+                <label key={sub.id} className="inline-flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    value={sub.id}
+                    {...register("subcategory_ids")}
+                    className="accent-brand-pink"
+                  />
+                  <span className="font-inter text-sm text-gray-300">{sub.name_pt}</span>
+                </label>
+              ))}
+            </div>
+          </Field>
+        )}
+
         <Field label="Preço (centavos)" error={errors.price?.message} hint="ex: 19900 = R$199,00">
           <input
             type="number"
             min={1}
             {...register("price", { valueAsNumber: true })}
+            className={inputCls}
+          />
+        </Field>
+
+        <Field label="Peso (gramas)" error={errors.weight?.message} hint="usado no cálculo de frete">
+          <input
+            type="number"
+            min={1}
+            {...register("weight", { valueAsNumber: true })}
             className={inputCls}
           />
         </Field>

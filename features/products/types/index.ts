@@ -7,7 +7,6 @@ export type {
   ProductRating,
   ProductSeo,
   ProductFilters,
-  ProductCategory,
   ProductStatus,
   ProductSortBy,
   FrameShape,

@@ -2,8 +2,12 @@
   "page": {
     "colorLabel": "Color:",
     "addToCart": "Añadir al Carrito",
+    "addToCartAria": "Añadir {{name}} al carrito",
     "added": "✓ ¡Añadido!",
     "buyNow": "Comprar Ahora",
+    "buyNowAria": "Comprar {{name}} ahora",
+    "installments": "Hasta 6 cuotas sin intereses",
+    "back": "Volver",
     "delivery": {
       "sectionTitle": "Envío & Garantías",
       "daily": {
@@ -22,9 +26,6 @@
   },
   "listing": {
     "title": "Todos los Lentes",
-    "titleSunglasses": "Gafas de Sol",
-    "titleMiniDrop": "Mini Drop 2.0",
-    "titleAccessories": "Accesorios",
     "titleOutlet": "Outlet",
     "titleSale": "Promociones",
     "resultCount": "{{count}} producto encontrado",
@@ -61,6 +62,32 @@
     "actionView": "Ver producto",
     "unavailable": "No disponible",
     "soldOut": "Agotado"
+  },
+  "attributes": {
+    "frameShape": {
+      "round": "Redondo",
+      "square": "Cuadrado",
+      "cat-eye": "Cat Eye",
+      "aviator": "Aviador",
+      "rectangle": "Rectangular",
+      "oversized": "Oversized",
+      "geometric": "Geométrico",
+      "butterfly": "Mariposa"
+    },
+    "frameMaterial": {
+      "acetate": "Acetato",
+      "metal": "Metal",
+      "mixed": "Mixto",
+      "plastic": "Plástico",
+      "titanium": "Titanio"
+    },
+    "lensType": {
+      "polarized": "Polarizada",
+      "gradient": "Degradado",
+      "mirrored": "Espejada",
+      "solid": "Sólida",
+      "photochromic": "Fotocromática"
+    }
   },
   "description": {
     "stats": {

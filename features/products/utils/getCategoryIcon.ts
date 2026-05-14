@@ -1,20 +1,71 @@
-import { Glasses, Sparkles, Gem } from "lucide-react";
+import {
+  Glasses,
+  Sparkles,
+  Stars,
+  Gem,
+  Tag,
+  Percent,
+  Heart,
+  ShoppingBag,
+  Search,
+  Eye,
+  Sun,
+  Moon,
+  CloudSun,
+  Aperture,
+  Focus,
+  Disc3,
+  Music,
+  Headphones,
+  Camera,
+  Wand2,
+  Flame,
+  Zap,
+  Award,
+  Crown,
+  Gift,
+  Package,
+  Boxes,
+  Layers,
+  Palette,
+  Flower2,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import type { ProductCategory } from "@features/products/types";
 
-/**
- * Retorna o ícone Lucide correspondente a uma categoria de produto.
- * Para mapear por href de navegação, use getIconForHref em FilterProducts.
- */
-export function getCategoryIcon(category: ProductCategory): LucideIcon {
-  switch (category) {
-    case "sunglasses":
-      return Glasses;
-    case "miniDrop":
-      return Sparkles;
-    case "accessories":
-      return Gem;
-    default:
-      return Glasses;
-  }
+export const ICON_MAP: Record<string, LucideIcon> = {
+  Glasses,
+  Sparkles,
+  Stars,
+  Gem,
+  Tag,
+  Percent,
+  Heart,
+  ShoppingBag,
+  Search,
+  Eye,
+  Sun,
+  Moon,
+  CloudSun,
+  Aperture,
+  Focus,
+  Disc3,
+  Music,
+  Headphones,
+  Camera,
+  Wand2,
+  Flame,
+  Zap,
+  Award,
+  Crown,
+  Gift,
+  Package,
+  Boxes,
+  Layers,
+  Palette,
+  Flower2,
+};
+
+export function getCategoryIcon(iconName: string | null | undefined): LucideIcon {
+  if (!iconName) return Glasses;
+  return ICON_MAP[iconName] ?? Glasses;
 }

@@ -1,0 +1,14 @@
+{
+  "mainNavigation": "Navegação principal",
+  "home": "Início",
+  "searchPlaceholder": "Buscar...",
+  "toggleTheme": {
+    "toLight": "Mudar para tema claro",
+    "toDark": "Mudar para tema escuro"
+  },
+  "whatsapp": "Falar pelo WhatsApp",
+  "wishlist": "Favoritos",
+  "menu": "Menu",
+  "search": "Buscar",
+  "cart": "Sacola"
+}

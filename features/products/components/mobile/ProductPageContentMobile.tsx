@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 import ProductDelivery from "../ProductDelivery";
 import ProductDescription from "../ProductDescription";
 import { Y2KDivider } from "@features/home/components/mobile/Y2KDivider";
-import { pickLocale } from "@shared/utils/pickLocale";
+import { getPrimaryTag } from "@features/products/utils/getPrimaryTag";
 import { shareProduct } from "@features/products/utils/polaroidCard.utils";
 
 export function ProductPageMobileContent({ product }: { product: Product }) {
@@ -50,7 +50,7 @@ export function ProductPageMobileContent({ product }: { product: Product }) {
             {product.name}
           </h1>
           <span className="w-fit h-fit inline-block text-[10px] font-bold tracking-[0.2em] uppercase text-brand-black dark:text-brand-pink-light dark:border-brand-pink-light">
-            {pickLocale(product.category, i18n.language)}
+            {getPrimaryTag(product, i18n.language)}
           </span>
         </div>
         <div className="px-2 pt-2 mr-1">

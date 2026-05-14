@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -39,12 +39,27 @@ export default function ProductEditForm({ productId, productCode, initial, varia
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors, isDirty },
     reset,
   } = useForm<ProductPatchInput>({
     resolver: zodResolver(productPatchSchema),
     defaultValues: initial,
   });
+
+  const selectedCategoryId = watch("category_id");
+  const selectedCategory = categories.find((c) => c.id === selectedCategoryId);
+  const availableSubcategories = selectedCategory?.subcategories ?? [];
+
+  const isFirstCategoryRender = useRef(true);
+  useEffect(() => {
+    if (isFirstCategoryRender.current) {
+      isFirstCategoryRender.current = false;
+      return;
+    }
+    setValue("subcategory_ids", []);
+  }, [selectedCategoryId, setValue]);
 
   async function onSubmit(values: ProductPatchInput) {
     setSubmitting(true);
@@ -139,6 +154,25 @@ export default function ProductEditForm({ productId, productCode, initial, varia
               ))}
           </select>
         </Field>
+
+        {availableSubcategories.length > 0 && (
+          <Field label="Subcategorias">
+            <div className="flex flex-col gap-2 mt-1">
+              {availableSubcategories.map((sub) => (
+                <label key={sub.id} className="inline-flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    value={sub.id}
+                    {...register("subcategory_ids")}
+                    className="accent-brand-pink"
+                  />
+                  <span className="font-inter text-sm text-gray-300">{sub.name_pt}</span>
+                </label>
+              ))}
+            </div>
+          </Field>
+        )}
+
         <Field label="Descrição curta" error={errors.short_description?.message}>
           <input {...register("short_description")} className={inputCls} />
         </Field>

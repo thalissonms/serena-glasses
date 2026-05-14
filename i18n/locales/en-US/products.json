@@ -2,8 +2,12 @@
   "page": {
     "colorLabel": "Color:",
     "addToCart": "Add to Cart",
+    "addToCartAria": "Add {{name}} to cart",
     "added": "✓ Added!",
     "buyNow": "Buy Now",
+    "buyNowAria": "Buy {{name}} now",
+    "installments": "Up to 6x interest-free",
+    "back": "Back",
     "delivery": {
       "sectionTitle": "Shipping & Guarantees",
       "daily": {
@@ -22,9 +26,6 @@
   },
   "listing": {
     "title": "All Glasses",
-    "titleSunglasses": "Sun Glasses",
-    "titleMiniDrop": "Mini Drop 2.0",
-    "titleAccessories": "Accessories",
     "titleOutlet": "Outlet",
     "titleSale": "Promotions",
     "resultCount": "{{count}} product found",
@@ -61,6 +62,32 @@
     "actionView": "View product",
     "unavailable": "Unavailable",
     "soldOut": "Sold Out"
+  },
+  "attributes": {
+    "frameShape": {
+      "round": "Round",
+      "square": "Square",
+      "cat-eye": "Cat Eye",
+      "aviator": "Aviator",
+      "rectangle": "Rectangle",
+      "oversized": "Oversized",
+      "geometric": "Geometric",
+      "butterfly": "Butterfly"
+    },
+    "frameMaterial": {
+      "acetate": "Acetate",
+      "metal": "Metal",
+      "mixed": "Mixed",
+      "plastic": "Plastic",
+      "titanium": "Titanium"
+    },
+    "lensType": {
+      "polarized": "Polarized",
+      "gradient": "Gradient",
+      "mirrored": "Mirrored",
+      "solid": "Solid",
+      "photochromic": "Photochromic"
+    }
   },
   "description": {
     "stats": {

@@ -2,8 +2,12 @@
   "page": {
     "colorLabel": "Cor:",
     "addToCart": "Adicionar ao Carrinho",
+    "addToCartAria": "Adicionar {{name}} ao carrinho",
     "added": "✓ Adicionado!",
     "buyNow": "Comprar Agora",
+    "buyNowAria": "Comprar {{name}} agora",
+    "installments": "Parcele em até 6x sem juros",
+    "back": "Voltar",
     "delivery": {
       "sectionTitle": "Entrega & Garantias",
       "daily": {
@@ -22,9 +26,6 @@
   },
   "listing": {
     "title": "Todos os Óculos",
-    "titleSunglasses": "Óculos Solares",
-    "titleMiniDrop": "Mini Drop 2.0",
-    "titleAccessories": "Acessórios",
     "titleOutlet": "Outlet",
     "titleSale": "Promoções",
     "resultCount": "{{count}} produto encontrado",
@@ -61,6 +62,32 @@
     "actionView": "Ver produto",
     "unavailable": "Indisponível",
     "soldOut": "Esgotado"
+  },
+  "attributes": {
+    "frameShape": {
+      "round": "Redondo",
+      "square": "Quadrado",
+      "cat-eye": "Cat Eye",
+      "aviator": "Aviador",
+      "rectangle": "Retangular",
+      "oversized": "Oversized",
+      "geometric": "Geométrico",
+      "butterfly": "Borboleta"
+    },
+    "frameMaterial": {
+      "acetate": "Acetato",
+      "metal": "Metal",
+      "mixed": "Misto",
+      "plastic": "Plástico",
+      "titanium": "Titânio"
+    },
+    "lensType": {
+      "polarized": "Polarizada",
+      "gradient": "Degradê",
+      "mirrored": "Espelhada",
+      "solid": "Sólida",
+      "photochromic": "Fotocromática"
+    }
   },
   "description": {
     "stats": {

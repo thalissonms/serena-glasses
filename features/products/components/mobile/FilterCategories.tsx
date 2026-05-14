@@ -2,76 +2,12 @@
 import { Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import {
-  Glasses,
-  Sparkles,
-  Stars,
-  Gem,
-  Tag,
-  Percent,
-  Heart,
-  ShoppingBag,
-  Search,
-  Eye,
-  Sun,
-  Moon,
-  CloudSun,
-  Aperture,
-  Focus,
-  Disc3,
-  Music,
-  Headphones,
-  Camera,
-  Wand2,
-  Flame,
-  Zap,
-  Award,
-  Crown,
-  Gift,
-  Package,
-  Boxes,
-  Layers,
-  Palette,
-  Flower2,
-} from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 import { isNavActive } from "@features/navigation/utils/isActive";
 import { CategoryChip } from "@features/navigation/components";
 import { useCategories } from "@features/categories/hooks/useCategories";
 import type { CategoryWithSubs } from "@features/categories/types/category.types";
-
-const ICON_MAP: Record<string, LucideIcon> = {
-  Glasses,
-  Sparkles,
-  Stars,
-  Gem,
-  Tag,
-  Percent,
-  Heart,
-  ShoppingBag,
-  Search,
-  Eye,
-  Sun,
-  Moon,
-  CloudSun,
-  Aperture,
-  Focus,
-  Disc3,
-  Music,
-  Headphones,
-  Camera,
-  Wand2,
-  Flame,
-  Zap,
-  Award,
-  Crown,
-  Gift,
-  Package,
-  Boxes,
-  Layers,
-  Palette,
-  Flower2,
-};
+import { pickLocale } from "@shared/utils/pickLocale";
+import { getCategoryIcon } from "@features/products/utils/getCategoryIcon";
 
 type Page = { href: string; label: string };
 
@@ -80,13 +16,7 @@ function categoryToPage(c: CategoryWithSubs, lang: string): Page {
     c.kind === "flag" && c.href_override
       ? c.href_override
       : `/products?category=${c.slug}`;
-  const label =
-    lang.startsWith("en") && c.name_en
-      ? c.name_en
-      : lang.startsWith("es") && c.name_es
-        ? c.name_es
-        : c.name_pt;
-  return { href, label };
+  return { href, label: pickLocale(c, lang) };
 }
 
 function FilterChips({
@@ -111,7 +41,7 @@ function FilterChips({
       />
       {categories.map((c) => {
         const page = categoryToPage(c, lang);
-        const Icon = ICON_MAP[c.icon_name] ?? Glasses;
+        const Icon = getCategoryIcon(c.icon_name);
         return (
           <CategoryChip
             key={c.id}
@@ -147,7 +77,7 @@ function FilterChipsFallback({
       />
       {categories.map((c) => {
         const page = categoryToPage(c, lang);
-        const Icon = ICON_MAP[c.icon_name] ?? Glasses;
+        const Icon = getCategoryIcon(c.icon_name);
         return (
           <CategoryChip
             key={c.id}

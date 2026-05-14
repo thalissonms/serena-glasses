@@ -1,0 +1,14 @@
+{
+  "mainNavigation": "Navegación principal",
+  "home": "Inicio",
+  "searchPlaceholder": "Buscar...",
+  "toggleTheme": {
+    "toLight": "Cambiar a modo claro",
+    "toDark": "Cambiar a modo oscuro"
+  },
+  "whatsapp": "Chatear en WhatsApp",
+  "wishlist": "Favoritos",
+  "menu": "Menú",
+  "search": "Buscar",
+  "cart": "Bolsa"
+}

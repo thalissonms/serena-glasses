@@ -8,18 +8,13 @@ import { Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useCategories } from "@features/categories/hooks/useCategories";
 import type { CategoryWithSubs } from "@features/categories/types/category.types";
+import { pickLocale } from "@shared/utils/pickLocale";
 
 type Page = { href: string; label: string };
 
 function categoryToPage(c: CategoryWithSubs, lang: string): Page {
   const href = c.kind === "flag" && c.href_override ? c.href_override : `/products?category=${c.slug}`;
-  const label =
-    lang.startsWith("en") && c.name_en
-      ? c.name_en
-      : lang.startsWith("es") && c.name_es
-        ? c.name_es
-        : c.name_pt;
-  return { href, label };
+  return { href, label: pickLocale(c, lang) };
 }
 
 export const MobileNav = () => {

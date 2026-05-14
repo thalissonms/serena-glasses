@@ -1,12 +1,8 @@
 "use client";
 import Image from "next/image";
 import { Eye, Ruler, Shield, Weight, Zap } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import type { Product } from "@features/products/types/product.types";
-import {
-  FRAME_MATERIAL_LABELS,
-  FRAME_SHAPE_LABELS,
-  LENS_TYPE_LABELS,
-} from "@features/products/config/product.config";
 import ProductEditorial from "./ProductEditorial";
 import ProductLookbook, { type LookbookItem } from "./ProductLookbook";
 import ProductReviews, { type ReviewItem } from "./ProductReviews";
@@ -62,13 +58,18 @@ const REVIEWS: ReviewItem[] = [
   },
 ];
 
-function buildSpecs(product: Product): SpecItem[] {
+function buildSpecs(
+  product: Product,
+  t: (key: string) => string,
+): SpecItem[] {
   const width = product.dimensions?.split(" x ")[0] ?? "–";
   return [
     {
       icon: Ruler,
       labelKey: "description.specs.format",
-      value: FRAME_SHAPE_LABELS[product.frameShape],
+      value: product.frameShape
+        ? t(`attributes.frameShape.${product.frameShape}`)
+        : "–",
     },
     {
       icon: Shield,
@@ -78,12 +79,16 @@ function buildSpecs(product: Product): SpecItem[] {
     {
       icon: Zap,
       labelKey: "description.specs.lensMaterial",
-      value: LENS_TYPE_LABELS[product.lensType],
+      value: product.lensType
+        ? t(`attributes.lensType.${product.lensType}`)
+        : "–",
     },
     {
       icon: Eye,
       labelKey: "description.specs.frame",
-      value: FRAME_MATERIAL_LABELS[product.frameMaterial],
+      value: product.frameMaterial
+        ? t(`attributes.frameMaterial.${product.frameMaterial}`)
+        : "–",
     },
     {
       icon: Weight,
@@ -103,10 +108,11 @@ interface ProductDescriptionProps {
 }
 
 export default function ProductDescription({ product }: ProductDescriptionProps) {
-  const specs = buildSpecs(product);
+  const { t } = useTranslation("products");
+  const specs = buildSpecs(product, t);
 
   return (
-    <section className="w-full max-w-[96vw] mx-auto px-4 pb-12 md:px-20 md:pb-24 flex flex-col gap-10 md:gap-20 bg-white dark:bg-[#0a0a0a] py-10 transition-colors">
+    <section className="w-full md:max-w-[96vw] mx-auto px-4 pb-12 md:px-20 md:pb-24 flex flex-col gap-10 md:gap-20 bg-white dark:bg-brand-pink-dark py-10 transition-colors">
       <div className="flex items-center gap-4">
         <div className="flex-1 h-0.75 bg-black dark:bg-brand-pink" />
         <span className="text-xs font-black uppercase tracking-[0.3em] text-brand-pink px-2">

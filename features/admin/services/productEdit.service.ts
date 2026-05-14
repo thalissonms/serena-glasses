@@ -15,6 +15,7 @@ export interface ProductEditData {
   compare_at_price: number | null;
   category_id: string | null;
   category: CategoryRef | null;
+  subcategory_ids: string[];
   frame_shape: string | null;
   frame_material: string | null;
   lens_type: string | null;
@@ -39,6 +40,7 @@ export async function getProductForEdit(id: string): Promise<ProductEditData | n
       id, name, slug, code, description, short_description,
       price, compare_at_price, category_id,
       categories ( id, slug, name_pt, name_en, name_es ),
+      product_subcategories ( subcategory_id ),
       frame_shape, frame_material, lens_type,
       uv_protection, weight, dimensions,
       tags, included_accessories,
@@ -118,6 +120,12 @@ export async function getProductForEdit(id: string): Promise<ProductEditData | n
       }
     : null;
 
+  type DbProductSubcat = { subcategory_id: string };
+  const subcategoryRows = (
+    product as { product_subcategories?: DbProductSubcat[] | null }
+  ).product_subcategories ?? [];
+  const subcategory_ids = subcategoryRows.map((ps) => ps.subcategory_id);
+
   return {
     id: product.id,
     name: product.name,
@@ -129,6 +137,7 @@ export async function getProductForEdit(id: string): Promise<ProductEditData | n
     compare_at_price: product.compare_at_price,
     category_id: (product as { category_id: string | null }).category_id,
     category,
+    subcategory_ids,
     frame_shape: product.frame_shape,
     frame_material: product.frame_material,
     lens_type: product.lens_type,

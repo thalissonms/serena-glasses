@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { SmartLink } from "@shared/components/SmartLink";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
@@ -10,7 +10,7 @@ import {
   formatPrice,
   discountPercentage,
 } from "@features/products/utils/formatPrice";
-import { FRAME_SHAPE_LABELS } from "@features/products/config/product.config";
+import { getPrimaryTag } from "@features/products/utils/getPrimaryTag";
 import { WishlistButton } from "@features/wishlist/components/WishlistButton";
 import clsx from "clsx";
 
@@ -20,7 +20,7 @@ export interface ProductCardProps {
 }
 
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
-  const { t } = useTranslation("products");
+  const { t, i18n } = useTranslation("products");
   const primaryImage =
     product.images.find((img) => img.isPrimary) ?? product.images[0];
   const uniqueColors = product.variants.filter(
@@ -28,7 +28,12 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
   );
 
   return (
-    <Link href={product.inStock ? `/products/${product.slug}` : "#"}>
+    <SmartLink
+      href={product.inStock ? `/products/${product.slug}` : "#"}
+      aria-disabled={!product.inStock || undefined}
+      tabIndex={!product.inStock ? -1 : undefined}
+      onClick={!product.inStock ? (e) => e.preventDefault() : undefined}
+    >
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -122,7 +127,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
                 !product.inStock ? "text-gray-400" : "text-brand-pink",
               )}
             >
-              {FRAME_SHAPE_LABELS[product.frameShape]}
+              {getPrimaryTag(product, i18n.language)}
             </p>
 
             <h3
@@ -159,13 +164,14 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               </span>
             </div>
 
-            <div className="flex items-center gap-1.5 mb-3">
+            <div className="flex items-center gap-1.5 mb-3" role="list">
               {uniqueColors.map((variant) => (
                 <div
                   key={variant.color.slug}
+                  role="img"
+                  aria-label={variant.color.name}
                   className="w-3.5 h-3.5 rounded-full border border-black/20 dark:border-white/20 shadow-sm"
                   style={{ backgroundColor: variant.color.hex }}
-                  title={variant.color.name}
                 />
               ))}
             </div>
@@ -183,6 +189,6 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
           </div>
         </div>
       </motion.div>
-    </Link>
+    </SmartLink>
   );
 }

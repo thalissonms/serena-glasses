@@ -2,7 +2,7 @@
 
 import { motion, PanInfo, useAnimation } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 
 type Props = {
   children: ReactNode;
@@ -11,6 +11,15 @@ type Props = {
 export default function PageInterceptTransition({ children }: Props) {
   const router = useRouter();
   const controls = useAnimation();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
 
   useEffect(() => {
     controls.start({
@@ -18,6 +27,50 @@ export default function PageInterceptTransition({ children }: Props) {
       transition: { type: "spring", stiffness: 320, damping: 34, mass: 0.9 },
     });
   }, [controls]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const focusableSelectors =
+      'a[href], button:not([disabled]), input, textarea, select, [tabindex]:not([tabindex="-1"])';
+    const getFocusable = () =>
+      Array.from(container.querySelectorAll<HTMLElement>(focusableSelectors));
+
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    const initial = getFocusable();
+    if (initial.length > 0) initial[0].focus();
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        router.back();
+        return;
+      }
+      if (e.key === "Tab") {
+        const items = getFocusable();
+        if (items.length === 0) return;
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      previouslyFocused?.focus();
+    };
+  }, [router]);
 
   const handleDragEnd = async (
     _: MouseEvent | TouchEvent | PointerEvent,
@@ -44,7 +97,8 @@ export default function PageInterceptTransition({ children }: Props) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[100] bg-white overflow-y-auto touch-pan-y"
+      ref={containerRef}
+      className="fixed inset-0 z-100 bg-brand-pink-light dark:bg-brand-pink-bg-dark overflow-y-auto min-h-screen touch-pan-y"
       initial={{ x: "100%" }}
       animate={controls}
       exit={{ x: "100%" }}

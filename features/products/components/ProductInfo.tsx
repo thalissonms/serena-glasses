@@ -1,6 +1,6 @@
 "use client";
 import { useTranslation } from "react-i18next";
-import { pickLocale } from "@shared/utils/pickLocale";
+import { getPrimaryTag } from "@features/products/utils/getPrimaryTag";
 import {
   formatPrice,
   discountPercentage,
@@ -21,7 +21,7 @@ export default function ProductInfo({
       <div className="w-full flex flex-col md:flex-row-reverse md:justify-between md:items-start">
         <div className="flex items-center gap-2 mb-3 md:mb-0 md:-mt-2 md:-mr-2">
           <span className="w-fit h-fit inline-block text-xs font-bold tracking-[0.2em] uppercase text-brand-pink dark:text-brand-pink-light border-2 border-brand-pink dark:border-brand-pink-light rounded-full px-4 py-2 mt-2">
-            {pickLocale(product.category, i18n.language)}
+            {getPrimaryTag(product, i18n.language)}
           </span>
           <div className="flex items-center justify-center w-14 h-14">
             <WishlistButton

@@ -16,6 +16,7 @@ export const NavSearch = () => {
         />
         <input
           type="text"
+          aria-label={t("searchPlaceholder", { defaultValue: "Buscar..." })}
           placeholder={t("searchPlaceholder", { defaultValue: "Buscar..." })}
           className="w-32 md:w-48 px-2 py-2 font-poppins uppercase text-xs text-var(--color-foreground) dark:text-var(--color-foreground) placeholder-brand-pink/60 placeholder:font-semibold dark:placeholder:text-brand-pink-light/20 bg-transparent outline-none"
         />

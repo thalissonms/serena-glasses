@@ -1,19 +1,21 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
+import { SmartLink } from "@shared/components/SmartLink";
 import { Heart, X, ShoppingBag } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useWishlist, useToggleWishlist } from "@features/wishlist/hooks/useWishlist";
 import { formatPrice } from "@features/products/utils/formatPrice";
 
 export function WishlistDropdown() {
   const { data: items = [], isLoading } = useWishlist();
   const { mutate: toggle } = useToggleWishlist();
+  const { t } = useTranslation("nav");
 
   return (
     <div className="absolute right-0 top-full mt-3 w-80 bg-white dark:bg-[#1a1a1a] border-4 border-black dark:border-brand-pink-light shadow-[6px_6px_0px] shadow-brand-pink-light z-50">
       <div className="p-4 border-b-2 border-black dark:border-brand-pink-light flex items-center justify-between">
         <p className="font-poppins font-black text-sm uppercase tracking-wider dark:text-white">
-          Favoritos
+          {t("wishlist")}
         </p>
         <span className="font-poppins text-xs text-gray-400 dark:text-gray-500">{items.length} item{items.length !== 1 ? "s" : ""}</span>
       </div>
@@ -38,7 +40,7 @@ export function WishlistDropdown() {
 
             return (
               <div key={item.id} className="flex gap-3 p-3 hover:bg-pink-50/40 dark:hover:bg-brand-pink/10 transition-colors">
-                <Link href={`/products/${product.slug}`} className="shrink-0">
+                <SmartLink href={`/products/${product.slug}`} className="shrink-0">
                   <div className="relative w-14 h-14 border-2 border-black dark:border-brand-pink/50 bg-pink-50 dark:bg-[#0a0a0a] overflow-hidden">
                     {image && (
                       <Image
@@ -49,14 +51,14 @@ export function WishlistDropdown() {
                       />
                     )}
                   </div>
-                </Link>
+                </SmartLink>
 
                 <div className="flex-1 min-w-0">
-                  <Link href={`/products/${product.slug}`}>
+                  <SmartLink href={`/products/${product.slug}`}>
                     <p className="font-poppins font-bold text-xs truncate hover:text-brand-pink transition-colors">
                       {product.name}
                     </p>
-                  </Link>
+                  </SmartLink>
                   <p className="font-poppins font-semibold text-lg text-brand-pink leading-none mt-0.5">
                     {formatPrice(Math.round(product.price))}
                   </p>
@@ -77,13 +79,13 @@ export function WishlistDropdown() {
 
       {items.length > 0 && (
         <div className="p-3 border-t-2 border-black dark:border-brand-pink/50">
-          <Link
+          <a
             href="/products"
             className="flex items-center justify-center gap-2 w-full py-3 font-poppins text-xs font-black uppercase tracking-wider border-2 border-black dark:border-brand-pink bg-brand-pink text-white hover:shadow-[4px_4px_0px_#000] transition-all"
           >
             <ShoppingBag size={14} />
             Ver todos os produtos
-          </Link>
+          </a>
         </div>
       )}
     </div>

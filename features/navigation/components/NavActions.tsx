@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Heart, Menu, ShoppingCart, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
+import { useTranslation } from "react-i18next";
 import { useCartStore } from "@features/cart/store/cart.store";
 import { useWishlist } from "@features/wishlist/hooks/useWishlist";
 import { WishlistDropdown } from "@features/wishlist/components/WishlistDropdown";
@@ -13,6 +14,7 @@ import { useMounted } from "@shared/hooks/useMounted";
 
 export const NavActions = () => {
   const mounted = useMounted();
+  const { t } = useTranslation("nav");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const wishlistRef = useRef<HTMLDivElement>(null);
@@ -47,7 +49,7 @@ export const NavActions = () => {
           <button
             onClick={() => setIsWishlistOpen((v) => !v)}
             className="relative group cursor-pointer"
-            aria-label="Favoritos"
+            aria-label={t("wishlist")}
           >
             <div className="absolute inset-0 bg-brand-pink transform rotate-2 group-hover:rotate-3 transition-transform duration-300 border-2 border-black dark:border-brand-pink-light shadow-[4px_4px_0px] shadow-brand-pink-light group-hover:shadow-[6px_6px_0px_#000]" />
             <div className="relative w-12 h-12 bg-brand-pink-light dark:bg-brand-pink-dark border-2 border-black dark:border-brand-pink-light flex items-center justify-center transform -rotate-2 group-hover:rotate-0 transition-transform duration-300">
@@ -102,7 +104,7 @@ export const NavActions = () => {
       <button
         className="lg:hidden relative"
         onClick={() => setIsMenuOpen(!isMenuOpen)}
-        aria-label="Menu"
+        aria-label={t("menu")}
       >
         {isMenuOpen ? (
           <X size={38} className="text-brand-black-dark dark:text-brand-pink-light" />

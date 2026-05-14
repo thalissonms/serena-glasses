@@ -27,7 +27,14 @@
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
       "Bash(git push *)",
-      "mcp__plugin_context-mode_context-mode__ctx_execute"
+      "mcp__plugin_context-mode_context-mode__ctx_execute",
+      "WebSearch",
+      "mcp__plugin_context-mode_context-mode__ctx_execute_file",
+      "mcp__plugin_context-mode_context-mode__ctx_search",
+      "Bash(git commit *)",
+      "Bash(Remove-Item -Recurse -Force \"c:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\.next\" -ErrorAction SilentlyContinue)",
+      "Bash(Write-Host \"done\")",
+      "PowerShell(cd \"c:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\"; npm run build 2>&1 | Tee-Object -FilePath \"$env:TEMP\\\\serena_build.log\"; Write-Host \"EXIT:$LASTEXITCODE\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\Thalisson\\Documents\\Serena\\serena-glasses\\AGENT",

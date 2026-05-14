@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-export const PRODUCT_CATEGORIES = ["sunglasses", "accessories", "miniDrop"] as const;
 export const FRAME_SHAPES = ["round", "square", "cat-eye", "aviator", "rectangle", "oversized", "geometric", "butterfly"] as const;
 export const FRAME_MATERIALS = ["acetate", "metal", "mixed", "plastic", "titanium"] as const;
 export const LENS_TYPES = ["polarized", "gradient", "mirrored", "solid", "photochromic"] as const;

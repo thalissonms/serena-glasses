@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { Product } from "@features/products/types/product.types";
 import ProductActions from "./ProductActions";
 import ProductDelivery from "./ProductDelivery";
@@ -7,8 +7,6 @@ import ProductDescription from "./ProductDescription";
 import ProductInfo from "./ProductInfo";
 import ProductMediaViewer from "./ProductMediaViewer";
 import { useTheme } from "@shared/providers/ThemeProvider";
-import ProductMediaViewerMobile from "./mobile/ProductMediaViewerMobile";
-import ProductActionsMobile from "./mobile/ProductActionsMobile";
 
 interface ProductPageContentProps {
   product: Product;
@@ -19,19 +17,26 @@ export default function ProductPageContent({
   product,
   videoSrc,
 }: ProductPageContentProps) {
-  const color = useTheme();
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
-  const glassesSvg =
-    encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="opacity: ${color.theme === "dark" ? 0.2 : 0.4}" fill="${color.theme === "dark" ? "#3B2A32" : "#FEB6DE"}" version="1.1" id="Capa_1" viewBox="0 0 460.72 460.719" xml:space="preserve">
-  <g>
-    <g>
-      <path d="M443.293,151.905c-21.556-2.48-41.537-3.737-59.347-3.737c-74.245,0-98.029,21.416-110.809,32.923l-2.052,1.833    c-9.394,8.263-25.03,9.521-33.534,9.536l-7.2,0.008l-7.197-0.008c-8.496-0.014-24.131-1.272-33.522-9.536l-2.048-1.833    c-12.78-11.507-36.576-32.923-110.817-32.923c-17.819,0-37.784,1.256-59.348,3.737c-10.093,1.162-18.047,10.496-17.38,20.377    c1.713,25.235,10.652,87.354,56.609,119.093c20.065,13.854,42.731,21.176,65.551,21.176c46.907,0,81.904-30.36,89.163-77.332    c0.104-0.629,2.733-15.362,18.089-15.362l1.026,0.014l0.793-0.014c15.356,0,17.977,14.733,18.085,15.339    c7.262,46.995,42.258,77.355,89.161,77.355c22.822,0,45.484-7.322,65.554-21.176c45.953-31.755,54.894-93.857,56.608-119.093    C461.351,162.401,453.392,153.06,443.293,151.905z M132.641,292.65c-3.228,0.213-6.344,0.305-9.349,0.305    c-25.626,0-45.597-7.313-59.364-21.772c-22.069-23.15-22.847-58.853-22.157-73.125c0.118-2.418,2.465-5.714,4.751-6.642    c11.651-4.757,34.989-12.746,60.402-12.746c10.361,0,20.079,1.356,28.879,4.042c36.53,11.146,52.121,27.198,52.121,53.699    C187.932,264.983,162.604,290.739,132.641,292.65z M396.782,271.182c-13.762,14.459-33.734,21.772-59.346,21.772    c-3.006,0-6.127-0.092-9.354-0.305c-29.959-1.911-55.282-27.667-55.282-56.24c0-26.501,15.585-42.561,52.125-53.699    c8.792-2.685,18.514-4.042,28.877-4.042c25.415,0,48.751,7.989,60.396,12.746c2.284,0.936,4.641,4.224,4.753,6.65    C419.637,212.329,418.859,248.015,396.782,271.182z"/>
-    </g>
-  </g>
-  </svg>`);
+  const bgPattern = useMemo(() => {
+    const fill = isDark ? "#3B2A32" : "#FEB6DE";
+    const opacity = isDark ? 0.2 : 0.4;
+    const svg = encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" style="opacity:${opacity}" fill="${fill}" viewBox="0 0 460.72 460.719"><g><g><path d="M443.293,151.905c-21.556-2.48-41.537-3.737-59.347-3.737c-74.245,0-98.029,21.416-110.809,32.923l-2.052,1.833c-9.394,8.263-25.03,9.521-33.534,9.536l-7.2,0.008l-7.197-0.008c-8.496-0.014-24.131-1.272-33.522-9.536l-2.048-1.833c-12.78-11.507-36.576-32.923-110.817-32.923c-17.819,0-37.784,1.256-59.348,3.737c-10.093,1.162-18.047,10.496-17.38,20.377c1.713,25.235,10.652,87.354,56.609,119.093c20.065,13.854,42.731,21.176,65.551,21.176c46.907,0,81.904-30.36,89.163-77.332c0.104-0.629,2.733-15.362,18.089-15.362l1.026,0.014l0.793-0.014c15.356,0,17.977,14.733,18.085,15.339c7.262,46.995,42.258,77.355,89.161,77.355c22.822,0,45.484-7.322,65.554-21.176c45.953-31.755,54.894-93.857,56.608-119.093C461.351,162.401,453.392,153.06,443.293,151.905z M132.641,292.65c-3.228,0.213-6.344,0.305-9.349,0.305c-25.626,0-45.597-7.313-59.364-21.772c-22.069-23.15-22.847-58.853-22.157-73.125c0.118-2.418,2.465-5.714,4.751-6.642c11.651-4.757,34.989-12.746,60.402-12.746c10.361,0,20.079,1.356,28.879,4.042c36.53,11.146,52.121,27.198,52.121,53.699C187.932,264.983,162.604,290.739,132.641,292.65z M396.782,271.182c-13.762,14.459-33.734,21.772-59.346,21.772c-3.006,0-6.127-0.092-9.354-0.305c-29.959-1.911-55.282-27.667-55.282-56.24c0-26.501,15.585-42.561,52.125-53.699c8.792-2.685,18.514-4.042,28.877-4.042c25.415,0,48.751,7.989,60.396,12.746c2.284,0.936,4.641,4.224,4.753,6.65C419.637,212.329,418.859,248.015,396.782,271.182z"/></g></g></svg>`,
+    );
+    return `url("data:image/svg+xml,${svg}")`;
+  }, [isDark]);
 
-  const bgPattern = `url("data:image/svg+xml,${glassesSvg}")`;
-  const [selectedColor, setSelectedColor] = useState(0);
+  const initialColor = useMemo(() => {
+    const idx = product.variants.findIndex((v) => v.inStock);
+    return idx >= 0 ? idx : 0;
+  }, [product.variants]);
+  const [selectedColor, setSelectedColor] = useState(initialColor);
+
+  const fallbackImageUrl =
+    product.images.find((img) => img.isPrimary)?.url ?? product.images[0]?.url;
 
   return (
     <main
@@ -46,10 +51,7 @@ export default function ProductPageContent({
         <ProductMediaViewer
           name={product.name}
           videoSrc={videoSrc}
-          fallbackImageUrl={
-            product.images.find((img) => img.isPrimary)?.url ??
-            product.images[0]?.url
-          }
+          fallbackImageUrl={fallbackImageUrl}
         />
 
         <div className="flex-1 flex flex-col gap-3 pl-0 pt-4 md:pl-20 md:pt-0 md:py-2">
@@ -65,24 +67,7 @@ export default function ProductPageContent({
           <ProductDelivery />
         </div>
       </section>
-        <ProductDescription product={product} />
-      <section className="md:hidden relative">
-        <ProductInfo
-          product={product}
-          selectedColor={selectedColor}
-          onColorChange={setSelectedColor}
-        />
-        <div className="flex-1 flex flex-col gap-3 pl-0 pt-4 md:pl-20 md:pt-0 md:py-2">
-          <ProductDelivery />
-        </div>
-        <ProductDescription product={product} />
-        <div className="w-full h-22 bg-brand-pink-light/60 dark:bg-brand-pink-bg-dark/40 backdrop-blur-lg shadow-[-4px_-4px_6px] shadow-black/25 sticky bottom-14 py-4 px-4 z-50">
-          <ProductActionsMobile
-            product={product}
-            selectedColorIndex={selectedColor}
-          />
-        </div>
-      </section>
+      <ProductDescription product={product} />
     </main>
   );
 }

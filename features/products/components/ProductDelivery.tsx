@@ -6,7 +6,7 @@ export default function ProductDelivery() {
   const { t } = useTranslation("products");
 
   return (
-    <div className="border-4 border-black dark:border-brand-pink-light shadow-[6px_6px_0] shadow-brand-pink dark:shadow-brand-blue overflow-hidden mt-4">
+    <div className="border-4 border-black dark:border-brand-pink-light shadow-[6px_6px_0] shadow-brand-pink dark:shadow-brand-blue overflow-hidden md:mt-4">
       <div className="bg-black dark:bg-brand-pink-light px-4 py-2.5 flex items-center gap-2">
         <Truck size={14} className="text-brand-pink dark:text-black" strokeWidth={2.5} />
         <span className="text-xs font-black uppercase tracking-[0.2em] text-white dark:text-black">

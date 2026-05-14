@@ -1,4 +1,5 @@
 "use client";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +15,7 @@ const errorClass = "font-inter text-xs text-red-400 mt-1";
 
 export default function CategoryCreateForm() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -37,6 +39,7 @@ export default function CategoryCreateForm() {
     if (!res.ok) { toast.error("Erro ao salvar"); return; }
     const { id } = await res.json();
     toast.success("Categoria criada!");
+    queryClient.invalidateQueries({ queryKey: ["categories"] });
     router.push(`/admin/categories/${id}/edit`);
   }
 
@@ -44,7 +47,7 @@ export default function CategoryCreateForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 max-w-2xl">
       <div>
         <label className={labelClass}>Slug *</label>
-        <input {...register("slug")} className={inputClass} placeholder="sunglasses" />
+        <input {...register("slug")} className={inputClass} placeholder="oculos-de-sol" />
         {errors.slug && <p className={errorClass}>{errors.slug.message}</p>}
       </div>
 

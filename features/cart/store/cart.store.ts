@@ -34,7 +34,6 @@ export const useCartStore = create<CartStore>()(
                   : i,
               )
             : [...state.items, newItem];
-          // Cupom e frete limpos quando carrinho muda — usuário re-aplica
           return { items: newItems, appliedCoupon: null, selectedShipping: null };
         }),
 

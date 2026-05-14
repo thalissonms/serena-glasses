@@ -178,7 +178,7 @@ export default function CouponCreateForm() {
           {appliesTo === "categories" && (
             <div className="mt-2">
               <p className="font-inter text-xs text-gray-400 mb-1">
-                Categorias (uma por linha — mesmo valor de products.category)
+                Categorias (uma por linha — slug da tabela categories)
               </p>
               <textarea
                 className="w-full bg-[#1a1a1a] border-2 border-white/10 text-white font-mono text-xs px-3 py-2 outline-none focus:border-brand-pink h-24 resize-none"

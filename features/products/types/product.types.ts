@@ -1,13 +1,3 @@
-// ─── Enums / Literais ───────────────────────────────────────────────
-
-// `ProductCategory` (enum-string) é resquício do schema pré-v1.7.0. Hoje a
-// categoria vive na tabela `categories` (vide `CategoryRef`). Mantido só
-// porque `getCategoryIcon.ts` ainda consome — removido na Etapa 4.
-export type ProductCategory =
-  | "sunglasses"
-  | "accessories"
-  | "miniDrop";
-
 // ─── Refs de hierarquia (DB-driven, schema-aware) ───────────────────
 
 export interface CategoryRef {

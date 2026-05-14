@@ -23,18 +23,27 @@ export const POST = withAdmin(async (req) => {
     .select("id")
     .eq("slug", parsed.data.slug)
     .maybeSingle();
-  if (existing) return NextResponse.json({ error: "Slug jÃ¡ em uso" }, { status: 409 });
+  if (existing) return NextResponse.json({ error: "Slug já em uso" }, { status: 409 });
+
+  const { subcategory_ids, ...productData } = parsed.data;
 
   for (let attempt = 0; attempt < CODE_RETRY_LIMIT; attempt++) {
-    const code = await generateNextProductCode(parsed.data.category_id);
+    const code = await generateNextProductCode(productData.category_id);
 
     const { data, error } = await getSupabaseServer()
       .from("products")
-      .insert({ ...parsed.data, code, active: false })
+      .insert({ ...productData, code, active: false })
       .select("id, code")
       .single();
 
-    if (!error) return NextResponse.json({ id: data.id, code: data.code }, { status: 201 });
+    if (!error) {
+      if (subcategory_ids && subcategory_ids.length > 0) {
+        await getSupabaseServer()
+          .from("product_subcategories")
+          .insert(subcategory_ids.map((subcategory_id) => ({ product_id: data.id, subcategory_id })));
+      }
+      return NextResponse.json({ id: data.id, code: data.code }, { status: 201 });
+    }
 
     const isUniqueViolation =
       error.code === "23505" || /duplicate key value/i.test(error.message);

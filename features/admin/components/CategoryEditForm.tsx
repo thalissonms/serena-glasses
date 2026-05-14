@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -79,6 +80,7 @@ function SubcategoryInlineForm({
 
 export default function CategoryEditForm({ item }: Props) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [subs, setSubs] = useState<SubcategoryRow[]>(item.subcategories);
 
   const {
@@ -111,6 +113,7 @@ export default function CategoryEditForm({ item }: Props) {
     });
     if (!res.ok) { toast.error("Erro ao salvar"); return; }
     toast.success("Salvo!");
+    queryClient.invalidateQueries({ queryKey: ["categories"] });
   }
 
   async function deleteSub(subId: string) {
@@ -118,6 +121,7 @@ export default function CategoryEditForm({ item }: Props) {
     if (!res.ok) { toast.error("Erro ao remover"); return; }
     setSubs((prev) => prev.filter((s) => s.id !== subId));
     toast.success("Subcategoria removida");
+    queryClient.invalidateQueries({ queryKey: ["categories"] });
   }
 
   return (
@@ -236,7 +240,10 @@ export default function CategoryEditForm({ item }: Props) {
 
           <SubcategoryInlineForm
             categoryId={item.id}
-            onCreated={(sub) => setSubs((prev) => [...prev, sub])}
+            onCreated={(sub) => {
+              setSubs((prev) => [...prev, sub]);
+              queryClient.invalidateQueries({ queryKey: ["categories"] });
+            }}
           />
         </div>
       )}
