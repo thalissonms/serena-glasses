@@ -5,6 +5,8 @@ import { useTranslation } from "react-i18next";
 import type { Product } from "@features/products/types/product.types";
 import { ProductCard } from "./ProductCard";
 import type { ListingParams } from "../utils/filterProducts";
+import { useCategories } from "@features/categories/hooks/useCategories";
+import { pickLocale } from "@shared/utils/pickLocale";
 
 interface ProductsPageContentProps {
   products: Product[];
@@ -12,8 +14,9 @@ interface ProductsPageContentProps {
 }
 
 export function ProductsPageContent({ products, params }: ProductsPageContentProps) {
-  const { t } = useTranslation("products");
+  const { t, i18n } = useTranslation("products");
   const router = useRouter();
+  const { data: categories } = useCategories();
 
   function buildUrl(next: ListingParams): string {
     const sp = new URLSearchParams();
@@ -38,9 +41,10 @@ export function ProductsPageContent({ products, params }: ProductsPageContentPro
   const isNew = params.new === "true";
 
   function getTitle(): string {
-    if (params.category === "sunglasses") return t("listing.titleSunglasses");
-    if (params.category === "miniDrop") return t("listing.titleMiniDrop");
-    if (params.category === "accessories") return t("listing.titleAccessories");
+    if (params.category) {
+      const current = categories?.find((c) => c.slug === params.category);
+      if (current) return pickLocale(current, i18n.language);
+    }
     if (isOutlet) return t("listing.titleOutlet");
     if (isSale) return t("listing.titleSale");
     return t("listing.title");

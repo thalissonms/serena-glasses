@@ -13,7 +13,7 @@ export type ListingParams = {
 export function filterAndSortProducts(products: Product[], params: ListingParams): Product[] {
   let result = products.filter((p) => p.status === "active");
 
-  if (params.category) result = result.filter((p) => p.category === params.category);
+  if (params.category) result = result.filter((p) => p.category.slug === params.category);
   if (params.outlet === "true") result = result.filter((p) => p.isOutlet);
   if (params.sale === "true") result = result.filter((p) => p.isOnSale);
   if (params.new === "true") result = result.filter((p) => p.isNew);
