@@ -2,7 +2,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@features/cart/store/cart.store";
-import type { Product, ProductVariant } from "@features/products/types/product.types";
+import type {
+  Product,
+  ProductVariant,
+} from "@features/products/types/product.types";
 
 const ADDED_FEEDBACK_MS = 2000;
 
@@ -26,12 +29,22 @@ export function useAddToCart(
   const uniqueColors = useMemo(
     () =>
       product.variants.filter(
-        (v, i, arr) => arr.findIndex((x) => x.color.slug === v.color.slug) === i,
+        (v, i, arr) =>
+          arr.findIndex((x) => x.color.slug === v.color.slug) === i,
       ),
     [product.variants],
   );
 
   const activeVariant = uniqueColors[selectedColorIndex] ?? uniqueColors[0];
+
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const update = () => setIsDesktop(window.innerWidth >= 768);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   const image = useMemo(() => {
     const primaryImage =
@@ -57,6 +70,7 @@ export function useAddToCart(
       quantity: 1,
       image,
       color: activeVariant.color,
+      maxInstallments: product.maxInstallments,
     });
     return true;
   }, [activeVariant, addItem, image, product]);
@@ -70,7 +84,11 @@ export function useAddToCart(
 
   const buyNow = useCallback(() => {
     if (!addToCartSilent()) return;
-    router.push("/cart");
+    if (isDesktop){
+      router.push("/cart");
+    } else {
+      window.location.href = "/cart"
+    }
   }, [addToCartSilent, router]);
 
   return {

@@ -11,6 +11,9 @@
     "checkout": "Finalizar pedido",
     "back": "Voltar"
   },
+  "checkout":{
+    "title":"Checkout"
+  },
   "header": {
     "myCart": "Meu carrinho",
     "item": "item",
@@ -65,7 +68,8 @@
     "state": "Estado",
     "statePlaceholder": "Selecione",
     "searchCep": "Buscar CEP",
-    "searching": "Buscando..."
+    "searching": "Buscando...",
+    "fillRequired": "Preencha todos os campos do endereço antes de continuar."
   },
   "payment": {
     "title": "Pagamento",

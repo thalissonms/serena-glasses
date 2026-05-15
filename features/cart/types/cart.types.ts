@@ -8,4 +8,5 @@ export interface CartItem {
   quantity: number;
   image: string;
   color: { name: string; hex: string };
+  maxInstallments: number;
 }

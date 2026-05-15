@@ -19,11 +19,11 @@ export function InputLabel({
       className={
         variant === "admin"
           ? "block font-poppins text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1"
-          : "block font-poppins font-semibold text-xs uppercase tracking-wider text-gray-600 dark:text-gray-300 mb-1.5"
+          : "block font-poppins font-semibold text-xs uppercase tracking-wider text-brand-pink md:text-gray-600 dark:text-gray-300 mb-1.5"
       }
     >
       {label}
-      {required && <span className="text-brand-pink ml-0.5">*</span>}
+      {required && <span className="text-brand-pink-dark md:text-brand-pink ml-0.5">*</span>}
     </label>
   );
 }

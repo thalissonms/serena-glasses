@@ -27,6 +27,7 @@ export interface ProductEditData {
   seo_title: string | null;
   seo_description: string | null;
   seo_keywords: string[] | null;
+  max_installments: number;
   video_url: string | null;
   variants: VariantWithStockInterface[];
   images: ProductImageInterface[];
@@ -38,7 +39,7 @@ export async function getProductForEdit(id: string): Promise<ProductEditData | n
     .select(
       `
       id, name, slug, code, description, short_description,
-      price, compare_at_price, category_id,
+      price, compare_at_price, max_installments, category_id,
       categories ( id, slug, name_pt, name_en, name_es ),
       product_subcategories ( subcategory_id ),
       frame_shape, frame_material, lens_type,
@@ -149,6 +150,7 @@ export async function getProductForEdit(id: string): Promise<ProductEditData | n
     seo_title: product.seo_title,
     seo_description: product.seo_description,
     seo_keywords: product.seo_keywords,
+    max_installments: product.max_installments as number,
     video_url: product.video_url,
     variants: variantsWithStock,
     images,

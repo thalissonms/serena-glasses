@@ -138,6 +138,8 @@ export const productSchema = z.object({
   isOutlet: z.boolean(),
   outletReason: z.string().optional(),
 
+  maxInstallments: z.number().int().min(1).max(12),
+
   uvProtection: z.boolean(),
   weight: z.number().positive().optional(),
   dimensions: z.string().optional(),

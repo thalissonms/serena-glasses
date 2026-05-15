@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { Heart, Menu, ShoppingCart, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
@@ -11,6 +10,7 @@ import { WishlistDropdown } from "@features/wishlist/components/WishlistDropdown
 import { ThemeToggle } from "@shared/components/ThemeToggle";
 import { MobileNav } from "./mobile/MobileNav";
 import { useMounted } from "@shared/hooks/useMounted";
+import { SmartLink } from "@shared/components/SmartLink";
 
 export const NavActions = () => {
   const mounted = useMounted();
@@ -78,7 +78,7 @@ export const NavActions = () => {
         </div>
 
         {/* Cart */}
-        <Link href="/cart" className="relative group cursor-pointer">
+        <SmartLink href="/cart" className="relative group cursor-pointer">
           <div className="absolute inset-0 bg-brand-pink transform rotate-2 group-hover:rotate-3 transition-transform duration-300 border-2 border-black dark:border-brand-pink-light shadow-[4px_4px_0px] shadow-brand-pink-light group-hover:shadow-[6px_6px_0px_#000]" />
           <div className="relative w-12 h-12 bg-brand-pink-light dark:bg-brand-pink-dark border-2 border-black dark:border-brand-pink-light flex items-center justify-center transform -rotate-2 group-hover:rotate-0 transition-transform duration-300">
             <ShoppingCart
@@ -96,7 +96,7 @@ export const NavActions = () => {
               </span>
             </div>
           </div>
-        </Link>
+        </SmartLink>
 
         <ThemeToggle />
       </div>

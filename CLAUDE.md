@@ -24,3 +24,7 @@ src/app/           # Next.js App Router pages and API routes
 src/proxy.ts       # Single entry point for all request interception (auth + rate limiting)
 AGENT/             # Implementation plans and dev notes
 ```
+
+### Parcelamento
+
+`products.max_installments` (1–12, default 1) por produto + `site_settings.installments_bulk` (threshold global: acima de N centavos libera M parcelas, sobrescreve o produto pra cima). Cálculo centralizado em `shared/utils/effectiveInstallments.ts`. Validação server-side em `/api/checkout` (criação e retry). UI esconde o select de parcelas quando teto efetivo = 1.

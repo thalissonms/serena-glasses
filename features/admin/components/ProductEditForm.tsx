@@ -197,6 +197,15 @@ export default function ProductEditForm({ productId, productCode, initial, varia
             className={inputCls}
           />
         </Field>
+        <Field label="Parcelas máximas" error={errors.max_installments?.message} hint="1–12, sobrescreve o padrão global">
+          <input
+            type="number"
+            min={1}
+            max={12}
+            {...register("max_installments", { valueAsNumber: true })}
+            className={inputCls}
+          />
+        </Field>
       </Section>
 
       {/* Detalhes */}

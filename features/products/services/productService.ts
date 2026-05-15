@@ -69,6 +69,7 @@ type DbProduct = {
   seo_title: string | null;
   seo_description: string | null;
   seo_keywords: string[] | null;
+  max_installments: number;
   video_url: string | null;
   created_at: string;
   updated_at: string;
@@ -182,6 +183,7 @@ function mapProduct(p: DbProduct, reservedByVariant: Map<string, number>): Produ
     isNew: p.is_new,
     isOnSale: p.is_sale,
     isOutlet: p.is_outlet,
+    maxInstallments: p.max_installments,
     uvProtection: p.uv_protection,
     weight: p.weight ?? undefined,
     dimensions: p.dimensions ?? undefined,

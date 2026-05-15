@@ -10,6 +10,7 @@ import {
   pixelsSchema,
   whatsappSchema,
   popupCaptureSchema,
+  installmentsBulkSchema,
   type SettingValue,
 } from "@features/admin/schemas/siteSettings.schema";
 import type { SiteSettingRow } from "@features/admin/services/siteSettings.service";
@@ -355,6 +356,60 @@ function PopupCaptureForm({ initial }: { initial: SettingValue<"popup_capture"> 
   );
 }
 
+function InstallmentsBulkForm({ initial }: { initial: SettingValue<"installments_bulk"> }) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({ resolver: zodResolver(installmentsBulkSchema), defaultValues: initial });
+
+  async function onSubmit(data: SettingValue<"installments_bulk">) {
+    await patchSetting("installments_bulk", data);
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 mt-4">
+      <div className="flex items-center gap-3">
+        <input
+          type="checkbox"
+          {...register("enabled")}
+          className={checkboxClass}
+          id="inst-enabled"
+        />
+        <label htmlFor="inst-enabled" className="font-inter text-sm text-white cursor-pointer">
+          Parcelamento automático ativo
+        </label>
+      </div>
+      <div>
+        <label className={labelClass}>Valor mínimo (centavos) *</label>
+        <input
+          {...register("threshold_cents", { valueAsNumber: true })}
+          type="number"
+          className={inputClass}
+          placeholder="10000 = R$ 100"
+        />
+        {errors.threshold_cents && (
+          <p className={errorClass}>{errors.threshold_cents.message}</p>
+        )}
+      </div>
+      <div>
+        <label className={labelClass}>Número de parcelas (1–12) *</label>
+        <input
+          {...register("installments", { valueAsNumber: true })}
+          type="number"
+          min={1}
+          max={12}
+          className={inputClass}
+        />
+        {errors.installments && <p className={errorClass}>{errors.installments.message}</p>}
+      </div>
+      <button type="submit" disabled={isSubmitting} className={`${saveBtn} self-start`}>
+        {isSubmitting ? "Salvando..." : "Salvar"}
+      </button>
+    </form>
+  );
+}
+
 function TestEmailSection() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -438,6 +493,7 @@ export default function SiteSettingsClient({ initialRows }: Props) {
   const pixels = getVal("pixels") as SettingValue<"pixels"> | undefined;
   const whatsapp = getVal("whatsapp") as SettingValue<"whatsapp"> | undefined;
   const popupCapture = getVal("popup_capture") as SettingValue<"popup_capture"> | undefined;
+  const installmentsBulk = getVal("installments_bulk") as SettingValue<"installments_bulk"> | undefined;
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] p-8">
@@ -502,6 +558,19 @@ export default function SiteSettingsClient({ initialRows }: Props) {
             ) : (
               <p className="font-inter text-sm text-gray-500 mt-4">
                 Configuração não encontrada no banco. Rode a migration v1.6.0.
+              </p>
+            )}
+          </Section>
+
+          <Section
+            title="Parcelamento"
+            description="Parcelamento padrão aplicado a produtos sem configuração individual"
+          >
+            {installmentsBulk ? (
+              <InstallmentsBulkForm initial={installmentsBulk} />
+            ) : (
+              <p className="font-inter text-sm text-gray-500 mt-4">
+                Configuração não encontrada no banco. Rode a migration v1.16.0.
               </p>
             )}
           </Section>

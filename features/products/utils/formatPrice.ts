@@ -16,6 +16,15 @@ export function formatPrice(cents: number, locale = "pt-BR", currency = "BRL"): 
 }
 
 /**
+ * Formata parcelas. Retorna null se maxInstallments <= 1.
+ * @example formatInstallment(19900, 3) => "3x de R$ 66,34"
+ */
+export function formatInstallment(cents: number, maxInstallments: number): string | null {
+  if (maxInstallments <= 1) return null;
+  return `${maxInstallments}x de ${formatPrice(Math.ceil(cents / maxInstallments))}`;
+}
+
+/**
  * Calcula a porcentagem de desconto.
  * @returns Inteiro arredondado (ex: 42 para 42% off)
  */

@@ -168,6 +168,7 @@ function PolaroidCard({ product }: { product: string }) {
           alt=""
           role="presentation"
           fill
+          sizes="(max-width: 640px) 84px, (max-width: 768px) 98px, (max-width: 1024px) 126px, 154px"
           className="object-contain p-1 md:p-1.5 sepia-50"
           draggable={false}
           loading="lazy"

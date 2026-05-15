@@ -8,11 +8,17 @@ interface ShippingOptionsProps {
   options: ShippingQuoteOption[];
   loading: boolean;
   error: string | null;
+  onSelect?: (option: ShippingQuoteOption) => void;
 }
 
-export function ShippingOptions({ options, loading, error }: ShippingOptionsProps) {
+export function ShippingOptions({ options, loading, error, onSelect }: ShippingOptionsProps) {
   const selectedShipping = useCartStore((s) => s.selectedShipping);
   const setSelectedShipping = useCartStore((s) => s.setSelectedShipping);
+
+  const handleSelect = (opt: ShippingQuoteOption) => {
+    setSelectedShipping(opt);
+    onSelect?.(opt);
+  };
 
   if (loading) {
     return (
@@ -44,6 +50,10 @@ export function ShippingOptions({ options, loading, error }: ShippingOptionsProp
         return (
           <label
             key={opt.id}
+            onClick={(e) => {
+              e.preventDefault();
+              handleSelect(opt);
+            }}
             className={`flex items-center gap-3 p-3 border-2 cursor-pointer transition-colors ${
               selected
                 ? "border-brand-pink bg-pink-50 dark:bg-brand-pink/10"
@@ -54,7 +64,7 @@ export function ShippingOptions({ options, loading, error }: ShippingOptionsProp
               type="radio"
               name="shipping-option"
               checked={selected}
-              onChange={() => setSelectedShipping(opt)}
+              onChange={() => {}}
               className="sr-only"
             />
             <Truck size={15} className={`shrink-0 ${selected ? "text-brand-pink" : "text-gray-400"}`} />

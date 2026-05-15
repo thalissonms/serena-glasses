@@ -9,6 +9,7 @@ import type { Product } from "@features/products/types/product.types";
 import {
   formatPrice,
   discountPercentage,
+  formatInstallment,
 } from "@features/products/utils/formatPrice";
 import { getPrimaryTag } from "@features/products/utils/getPrimaryTag";
 import { WishlistButton } from "@features/wishlist/components/WishlistButton";
@@ -91,6 +92,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
                 src={primaryImage.url}
                 alt={primaryImage.alt}
                 fill
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 className={clsx(
                   "object-contain p-4 sm:p-6  transition-transform duration-500",
                   !product.inStock ? "grayscale" : "group-hover:scale-110",
@@ -176,13 +178,20 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               ))}
             </div>
 
-            <div className="absolute bottom-4 right-5 flex items-baseline gap-2">
-              <span className="font-family-jocham text-xl sm:text-2xl text-brand-pink leading-none">
-                {formatPrice(product.price)}
-              </span>
-              {product.compareAtPrice && (
-                <span className="text-xs text-gray-400 dark:text-gray-500 font-inter line-through">
-                  {formatPrice(product.compareAtPrice)}
+            <div className="absolute bottom-4 right-5 flex flex-col items-end gap-0.5">
+              <div className="flex items-baseline gap-1.5">
+                <span className="font-family-jocham text-xl sm:text-2xl text-brand-pink leading-none">
+                  {formatPrice(product.price)}
+                </span>
+                {product.compareAtPrice && (
+                  <span className="text-xs text-gray-400 dark:text-gray-500 font-inter line-through">
+                    {formatPrice(product.compareAtPrice)}
+                  </span>
+                )}
+              </div>
+              {formatInstallment(product.price, product.maxInstallments) && (
+                <span className="font-inter text-[10px] text-gray-500 dark:text-gray-400 leading-none">
+                  {formatInstallment(product.price, product.maxInstallments)}
                 </span>
               )}
             </div>

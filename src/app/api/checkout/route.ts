@@ -24,6 +24,8 @@ import { calculateShippingOptions } from "@shared/lib/melhor-envio/shipping";
 import { lookupCep } from "@shared/lib/viacep";
 import { slugifyCity } from "@shared/utils/slugifyCity";
 import { classifyMpError, userMessageFor, MAX_ATTEMPTS } from "@features/checkout/services/paymentRetry";
+import { getSetting } from "@features/admin/services/siteSettings.service";
+import { computeEffectiveInstallments } from "@shared/utils/effectiveInstallments";
 
 const checkoutBodySchema = z.object({
   orderId: z.string().uuid().optional(),
@@ -212,6 +214,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (cardInstallments) {
+      const { data: retryOrderItems } = await getSupabaseServer()
+        .from("order_items")
+        .select("variant_id, quantity, price, products(max_installments)")
+        .eq("order_id", retryOrderId);
+      const retryBulk = await getSetting("installments_bulk");
+      const retryEffectiveItems = (retryOrderItems ?? []).map((i) => {
+        const product = Array.isArray(i.products) ? i.products[0] : i.products;
+        return {
+          price: i.price as number,
+          quantity: i.quantity as number,
+          maxInstallments: (product as { max_installments?: number })?.max_installments ?? 1,
+        };
+      });
+      const retryCartMaxAllowed = computeEffectiveInstallments(retryEffectiveItems, retryBulk);
+      if (cardInstallments > retryCartMaxAllowed) {
+        return NextResponse.json(
+          { error: "Parcelamento acima do permitido", maxAllowed: retryCartMaxAllowed },
+          { status: 400 },
+        );
+      }
+    }
+
     // Volta para pending antes de chamar o MP
     await getSupabaseServer()
       .from("orders")
@@ -351,7 +376,7 @@ export async function POST(request: NextRequest) {
   const variantIds = items.map((i) => i.variantId);
   const { data: dbVariants, error: priceError } = await getSupabaseServer()
     .from("product_variants")
-    .select("id, products(price, weight)")
+    .select("id, products(price, weight, max_installments)")
     .in("id", variantIds);
 
   if (priceError || !dbVariants) {
@@ -367,6 +392,14 @@ export async function POST(request: NextRequest) {
     }
     if (product && typeof (product as { weight?: number }).weight === "number") {
       dbWeightByVariant[v.id] = (product as { weight: number }).weight;
+    }
+  }
+
+  const dbMaxInstallmentsByVariant: Record<string, number> = {};
+  for (const v of dbVariants) {
+    const product = Array.isArray(v.products) ? v.products[0] : v.products;
+    if (product && typeof (product as { max_installments?: number }).max_installments === "number") {
+      dbMaxInstallmentsByVariant[v.id] = (product as { max_installments: number }).max_installments;
     }
   }
 
@@ -430,6 +463,22 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     console.error("[checkout] shipping validation:", err instanceof Error ? err.message : String(err));
     return NextResponse.json({ error: "Erro ao validar frete. Tente novamente." }, { status: 502 });
+  }
+
+  if (cardInstallments) {
+    const bulk = await getSetting("installments_bulk");
+    const effectiveItems = items.map((i) => ({
+      price: dbPriceByCentavos[i.variantId],
+      quantity: i.quantity,
+      maxInstallments: dbMaxInstallmentsByVariant[i.variantId] ?? 1,
+    }));
+    const cartMaxAllowed = computeEffectiveInstallments(effectiveItems, bulk);
+    if (cardInstallments > cartMaxAllowed) {
+      return NextResponse.json(
+        { error: "Parcelamento acima do permitido", maxAllowed: cartMaxAllowed },
+        { status: 400 },
+      );
+    }
   }
 
   const serverTotal = Math.max(0, serverSubtotal - serverDiscount + serverShipping);

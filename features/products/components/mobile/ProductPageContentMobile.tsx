@@ -9,17 +9,17 @@ import type { Product } from "@features/products/types/product.types";
 import { PolaroidProductImage } from "@features/products/components/mobile/PolaroidProductImages";
 import { useCallback, useState } from "react";
 import ProductColorSelect from "../ProductColorSelect";
-import { formatPrice } from "../../utils/formatPrice";
+import { formatPrice, formatInstallment } from "../../utils/formatPrice";
 import { useTranslation } from "react-i18next";
 import ProductDelivery from "../ProductDelivery";
 import ProductDescription from "../ProductDescription";
 import { Y2KDivider } from "@features/home/components/mobile/Y2KDivider";
 import { getPrimaryTag } from "@features/products/utils/getPrimaryTag";
 import { shareProduct } from "@features/products/utils/polaroidCard.utils";
+import ModalNavHeader from "@features/navigation/components/mobile/modals/ModalNavHeader";
 
 export function ProductPageMobileContent({ product }: { product: Product }) {
   const { t, i18n } = useTranslation("products");
-  const handleBack = useSmartBack("/products");
   const firstInStock = product.variants.findIndex((v) => v.inStock);
   const [selectedColor, setSelectedColor] = useState(
     firstInStock >= 0 ? firstInStock : 0,
@@ -32,38 +32,14 @@ export function ProductPageMobileContent({ product }: { product: Product }) {
 
   return (
     <div className="min-h-screen bg-brand-pink-light dark:bg-brand-pink-bg-dark">
-      <header className="w-full h-16 flex items-center bg-brand-pink/25 backdrop-blur-3xl sticky top-0 py-2 px-0.5 border-b-2 border-brand-pink/40 border-dashed z-50">
-        <button
-          type="button"
-          aria-label={t("page.back")}
-          onClick={handleBack}
-          className="p-2 cursor-pointer"
-        >
-          <ArrowLeft
-            className="w-6.5 h-6.5 text-white"
-            strokeWidth={2.5}
-            aria-hidden="true"
-          />
-        </button>
-        <div className="w-full h-[56] flex flex-col items-center justify-center pt-1 -mt-1">
-          <h1 className="text-white w-full text-center text-shadow-[2px_2px_0px] text-shadow-brand-black text-[28px] font-family-jocham font-light tracking-wide truncate">
-            {product.name}
-          </h1>
-          <span className="w-fit h-fit inline-block text-[10px] font-bold tracking-[0.2em] uppercase text-brand-black dark:text-brand-pink-light dark:border-brand-pink-light">
-            {getPrimaryTag(product, i18n.language)}
-          </span>
-        </div>
-        <div className="px-2 pt-2 mr-1">
-          <button
-            type="button"
-            aria-label={`${t("feed.actionShare")} ${product.name}`}
-            onClick={handleShare}
-            className="dark:bg-brand-pink-bg-dark text-white transition-all duration-300 cursor-pointer"
-          >
-            <Share2Icon size={22} strokeWidth={2.5} aria-hidden="true" />
-          </button>
-        </div>
-      </header>
+      <ModalNavHeader
+        pageToBack={"/products"}
+        isSharedButton={true}
+        handleShared={handleShare}
+        display={product.name}
+        subtitle={getPrimaryTag(product, i18n.language)}
+        buttons={{ labelBack: t("page.back"), labelShared: `${t("feed.actionShare")} ${product.name}` }}
+      />
       <article className="flex flex-col gap-4 mb-22 mt-4">
         <section className="px-1">
           <div className="w-full relative aspect-square bg-white dark:bg-brand-pink-dark shadow-[2px_2px_0px] shadow-black dark:shadow-brand-blue border-4 border-black dark:border-brand-pink-light">
@@ -104,11 +80,19 @@ export function ProductPageMobileContent({ product }: { product: Product }) {
                         </span>
                       )}
                     </div>
-                    <div className="w-1/2 flex items-center gap-1">
-                      <span className="text-sm font-family-poppins font-normal text-gray-400 dark:text-gray-300">
-                        {t("page.installments")}
-                      </span>
-                    </div>
+                    {formatInstallment(
+                      product.price,
+                      product.maxInstallments,
+                    ) && (
+                      <div className="w-1/2 flex items-center gap-1">
+                        <span className="text-sm font-family-poppins font-normal text-gray-400 dark:text-gray-300">
+                          {formatInstallment(
+                            product.price,
+                            product.maxInstallments,
+                          )}
+                        </span>
+                      </div>
+                    )}
                   </div>
                   <div className="flex items-center self-start mt-4 mr-2">
                     <WishlistButton size={32} productId={product.id} />

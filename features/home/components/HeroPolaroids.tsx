@@ -132,6 +132,7 @@ function PolaroidCard({
             src={product.image}
             alt={product.name}
             fill
+            sizes="(max-width: 768px) 80vw, 400px"
             className="object-contain p-2 sm:p-3"
             draggable={false}
           />

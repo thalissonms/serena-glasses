@@ -47,6 +47,7 @@ export function WishlistDropdown() {
                         src={image.url}
                         alt={image.alt ?? product.name}
                         fill
+                        sizes="56px"
                         className="object-contain p-1"
                       />
                     )}

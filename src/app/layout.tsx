@@ -6,25 +6,16 @@ import {
   allFontVariablesClassNames,
   localFontVariablesClassNames,
 } from "@shared/utils/typography";
-import { Footer } from "@shared/components/layout";
 
 import i18n from "@i18n/i18n";
 
 import I18nProvider from "@i18n/i18nProvider";
 
 import { siteConfig } from "@shared/config";
-import { Nav } from "@features/navigation/components/Nav";
 import { QueryProvider } from "@shared/providers/QueryProvider";
 import { ThemeProvider } from "@shared/providers/ThemeProvider";
-import NavBottom from "@features/navigation/components/mobile/NavBottom";
-import ModalPresence from "@features/navigation/components/mobile/modals/ModalPresence";
-import { ReviewsOverlay } from "@features/products/components/ReviewsOverlay";
-import { TopBanner } from "@shared/components/layout/TopBanner";
-import { WhatsAppFloat } from "@shared/components/WhatsAppFloat";
-import { CapturePopupTrigger } from "@shared/components/CapturePopupTrigger";
-import { Y2KToaster } from "@shared/components/Y2KToaster";
 import { getSetting } from "@features/admin/services/siteSettings.service";
-import { NavMobileTopBar } from "@features/navigation/components/mobile/NavMobileTopBar";
+import ModalPresence from "@features/navigation/components/mobile/modals/ModalPresence";
 
 const themeInitScript = `
 (function() {
@@ -104,6 +95,7 @@ export default async function RootLayout({
       <head>
         <script
           nonce={nonce}
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: themeInitScript }}
         />
         <Script
@@ -159,19 +151,8 @@ export default async function RootLayout({
         <ThemeProvider>
           <QueryProvider>
             <I18nProvider>
-              <div className="sticky top-0 w-full z-50">
-                <TopBanner />
-                <NavMobileTopBar />
-              </div>
-              <Nav />
               <main className="min-h-screen">{children}</main>
               <ModalPresence modal={modal} />
-              <Footer />
-              <NavBottom />
-              <ReviewsOverlay />
-              <WhatsAppFloat />
-              <CapturePopupTrigger />
-              <Y2KToaster />
             </I18nProvider>
           </QueryProvider>
         </ThemeProvider>

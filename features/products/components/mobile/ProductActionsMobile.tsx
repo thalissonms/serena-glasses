@@ -5,6 +5,8 @@ import { Check, MessageCircle, ShoppingCart } from "lucide-react";
 import type { Product } from "@features/products/types/product.types";
 import { useAddToCart } from "@features/cart/hooks/useAddToCart";
 import { useReviewsOverlay } from "@features/products/hooks/useReviewsOverlay";
+import { useCartStore } from "@features/cart/store/cart.store";
+import { useMounted } from "@shared/hooks/useMounted";
 
 interface ProductActionsProps {
   product: Product;
@@ -16,11 +18,18 @@ const ProductActionsMobile = ({
   selectedColorIndex,
 }: ProductActionsProps) => {
   const { t } = useTranslation("products");
+  const mounted = useMounted();
   const { inStock, added, addToCart, buyNow } = useAddToCart(
     product,
     selectedColorIndex,
   );
   const openReviews = useReviewsOverlay((s) => s.openFor);
+
+  const itemCount = useCartStore((state) =>
+    state.items.reduce((sum, i) => sum + i.quantity, 0),
+  );
+
+  const showCartBadge = mounted && itemCount > 0;
 
   if (!inStock) {
     return (
@@ -40,12 +49,24 @@ const ProductActionsMobile = ({
         aria-label={t("page.addToCartAria", { name: product.name })}
         aria-live="polite"
         className={clsx(
-          "w-full h-full font-bold shadow-brand-black dark:shadow-brand-blue border-2 border-brand-black dark:border-brand-pink-light disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-[2px_2px_0px]",
+          "w-full h-full relative font-bold shadow-brand-black dark:shadow-brand-blue border-2 border-brand-black dark:border-brand-pink-light disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-[2px_2px_0px]",
           added
             ? "bg-green-400 dark:border-green-100 text-black shadow-[4px_4px_0] translate-y-0.5"
             : "bg-brand-pink dark:bg-brand-pink text-white dark:text-white dark:hover:text-brand-pink-light shadow-[4px_4px_0] dark:shadow-brand-blue hover:translate-y-0.5 hover:shadow-[4px_4px_0] active:translate-y-1",
         )}
       >
+        {!added &&
+          <div
+            className={clsx(
+              "absolute -top-2 -right-2 w-6 h-6 bg-brand-blue dark:bg-brand-pink border-2 border-var(--color-card) dark:border-brand-black-dark rounded-full flex items-center justify-center shadow-[2px_2px_0px] shadow-brand-black-dark dark:shadow-brand-blue transition-opacity duration-300",
+              showCartBadge ? "opacity-100" : "opacity-0",
+            )}
+          >
+            <span className="text-xs font-poppins text-brand-black-dark dark:text-brand-pink-dark font-bold">
+              {itemCount > 99 ? "99+" : itemCount}
+            </span>
+          </div>
+        }
         <span className="flex items-center justify-center gap-0 leading-4">
           {added ? (
             <Check size={26} strokeWidth={3} aria-hidden="true" />

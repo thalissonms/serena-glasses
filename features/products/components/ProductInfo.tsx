@@ -4,6 +4,7 @@ import { getPrimaryTag } from "@features/products/utils/getPrimaryTag";
 import {
   formatPrice,
   discountPercentage,
+  formatInstallment,
 } from "@features/products/utils/formatPrice";
 import { WishlistButton } from "@features/wishlist/components/WishlistButton";
 import ProductColorSelect from "./ProductColorSelect";
@@ -56,6 +57,11 @@ export default function ProductInfo({
           </>
         )}
       </div>
+      {formatInstallment(product.price, product.maxInstallments) && (
+        <p className="font-inter text-sm text-gray-500 dark:text-gray-400 -mt-1">
+          {formatInstallment(product.price, product.maxInstallments)}
+        </p>
+      )}
 
       <ProductColorSelect
         product={product}

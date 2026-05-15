@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import type { Product } from "@features/products/types/product.types";
 import { useAddToCart } from "@features/cart/hooks/useAddToCart";
+import { useEffect, useState } from "react";
 
 interface ProductActionsProps {
   product: Product;
@@ -18,6 +19,8 @@ export default function ProductActions({
     product,
     selectedColorIndex,
   );
+
+
 
   return (
     <div className="flex flex-col gap-4 mt-4">

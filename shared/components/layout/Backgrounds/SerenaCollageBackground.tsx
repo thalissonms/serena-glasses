@@ -290,6 +290,7 @@ export function SerenaCollageBackground({ children, className = "" }: SerenaColl
                   alt={`Collage item ${index + 1}`}
                   className="w-full h-full object-cover"
                   fill
+                  sizes="96px"
                 />
                 {/* Photo shadow */}
                 <div className="absolute inset-0 shadow-xl" />

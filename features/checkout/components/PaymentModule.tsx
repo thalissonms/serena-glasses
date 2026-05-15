@@ -8,6 +8,7 @@
  *
  * Usado em: src/app/checkout/page.tsx.
  */
+import { useEffect } from "react";
 import { CreditCard, QrCode, FileText, RefreshCw } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { formatPrice } from "@features/products/utils/formatPrice";
@@ -21,12 +22,19 @@ interface PaymentModuleProps {
   subtotal: number;
   retryCount: number | null;
   onRetry: () => void;
+  maxInstallments: number;
 }
 
-export function PaymentModule({ subtotal, retryCount, onRetry }: PaymentModuleProps) {
+export function PaymentModule({ subtotal, retryCount, onRetry, maxInstallments }: PaymentModuleProps) {
   const { watch, setValue } = useCheckoutForm();
   const { t } = useTranslation("checkout");
   const paymentMethod = watch("payment.method");
+
+  useEffect(() => {
+    if (maxInstallments <= 1) {
+      setValue("payment.installments", "1");
+    }
+  }, [maxInstallments, setValue]);
 
   const paymentTabs = [
     { key: PaymentMethod.Card, icon: CreditCard, label: t("payment.card") },
@@ -34,11 +42,13 @@ export function PaymentModule({ subtotal, retryCount, onRetry }: PaymentModulePr
     { key: PaymentMethod.Boleto, icon: FileText, label: t("payment.boleto") },
   ];
 
-  const installmentsOptions = [
-    { value: "1", label: t("payment.installmentOption", { count: 1, price: formatPrice(subtotal) }) },
-    { value: "2", label: t("payment.installmentOption", { count: 2, price: formatPrice(subtotal / 2) }) },
-    { value: "3", label: t("payment.installmentOption", { count: 3, price: formatPrice(subtotal / 3) }) },
-  ];
+  const installmentsOptions = Array.from(
+    { length: maxInstallments },
+    (_, i) => i + 1,
+  ).map((n) => ({
+    value: String(n),
+    label: t("payment.installmentOption", { count: n, price: formatPrice(subtotal / n) }),
+  }));
 
   const isRetryMode = retryCount !== null && paymentMethod === PaymentMethod.Card;
 
@@ -113,13 +123,15 @@ export function PaymentModule({ subtotal, retryCount, onRetry }: PaymentModulePr
               placeholder="000"
               required
             />
-            <RHFSelectInput
-              name="payment.installments"
-              label={t("payment.installments")}
-              options={installmentsOptions}
-              required
-              className="sm:col-span-2"
-            />
+            {maxInstallments > 1 && (
+              <RHFSelectInput
+                name="payment.installments"
+                label={t("payment.installments")}
+                options={installmentsOptions}
+                required
+                className="sm:col-span-2"
+              />
+            )}
           </div>
         </div>
       )}

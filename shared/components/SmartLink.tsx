@@ -10,7 +10,10 @@ export function SmartLink({ href, children, prefetch, replace, scroll, ...rest }
   const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
-    setIsDesktop(window.innerWidth >= 768);
+    const update = () => setIsDesktop(window.innerWidth >= 768);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
   }, []);
 
   if (isDesktop) {

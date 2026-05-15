@@ -55,6 +55,7 @@ export default async function AdminProductEditPage({ params }: Props) {
           seo_title: product.seo_title ?? null,
           seo_description: product.seo_description ?? null,
           seo_keywords: product.seo_keywords ?? [],
+          max_installments: product.max_installments,
           video_url: product.video_url ?? null,
         }}
       />

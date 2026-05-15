@@ -65,6 +65,7 @@ export default function ProductsClient({ products }: { products: ProductType[] }
                               src={image.url}
                               alt={image.alt ?? product.name}
                               fill
+                              sizes="40px"
                               className="object-contain p-1"
                             />
                           </div>

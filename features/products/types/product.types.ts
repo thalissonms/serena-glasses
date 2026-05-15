@@ -135,6 +135,10 @@ export interface Product {
   isOutlet: boolean;
   outletReason?: string;  // "Pequeno arranhão na haste direita"
 
+  // ── Parcelamento ──
+
+  maxInstallments: number;
+
   // ── Detalhes ──
 
   uvProtection: boolean;
@@ -173,6 +177,7 @@ export interface ProductCard {
   isOnSale: boolean;
   isOutlet: boolean;
   colors: ProductColor[];
+  maxInstallments: number;
 }
 
 /** Filtros de busca de produtos */

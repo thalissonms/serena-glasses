@@ -42,6 +42,8 @@ export const productPatchSchema = z.object({
   seo_description: z.string().max(500).nullable().optional(),
   seo_keywords: z.array(z.string().max(50)).max(30).optional(),
 
+  max_installments: z.number().int().min(1).max(12).optional(),
+
   video_url: z.string().url().nullable().optional(),
 });
 

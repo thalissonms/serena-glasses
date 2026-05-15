@@ -210,6 +210,7 @@ describe("Product Schema", () => {
       isNew: false,
       isOnSale: false,
       isOutlet: false,
+      maxInstallments: 1,
       uvProtection: true,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -348,6 +349,60 @@ describe("Product Schema", () => {
       updatedAt: new Date().toISOString(),
     };
     expect(productSchema.safeParse(product).success).toBe(false);
+  });
+});
+
+// ─── maxInstallments ────────────────────────────────────────────────
+
+describe("Product Schema — maxInstallments", () => {
+  const base = {
+    id: "prod_inst",
+    slug: "oculos-teste",
+    name: "Óculos Teste",
+    description: "Descrição do óculos teste",
+    shortDescription: "Óculos teste",
+    price: 19900,
+    currency: "BRL" as const,
+    category: fakeCategory("oculos-de-sol"),
+    subcategories: [],
+    frameShape: "round" as const,
+    frameMaterial: "metal" as const,
+    lensType: "solid" as const,
+    tags: [],
+    images: [{ url: "/img.png", alt: "Test", isPrimary: true, order: 0 }],
+    variants: [],
+    rating: { average: 0, count: 0 },
+    seo: { title: "Test", description: "Test desc", keywords: ["test"] },
+    inStock: true,
+    stockQuantity: 1,
+    status: "active" as const,
+    featured: false,
+    isNew: false,
+    isOnSale: false,
+    isOutlet: false,
+    uvProtection: false,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  it("aceita maxInstallments nos limites (1 e 12)", () => {
+    expect(productSchema.safeParse({ ...base, maxInstallments: 1 }).success).toBe(true);
+    expect(productSchema.safeParse({ ...base, maxInstallments: 12 }).success).toBe(true);
+    expect(productSchema.safeParse({ ...base, maxInstallments: 6 }).success).toBe(true);
+  });
+
+  it("rejeita maxInstallments fora do intervalo 1–12", () => {
+    expect(productSchema.safeParse({ ...base, maxInstallments: 0 }).success).toBe(false);
+    expect(productSchema.safeParse({ ...base, maxInstallments: 13 }).success).toBe(false);
+    expect(productSchema.safeParse({ ...base, maxInstallments: -1 }).success).toBe(false);
+  });
+
+  it("rejeita maxInstallments fracionado", () => {
+    expect(productSchema.safeParse({ ...base, maxInstallments: 2.5 }).success).toBe(false);
+  });
+
+  it("rejeita produto sem maxInstallments", () => {
+    expect(productSchema.safeParse(base).success).toBe(false);
   });
 });
 

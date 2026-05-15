@@ -3,8 +3,9 @@ import { useTranslation } from "react-i18next";
 import { SectionHeader } from "./SectionHeader";
 import { RHFTextInput, RHFCPFInput, RHFPhoneInput } from "@shared/components/forms";
 
-export function IdentificationModule() {
+export function IdentificationModule({ nextStep }: { nextStep?: () => void }) {
   const { t } = useTranslation("checkout");
+  void nextStep;
 
   return (
     <div className="bg-white dark:bg-[#1a1a1a] border-2 border-black dark:border-brand-pink shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#FF00B6] p-6 transition-colors">

@@ -41,12 +41,19 @@ export const popupCaptureSchema = z.object({
   show_once_per_days: z.number().int().min(1).default(7),
 });
 
+export const installmentsBulkSchema = z.object({
+  enabled: z.boolean(),
+  threshold_cents: z.number().int().nonnegative(),
+  installments: z.number().int().min(1).max(12),
+});
+
 export const SETTING_SCHEMAS = {
   free_shipping: freeShippingSchema,
   maintenance: maintenanceSchema,
   pixels: pixelsSchema,
   whatsapp: whatsappSchema,
   popup_capture: popupCaptureSchema,
+  installments_bulk: installmentsBulkSchema,
 } as const;
 
 export type SettingKey = keyof typeof SETTING_SCHEMAS;

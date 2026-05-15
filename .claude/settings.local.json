@@ -34,7 +34,8 @@
       "Bash(git commit *)",
       "Bash(Remove-Item -Recurse -Force \"c:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\.next\" -ErrorAction SilentlyContinue)",
       "Bash(Write-Host \"done\")",
-      "PowerShell(cd \"c:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\"; npm run build 2>&1 | Tee-Object -FilePath \"$env:TEMP\\\\serena_build.log\"; Write-Host \"EXIT:$LASTEXITCODE\")"
+      "PowerShell(cd \"c:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\"; npm run build 2>&1 | Tee-Object -FilePath \"$env:TEMP\\\\serena_build.log\"; Write-Host \"EXIT:$LASTEXITCODE\")",
+      "PowerShell(npx tsc --noEmit -p tsconfig.json 2>&1)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Thalisson\\Documents\\Serena\\serena-glasses\\AGENT",

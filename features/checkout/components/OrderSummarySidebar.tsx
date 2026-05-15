@@ -1,11 +1,12 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
 import { ArrowRight, Lock, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { formatPrice } from "@features/products/utils/formatPrice";
+import { formatPrice, formatInstallment } from "@features/products/utils/formatPrice";
 import { useCartStore } from "@features/cart/store/cart.store";
 import CouponInput from "./CouponInput";
+import { SmartLink } from "@shared/components/SmartLink";
+import Link from "next/link";
 
 const OrderSummarySidebar = ({
   isFinished = false,
@@ -43,6 +44,7 @@ const OrderSummarySidebar = ({
                     src={item.image}
                     alt={item.name}
                     fill
+                    sizes="48px"
                     className="object-contain p-1"
                   />
                   <span className="absolute top-0 right-0 w-4 h-4 bg-brand-pink text-white text-[9px] font-black flex items-center justify-center border border-black">
@@ -125,14 +127,27 @@ const OrderSummarySidebar = ({
           </div>
         </div>
 
-        <div className="border-t-2 border-black dark:border-brand-pink mt-3 pt-3 flex items-baseline justify-between mb-5">
-          <span className="font-poppins font-black text-sm uppercase tracking-wide">
-            {t("sidebar.total")}
-          </span>
-          <span className="font-jocham text-2xl text-brand-pink leading-none">
-            {formatPrice(total)}
-          </span>
-        </div>
+        {(() => {
+          const minInstallments = items.length > 0 ? Math.min(...items.map((i) => i.maxInstallments)) : 1;
+          const label = formatInstallment(total, minInstallments);
+          return (
+            <>
+              <div className={`border-t-2 border-black dark:border-brand-pink mt-3 pt-3 flex items-baseline justify-between ${label ? "mb-1" : "mb-5"}`}>
+                <span className="font-poppins font-black text-sm uppercase tracking-wide">
+                  {t("sidebar.total")}
+                </span>
+                <span className="font-jocham text-2xl text-brand-pink leading-none">
+                  {formatPrice(total)}
+                </span>
+              </div>
+              {label && (
+                <p className="font-inter text-[11px] text-gray-400 dark:text-gray-500 text-right mb-5">
+                  ou {label} sem juros
+                </p>
+              )}
+            </>
+          );
+        })()}
 
         {isFinished ? (
           <button
@@ -155,19 +170,19 @@ const OrderSummarySidebar = ({
                 {t("sidebar.finishOrder")} <ArrowRight size={16} />
               </div>
             ) : (
-              <Link
+              <SmartLink
                 href="/checkout"
                 className="flex items-center justify-center gap-2 w-full py-4 font-poppins text-sm font-black uppercase tracking-widest border-4 border-black dark:border-brand-pink bg-brand-pink text-white shadow-[6px_6px_0_#000] dark:shadow-[6px_6px_0_#000] hover:translate-y-0.5 hover:shadow-[4px_4px_0_#000] transition-all mt-1"
               >
                 {t("sidebar.finishOrder")} <ArrowRight size={16} />
-              </Link>
+              </SmartLink>
             )}
-            <Link
+            <SmartLink
               href="/"
               className="text-center text-xs font-poppins font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 hover:text-brand-pink transition-colors"
             >
               {t("sidebar.continueShopping")}
-            </Link>
+            </SmartLink>
           </div>
         )}
       </div>
