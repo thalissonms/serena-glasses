@@ -1,0 +1,92 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - link [ref=e9] [cursor=pointer]:
+          - /url: /
+          - img [ref=e10]
+        - img [ref=e19]
+        - img [ref=e22]
+        - img [ref=e29]
+      - generic [ref=e31]:
+        - generic [ref=e34]:
+          - img [ref=e36]
+          - searchbox "Buscar produtos..." [ref=e39]
+        - generic [ref=e40]:
+          - button "Favoritos" [ref=e42] [cursor=pointer]:
+            - generic [ref=e44]:
+              - img [ref=e45]
+              - generic [ref=e48]: "0"
+          - link "0" [ref=e49] [cursor=pointer]:
+            - /url: /cart
+            - generic [ref=e51]:
+              - img [ref=e52]
+              - generic [ref=e57]: "0"
+          - button "Mudar para tema escuro" [ref=e58] [cursor=pointer]:
+            - img [ref=e61]
+        - button "Menu" [ref=e71]:
+          - img [ref=e72]
+    - main [ref=e74]:
+      - generic [ref=e76]:
+        - heading "Resultados para “oculos”" [level=1] [ref=e78]:
+          - text: Resultados para
+          - generic [ref=e79]: “oculos”
+        - generic [ref=e82]:
+          - img [ref=e84]
+          - searchbox "Buscar produtos..." [ref=e87]: oculos
+    - generic [ref=e101]:
+      - generic [ref=e102]:
+        - generic [ref=e103]:
+          - img [ref=e106]
+          - heading "FRETE GRÁTIS" [level=3] [ref=e111]
+          - paragraph [ref=e112]: Em compras acima de R$ 199,00 para todo o Brasil
+        - generic [ref=e113]:
+          - img [ref=e116]
+          - heading "PROTEÇÃO UV400" [level=3] [ref=e118]
+          - paragraph [ref=e119]: Máxima proteção contra raios ultravioleta em todos os modelos
+        - generic [ref=e120]:
+          - img [ref=e123]
+          - heading "QUALIDADE PREMIUM" [level=3] [ref=e125]
+          - paragraph [ref=e126]: Materiais de alta qualidade e design exclusivo
+      - generic [ref=e127]:
+        - generic [ref=e128]:
+          - heading "Sobre a Serena Glasses ✦" [level=4] [ref=e129]
+          - paragraph [ref=e130]: Serana Glasses - Boutique de Óculos Solar
+        - generic [ref=e131]:
+          - heading "Mapa do Site" [level=4] [ref=e132]
+          - list [ref=e133]:
+            - listitem [ref=e134]:
+              - link "Início" [ref=e135] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e136]:
+              - link "footer.links.sunGlasses" [ref=e137] [cursor=pointer]:
+                - /url: /sun-glasses
+            - listitem [ref=e138]:
+              - link "footer.links.miniDrop" [ref=e139] [cursor=pointer]:
+                - /url: /mini-drop
+            - listitem [ref=e140]:
+              - link "Outlet" [ref=e141] [cursor=pointer]:
+                - /url: /outlet
+            - listitem [ref=e142]:
+              - link "Promoções" [ref=e143] [cursor=pointer]:
+                - /url: /promotions
+        - generic [ref=e144]:
+          - heading "Siga-nos" [level=4] [ref=e145]
+          - list [ref=e146]:
+            - listitem [ref=e147]:
+              - link "Instagram" [ref=e148] [cursor=pointer]:
+                - /url: https://www.instagram.com/serenaglasses
+                - img [ref=e149]
+                - text: Instagram
+            - listitem [ref=e152]:
+              - link "Facebook" [ref=e153] [cursor=pointer]:
+                - /url: https://www.facebook.com/serenaglasses
+                - img [ref=e154]
+                - text: Facebook
+        - generic [ref=e156]:
+          - heading "Créditos" [level=4] [ref=e157]
+          - paragraph [ref=e158]: © 2026 Serena Glasses ✦
+          - paragraph [ref=e159]: Desenvolvido por Thalisson M. Silva
+      - paragraph [ref=e161]: Todos os direitos reservados.
+  - button "Open Next.js Dev Tools" [ref=e167] [cursor=pointer]:
+    - img [ref=e168]

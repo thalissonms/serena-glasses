@@ -228,6 +228,54 @@ async function enrichWithStock(products: DbProduct[]): Promise<Product[]> {
   return products.map((p) => mapProduct(p, reservedByVariant));
 }
 
+function sanitizeIlike(s: string): string {
+  return s.replace(/[%_,]/g, (c) => `\\${c}`);
+}
+
+export async function searchProducts(params: {
+  q: string;
+  subcategory?: string | null;
+  shape?: string | null;
+  color?: string | null;
+}): Promise<Product[]> {
+  const safe = sanitizeIlike(params.q);
+
+  let query = getSupabaseServer()
+    .from("products")
+    .select(SELECT)
+    .eq("active", true)
+    .or(
+      `name.ilike.%${safe}%,short_description.ilike.%${safe}%,description.ilike.%${safe}%`
+    )
+    .limit(40);
+
+  if (params.shape) query = query.eq("frame_shape", params.shape);
+
+  const { data, error } = await query;
+  if (error || !data) return [];
+
+  let results = data as DbProduct[];
+
+  if (params.subcategory) {
+    const sub = params.subcategory;
+    results = results.filter((p) =>
+      (p.product_subcategories ?? []).some((ps) => {
+        const s = Array.isArray(ps.subcategories) ? ps.subcategories[0] : ps.subcategories;
+        return s?.slug === sub;
+      })
+    );
+  }
+
+  if (params.color) {
+    const col = params.color.toLowerCase();
+    results = results.filter((p) =>
+      p.product_variants.some((v) => v.color_name.toLowerCase() === col)
+    );
+  }
+
+  return enrichWithStock(results);
+}
+
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   const { data, error } = await getSupabaseServer()
     .from("products")

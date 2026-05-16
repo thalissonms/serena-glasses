@@ -109,7 +109,7 @@ const CheckoutModalContent = () => {
       />
       <StepIndicator current={currentIndex} total={totalSteps} />
 
-      <div className="relative overflow-x-hidden">
+      <div className="relative overflow-x-clip">
         <AnimatePresence mode="wait" custom={direction} initial={false}>
           {step === "address" && (
             <StepSlide key="address" direction={direction}>

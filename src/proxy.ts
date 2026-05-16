@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
-import { checkoutLimiter, couponLimiter, trackLimiter, shippingQuoteLimiter } from "@shared/lib/ratelimit";
+import { checkoutLimiter, couponLimiter, trackLimiter, shippingQuoteLimiter, searchLimiter } from "@shared/lib/ratelimit";
 import type { Ratelimit } from "@upstash/ratelimit";
 
 const PUBLIC_ADMIN_PATHS = new Set(["/admin/login"]);
@@ -97,6 +97,7 @@ export async function proxy(request: NextRequest) {
   else if (pathname === "/api/checkout/coupon/validate" && verb === "POST") limiter = couponLimiter;
   else if (pathname === "/api/checkout/shipping/quote" && verb === "POST") limiter = shippingQuoteLimiter;
   else if (pathname === "/order/track") limiter = trackLimiter;
+  else if ((pathname === "/api/search" || pathname === "/api/search/facets") && verb === "GET") limiter = searchLimiter;
 
   if (limiter) {
     const ip = getIp(request);

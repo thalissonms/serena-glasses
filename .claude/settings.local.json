@@ -35,12 +35,39 @@
       "Bash(Remove-Item -Recurse -Force \"c:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\.next\" -ErrorAction SilentlyContinue)",
       "Bash(Write-Host \"done\")",
       "PowerShell(cd \"c:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\"; npm run build 2>&1 | Tee-Object -FilePath \"$env:TEMP\\\\serena_build.log\"; Write-Host \"EXIT:$LASTEXITCODE\")",
-      "PowerShell(npx tsc --noEmit -p tsconfig.json 2>&1)"
+      "PowerShell(npx tsc --noEmit -p tsconfig.json 2>&1)",
+      "Bash(ls \"/c/Users/Thalisson/AppData/Roaming/npm/\" 2>/dev/null | grep -i claude; ls \"/c/Users/Thalisson/.bun/bin/\" 2>/dev/null | grep -i claude; ls \"/c/Users/Thalisson/AppData/Local/Programs/\" 2>/dev/null | grep -i claude)",
+      "Read(//c/Users/Thalisson/AppData/Roaming/npm//**)",
+      "Read(//c/Users/Thalisson/.bun/bin//**)",
+      "Read(//c/Users/Thalisson/AppData/Local/Programs//**)",
+      "Bash(mkdir -p features/search/types features/search/hooks features/search/components/mobile features/cart/components/mobile src/app/@modal/\\\\\\(.\\\\\\)search src/app/\\\\\\(app\\\\\\)/search)",
+      "mcp__plugin_playwright_playwright__browser_resize",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_wait_for",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "mcp__plugin_playwright_playwright__browser_snapshot",
+      "mcp__plugin_playwright_playwright__browser_click",
+      "mcp__plugin_playwright_playwright__browser_type",
+      "mcp__plugin_playwright_playwright__browser_close",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\features\\\\wishlist\" -Recurse -File | ForEach-Object { $_.FullName })",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\features\\\\cart\\\\components\\\\mobile\" -File | ForEach-Object { $_.FullName })",
+      "PowerShell(Test-Path \"C:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\src\\\\app\\\\\\(app\\)\\\\wishlist\"; if \\($?\\) { Get-ChildItem -Path \"C:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\src\\\\app\\\\\\(app\\)\\\\wishlist\" -File | ForEach-Object { $_.FullName } } else { echo \"Path does not exist\" })",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\src\\\\app\" -Directory | ForEach-Object { $_.Name })",
+      "PowerShell(grep *)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\src\\\\app\\\\\\(app\\)\" -Directory | ForEach-Object { $_.Name })",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\src\\\\app\\\\@modal\" -Directory | ForEach-Object { $_.Name })",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\features\\\\products\\\\components\\\\mobile\" -File | ForEach-Object { $_.FullName })",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\features\\\\wishlist\" -Recurse | ForEach-Object { $_.FullName })",
+      "Bash(Get-ChildItem \"C:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\features\\\\wishlist\" -Recurse -File)",
+      "Bash(Select-Object FullName)",
+      "Bash(Get-ChildItem \"C:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\src\\\\app\\\\\\(app\\)\\\\wishlist\" -Recurse -File)",
+      "Bash(Get-ChildItem \"C:\\\\Users\\\\Thalisson\\\\Documents\\\\Serena\\\\serena-glasses\\\\src\\\\app\\\\@modal\\\\\\(.\\)wishlist\" -Recurse -File)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Thalisson\\Documents\\Serena\\serena-glasses\\AGENT",
       "c:\\Users\\Thalisson\\Documents\\Serena\\serena-glasses\\src\\app\\api\\admin\\categories\\[id]",
-      "c:\\Users\\Thalisson\\Documents\\Serena\\serena-glasses\\src\\app\\admin\\categories\\[id]"
+      "c:\\Users\\Thalisson\\Documents\\Serena\\serena-glasses\\src\\app\\admin\\categories\\[id]",
+      "c:\\Users\\Thalisson\\Documents\\Serena\\serena-glasses\\features\\search"
     ]
   }
 }

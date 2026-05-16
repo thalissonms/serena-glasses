@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-export type InputVariant = "checkout" | "admin";
+export type InputVariant = "checkout" | "admin" | "search";
 
 export function InputLabel({
   htmlFor,
@@ -67,6 +67,16 @@ export function inputCls(error?: string, extra?: string, variant: InputVariant =
       error
         ? "border-red-500 focus:border-red-500"
         : "border-white/10 focus:border-brand-pink",
+      extra,
+    );
+  }
+  if (variant === "search") {
+    return clsx(
+      "w-full px-2 py-2 border-2 border-black dark:border-brand-pink-light",
+      "bg-brand-pink-light dark:bg-brand-pink-dark",
+      "font-poppins uppercase text-xs",
+      "placeholder-brand-pink/60 placeholder:font-semibold dark:placeholder:text-brand-pink-light/20",
+      "outline-none transition-colors duration-150",
       extra,
     );
   }

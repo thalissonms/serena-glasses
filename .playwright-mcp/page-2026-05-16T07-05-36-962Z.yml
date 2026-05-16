@@ -1,0 +1,110 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - link [ref=e9] [cursor=pointer]:
+          - /url: /
+          - img [ref=e10]
+        - img [ref=e19]
+        - img [ref=e22]
+        - img [ref=e29]
+      - navigation "Navegação principal" [ref=e31]:
+        - list [ref=e32]:
+          - listitem [ref=e33]:
+            - link "Início" [ref=e35] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e36]:
+            - link "Mini Drop" [ref=e38] [cursor=pointer]:
+              - /url: /products?category=miniDrop
+          - listitem [ref=e39]:
+            - link "Óculos" [ref=e41] [cursor=pointer]:
+              - /url: /products?category=sunglasses
+          - listitem [ref=e42]:
+            - link "Acessórios" [ref=e44] [cursor=pointer]:
+              - /url: /products?category=accessories
+          - listitem [ref=e45]:
+            - link "Outlet" [ref=e47] [cursor=pointer]:
+              - /url: /products?outlet=true
+          - listitem [ref=e48]:
+            - link "Promoções" [ref=e50] [cursor=pointer]:
+              - /url: /products?sale=true
+      - generic [ref=e51]:
+        - generic [ref=e54]:
+          - img [ref=e56]
+          - searchbox "Buscar produtos..." [ref=e59]
+        - generic [ref=e60]:
+          - button "Favoritos" [ref=e62] [cursor=pointer]:
+            - generic [ref=e64]:
+              - img [ref=e65]
+              - generic [ref=e68]: "0"
+          - link "0" [ref=e69] [cursor=pointer]:
+            - /url: /cart
+            - generic [ref=e71]:
+              - img [ref=e72]
+              - generic [ref=e77]: "0"
+          - button "Mudar para tema escuro" [ref=e78] [cursor=pointer]:
+            - img [ref=e81]
+    - main [ref=e92]:
+      - generic [ref=e94]:
+        - heading "Resultados para “xyznotexistent123”" [level=1] [ref=e96]:
+          - text: Resultados para
+          - generic [ref=e97]: “xyznotexistent123”
+        - generic [ref=e100]:
+          - img [ref=e102]
+          - searchbox "Buscar produtos..." [ref=e105]: xyznotexistent123
+    - generic [ref=e119]:
+      - generic [ref=e120]:
+        - generic [ref=e121]:
+          - img [ref=e124]
+          - heading "FRETE GRÁTIS" [level=3] [ref=e129]
+          - paragraph [ref=e130]: Em compras acima de R$ 199,00 para todo o Brasil
+        - generic [ref=e131]:
+          - img [ref=e134]
+          - heading "PROTEÇÃO UV400" [level=3] [ref=e136]
+          - paragraph [ref=e137]: Máxima proteção contra raios ultravioleta em todos os modelos
+        - generic [ref=e138]:
+          - img [ref=e141]
+          - heading "QUALIDADE PREMIUM" [level=3] [ref=e143]
+          - paragraph [ref=e144]: Materiais de alta qualidade e design exclusivo
+      - generic [ref=e145]:
+        - generic [ref=e146]:
+          - heading "Sobre a Serena Glasses ✦" [level=4] [ref=e147]
+          - paragraph [ref=e148]: Serana Glasses - Boutique de Óculos Solar
+        - generic [ref=e149]:
+          - heading "Mapa do Site" [level=4] [ref=e150]
+          - list [ref=e151]:
+            - listitem [ref=e152]:
+              - link "Início" [ref=e153] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e154]:
+              - link "footer.links.sunGlasses" [ref=e155] [cursor=pointer]:
+                - /url: /sun-glasses
+            - listitem [ref=e156]:
+              - link "footer.links.miniDrop" [ref=e157] [cursor=pointer]:
+                - /url: /mini-drop
+            - listitem [ref=e158]:
+              - link "Outlet" [ref=e159] [cursor=pointer]:
+                - /url: /outlet
+            - listitem [ref=e160]:
+              - link "Promoções" [ref=e161] [cursor=pointer]:
+                - /url: /promotions
+        - generic [ref=e162]:
+          - heading "Siga-nos" [level=4] [ref=e163]
+          - list [ref=e164]:
+            - listitem [ref=e165]:
+              - link "Instagram" [ref=e166] [cursor=pointer]:
+                - /url: https://www.instagram.com/serenaglasses
+                - img [ref=e167]
+                - text: Instagram
+            - listitem [ref=e170]:
+              - link "Facebook" [ref=e171] [cursor=pointer]:
+                - /url: https://www.facebook.com/serenaglasses
+                - img [ref=e172]
+                - text: Facebook
+        - generic [ref=e174]:
+          - heading "Créditos" [level=4] [ref=e175]
+          - paragraph [ref=e176]: © 2026 Serena Glasses ✦
+          - paragraph [ref=e177]: Desenvolvido por Thalisson M. Silva
+      - paragraph [ref=e179]: Todos os direitos reservados.
+  - button "Open Next.js Dev Tools" [ref=e185] [cursor=pointer]:
+    - img [ref=e186]

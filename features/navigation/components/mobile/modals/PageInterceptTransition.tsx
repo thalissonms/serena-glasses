@@ -3,6 +3,8 @@
 import { motion, PanInfo, useAnimation } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { ReactNode, useEffect, useRef } from "react";
+import { useMounted } from "@shared/hooks/useMounted";
+import { useIsDesktop } from "@shared/hooks/useIsDesktop";
 
 type Props = {
   children: ReactNode;
@@ -12,23 +14,28 @@ export default function PageInterceptTransition({ children }: Props) {
   const router = useRouter();
   const controls = useAnimation();
   const containerRef = useRef<HTMLDivElement>(null);
+  const mounted = useMounted();
+  const isDesktop = useIsDesktop();
+  const enabled = mounted && !isDesktop;
 
   useEffect(() => {
+    if (!enabled) return;
     document.body.style.overflow = "hidden";
-
     return () => {
       document.body.style.overflow = "";
     };
-  }, []);
+  }, [enabled]);
 
   useEffect(() => {
+    if (!enabled) return;
     controls.start({
       x: 0,
       transition: { type: "spring", stiffness: 320, damping: 34, mass: 0.9 },
     });
-  }, [controls]);
+  }, [controls, enabled]);
 
   useEffect(() => {
+    if (!enabled) return;
     const container = containerRef.current;
     if (!container) return;
 
@@ -70,7 +77,7 @@ export default function PageInterceptTransition({ children }: Props) {
       document.removeEventListener("keydown", handleKeyDown);
       previouslyFocused?.focus();
     };
-  }, [router]);
+  }, [router, enabled]);
 
   const handleDragEnd = async (
     _: MouseEvent | TouchEvent | PointerEvent,

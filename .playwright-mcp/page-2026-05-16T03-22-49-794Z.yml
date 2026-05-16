@@ -1,0 +1,189 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - link "EM DESENVOLVIMENTO!" [ref=e266] [cursor=pointer]:
+        - /url: https://github.com/thalissonms
+        - generic [ref=e268]: EM DESENVOLVIMENTO!
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - link [ref=e9] [cursor=pointer]:
+            - /url: /
+            - img [ref=e10]
+          - img [ref=e19]
+          - img [ref=e22]
+          - img [ref=e29]
+        - navigation "Navegação principal" [ref=e31]:
+          - list [ref=e32]:
+            - listitem [ref=e33]:
+              - link "Início" [ref=e35] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e36]:
+              - link "Mini Drop" [ref=e38] [cursor=pointer]:
+                - /url: /products?category=miniDrop
+            - listitem [ref=e39]:
+              - link "Óculos" [ref=e41] [cursor=pointer]:
+                - /url: /products?category=sunglasses
+            - listitem [ref=e42]:
+              - link "Acessórios" [ref=e44] [cursor=pointer]:
+                - /url: /products?category=accessories
+            - listitem [ref=e45]:
+              - link "Outlet" [ref=e47] [cursor=pointer]:
+                - /url: /products?outlet=true
+            - listitem [ref=e48]:
+              - link "Promoções" [ref=e50] [cursor=pointer]:
+                - /url: /products?sale=true
+        - generic [ref=e51]:
+          - generic [ref=e54]:
+            - img [ref=e55]
+            - searchbox "placeholder" [ref=e58]
+          - generic [ref=e59]:
+            - button "Favoritos" [ref=e61] [cursor=pointer]:
+              - generic [ref=e63]:
+                - img [ref=e64]
+                - generic [ref=e67]: "0"
+            - link "0" [ref=e269] [cursor=pointer]:
+              - /url: /cart
+              - generic [ref=e271]:
+                - img [ref=e272]
+                - generic [ref=e277]: "0"
+            - button "Mudar para tema escuro" [ref=e77] [cursor=pointer]:
+              - img [ref=e80]
+    - article [ref=e90]:
+      - generic [ref=e92]:
+        - generic:
+          - generic:
+            - generic:
+              - img "Collage item 1"
+          - generic:
+            - generic:
+              - img "Collage item 2"
+          - generic:
+            - generic:
+              - img "Collage item 3"
+        - generic:
+          - generic: FASHION
+          - generic: STYLE
+          - generic: TREND
+          - generic: 2000s
+          - generic: RETRO
+          - generic: GLAM
+        - img "Logo da Serena Glasses" [ref=e567]
+      - generic [ref=e105]:
+        - generic [ref=e107]:
+          - paragraph [ref=e108]: Acabou de chegar na Serena
+          - generic [ref=e111]: ✦
+        - generic [ref=e113]:
+          - link "New Adicionar aos favoritos Novo Teste teste2 Novo Teste TESTE axe DevTools sem violations críticos (0) Preto Fosco R$ 2,00 R$ 1,00" [ref=e569] [cursor=pointer]:
+            - /url: /products/novo-teste
+            - generic [ref=e571]:
+              - generic [ref=e573]: New
+              - button "Adicionar aos favoritos" [ref=e576]:
+                - img [ref=e578]
+              - img "Novo Teste" [ref=e581]
+              - generic [ref=e582]:
+                - paragraph [ref=e583]: teste2
+                - heading "Novo Teste" [level=3] [ref=e584]
+                - paragraph [ref=e585]: TESTE axe DevTools sem violations críticos
+                - generic [ref=e586]:
+                  - generic [ref=e587]:
+                    - img [ref=e588]
+                    - img [ref=e590]
+                    - img [ref=e592]
+                    - img [ref=e594]
+                    - img [ref=e596]
+                  - generic [ref=e598]: (0)
+                - list [ref=e599]:
+                  - img "Preto Fosco" [ref=e600]
+                - generic [ref=e602]:
+                  - generic [ref=e603]: R$ 2,00
+                  - generic [ref=e604]: R$ 1,00
+          - link "New Outlet Adicionar aos favoritos Serena Drop Exclusive - lateral Mini Drop Serena Drop Exclusive Edição limitada Mini Drop 2.0 — cat eye rosa e dourado (12) Azul Amarelo Vermelho Verde Preto Rosa Neon R$ 500,00 2x de R$ 250,00" [ref=e605] [cursor=pointer]:
+            - /url: /products/serena-drop-exclusive
+            - generic [ref=e607]:
+              - generic [ref=e608]:
+                - generic [ref=e609]: New
+                - generic [ref=e610]: Outlet
+              - button "Adicionar aos favoritos" [ref=e613]:
+                - img [ref=e615]
+              - img "Serena Drop Exclusive - lateral" [ref=e618]
+              - generic [ref=e619]:
+                - paragraph [ref=e620]: Mini Drop
+                - heading "Serena Drop Exclusive" [level=3] [ref=e621]
+                - paragraph [ref=e622]: Edição limitada Mini Drop 2.0 — cat eye rosa e dourado
+                - generic [ref=e623]:
+                  - generic [ref=e624]:
+                    - img [ref=e625]
+                    - img [ref=e627]
+                    - img [ref=e629]
+                    - img [ref=e631]
+                    - img [ref=e633]
+                  - generic [ref=e635]: (12)
+                - list [ref=e636]:
+                  - img "Azul" [ref=e637]
+                  - img "Amarelo" [ref=e638]
+                  - img "Vermelho" [ref=e639]
+                  - img "Verde" [ref=e640]
+                  - img "Preto" [ref=e641]
+                  - img "Rosa Neon" [ref=e642]
+                - generic [ref=e643]:
+                  - generic [ref=e645]: R$ 500,00
+                  - generic [ref=e646]: 2x de R$ 250,00
+        - link "Ver todos os modelos →" [ref=e193] [cursor=pointer]:
+          - /url: /products
+    - generic [ref=e195]:
+      - generic [ref=e196]:
+        - generic [ref=e197]:
+          - img [ref=e200]
+          - heading "FRETE GRÁTIS" [level=3] [ref=e205]
+          - paragraph [ref=e206]: Em compras acima de R$ 199,00 para todo o Brasil
+        - generic [ref=e207]:
+          - img [ref=e210]
+          - heading "PROTEÇÃO UV400" [level=3] [ref=e212]
+          - paragraph [ref=e213]: Máxima proteção contra raios ultravioleta em todos os modelos
+        - generic [ref=e214]:
+          - img [ref=e217]
+          - heading "QUALIDADE PREMIUM" [level=3] [ref=e219]
+          - paragraph [ref=e220]: Materiais de alta qualidade e design exclusivo
+      - generic [ref=e221]:
+        - generic [ref=e222]:
+          - heading "Sobre a Serena Glasses ✦" [level=4] [ref=e223]
+          - paragraph [ref=e224]: Serana Glasses - Boutique de Óculos Solar
+        - generic [ref=e225]:
+          - heading "Mapa do Site" [level=4] [ref=e226]
+          - list [ref=e227]:
+            - listitem [ref=e228]:
+              - link "Início" [ref=e229] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e230]:
+              - link "footer.links.sunGlasses" [ref=e231] [cursor=pointer]:
+                - /url: /sun-glasses
+            - listitem [ref=e232]:
+              - link "footer.links.miniDrop" [ref=e233] [cursor=pointer]:
+                - /url: /mini-drop
+            - listitem [ref=e234]:
+              - link "Outlet" [ref=e235] [cursor=pointer]:
+                - /url: /outlet
+            - listitem [ref=e236]:
+              - link "Promoções" [ref=e237] [cursor=pointer]:
+                - /url: /promotions
+        - generic [ref=e238]:
+          - heading "Siga-nos" [level=4] [ref=e239]
+          - list [ref=e240]:
+            - listitem [ref=e241]:
+              - link "Instagram" [ref=e242] [cursor=pointer]:
+                - /url: https://www.instagram.com/serenaglasses
+                - img [ref=e243]
+                - text: Instagram
+            - listitem [ref=e246]:
+              - link "Facebook" [ref=e247] [cursor=pointer]:
+                - /url: https://www.facebook.com/serenaglasses
+                - img [ref=e248]
+                - text: Facebook
+        - generic [ref=e250]:
+          - heading "Créditos" [level=4] [ref=e251]
+          - paragraph [ref=e252]: © 2026 Serena Glasses ✦
+          - paragraph [ref=e253]: Desenvolvido por Thalisson M. Silva
+      - paragraph [ref=e255]: Todos os direitos reservados.
+  - button "Open Next.js Dev Tools" [ref=e261] [cursor=pointer]:
+    - img [ref=e262]
+  - alert [ref=e647]

@@ -1,0 +1,74 @@
+- generic [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e4]:
+      - generic [ref=e6]:
+        - button "Voltar" [ref=e7] [cursor=pointer]:
+          - img [ref=e8]
+        - generic [ref=e12]:
+          - img [ref=e14]
+          - searchbox "Buscar produtos..." [active] [ref=e17]
+        - button "Abrir filtros" [ref=e18] [cursor=pointer]:
+          - img [ref=e20]
+      - generic [ref=e22]:
+        - generic [ref=e23]: ✦
+        - paragraph [ref=e24]: Digite ao menos 2 caracteres para buscar
+        - generic [ref=e25]:
+          - button "Cat-Eye" [ref=e26] [cursor=pointer]
+          - button "Acetato" [ref=e27] [cursor=pointer]
+          - button "Rosa" [ref=e28] [cursor=pointer]
+    - generic [ref=e30]:
+      - generic [ref=e31]:
+        - generic [ref=e32]:
+          - img [ref=e35]
+          - heading "FRETE GRÁTIS" [level=3] [ref=e40]
+          - paragraph [ref=e41]: Em compras acima de R$ 199,00 para todo o Brasil
+        - generic [ref=e42]:
+          - img [ref=e45]
+          - heading "PROTEÇÃO UV400" [level=3] [ref=e47]
+          - paragraph [ref=e48]: Máxima proteção contra raios ultravioleta em todos os modelos
+        - generic [ref=e49]:
+          - img [ref=e52]
+          - heading "QUALIDADE PREMIUM" [level=3] [ref=e54]
+          - paragraph [ref=e55]: Materiais de alta qualidade e design exclusivo
+      - generic [ref=e56]:
+        - generic [ref=e57]:
+          - heading "Sobre a Serena Glasses ✦" [level=4] [ref=e58]
+          - paragraph [ref=e59]: Serana Glasses - Boutique de Óculos Solar
+        - generic [ref=e60]:
+          - heading "Mapa do Site" [level=4] [ref=e61]
+          - list [ref=e62]:
+            - listitem [ref=e63]:
+              - link "Início" [ref=e64] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e65]:
+              - link "footer.links.sunGlasses" [ref=e66] [cursor=pointer]:
+                - /url: /sun-glasses
+            - listitem [ref=e67]:
+              - link "footer.links.miniDrop" [ref=e68] [cursor=pointer]:
+                - /url: /mini-drop
+            - listitem [ref=e69]:
+              - link "Outlet" [ref=e70] [cursor=pointer]:
+                - /url: /outlet
+            - listitem [ref=e71]:
+              - link "Promoções" [ref=e72] [cursor=pointer]:
+                - /url: /promotions
+        - generic [ref=e73]:
+          - heading "Siga-nos" [level=4] [ref=e74]
+          - list [ref=e75]:
+            - listitem [ref=e76]:
+              - link "Instagram" [ref=e77] [cursor=pointer]:
+                - /url: https://www.instagram.com/serenaglasses
+                - img [ref=e78]
+                - text: Instagram
+            - listitem [ref=e81]:
+              - link "Facebook" [ref=e82] [cursor=pointer]:
+                - /url: https://www.facebook.com/serenaglasses
+                - img [ref=e83]
+                - text: Facebook
+        - generic [ref=e85]:
+          - heading "Créditos" [level=4] [ref=e86]
+          - paragraph [ref=e87]: © 2026 Serena Glasses ✦
+          - paragraph [ref=e88]: Desenvolvido por Thalisson M. Silva
+      - paragraph [ref=e90]: Todos os direitos reservados.
+  - button "Open Next.js Dev Tools" [ref=e96] [cursor=pointer]:
+    - img [ref=e97]

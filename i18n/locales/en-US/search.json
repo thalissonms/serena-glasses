@@ -1,0 +1,33 @@
+{
+  "title": "Search",
+  "placeholder": "Search products...",
+  "filters": {
+    "title": "Filters",
+    "subcategories": "Subcategories",
+    "shapes": "Frame Shape",
+    "colors": "Color",
+    "apply": "Apply",
+    "clear": "Clear all",
+    "close": "Close filters"
+  },
+  "results": {
+    "title": "Results for",
+    "count_one": "{{count}} result",
+    "count_other": "{{count}} results",
+    "empty": "No results for \"{{q}}\"",
+    "emptyHint": "Try different keywords or remove filters.",
+    "listHeader": "{{count}} results ✦ scroll to explore"
+  },
+  "emptyResults": {
+    "title": "No results ✦",
+    "desktopTitle": "Nothing here yet ✦",
+    "clearCta": "Clear search"
+  },
+  "seeAll": "See all ({{count}})",
+  "promptShort": "Type at least 2 characters to search",
+  "suggestions": "Browse by category",
+  "back": "Go back",
+  "openFilters": "Open filters",
+  "activeFilters": "Active filters",
+  "removeFilter": "Remove filter {{label}}"
+}

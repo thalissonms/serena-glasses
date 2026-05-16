@@ -1,0 +1,265 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - link "EM DESENVOLVIMENTO!" [ref=e392] [cursor=pointer]:
+        - /url: https://github.com/thalissonms
+        - generic [ref=e394]: EM DESENVOLVIMENTO!
+      - navigation [ref=e4]:
+        - generic [ref=e5]:
+          - img [ref=e7]
+          - button "Mudar para tema escuro" [ref=e11] [cursor=pointer]:
+            - img [ref=e12]
+    - article [ref=e14]:
+      - feed "Catálogo de produtos" [ref=e16]:
+        - generic [ref=e17]:
+          - navigation [ref=e18]:
+            - generic [ref=e19]:
+              - link "ALL Home" [ref=e20] [cursor=pointer]:
+                - /url: /
+                - generic [ref=e23]: ALL
+                - generic [ref=e24]: Home
+              - link "Mini Drop" [ref=e395] [cursor=pointer]:
+                - /url: /products?category=miniDrop
+                - img [ref=e398]
+                - generic [ref=e400]: Mini Drop
+              - link "Óculos" [ref=e401] [cursor=pointer]:
+                - /url: /products?category=sunglasses
+                - img [ref=e404]
+                - generic [ref=e410]: Óculos
+              - link "Acessórios" [ref=e411] [cursor=pointer]:
+                - /url: /products?category=accessories
+                - img [ref=e414]
+                - generic [ref=e417]: Acessórios
+              - link "Outlet" [ref=e418] [cursor=pointer]:
+                - /url: /products?outlet=true
+                - img [ref=e421]
+                - generic [ref=e424]: Outlet
+              - link "Promoções" [ref=e425] [cursor=pointer]:
+                - /url: /products?sale=true
+                - img [ref=e428]
+                - generic [ref=e432]: Promoções
+          - generic [ref=e25]:
+            - button [ref=e27]:
+              - img [ref=e28]
+            - generic [ref=e33]: ✦
+          - generic [ref=e35]:
+            - button [ref=e36] [cursor=pointer]:
+              - img [ref=e37]
+            - button [ref=e39] [cursor=pointer]:
+              - img [ref=e40]
+          - generic [ref=e45]:
+            - article "Novo Teste" [ref=e47]:
+              - generic "Novo Teste" [ref=e48]:
+                - generic [ref=e49]:
+                  - img "Novo Teste" [ref=e52]
+                  - generic [ref=e54]: New
+              - generic [ref=e55]:
+                - generic [ref=e58]: Novo Teste
+                - paragraph [ref=e60]: TESTE axe DevTools sem violations críticos
+                - generic [ref=e62]:
+                  - generic [ref=e64]: R$ 2,00
+                  - button "Adicionar aos favoritos" [ref=e66] [cursor=pointer]:
+                    - img [ref=e68]
+            - article "Thalisson Silva" [ref=e71]:
+              - generic "Thalisson Silva" [ref=e72]:
+                - generic [ref=e73]:
+                  - img "Thalisson Silva" [ref=e76]
+                  - generic [ref=e78]: Outlet
+              - generic [ref=e79]:
+                - generic [ref=e82]: Thalisson Silva
+                - generic [ref=e83]:
+                  - paragraph
+                - generic [ref=e85]:
+                  - generic [ref=e87]: R$ 1,30
+                  - button "Adicionar aos favoritos" [ref=e89] [cursor=pointer]:
+                    - img [ref=e91]
+            - article "Óculos Teste" [ref=e94]:
+              - generic "Óculos Teste" [ref=e95]:
+                - generic [ref=e96]:
+                  - img "Óculos Teste" [ref=e99]
+                  - generic:
+                    - generic: Esgotado
+              - generic [ref=e100]:
+                - generic [ref=e103]: Óculos Teste
+                - paragraph [ref=e105]: gravida rutrum diam
+                - generic [ref=e107]:
+                  - generic [ref=e109]: R$ 2,00
+                  - button "Adicionar aos favoritos" [ref=e111] [cursor=pointer]:
+                    - img [ref=e113]
+            - article "Stella Geometric" [ref=e116]:
+              - generic "Stella Geometric" [ref=e117]:
+                - generic [ref=e118]:
+                  - img "Stella Geometric - frente" [ref=e121]
+                  - generic:
+                    - generic: Esgotado
+              - generic [ref=e122]:
+                - generic [ref=e125]: Stella Geometric
+                - paragraph [ref=e127]: Geométrico lavanda com lentes sólidas
+                - generic [ref=e129]:
+                  - generic [ref=e131]: R$ 2,79
+                  - button "Adicionar aos favoritos" [ref=e133] [cursor=pointer]:
+                    - img [ref=e135]
+            - article "Luna Aviator" [ref=e138]:
+              - generic "Luna Aviator" [ref=e139]:
+                - generic [ref=e140]:
+                  - img "Luna Aviator - frente" [ref=e143]
+                  - generic [ref=e145]: "-22%"
+                  - generic:
+                    - generic: Esgotado
+              - generic [ref=e146]:
+                - generic [ref=e149]: Luna Aviator
+                - paragraph [ref=e151]: Aviador dourado com lentes espelhadas rosa
+                - generic [ref=e153]:
+                  - generic [ref=e155]: R$ 3,49
+                  - button "Adicionar aos favoritos" [ref=e157] [cursor=pointer]:
+                    - img [ref=e159]
+            - article "Ivy Round" [ref=e162]:
+              - generic "Ivy Round" [ref=e163]:
+                - generic [ref=e164]:
+                  - img "Ivy Round - frente" [ref=e167]
+                  - generic:
+                    - generic: Esgotado
+              - generic [ref=e168]:
+                - generic [ref=e171]: Ivy Round
+                - paragraph [ref=e173]: Redondo preto com lentes fotocromáticas
+                - generic [ref=e175]:
+                  - generic [ref=e177]: R$ 2,69
+                  - button "Adicionar aos favoritos" [ref=e179] [cursor=pointer]:
+                    - img [ref=e181]
+            - article "Nina Square" [ref=e184]:
+              - generic "Nina Square" [ref=e185]:
+                - generic [ref=e186]:
+                  - img "Nina Square - frente" [ref=e189]
+                  - generic [ref=e190]:
+                    - generic [ref=e191]: "-42%"
+                    - generic [ref=e192]: Outlet
+                  - generic:
+                    - generic: Esgotado
+              - generic [ref=e193]:
+                - generic [ref=e196]: Nina Square
+                - paragraph [ref=e198]: Quadrado azul polarizado — outlet com desconto
+                - generic [ref=e200]:
+                  - generic [ref=e202]: R$ 1,49
+                  - button "Adicionar aos favoritos" [ref=e204] [cursor=pointer]:
+                    - img [ref=e206]
+            - article "Serena Drop Exclusive" [ref=e209]:
+              - generic "Serena Drop Exclusive" [ref=e210]:
+                - generic [ref=e211]:
+                  - img "Serena Drop Exclusive - lateral" [ref=e214]
+                  - generic [ref=e215]:
+                    - generic [ref=e216]: New
+                    - generic [ref=e217]: Outlet
+              - generic [ref=e218]:
+                - generic [ref=e221]: Serena Drop Exclusive
+                - paragraph [ref=e223]: Edição limitada Mini Drop 2.0 — cat eye rosa e dourado
+                - generic [ref=e225]:
+                  - generic [ref=e227]: R$ 500,00
+                  - button "Adicionar aos favoritos" [ref=e229] [cursor=pointer]:
+                    - img [ref=e231]
+            - article "Bella Oversized" [ref=e234]:
+              - generic "Bella Oversized" [ref=e235]:
+                - generic [ref=e236]:
+                  - img "Bella Oversized - frente" [ref=e239]
+                  - generic:
+                    - generic: Esgotado
+              - generic [ref=e240]:
+                - generic [ref=e243]: Bella Oversized
+                - paragraph [ref=e245]: Oversized tartaruga com lentes polarizadas
+                - generic [ref=e247]:
+                  - generic [ref=e249]: R$ 2,99
+                  - button "Adicionar aos favoritos" [ref=e251] [cursor=pointer]:
+                    - img [ref=e253]
+            - article "Venus Butterfly" [ref=e256]:
+              - generic "Venus Butterfly" [ref=e257]:
+                - generic [ref=e258]:
+                  - img "Venus Butterfly - frente" [ref=e261]
+                  - generic:
+                    - generic: Esgotado
+              - generic [ref=e262]:
+                - generic [ref=e265]: Venus Butterfly
+                - paragraph [ref=e267]: Butterfly vermelho com lentes degradê
+                - generic [ref=e269]:
+                  - generic [ref=e271]: R$ 3,19
+                  - button "Adicionar aos favoritos" [ref=e273] [cursor=pointer]:
+                    - img [ref=e275]
+            - article "Aurora Cat Eye" [ref=e278]:
+              - generic "Aurora Cat Eye" [ref=e279]:
+                - img "Aurora Cat Eye - lateral" [ref=e283]
+              - generic [ref=e284]:
+                - generic [ref=e287]: Aurora Cat Eye
+                - paragraph [ref=e289]: Cat eye rosa neon com lentes degradê UV400
+                - generic [ref=e291]:
+                  - generic [ref=e293]: R$ 2,49
+                  - button "Adicionar aos favoritos" [ref=e295] [cursor=pointer]:
+                    - img [ref=e297]
+    - navigation "Navegação principal" [ref=e299]:
+      - generic [ref=e300]:
+        - link "Início" [ref=e301] [cursor=pointer]:
+          - /url: /
+          - img [ref=e303]
+        - link "Buscar" [ref=e306] [cursor=pointer]:
+          - /url: /search
+          - img [ref=e308]
+        - link "Favoritos" [ref=e311] [cursor=pointer]:
+          - /url: /wishlist
+          - img [ref=e313]
+        - link "Sacola" [ref=e315] [cursor=pointer]:
+          - /url: /cart
+          - img [ref=e317]
+    - generic [ref=e321]:
+      - generic [ref=e322]:
+        - generic [ref=e323]:
+          - img [ref=e326]
+          - heading "FRETE GRÁTIS" [level=3] [ref=e331]
+          - paragraph [ref=e332]: Em compras acima de R$ 199,00 para todo o Brasil
+        - generic [ref=e333]:
+          - img [ref=e336]
+          - heading "PROTEÇÃO UV400" [level=3] [ref=e338]
+          - paragraph [ref=e339]: Máxima proteção contra raios ultravioleta em todos os modelos
+        - generic [ref=e340]:
+          - img [ref=e343]
+          - heading "QUALIDADE PREMIUM" [level=3] [ref=e345]
+          - paragraph [ref=e346]: Materiais de alta qualidade e design exclusivo
+      - generic [ref=e347]:
+        - generic [ref=e348]:
+          - heading "Sobre a Serena Glasses ✦" [level=4] [ref=e349]
+          - paragraph [ref=e350]: Serana Glasses - Boutique de Óculos Solar
+        - generic [ref=e351]:
+          - heading "Mapa do Site" [level=4] [ref=e352]
+          - list [ref=e353]:
+            - listitem [ref=e354]:
+              - link "Início" [ref=e355] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e356]:
+              - link "footer.links.sunGlasses" [ref=e357] [cursor=pointer]:
+                - /url: /sun-glasses
+            - listitem [ref=e358]:
+              - link "footer.links.miniDrop" [ref=e359] [cursor=pointer]:
+                - /url: /mini-drop
+            - listitem [ref=e360]:
+              - link "Outlet" [ref=e361] [cursor=pointer]:
+                - /url: /outlet
+            - listitem [ref=e362]:
+              - link "Promoções" [ref=e363] [cursor=pointer]:
+                - /url: /promotions
+        - generic [ref=e364]:
+          - heading "Siga-nos" [level=4] [ref=e365]
+          - list [ref=e366]:
+            - listitem [ref=e367]:
+              - link "Instagram" [ref=e368] [cursor=pointer]:
+                - /url: https://www.instagram.com/serenaglasses
+                - img [ref=e369]
+                - text: Instagram
+            - listitem [ref=e372]:
+              - link "Facebook" [ref=e373] [cursor=pointer]:
+                - /url: https://www.facebook.com/serenaglasses
+                - img [ref=e374]
+                - text: Facebook
+        - generic [ref=e376]:
+          - heading "Créditos" [level=4] [ref=e377]
+          - paragraph [ref=e378]: © 2026 Serena Glasses ✦
+          - paragraph [ref=e379]: Desenvolvido por Thalisson M. Silva
+      - paragraph [ref=e381]: Todos os direitos reservados.
+  - button "Open Next.js Dev Tools" [ref=e387] [cursor=pointer]:
+    - img [ref=e388]
+  - alert [ref=e433]

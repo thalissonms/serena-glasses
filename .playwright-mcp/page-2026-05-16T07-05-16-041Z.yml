@@ -1,0 +1,114 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - link [ref=e9] [cursor=pointer]:
+          - /url: /
+          - img [ref=e10]
+        - img [ref=e19]
+        - img [ref=e22]
+        - img [ref=e29]
+      - navigation "Navegação principal" [ref=e31]:
+        - list [ref=e32]:
+          - listitem [ref=e33]:
+            - link "Início" [ref=e35] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e36]:
+            - link "Mini Drop" [ref=e38] [cursor=pointer]:
+              - /url: /products?category=miniDrop
+          - listitem [ref=e39]:
+            - link "Óculos" [ref=e41] [cursor=pointer]:
+              - /url: /products?category=sunglasses
+          - listitem [ref=e42]:
+            - link "Acessórios" [ref=e44] [cursor=pointer]:
+              - /url: /products?category=accessories
+          - listitem [ref=e45]:
+            - link "Outlet" [ref=e47] [cursor=pointer]:
+              - /url: /products?outlet=true
+          - listitem [ref=e48]:
+            - link "Promoções" [ref=e50] [cursor=pointer]:
+              - /url: /products?sale=true
+      - generic [ref=e51]:
+        - generic [ref=e54]:
+          - img [ref=e56]
+          - searchbox "Buscar produtos..." [ref=e59]
+        - generic [ref=e60]:
+          - button "Favoritos" [ref=e62] [cursor=pointer]:
+            - generic [ref=e64]:
+              - img [ref=e65]
+              - generic [ref=e68]: "0"
+          - link "0" [ref=e69] [cursor=pointer]:
+            - /url: /cart
+            - generic [ref=e71]:
+              - img [ref=e72]
+              - generic [ref=e77]: "0"
+          - button "Mudar para tema escuro" [ref=e78] [cursor=pointer]:
+            - img [ref=e81]
+    - generic [ref=e91]:
+      - paragraph [ref=e93]: ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR
+      - main [ref=e94]:
+        - generic [ref=e95]:
+          - generic: ✦
+          - generic [ref=e96]:
+            - paragraph [ref=e97]: ✦ Serena Glasses ✦
+            - heading "Buscar" [level=1] [ref=e98]
+            - generic [ref=e102]:
+              - generic [ref=e103]: ✦
+              - searchbox "Buscar produtos..." [ref=e104]
+            - paragraph [ref=e105]: Digite ao menos 2 caracteres para buscar
+    - generic [ref=e107]:
+      - generic [ref=e108]:
+        - generic [ref=e109]:
+          - img [ref=e112]
+          - heading "FRETE GRÁTIS" [level=3] [ref=e117]
+          - paragraph [ref=e118]: Em compras acima de R$ 199,00 para todo o Brasil
+        - generic [ref=e119]:
+          - img [ref=e122]
+          - heading "PROTEÇÃO UV400" [level=3] [ref=e124]
+          - paragraph [ref=e125]: Máxima proteção contra raios ultravioleta em todos os modelos
+        - generic [ref=e126]:
+          - img [ref=e129]
+          - heading "QUALIDADE PREMIUM" [level=3] [ref=e131]
+          - paragraph [ref=e132]: Materiais de alta qualidade e design exclusivo
+      - generic [ref=e133]:
+        - generic [ref=e134]:
+          - heading "Sobre a Serena Glasses ✦" [level=4] [ref=e135]
+          - paragraph [ref=e136]: Serana Glasses - Boutique de Óculos Solar
+        - generic [ref=e137]:
+          - heading "Mapa do Site" [level=4] [ref=e138]
+          - list [ref=e139]:
+            - listitem [ref=e140]:
+              - link "Início" [ref=e141] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e142]:
+              - link "footer.links.sunGlasses" [ref=e143] [cursor=pointer]:
+                - /url: /sun-glasses
+            - listitem [ref=e144]:
+              - link "footer.links.miniDrop" [ref=e145] [cursor=pointer]:
+                - /url: /mini-drop
+            - listitem [ref=e146]:
+              - link "Outlet" [ref=e147] [cursor=pointer]:
+                - /url: /outlet
+            - listitem [ref=e148]:
+              - link "Promoções" [ref=e149] [cursor=pointer]:
+                - /url: /promotions
+        - generic [ref=e150]:
+          - heading "Siga-nos" [level=4] [ref=e151]
+          - list [ref=e152]:
+            - listitem [ref=e153]:
+              - link "Instagram" [ref=e154] [cursor=pointer]:
+                - /url: https://www.instagram.com/serenaglasses
+                - img [ref=e155]
+                - text: Instagram
+            - listitem [ref=e158]:
+              - link "Facebook" [ref=e159] [cursor=pointer]:
+                - /url: https://www.facebook.com/serenaglasses
+                - img [ref=e160]
+                - text: Facebook
+        - generic [ref=e162]:
+          - heading "Créditos" [level=4] [ref=e163]
+          - paragraph [ref=e164]: © 2026 Serena Glasses ✦
+          - paragraph [ref=e165]: Desenvolvido por Thalisson M. Silva
+      - paragraph [ref=e167]: Todos os direitos reservados.
+  - button "Open Next.js Dev Tools" [ref=e173] [cursor=pointer]:
+    - img [ref=e174]

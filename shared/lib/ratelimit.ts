@@ -19,3 +19,4 @@ export const checkoutLimiter      = makeLimiter("rl:checkout",       [3,  "1 m"]
 export const couponLimiter        = makeLimiter("rl:coupon",         [10, "1 m"]);
 export const trackLimiter         = makeLimiter("rl:track",          [5,  "1 m"]);
 export const shippingQuoteLimiter = makeLimiter("rl:shipping-quote", [10, "1 m"]);
+export const searchLimiter        = makeLimiter("rl:search",         [30, "1 m"]);

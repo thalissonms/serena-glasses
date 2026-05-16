@@ -4,6 +4,7 @@ import products from "./products.json";
 import checkout from "./checkout.json";
 import navBarEs from "./nav.json";
 import wishlistEs from "@features/wishlist/translations/es-ES.json";
+import search from "./search.json";
 
 export const esES = {
   general,
@@ -11,5 +12,6 @@ export const esES = {
   products,
   checkout,
   nav: navBarEs,
-  wishlist: wishlistEs
+  wishlist: wishlistEs,
+  search,
 };

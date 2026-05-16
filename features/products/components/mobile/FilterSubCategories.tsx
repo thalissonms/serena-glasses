@@ -2,9 +2,10 @@
 
 import SlidesHeart from "@shared/components/layout/svg/Slides.svg";
 import HeaderDivider from "@features/home/components/mobile/HeaderDivider";
+import { SearchInput } from "@shared/components/forms/inputs/SearchInput";
 import clsx from "clsx";
 import { motion } from "framer-motion";
-import { ArrowDownNarrowWide, ArrowUpNarrowWide, Search, X } from "lucide-react";
+import { ArrowDownNarrowWide, ArrowUpNarrowWide, X } from "lucide-react";
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -37,6 +38,15 @@ export const FilterSubCategories = ({ title, categorySlug }: Props) => {
   const activeSubSlug = searchParams.get("sub");
   const [subCategoryOpen, setSubCategoryOpen] = useState(false);
   const [narrowOpen, setNarrowOpen] = useState(false);
+  const [searchQ, setSearchQ] = useState("");
+
+  const filteredSubs = useMemo(
+    () =>
+      subs.filter((sub) =>
+        pickLabel(sub, i18n.language).toLowerCase().includes(searchQ.toLowerCase()),
+      ),
+    [subs, searchQ, i18n.language],
+  );
 
   function selectSub(slug: string | null) {
     const params = new URLSearchParams(searchParams.toString());
@@ -48,18 +58,21 @@ export const FilterSubCategories = ({ title, categorySlug }: Props) => {
   return (
     <section className="w-full bg-brand-pink-light dark:bg-brand-pink-bg-dark text-black dark:text-white transition-colors pt-4 px-4">
       <HeaderDivider title={title} />
-      <div className="h-12 relative flex items-center justify-between gap-4 group">
-        <Search className="absolute left-2 text-brand-pink/60 dark:text-brand-yellow group-focus-within:text-brand-pink group-focus-within:stroke-3" size={18} />
-        <input
-          className="h-10 w-full border-[0.5px] border-brand-pink/30 dark:border-brand-pink-dark pl-8 pr-2 placeholder:text-brand-pink/30 dark:placeholder:text-brand-pink-dark focus:border-2 focus:border-brand-pink outline-none"
-          type="text"
+      <div className="h-12 relative flex items-center justify-between gap-2">
+        <SearchInput
+          value={searchQ}
+          onChange={(e) => setSearchQ(e.target.value)}
+          onClear={searchQ ? () => setSearchQ("") : undefined}
           placeholder={t("searchPlaceholder")}
+          ariaLabel={t("searchPlaceholder")}
+          rotated={false}
+          className="flex-1 border-brand-pink/30 dark:border-brand-pink-dark focus-within:border-brand-pink focus-within:border-2"
         />
         <div className="h-full flex items-center justify-end gap-3 pt-3">
           <button onClick={() => setNarrowOpen((prev) => !prev)}>
             {!narrowOpen ? (
               <ArrowUpNarrowWide
-                className="text-brand-pink dark:text-brand-yellow mb-2 "
+                className="text-brand-pink dark:text-brand-yellow mb-2"
                 size={28}
                 strokeWidth={2.5}
               />
@@ -120,7 +133,7 @@ export const FilterSubCategories = ({ title, categorySlug }: Props) => {
               Todos
             </span>
           </button>
-          {subs.map((sub) => {
+          {filteredSubs.map((sub) => {
             const active = activeSubSlug === sub.slug;
             return (
               <button

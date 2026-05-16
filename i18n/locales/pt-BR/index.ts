@@ -4,6 +4,7 @@ import products from "./products.json";
 import checkout from "./checkout.json";
 import navBarPt from "./nav.json";
 import wishlistPt from "@features/wishlist/translations/pt-BR.json";
+import search from "./search.json";
 
 export const ptBR = {
   general,
@@ -11,5 +12,6 @@ export const ptBR = {
   products,
   checkout,
   nav: navBarPt,
-  wishlist: wishlistPt
+  wishlist: wishlistPt,
+  search,
 };

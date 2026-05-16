@@ -24,7 +24,7 @@ const STATE_OPTIONS = Object.values(BrazilianState).map((s) => ({
   label: s,
 }));
 
-export function AddressModule({nextStep}: {nextStep?:() => void}) {
+export function AddressModule({ nextStep }: { nextStep?: () => void }) {
   const { t } = useTranslation("checkout");
   const { control } = useCheckoutForm();
   const cep = useWatch({ control, name: "address.cep" }) as string;
@@ -118,47 +118,24 @@ export function AddressModule({nextStep}: {nextStep?:() => void}) {
   const canSearch = cleanCep.length === 8 && !cepLoading;
 
   return (
-    <div className="md:bg-white dark:md:bg-brand-pink-dark md:border-2 md:border-black dark:md:border-brand-pink md:shadow-[4px_4px_0_#000] dark:md:shadow-[4px_4px_0_#FF00B6] p-6 transition-colors">
+    <div className="bg-white dark:bg-brand-pink-dark border-2 border-black dark:border-brand-pink shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#FF00B6] p-6 transition-colors">
       <SectionHeader step={2} title={t("address.title")} />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="flex items-end justify-center gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="w-full h-30 flex items-start gap-0.5">
           <RHFCEPInput
             name="address.cep"
             label={t("address.cep")}
             required
             className="w-full"
           />
-          <div className="items-end hidden md:flex">
+          <div className="items-center pb-5 flex mt-30 h-full">
             <button
               type="button"
               onClick={handleFetch}
               disabled={!canSearch}
-              className="h-12 dark:border-brand-pink bg-brand-black dark:bg-brand-pink shadow-[1px_1px_0] shadow-brand-black border-2 border-brand-black text-white font-poppins text-xs font-black uppercase tracking-wider px-4 py-2 hover:bg-brand-pink hover:shadow-[4px_4px_0] dark:hover:bg-white dark:hover:text-black disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 cursor-pointer transition-all duration-300"
+              className="h-12 truncate dark:border-brand-pink bg-brand-black dark:bg-brand-pink shadow-[1px_1px_0] shadow-brand-black border-2 border-brand-black text-white font-poppins text-xs font-black uppercase tracking-wider px-4 py-2 hover:bg-brand-pink hover:shadow-[4px_4px_0] dark:hover:bg-white dark:hover:text-black disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 cursor-pointer transition-all duration-300"
             >
               {cepLoading ? t("address.searching") : t("address.searchCep")}
-            </button>
-          </div>
-          <div className="h-full items-end flex md:hidden">
-            <button
-              type="button"
-              onClick={handleFetch}
-              disabled={!canSearch}
-              className={clsx(
-                "mb-0.5 flex items-center justify-center bg-brand-pink dark:bg-brand-pink-bg-dark shadow-[4px_4px_0px] shadow-brand-black dark:shadow-brand-blue border-2 border-brand-black dark:border-brand-pink-light text-white dark:text-brand-pink-light active:shadow-[0.5px_0.5px_0] transition-all duration-300 cursor-pointer mr-2",
-              )}
-            >
-              {cepLoading ? (
-                <Image
-                  src="/loaders/sparkles-loader.gif"
-                  width={50}
-                  height={50}
-                  alt=""
-                />
-              ) : (
-                <div className="p-2">
-                  <Search size={26} strokeWidth={3} className="text-white" />
-                </div>
-              )}
             </button>
           </div>
         </div>
@@ -168,25 +145,12 @@ export function AddressModule({nextStep}: {nextStep?:() => void}) {
             {cepError && (
               <p className="sm:col-span-2 text-sm text-red-500">{cepError}</p>
             )}
-            <div
-              className={clsx(
-                "flex justify-center items-center gap-3 pl-1 font-semibold",
-                "bg-white shadow-[4px_4px_0px] shadow-brand-black border-2 border-black p-2",
-              )}
-            >
-              <MapPin size={30} strokeWidth={2} className="text-brand-pink" />
-              <span className="tracking-tight">
-                {`${add("address.street")}, ${add("address.neighborhood")},
-              `}
-                {`${add("address.city")}, ${add("address.state")}`}.
-              </span>
-            </div>
             <RHFTextInput
               name="address.street"
               label={t("address.street")}
               placeholder={t("address.streetPlaceholder")}
               required
-              className="sm:col-span-2 hidden md:block"
+              className="sm:col-span-2 block"
               disabled={lockedFields.has("street")}
             />
             <RHFTextInput
@@ -201,7 +165,6 @@ export function AddressModule({nextStep}: {nextStep?:() => void}) {
               placeholder={t("address.complementPlaceholder")}
             />
             <RHFTextInput
-              className="hidden md:block"
               name="address.neighborhood"
               label={t("address.neighborhood")}
               placeholder={t("address.neighborhoodPlaceholder")}
@@ -209,7 +172,6 @@ export function AddressModule({nextStep}: {nextStep?:() => void}) {
               disabled={lockedFields.has("neighborhood")}
             />
             <RHFTextInput
-              className="hidden md:block"
               name="address.city"
               label={t("address.city")}
               placeholder={t("address.cityPlaceholder")}
@@ -217,7 +179,6 @@ export function AddressModule({nextStep}: {nextStep?:() => void}) {
               disabled={lockedFields.has("city")}
             />
             <RHFSelectInput
-              className="hidden md:block"
               name="address.state"
               label={t("address.state")}
               options={[
@@ -227,27 +188,11 @@ export function AddressModule({nextStep}: {nextStep?:() => void}) {
               required
               disabled={lockedFields.has("state")}
             />
-            <div className="hidden md:block">
-              <ShippingOptions
-                options={quoteOptions}
-                loading={quoteLoading}
-                error={quoteError}
-              />
-            </div>
-            <div
-              onClick={handleNextStep}
-              aria-disabled={!isNumberOk}
-              className={clsx(
-                "md:hidden",
-                !isNumberOk && "opacity-50 pointer-events-none",
-              )}
-            >
-              <ShippingOptions
-                options={quoteOptions}
-                loading={quoteLoading}
-                error={quoteError}
-              />
-            </div>
+            <ShippingOptions
+              options={quoteOptions}
+              loading={quoteLoading}
+              error={quoteError}
+            />
           </>
         )}
       </div>

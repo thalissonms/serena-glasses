@@ -1,0 +1,166 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - link [ref=e9] [cursor=pointer]:
+          - /url: /
+          - img [ref=e10]
+        - img [ref=e19]
+        - img [ref=e22]
+        - img [ref=e29]
+      - navigation "Navegação principal" [ref=e31]:
+        - list [ref=e32]:
+          - listitem [ref=e33]:
+            - link "Início" [ref=e35] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e36]:
+            - link "Mini Drop" [ref=e38] [cursor=pointer]:
+              - /url: /products?category=miniDrop
+          - listitem [ref=e39]:
+            - link "Óculos" [ref=e41] [cursor=pointer]:
+              - /url: /products?category=sunglasses
+          - listitem [ref=e42]:
+            - link "Acessórios" [ref=e44] [cursor=pointer]:
+              - /url: /products?category=accessories
+          - listitem [ref=e45]:
+            - link "Outlet" [ref=e47] [cursor=pointer]:
+              - /url: /products?outlet=true
+          - listitem [ref=e48]:
+            - link "Promoções" [ref=e50] [cursor=pointer]:
+              - /url: /products?sale=true
+      - generic [ref=e51]:
+        - generic [ref=e54]:
+          - img [ref=e56]
+          - searchbox "Buscar produtos..." [ref=e59]
+        - generic [ref=e60]:
+          - button "Favoritos" [ref=e62] [cursor=pointer]:
+            - generic [ref=e64]:
+              - img [ref=e65]
+              - generic [ref=e68]: "0"
+          - link "0" [ref=e69] [cursor=pointer]:
+            - /url: /cart
+            - generic [ref=e71]:
+              - img [ref=e72]
+              - generic [ref=e77]: "0"
+          - button "Mudar para tema escuro" [ref=e78] [cursor=pointer]:
+            - img [ref=e81]
+    - article [ref=e91]:
+      - img "Logo da Serena Glasses" [ref=e102]
+      - generic [ref=e106]:
+        - generic [ref=e108]:
+          - paragraph [ref=e109]: Acabou de chegar na Serena
+          - generic [ref=e112]: ✦
+        - generic [ref=e114]:
+          - link "New Adicionar aos favoritos Novo Teste teste2 Novo Teste TESTE axe DevTools sem violations críticos (0) Preto Fosco R$ 2,00 R$ 1,00" [ref=e115] [cursor=pointer]:
+            - /url: /products/novo-teste
+            - generic [ref=e117]:
+              - generic [ref=e119]: New
+              - button "Adicionar aos favoritos" [ref=e122]:
+                - img [ref=e124]
+              - img "Novo Teste" [ref=e127]
+              - generic [ref=e128]:
+                - paragraph [ref=e129]: teste2
+                - heading "Novo Teste" [level=3] [ref=e130]
+                - paragraph [ref=e131]: TESTE axe DevTools sem violations críticos
+                - generic [ref=e132]:
+                  - generic [ref=e133]:
+                    - img [ref=e134]
+                    - img [ref=e136]
+                    - img [ref=e138]
+                    - img [ref=e140]
+                    - img [ref=e142]
+                  - generic [ref=e144]: (0)
+                - list [ref=e145]:
+                  - img "Preto Fosco" [ref=e146]
+                - generic [ref=e148]:
+                  - generic [ref=e149]: R$ 2,00
+                  - generic [ref=e150]: R$ 1,00
+          - link "New Outlet Adicionar aos favoritos Serena Drop Exclusive - lateral Mini Drop Serena Drop Exclusive Edição limitada Mini Drop 2.0 — cat eye rosa e dourado (12) Azul Amarelo Vermelho Verde Preto Rosa Neon R$ 500,00 2x de R$ 250,00" [ref=e151] [cursor=pointer]:
+            - /url: /products/serena-drop-exclusive
+            - generic [ref=e153]:
+              - generic [ref=e154]:
+                - generic [ref=e155]: New
+                - generic [ref=e156]: Outlet
+              - button "Adicionar aos favoritos" [ref=e159]:
+                - img [ref=e161]
+              - img "Serena Drop Exclusive - lateral" [ref=e164]
+              - generic [ref=e165]:
+                - paragraph [ref=e166]: Mini Drop
+                - heading "Serena Drop Exclusive" [level=3] [ref=e167]
+                - paragraph [ref=e168]: Edição limitada Mini Drop 2.0 — cat eye rosa e dourado
+                - generic [ref=e169]:
+                  - generic [ref=e170]:
+                    - img [ref=e171]
+                    - img [ref=e173]
+                    - img [ref=e175]
+                    - img [ref=e177]
+                    - img [ref=e179]
+                  - generic [ref=e181]: (12)
+                - list [ref=e182]:
+                  - img "Azul" [ref=e183]
+                  - img "Amarelo" [ref=e184]
+                  - img "Vermelho" [ref=e185]
+                  - img "Verde" [ref=e186]
+                  - img "Preto" [ref=e187]
+                  - img "Rosa Neon" [ref=e188]
+                - generic [ref=e189]:
+                  - generic [ref=e191]: R$ 500,00
+                  - generic [ref=e192]: 2x de R$ 250,00
+        - link "Ver todos os modelos →" [ref=e194] [cursor=pointer]:
+          - /url: /products
+    - generic [ref=e196]:
+      - generic [ref=e197]:
+        - generic [ref=e198]:
+          - img [ref=e201]
+          - heading "FRETE GRÁTIS" [level=3] [ref=e206]
+          - paragraph [ref=e207]: Em compras acima de R$ 199,00 para todo o Brasil
+        - generic [ref=e208]:
+          - img [ref=e211]
+          - heading "PROTEÇÃO UV400" [level=3] [ref=e213]
+          - paragraph [ref=e214]: Máxima proteção contra raios ultravioleta em todos os modelos
+        - generic [ref=e215]:
+          - img [ref=e218]
+          - heading "QUALIDADE PREMIUM" [level=3] [ref=e220]
+          - paragraph [ref=e221]: Materiais de alta qualidade e design exclusivo
+      - generic [ref=e222]:
+        - generic [ref=e223]:
+          - heading "Sobre a Serena Glasses ✦" [level=4] [ref=e224]
+          - paragraph [ref=e225]: Serana Glasses - Boutique de Óculos Solar
+        - generic [ref=e226]:
+          - heading "Mapa do Site" [level=4] [ref=e227]
+          - list [ref=e228]:
+            - listitem [ref=e229]:
+              - link "Início" [ref=e230] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e231]:
+              - link "footer.links.sunGlasses" [ref=e232] [cursor=pointer]:
+                - /url: /sun-glasses
+            - listitem [ref=e233]:
+              - link "footer.links.miniDrop" [ref=e234] [cursor=pointer]:
+                - /url: /mini-drop
+            - listitem [ref=e235]:
+              - link "Outlet" [ref=e236] [cursor=pointer]:
+                - /url: /outlet
+            - listitem [ref=e237]:
+              - link "Promoções" [ref=e238] [cursor=pointer]:
+                - /url: /promotions
+        - generic [ref=e239]:
+          - heading "Siga-nos" [level=4] [ref=e240]
+          - list [ref=e241]:
+            - listitem [ref=e242]:
+              - link "Instagram" [ref=e243] [cursor=pointer]:
+                - /url: https://www.instagram.com/serenaglasses
+                - img [ref=e244]
+                - text: Instagram
+            - listitem [ref=e247]:
+              - link "Facebook" [ref=e248] [cursor=pointer]:
+                - /url: https://www.facebook.com/serenaglasses
+                - img [ref=e249]
+                - text: Facebook
+        - generic [ref=e251]:
+          - heading "Créditos" [level=4] [ref=e252]
+          - paragraph [ref=e253]: © 2026 Serena Glasses ✦
+          - paragraph [ref=e254]: Desenvolvido por Thalisson M. Silva
+      - paragraph [ref=e256]: Todos os direitos reservados.
+  - button "Open Next.js Dev Tools" [ref=e262] [cursor=pointer]:
+    - img [ref=e263]

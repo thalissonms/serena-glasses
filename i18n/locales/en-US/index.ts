@@ -4,6 +4,7 @@ import products from "./products.json";
 import checkout from "./checkout.json";
 import navBarEn from "./nav.json";
 import wishlistEn from "@features/wishlist/translations/en-US.json";
+import search from "./search.json";
 
 export const enUS = {
   general,
@@ -11,5 +12,6 @@ export const enUS = {
   products,
   checkout,
   nav: navBarEn,
-  wishlist: wishlistEn
+  wishlist: wishlistEn,
+  search,
 };

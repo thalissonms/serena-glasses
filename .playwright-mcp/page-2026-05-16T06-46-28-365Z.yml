@@ -1,0 +1,96 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - link [ref=e9] [cursor=pointer]:
+          - /url: /
+          - img [ref=e10]
+        - img [ref=e19]
+        - img [ref=e22]
+        - img [ref=e29]
+      - generic [ref=e31]:
+        - generic [ref=e34]:
+          - img [ref=e36]
+          - searchbox "Buscar produtos..." [ref=e39]
+        - generic [ref=e40]:
+          - button "Favoritos" [ref=e42] [cursor=pointer]:
+            - generic [ref=e44]:
+              - img [ref=e45]
+              - generic [ref=e48]: "0"
+          - link "0" [ref=e49] [cursor=pointer]:
+            - /url: /cart
+            - generic [ref=e51]:
+              - img [ref=e52]
+              - generic [ref=e57]: "0"
+          - button "Mudar para tema escuro" [ref=e58] [cursor=pointer]:
+            - img [ref=e61]
+        - button "Menu" [ref=e71]:
+          - img [ref=e72]
+    - generic [ref=e73]:
+      - paragraph [ref=e75]: ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR ✦ BUSCAR
+      - main [ref=e76]:
+        - generic [ref=e77]:
+          - generic: ✦
+          - generic [ref=e78]:
+            - paragraph [ref=e79]: ✦ Serena Glasses ✦
+            - heading "Buscar" [level=1] [ref=e80]
+            - generic [ref=e84]:
+              - generic [ref=e85]: ✦
+              - searchbox "Buscar produtos..." [ref=e86]
+            - paragraph [ref=e87]: Digite ao menos 2 caracteres para buscar
+    - generic [ref=e89]:
+      - generic [ref=e90]:
+        - generic [ref=e91]:
+          - img [ref=e94]
+          - heading "FRETE GRÁTIS" [level=3] [ref=e99]
+          - paragraph [ref=e100]: Em compras acima de R$ 199,00 para todo o Brasil
+        - generic [ref=e101]:
+          - img [ref=e104]
+          - heading "PROTEÇÃO UV400" [level=3] [ref=e106]
+          - paragraph [ref=e107]: Máxima proteção contra raios ultravioleta em todos os modelos
+        - generic [ref=e108]:
+          - img [ref=e111]
+          - heading "QUALIDADE PREMIUM" [level=3] [ref=e113]
+          - paragraph [ref=e114]: Materiais de alta qualidade e design exclusivo
+      - generic [ref=e115]:
+        - generic [ref=e116]:
+          - heading "Sobre a Serena Glasses ✦" [level=4] [ref=e117]
+          - paragraph [ref=e118]: Serana Glasses - Boutique de Óculos Solar
+        - generic [ref=e119]:
+          - heading "Mapa do Site" [level=4] [ref=e120]
+          - list [ref=e121]:
+            - listitem [ref=e122]:
+              - link "Início" [ref=e123] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e124]:
+              - link "footer.links.sunGlasses" [ref=e125] [cursor=pointer]:
+                - /url: /sun-glasses
+            - listitem [ref=e126]:
+              - link "footer.links.miniDrop" [ref=e127] [cursor=pointer]:
+                - /url: /mini-drop
+            - listitem [ref=e128]:
+              - link "Outlet" [ref=e129] [cursor=pointer]:
+                - /url: /outlet
+            - listitem [ref=e130]:
+              - link "Promoções" [ref=e131] [cursor=pointer]:
+                - /url: /promotions
+        - generic [ref=e132]:
+          - heading "Siga-nos" [level=4] [ref=e133]
+          - list [ref=e134]:
+            - listitem [ref=e135]:
+              - link "Instagram" [ref=e136] [cursor=pointer]:
+                - /url: https://www.instagram.com/serenaglasses
+                - img [ref=e137]
+                - text: Instagram
+            - listitem [ref=e140]:
+              - link "Facebook" [ref=e141] [cursor=pointer]:
+                - /url: https://www.facebook.com/serenaglasses
+                - img [ref=e142]
+                - text: Facebook
+        - generic [ref=e144]:
+          - heading "Créditos" [level=4] [ref=e145]
+          - paragraph [ref=e146]: © 2026 Serena Glasses ✦
+          - paragraph [ref=e147]: Desenvolvido por Thalisson M. Silva
+      - paragraph [ref=e149]: Todos os direitos reservados.
+  - button "Open Next.js Dev Tools" [ref=e155] [cursor=pointer]:
+    - img [ref=e156]
