@@ -45,3 +45,4 @@ next-env.d.ts
 
 # Agent guidance files (local only)
 /AGENT
+/.playwright-mcp

@@ -120,6 +120,11 @@
 	--font-size-lg: 1.125rem;
 	--font-size-xl: 1.25rem;
 	--font-size-2xl: 1.5rem;
+
+	/* Admin-v2 Y2K Chrome — accent tokens */
+	--color-accent-cyan: #00F0FF;
+	--color-accent-gold: #FFD700;
+	--font-family-mono: var(--font-jetbrains-mono), 'Courier New', monospace;
 }
 
 /* Dark Mode Overrides (classe .dark no <html> ou <body>) */
@@ -168,12 +173,6 @@ body {
 	text-rendering: optimizeLegibility;
 }
 
-/* Tipografia simples */
-h1 { font-size: var(--font-size-2xl); font-weight: var(--font-weight-medium); line-height: 1.5; }
-h2 { font-size: var(--font-size-xl); font-weight: var(--font-weight-medium); line-height: 1.5; }
-h3 { font-size: var(--font-size-lg); font-weight: var(--font-weight-medium); line-height: 1.5; }
-h4 { font-size: var(--font-size-base); font-weight: var(--font-weight-medium); line-height: 1.5; }
-p, label, button, input { font-size: var(--font-size-base); }
 
 /* Font utility classes */
 .font-routhers { font-family: var(--font-family-routhers); font-weight: 900; letter-spacing: 0.05em; }
@@ -257,4 +256,29 @@ p, label, button, input { font-size: var(--font-size-base); }
   scrollbar-color: #FF00B6 #FFF0FA;
   scrollbar-width: thin;
 }
+/* Admin-v2 Y2K Chrome — Keyframes */
+@keyframes scanline {
+  0% { transform: translateY(-100%); opacity: 0.8; }
+  100% { transform: translateY(100vh); opacity: 0.8; }
+}
+@keyframes holo-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes neon-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Admin-v2 Y2K Chrome — Utility classes */
+.font-mono { font-family: var(--font-family-mono); }
+.animate-scanline { animation: scanline 4s linear infinite; }
+.animate-holo { animation: holo-shift 3s ease infinite; background-size: 200% 200%; }
+.animate-neon-pulse { animation: neon-pulse 2s ease-in-out infinite; }
+.scrollbar-admin::-webkit-scrollbar { width: 4px; }
+.scrollbar-admin::-webkit-scrollbar-track { background: #0f0f0f; }
+.scrollbar-admin::-webkit-scrollbar-thumb { background: #FF00B6; }
+.scrollbar-admin { scrollbar-width: thin; scrollbar-color: #FF00B6 #0f0f0f; }
+
 /* Fim do bundle CSS-first */

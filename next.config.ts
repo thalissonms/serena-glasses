@@ -158,7 +158,7 @@ const nextConfig: NextConfig = {
    * Experimental
    */
   experimental: {
-    optimizeCss: true,
+    optimizeCss: isProd,
   },
 
   /**

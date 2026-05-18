@@ -19,6 +19,7 @@ import { useCheckoutSubmission } from "@features/checkout/hooks/useCheckoutSubmi
 import { useEmptyCartGuard } from "@features/checkout/hooks/useEmptyCartGuard";
 import clsx from "clsx";
 import PageInterceptTransition from "@/features/navigation/components/mobile/modals/PageInterceptTransition";
+import { ShoppingBag } from "lucide-react";
 
 function StepIndicator({ current, total }: { current: number; total: number }) {
   return (
@@ -105,6 +106,7 @@ const CheckoutModalContent = () => {
         pageToBack="/products"
         onBack={handleBack}
         display={t("checkout.title")}
+        Icon={ShoppingBag}
         buttons={{ labelBack: t("cart.back") }}
       />
       <StepIndicator current={currentIndex} total={totalSteps} />

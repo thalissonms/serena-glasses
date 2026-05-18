@@ -9,6 +9,7 @@ import {
   Inter,
   Yellowtail,
   Jersey_10,
+  JetBrains_Mono,
 } from "next/font/google";
 
 // Configurando Inter (fonte principal para substituir a importação CSS)
@@ -73,7 +74,13 @@ export const jerseyTen = Jersey_10({
   weight: "400",
 });
 
-// Opcional: Você pode exportar um objeto para facilitar o uso no layout
+export const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-jetbrains-mono",
+  weight: ["400", "500", "700"],
+});
+
 export const fontVariables = {
   inter: inter.variable,
   poppins: poppins.variable,
@@ -83,7 +90,7 @@ export const fontVariables = {
   shrikhand: shrikhand.variable,
   yellowtail: yellowtail.variable,
   jerseyTen: jerseyTen.variable,
+  jetbrainsMono: jetbrainsMono.variable,
 };
 
-// Se você precisar de todas as classes de variáveis de uma vez
-export const allFontVariablesClassNames = `${inter.variable} ${poppins.variable} ${dancingScript.variable} ${playfairDisplay.variable} ${bethEllen.variable} ${shrikhand.variable} ${yellowtail.variable} ${jerseyTen.variable}`;
+export const allFontVariablesClassNames = `${inter.variable} ${poppins.variable} ${dancingScript.variable} ${playfairDisplay.variable} ${bethEllen.variable} ${shrikhand.variable} ${yellowtail.variable} ${jerseyTen.variable} ${jetbrainsMono.variable}`;

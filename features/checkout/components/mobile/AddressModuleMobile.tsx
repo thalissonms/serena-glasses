@@ -138,34 +138,34 @@ export function AddressModuleMobile({ nextStep }: AddressModuleMobileProps) {
   return (
     <div className="p-6 transition-colors">
       <SectionHeader step={1} title={t("address.title")} />
-      <div className="grid grid-cols-1 gap-4">
-        <div className="flex items-end gap-2">
+      <div className="flex flex-col gap-4">
+        <div className="flex items-start gap-2 h-32">
           <RHFCEPInput
             name="address.cep"
             label={t("address.cep")}
             required
             className="w-full"
           />
-          <div className="h-full items-end flex">
+          <div className="h-full items-center pb-9 flex">
             <button
               type="button"
               onClick={handleFetch}
               disabled={!canSearch}
               aria-label={t("address.searchCep")}
               className={clsx(
-                "mb-0.5 flex items-center justify-center bg-brand-pink dark:bg-brand-pink-bg-dark shadow-[4px_4px_0px] shadow-brand-black dark:shadow-brand-blue border-2 border-brand-black dark:border-brand-pink-light text-white dark:text-brand-pink-light active:shadow-[0.5px_0.5px_0] transition-all duration-300 cursor-pointer mr-2 disabled:opacity-50",
+                "mb-1 flex items-center justify-center bg-brand-pink dark:bg-brand-pink-bg-dark shadow-[4px_4px_0px] shadow-brand-black dark:shadow-brand-blue border-2 border-brand-black dark:border-brand-pink-light text-white dark:text-brand-pink-light active:shadow-[0.5px_0.5px_0] transition-all duration-300 cursor-pointer mr-2 disabled:opacity-50",
               )}
             >
               {cepLoading ? (
                 <Image
                   src="/loaders/sparkles-loader.gif"
-                  width={50}
-                  height={50}
+                  width={48}
+                  height={48}
                   alt=""
                 />
               ) : (
                 <div className="p-2">
-                  <Search size={26} strokeWidth={3} className="text-white" />
+                  <Search size={24} strokeWidth={3} className="text-white" />
                 </div>
               )}
             </button>
@@ -176,7 +176,7 @@ export function AddressModuleMobile({ nextStep }: AddressModuleMobileProps) {
 
         {showAddressBody && (
           <>
-            <div className="flex items-center gap-3 pl-1 font-semibold bg-white shadow-[4px_4px_0px] shadow-brand-black border-2 border-black p-2">
+            <div className="flex items-center gap-3 pl-2 pr-1 font-semibold bg-white shadow-[4px_4px_0px] -mt-12 mb-2 shadow-brand-black border-2 border-black py-3">
               <MapPin size={30} strokeWidth={2} className="text-brand-pink shrink-0" />
               <span className="tracking-tight text-sm">
                 {[street, neighborhood, city, state].filter(Boolean).join(", ")}

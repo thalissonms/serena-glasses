@@ -3,7 +3,7 @@ import { createServerClient } from "@supabase/ssr";
 import { checkoutLimiter, couponLimiter, trackLimiter, shippingQuoteLimiter, searchLimiter } from "@shared/lib/ratelimit";
 import type { Ratelimit } from "@upstash/ratelimit";
 
-const PUBLIC_ADMIN_PATHS = new Set(["/admin/login"]);
+const PUBLIC_ADMIN_PATHS = new Set(["/admin/login", "/admin-v2/login"]);
 
 const STATIC_EXT = /\.(ico|png|jpg|jpeg|gif|webp|svg|css|js|woff2?|ttf|eot|map)$/i;
 
@@ -194,6 +194,7 @@ export const config = {
   matcher: [
     // Admin and rate-limited API routes
     "/admin/:path*",
+    "/admin-v2/:path*",
     "/api/admin/:path*",
     "/api/checkout",
     "/api/checkout/coupon/validate",
