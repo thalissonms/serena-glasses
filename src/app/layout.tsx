@@ -3,6 +3,7 @@ import Script from "next/script";
 import { headers } from "next/headers";
 import "../../styles/tailwind.css";
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/next"
 import {
   allFontVariablesClassNames,
   localFontVariablesClassNames,
@@ -153,6 +154,7 @@ export default async function RootLayout({
           <QueryProvider>
             <I18nProvider>
               <SpeedInsights />
+              <Analytics/>
               <main className="min-h-screen">{children}</main>
               <ModalPresence modal={modal} />
             </I18nProvider>
