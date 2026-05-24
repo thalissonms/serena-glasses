@@ -11,7 +11,6 @@ import type {
   Product,
 } from "@features/products/types/product.types";
 import type { SubcategoryRow } from "@features/categories/types/category.types";
-import { ProductCard } from "./ProductCard";
 import { useCategories } from "@features/categories/hooks/useCategories";
 import { pickLocale } from "@shared/utils/pickLocale";
 import PageTitle from "@shared/components/ui/PageTitle";
@@ -19,10 +18,7 @@ import Y2KBadge from "@shared/components/ui/Y2KBadge";
 import { Pill, PillY2K } from "@shared/components/ui/Pills";
 import useFilterProducts from "../hooks/useFilterProducts";
 import { ListingParams } from "../types/productsFindParams.type";
-import clsx from "clsx";
 import ProductCardY2K from "./ProductCardY2K";
-
-// ─── helpers ────────────────────────────────────────────────────────────────
 
 function getTitle(
   params: ListingParams,
@@ -45,14 +41,10 @@ function pickSubLabel(sub: SubcategoryRow, lang: string): string {
   return sub.name_pt;
 }
 
-// ─── tipos ──────────────────────────────────────────────────────────────────
-
 interface ProductsPageContentProps {
   products: Product[];
   params: ListingParams;
 }
-
-// ─── constantes ─────────────────────────────────────────────────────────────
 
 const SORT_OPTIONS = [
   { value: "", labelKey: "listing.sortFeatured", Icon: Sparkles },
@@ -99,16 +91,19 @@ export function ProductsPageContent({
 
   return (
     <main
-      className="w-full min-h-screen pb-20 bg-brand-light-surface-0 dark:bg-brand-dark-surface-0 text-brand-black dark:text-brand-white py-12 px-4 sm:px-8 lg:px-20 transition-colors"
-      style={{ backgroundImage: "url('/backgrounds/bg-grid.svg')", backgroundPosition:"center", backgroundSize:"cover" }}
+      className="w-full min-h-screen pb-20 bg-brand-light-surface-0 dark:bg-brand-dark-surface-0 text-brand-black dark:text-brand-white py-12 transition-colors"
+      style={{
+        backgroundImage: "url('/backgrounds/bg-grid.svg')",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+      }}
     >
-      <div className="max-w-7xl mx-auto mb-8">
-        <div className="w-full flex justify-between items-center">
+      <div className="max-w-8xl mx-auto px-4 sm:px-8 lg:px-20">
+        <div className="w-full flex justify-between items-center mb-8">
           <PageTitle title={title} />
           {hasFilters && (
             <div className="flex flex-col items-center">
               <Y2KBadge text={"Coleção"} />
-
               <div className="flex gap-3 p-3 z-3">
                 <PillY2K
                   active={!params.subcategory}
@@ -116,7 +111,6 @@ export function ProductsPageContent({
                 >
                   {t("listing.filterAll")}
                 </PillY2K>
-
                 {subcategories.map((sub) => (
                   <PillY2K
                     key={sub.id}
@@ -130,33 +124,32 @@ export function ProductsPageContent({
             </div>
           )}
         </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto mb-4 mt-20 flex flex-col flex-wrap gap-4">
-        <div className="flex gap-2">
-          {SORT_OPTIONS.map(({ value, labelKey, Icon }) => {
-            const active = (params.sort ?? "") === value;
-            return (
-              <Pill
-                key={value}
-                active={active}
-                onClick={() => setFilter({ sort: value || undefined })}
-              >
-                <Icon size={12} strokeWidth={2.5} />
-                {t(labelKey)}
-              </Pill>
-            );
-          })}
+        <div className="mb-4 mt-20 flex flex-col gap-2">
+          <div className="flex gap-2 justify-center">
+            {SORT_OPTIONS.map(({ value, labelKey, Icon }) => {
+              const active = (params.sort ?? "") === value;
+              return (
+                <Pill
+                  key={value}
+                  active={active}
+                  onClick={() => setFilter({ sort: value || undefined })}
+                >
+                  <Icon size={12} strokeWidth={2.5} />
+                  {t(labelKey)}
+                </Pill>
+              );
+            })}
+          </div>
+          <div className="flex justify-center">
+            <p className="text-brand-black/60 dark:text-brand-white/40 font-poppins text-sm">
+              {t("listing.resultCount", { count: products.length })}
+            </p>
+          </div>
         </div>
-        <p className="text-brand-black/60 dark:text-brand-white/40 font-poppins text-sm">
-          {t("listing.resultCount", { count: products.length })}
-        </p>
-      </div>
 
-      {/* grid de produtos */}
-      <div className="max-w-7xl mx-auto">
         {products.length === 0 ? (
-          <div className="border-4 border-black dark:border-brand-pink shadow-[6px_6px_0_#000] dark:shadow-[6px_6px_0_#FF00B6] bg-white dark:bg-[#1a1a1a] p-16 text-center">
+          <div className="border-4 border-black dark:border-brand-pink shadow-[6px_6px_0_#000] dark:shadow-[6px_6px_0] dark:shadow-brand-pink bg-white dark:bg-[#1a1a1a] p-16 text-center">
             <p className="font-poppins font-bold text-xl mb-2">
               {t("listing.noResults")}
             </p>
@@ -165,17 +158,16 @@ export function ProductsPageContent({
             </p>
             <button
               onClick={() => router.push("/products")}
-              className="inline-block font-poppins font-bold text-sm uppercase tracking-wider text-black dark:text-white border-2 border-black dark:border-brand-pink px-6 py-3 shadow-[4px_4px_0_#FF00B6] hover:shadow-[6px_6px_0_#FF00B6] hover:-translate-y-0.5 transition-all"
+              className="inline-block font-poppins font-bold text-sm uppercase tracking-wider text-black dark:text-white border-2 border-black dark:border-brand-pink px-6 py-3 shadow-[4px_4px_0] dark:shadow-brand-pink hover:shadow-[6px_6px_0] hover:dark:shadow-brand-pink hover:-translate-y-0.5 transition-all"
             >
               {t("listing.filterAll")} →
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,400px))] justify-center gap-6">
             {products.map((product, i) => (
               <ProductCardY2K key={product.id} product={product} index={i} />
             ))}
-            {/* <ProductCardY2K /> */}
           </div>
         )}
       </div>

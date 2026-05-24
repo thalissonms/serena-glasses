@@ -41,7 +41,7 @@ export default function ProductCardY2K({ product }: ProductCardProps) {
   return (
     <div
       className={clsx(
-        "w-full h-full pb-4 relative bg-brand-light-surface-2 border-4 border-brand-black/75 rounded-lg flex flex-col",
+        "w-full max-w-100 h-full pb-4 relative bg-brand-light-surface-2 border-4 border-brand-black/75 rounded-lg flex flex-col",
         "shadow-[4px_4px_0px] sm:shadow-[5px_5px_0px] lg:shadow-[6px_6px_0px] shadow-brand-purple",
         "dark:bg-brand-dark-surface-1 dark:shadow-brand-pink/90",
         !product.inStock && "opacity-75 cursor-not-allowed",
