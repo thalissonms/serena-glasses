@@ -14,7 +14,7 @@ export function NewArrivals({ products }: { products: Product[] }) {
     <section
       className="relative py-16 sm:py-20 md:py-24 bg-brand-light-surface-0 dark:bg-brand-dark-surface-0"
       style={{
-        backgroundImage: "url('/backgrounds/bg-grid.svg')",
+        backgroundImage: "url('/backgrounds/bg-grid-lighter.svg')",
         backgroundPosition: "center",
         backgroundSize: "cover",
       }}
