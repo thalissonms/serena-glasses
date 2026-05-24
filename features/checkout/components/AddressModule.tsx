@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useFormContext, useWatch } from "react-hook-form";
+import { useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { BrazilianState } from "@shared/location/location.enum";
 import { SectionHeader } from "./SectionHeader";
@@ -14,26 +14,17 @@ import { useCartStore } from "@features/cart/store/cart.store";
 import { useCheckoutForm } from "../providers/checkout.rhf";
 import { useCepAutofill } from "../hooks/useCepAutofill";
 import type { ShippingQuoteOption } from "@shared/lib/melhor-envio/types";
-import { Locate, MapPin, Search } from "lucide-react";
-import Image from "next/image";
-import clsx from "clsx";
-import { motion } from "framer-motion";
 
 const STATE_OPTIONS = Object.values(BrazilianState).map((s) => ({
   value: s,
   label: s,
 }));
 
-export function AddressModule({ nextStep }: { nextStep?: () => void }) {
+export function AddressModule() {
   const { t } = useTranslation("checkout");
   const { control } = useCheckoutForm();
   const cep = useWatch({ control, name: "address.cep" }) as string;
-  const number = useWatch({ control, name: "address.number" }) as string;
-  const { getValues: add } = useFormContext();
-  const isNumberOk = (number ?? "").trim().length > 0;
-  const handleNextStep = () => {
-    if (isNumberOk) nextStep?.();
-  };
+
   const items = useCartStore((s) => s.items);
   const setSelectedShipping = useCartStore((s) => s.setSelectedShipping);
   const {
@@ -64,7 +55,6 @@ export function AddressModule({ nextStep }: { nextStep?: () => void }) {
     let cancelled = false;
     setQuoteError(null);
 
-    // 400ms debounce — prevents a burst of requests while the user types/corrects the CEP
     const timerId = setTimeout(() => {
       setQuoteLoading(true);
 

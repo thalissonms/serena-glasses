@@ -10,7 +10,7 @@ import { requireAdmin } from "@shared/lib/auth/admin";
 import StoryFormClient from "@features/admin-v2/components/stories/StoryFormClient";
 
 export default async function StoryNewPage() {
-  await requireAdmin();
+  await requireAdmin("/admin-v2/login");
 
   return (
     <div className="p-8">

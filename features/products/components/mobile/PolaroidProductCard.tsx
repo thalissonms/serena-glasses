@@ -1,32 +1,25 @@
 "use client";
 
 import { SmartLink } from "@shared/components/SmartLink";
-import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Ban, Heart, MessageCircle, Share2 } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowRight, Ban, MessageCircle, Share, Share2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { cva } from "class-variance-authority";
 import type { Product } from "@features/products/types/product.types";
 import {
   formatPrice,
   discountPercentage,
+  formatInstallment,
 } from "@features/products/utils/formatPrice";
 import { getPrimaryTag } from "@features/products/utils/getPrimaryTag";
 import { WishlistButton } from "@features/wishlist/components/WishlistButton";
 import { useReviewsOverlay } from "@features/products/hooks/useReviewsOverlay";
-import { usePolaroidCarousel } from "@features/products/hooks/usePolaroidCarousel";
 import { shareProduct } from "@features/products/utils/polaroidCard.utils";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import { PolaroidProductImage } from "./PolaroidProductImages";
 
 type CardSize = "feed" | "grid";
-
-const photoWrapperStyles = cva("block", {
-  variants: {
-    size: { feed: "px-3 pt-3", grid: "px-2 pt-2" },
-  },
-});
 
 const actionBarStyles = cva("flex items-center justify-between", {
   variants: {
@@ -35,7 +28,7 @@ const actionBarStyles = cva("flex items-center justify-between", {
 });
 
 const productNameStyles = cva(
-  "font-black text-brand-pink-dark dark:text-brand-white text-shadow-[1px_2px_0] text-shadow-brand-pink font-family-poppins",
+  "font-black text-brand-black dark:text-brand-white font-family-poppins",
   {
     variants: {
       size: {
@@ -51,9 +44,9 @@ const priceStyles = cva("font-family-jocham text-brand-pink leading-none", {
     size: { feed: "text-2xl", grid: "text-base" },
   },
 });
-const descriptionStyles = cva("text-gray-500 dark:text-gray-300 font-normal", {
+const descriptionStyles = cva("text-brand-black/50 dark:text-brand-white/50", {
   variants: {
-    size: { feed: "text-base", grid: "text-shadow-2xs" },
+    size: { feed: "text-base", grid: "text-sm" },
   },
 });
 
@@ -100,8 +93,8 @@ export function PolaroidProductCard({
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
       className={clsx(
-        "w-full bg-white border-2 border-black dark:border-brand-pink-light dark:bg-brand-pink-dark",
-        "shadow-[2px_4px_0px] shadow-black dark:shadow-brand-blue",
+        "w-full bg-brand-light-surface-1 border-2 border-brand-black dark:bg-brand-dark-surface-1",
+        "shadow-[2px_4px_0px] shadow-black dark:shadow-brand-purple",
         !product.inStock && "opacity-70",
         size === "grid" && "h-full flex flex-col justify-between max-w-55",
       )}
@@ -183,9 +176,16 @@ export function PolaroidProductCard({
             )}
           >
             <div className="flex flex-col">
-              <span className={priceStyles({ size })}>
-                {formatPrice(product.price)}
-              </span>
+              <div className="flex flex-col">
+                <span className={priceStyles({ size })}>
+                  {formatPrice(product.price)}
+                </span>
+                {formatInstallment(product.price, product.maxInstallments) && (
+                  <span className="text-[10px] text-brand-black/75 dark:text-brand-white/75 font-inter italic -mb-1.5">
+                    {formatInstallment(product.price, product.maxInstallments)}
+                  </span>
+                )}
+              </div>
               {size === "feed" && product.compareAtPrice && (
                 <span className="text-xs text-gray-400 font-inter line-through">
                   {formatPrice(product.compareAtPrice)}
@@ -231,11 +231,13 @@ export function PolaroidProductCard({
                 </button>
               </SmartLink>
             ) : (
-              <WishlistButton
-                productId={product.id}
-                size={22}
-                className="text-black dark:text-brand-white hover:text-brand-pink transition-colors cursor-pointer"
-              />
+              <div className="flex gap-2">
+                <WishlistButton
+                  productId={product.id}
+                  size={22}
+                  className="text-black dark:text-brand-white hover:text-brand-pink transition-colors cursor-pointer"
+                />
+              </div>
             )}
           </div>
         </div>

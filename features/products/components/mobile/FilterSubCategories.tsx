@@ -5,7 +5,16 @@ import HeaderDivider from "@features/home/components/mobile/HeaderDivider";
 import { SearchInput } from "@shared/components/forms/inputs/SearchInput";
 import clsx from "clsx";
 import { motion } from "framer-motion";
-import { ArrowDownNarrowWide, ArrowUpNarrowWide, X } from "lucide-react";
+import {
+  ArrowDownNarrowWide,
+  ArrowUpNarrowWide,
+  Clock,
+  Sparkles,
+  Star,
+  TrendingDown,
+  TrendingUp,
+  X,
+} from "lucide-react";
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -23,144 +32,63 @@ function pickLabel(sub: SubcategoryRow, lang: string): string {
   return sub.name_pt;
 }
 
+const SORT_OPTIONS = [
+  { value: "", labelKey: "listing.sortFeatured", Icon: Sparkles },
+  { value: "newest", labelKey: "listing.sortNewest", Icon: Clock },
+  { value: "price-asc", labelKey: "listing.sortPriceAsc", Icon: TrendingUp },
+  {
+    value: "price-desc",
+    labelKey: "listing.sortPriceDesc",
+    Icon: TrendingDown,
+  },
+  { value: "rating", labelKey: "listing.sortRating", Icon: Star },
+] as const;
+
 export const FilterSubCategories = ({ title, categorySlug }: Props) => {
-  const { t, i18n } = useTranslation("nav");
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const { data: categories = [] } = useCategories();
-
-  const subs: SubcategoryRow[] = useMemo(() => {
-    if (!categorySlug) return [];
-    const cat = categories.find((c) => c.slug === categorySlug);
-    return cat?.subcategories ?? [];
-  }, [categories, categorySlug]);
-
-  const activeSubSlug = searchParams.get("sub");
-  const [subCategoryOpen, setSubCategoryOpen] = useState(false);
-  const [narrowOpen, setNarrowOpen] = useState(false);
-  const [searchQ, setSearchQ] = useState("");
-
-  const filteredSubs = useMemo(
-    () =>
-      subs.filter((sub) =>
-        pickLabel(sub, i18n.language).toLowerCase().includes(searchQ.toLowerCase()),
-      ),
-    [subs, searchQ, i18n.language],
-  );
-
-  function selectSub(slug: string | null) {
-    const params = new URLSearchParams(searchParams.toString());
-    if (slug) params.set("sub", slug);
-    else params.delete("sub");
-    router.push(`/products?${params.toString()}`);
-  }
+  const { t } = useTranslation("products");
+  const [currentActive, setCurrentActive] = useState("");
 
   return (
-    <section className="w-full bg-brand-pink-light dark:bg-brand-pink-bg-dark text-black dark:text-white transition-colors pt-4 px-4">
+    <section className="w-full flex flex-col gap-3 mb-4 text-black dark:text-white transition-colors pt-4">
       <HeaderDivider title={title} />
-      <div className="h-12 relative flex items-center justify-between gap-2">
-        <SearchInput
-          value={searchQ}
-          onChange={(e) => setSearchQ(e.target.value)}
-          onClear={searchQ ? () => setSearchQ("") : undefined}
-          placeholder={t("searchPlaceholder")}
-          ariaLabel={t("searchPlaceholder")}
-          rotated={false}
-          className="flex-1 border-brand-pink/30 dark:border-brand-pink-dark focus-within:border-brand-pink focus-within:border-2"
-        />
-        <div className="h-full flex items-center justify-end gap-3 pt-3">
-          <button onClick={() => setNarrowOpen((prev) => !prev)}>
-            {!narrowOpen ? (
-              <ArrowUpNarrowWide
-                className="text-brand-pink dark:text-brand-yellow mb-2"
-                size={28}
-                strokeWidth={2.5}
-              />
-            ) : (
-              <ArrowDownNarrowWide
-                className="text-brand-pink dark:text-brand-yellow mb-2"
-                size={28}
-                strokeWidth={2.5}
-              />
-            )}
-          </button>
-          {subs.length > 0 && (
-            <button onClick={() => setSubCategoryOpen((prev) => !prev)}>
-              {!subCategoryOpen ? (
-                <SlidesHeart
-                  className="text-brand-pink dark:text-brand-yellow dark:stroke-brand-yellow mb-2 stroke-brand-pink"
-                  size={24}
-                  strokeWidth={20}
-                />
-              ) : (
-                <X
-                  className="text-brand-pink dark:text-brand-yellow mb-2"
-                  size={24}
-                  strokeWidth={2}
-                />
-              )}
-            </button>
-          )}
-        </div>
-      </div>
-      {subs.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: -20, height: 0 }}
-          animate={
-            subCategoryOpen
-              ? { opacity: 1, y: 0, height: "auto" }
-              : { opacity: 0, y: 20, height: 0 }
-          }
-          className="flex flex-wrap items-center justify-start mt-2 gap-3"
-        >
-          <button
-            className={clsx(
-              "border-2 shadow-brand-black dark:shadow-brand-blue py-1 px-2 cursor-pointer transition-all duration-300",
-              !activeSubSlug
-                ? "bg-brand-blue dark:bg-pink-400 shadow-[1px_1px_0px] border-brand-pink-dark"
-                : "dark:bg-brand-pink-dark bg-brand-pink shadow-[3px_3px_0px] hover:shadow-[4px_4px_0px] border-brand-black dark:border-brand-pink-light",
-            )}
-            onClick={() => selectSub(null)}
-          >
-            <span
-              className={clsx(
-                "font-family-jocham font-light",
-                !activeSubSlug
-                  ? "text-brand-black dark:text-brand-pink-bg-dark"
-                  : "text-white dark:text-white",
-              )}
-            >
-              Todos
-            </span>
-          </button>
-          {filteredSubs.map((sub) => {
-            const active = activeSubSlug === sub.slug;
+      <div className="h-12 relative flex items-center justify-between">
+        <div className="w-full h-full grid grid-cols-5 items-center gap-1.5">
+          {SORT_OPTIONS.map(({ value, labelKey, Icon }) => {
+            const active = currentActive === value;
             return (
-              <button
-                key={sub.id}
-                className={clsx(
-                  "border-2 shadow-brand-black dark:shadow-brand-blue py-1 px-2 cursor-pointer transition-all duration-300",
-                  active
-                    ? "bg-brand-blue dark:bg-pink-400 shadow-[1px_1px_0px] border-brand-pink-dark"
-                    : "dark:bg-brand-pink-dark bg-brand-pink shadow-[3px_3px_0px] hover:shadow-[4px_4px_0px] border-brand-black dark:border-brand-pink-light",
-                )}
-                onClick={() => selectSub(sub.slug)}
-              >
-                <span
+              <>
+                <button
+                  key={labelKey}
                   className={clsx(
-                    "font-family-jocham font-light",
+                    "w-full h-full flex flex-col justify-center items-center gap-1",
+                    "border-2 relative rounded-bl-xs",
                     active
-                      ? "text-brand-black dark:text-brand-pink-bg-dark"
-                      : "text-white dark:text-white",
+                      ? "bg-brand-dark-surface-1 border-brand-white/30"
+                      : "bg-brand-dark-surface-2 border-brand-white/20",
                   )}
+                  onClick={() => setCurrentActive(value)}
                 >
-                  {pickLabel(sub, i18n.language)}
-                </span>
-              </button>
+                  <Icon
+                    className={clsx("", active ? "text-brand-pink-light" : "text-brand-pink")}
+                    size={22}
+                    strokeWidth={2.5}
+                  />
+                  <span className="text-[8px] text-brand-white font-bold">
+                    {t(labelKey)}
+                  </span>
+                  <div
+                    className={clsx(
+                      "w-2 h-2 bg-[#20151B] absolute rotate-45 -top-1.25 -right-1.25 border-b-2",
+                      active ? "border-[#72676D] block" : "border-[#71646A] hidden",
+                    )}
+                  />
+                  <div className="w-full h-2 absolute bg-linear-0 from-brand-black/30 to-brand-black/0 dark:from-brand-black/25 dark:to-brand-black/0 bottom-0 right-0" />
+                </button>
+              </>
             );
           })}
-        </motion.div>
-      )}
+        </div>
+      </div>
     </section>
   );
 };

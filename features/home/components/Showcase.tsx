@@ -1,40 +1,53 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { StackedPolaroids } from "./StackedPolaroids";
 import { useGeneratedStars } from "../utils/generatedStars";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@shared/providers/ThemeProvider";
 
 const polaroidImages = [
-  "/products/1.png",
-  "/products/2.png",
-  "/products/3.png",
-  "/products/4.png",
-  "/products/5.png",
-  "/products/6.png",
+  "/img/polaroid-1.png",
+  "/img/polaroid-2.png",
+  "/img/polaroid-3.png",
+  "/img/polaroid-4.png",
+  "/img/polaroid-5.png",
+  "/img/polaroid-6.png",
+  "/img/polaroid-7.png",
+  "/img/polaroid-8.png",
+  "/img/polaroid-9.png",
+  "/img/polaroid-10.png",
+  "/img/polaroid-11.png",
+  "/img/polaroid-12.png",
+  "/img/polaroid-13.png",
+  "/img/polaroid-14.png",
+  "/img/polaroid-15.png",
+  "/img/polaroid-16.png",
+  "/img/polaroid-17.png",
 ];
-
 const Showcase = () => {
   const { stars, mounted } = useGeneratedStars(25);
   const { t } = useTranslation("home");
   const { theme, resolvedTheme } = useTheme();
-
   const currentTheme = theme === "system" ? resolvedTheme : theme;
+  const { scrollYProgress } = useScroll();
+
+  const overlayOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.075, 0.4],
+    [0, 0, 1],
+  );
 
   return (
     <section className="relative overflow-hidden h-[72.4vh] w-full -mt-24">
-      {/* Background polaroids (subdued) */}
-      <div className="absolute inset-0 z-0 opacity-50 dark:opacity-40">
+      <motion.div
+        className="w-full absolute top-0 left-0 h-[72.4vh] bg-brand-light-surface-0 dark:bg-brand-dark-surface-0 z-50"
+        style={{ opacity: overlayOpacity }}
+      />
+      <div className="absolute inset-0 z-0 opacity-45 dark:opacity-40 transition-all duration-150">
         <StackedPolaroids productImages={polaroidImages} />
       </div>
-
-      {/* Bottom fade to background */}
-      <div className="absolute bottom-0 z-30 w-full h-2 md:h-4 lg:h-6 xl:h-8 bg-linear-to-t from-white dark:from-brand-pink-bg-dark via-white/40 dark:via-brand-pink-bg-dark/40 to-transparent" />
-
-      {/* Sparkle stars */}
       {mounted && (
         <div className="absolute inset-0 z-15">
           {stars.map((star, i) => (
@@ -63,7 +76,6 @@ const Showcase = () => {
         </div>
       )}
 
-      {/* Hero content — Logo centralizada */}
       <div className="absolute inset-0 z-40 flex items-center justify-center pt-24">
         <motion.div
           initial={{ opacity: 0, scale: 0.85, y: -30 }}
@@ -84,8 +96,7 @@ const Showcase = () => {
             className="w-60 sm:w-68 md:w-80 lg:w-96 xl:w-md 2xl:w-32rem object-contain drop-shadow-2xl"
             role="img"
           />
-          {/* Glow behind logo */}
-          <div className="absolute inset-0 -z-10 blur-3xl opacity-30 bg-brand-pink dark:bg-brand-pink-dark rounded-full scale-75" />
+          <div className="absolute inset-0 -z-10 blur-3xl opacity-30 bg-brand-pink dark:bg-brand-purple/70 rounded-full scale-75" />
         </motion.div>
       </div>
     </section>

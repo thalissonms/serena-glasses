@@ -1,104 +1,168 @@
 "use client";
-import clsx from "clsx";
+
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import type { Product } from "@features/products/types/product.types";
+import { useMemo } from "react";
+import { TFunction } from "i18next";
+import { Sparkles, Clock, TrendingUp, TrendingDown, Star } from "lucide-react";
+
+import type {
+  CategoryRef,
+  Product,
+} from "@features/products/types/product.types";
+import type { SubcategoryRow } from "@features/categories/types/category.types";
 import { ProductCard } from "./ProductCard";
-import type { ListingParams } from "../utils/filterProducts";
 import { useCategories } from "@features/categories/hooks/useCategories";
 import { pickLocale } from "@shared/utils/pickLocale";
+import PageTitle from "@shared/components/ui/PageTitle";
+import Y2KBadge from "@shared/components/ui/Y2KBadge";
+import { Pill, PillY2K } from "@shared/components/ui/Pills";
+import useFilterProducts from "../hooks/useFilterProducts";
+import { ListingParams } from "../types/productsFindParams.type";
+import clsx from "clsx";
+import ProductCardY2K from "./ProductCardY2K";
+
+// ─── helpers ────────────────────────────────────────────────────────────────
+
+function getTitle(
+  params: ListingParams,
+  categories: CategoryRef[] | undefined,
+  language: string,
+  t: TFunction,
+): string {
+  if (params.category) {
+    const current = categories?.find((c) => c.slug === params.category);
+    if (current) return pickLocale(current, language);
+  }
+  if (params.outlet === "true") return t("listing.titleOutlet");
+  if (params.sale === "true") return t("listing.titleSale");
+  return t("listing.title");
+}
+
+function pickSubLabel(sub: SubcategoryRow, lang: string): string {
+  if (lang.startsWith("en") && sub.name_en) return sub.name_en;
+  if (lang.startsWith("es") && sub.name_es) return sub.name_es;
+  return sub.name_pt;
+}
+
+// ─── tipos ──────────────────────────────────────────────────────────────────
 
 interface ProductsPageContentProps {
   products: Product[];
   params: ListingParams;
 }
 
-export function ProductsPageContent({ products, params }: ProductsPageContentProps) {
+// ─── constantes ─────────────────────────────────────────────────────────────
+
+const SORT_OPTIONS = [
+  { value: "", labelKey: "listing.sortFeatured", Icon: Sparkles },
+  { value: "newest", labelKey: "listing.sortNewest", Icon: Clock },
+  { value: "price-asc", labelKey: "listing.sortPriceAsc", Icon: TrendingUp },
+  {
+    value: "price-desc",
+    labelKey: "listing.sortPriceDesc",
+    Icon: TrendingDown,
+  },
+  { value: "rating", labelKey: "listing.sortRating", Icon: Star },
+] as const;
+
+export function ProductsPageContent({
+  products,
+  params,
+}: ProductsPageContentProps) {
   const { t, i18n } = useTranslation("products");
   const router = useRouter();
   const { data: categories } = useCategories();
-
-  function buildUrl(next: ListingParams): string {
-    const sp = new URLSearchParams();
-    Object.entries(next).forEach(([k, v]) => {
-      if (v) sp.set(k, v);
-    });
-    const q = sp.toString();
-    return `/products${q ? `?${q}` : ""}`;
-  }
+  const { buildUrl } = useFilterProducts();
 
   function setFilter(updates: Partial<ListingParams>) {
-    const next: ListingParams = { ...params };
-    Object.assign(next, updates);
-    Object.keys(updates).forEach((k) => {
-      if (updates[k as keyof ListingParams] === undefined) delete next[k as keyof ListingParams];
-    });
+    const next = { ...params, ...updates };
     router.push(buildUrl(next));
   }
 
-  const isOutlet = params.outlet === "true";
-  const isSale = params.sale === "true";
-  const isNew = params.new === "true";
+  const title = useMemo(
+    () => getTitle(params, categories, i18n.language, t),
+    [params, categories, i18n.language, t],
+  );
 
-  function getTitle(): string {
-    if (params.category) {
-      const current = categories?.find((c) => c.slug === params.category);
-      if (current) return pickLocale(current, i18n.language);
-    }
-    if (isOutlet) return t("listing.titleOutlet");
-    if (isSale) return t("listing.titleSale");
-    return t("listing.title");
+  const subcategories = useMemo<SubcategoryRow[]>(() => {
+    if (!params.category) return [];
+    const cat = categories?.find((c) => c.slug === params.category);
+    return cat?.subcategories ?? [];
+  }, [categories, params.category]);
+
+  const hasFilters = subcategories.length > 0;
+
+  if (process.env.NODE_ENV === "development") {
+    console.log("[dev] products", products);
   }
 
-  const sortPills = [
-    { value: "", label: t("listing.sortFeatured") },
-    { value: "newest", label: t("listing.sortNewest") },
-    { value: "price-asc", label: t("listing.sortPriceAsc") },
-    { value: "price-desc", label: t("listing.sortPriceDesc") },
-    { value: "rating", label: t("listing.sortRating") },
-  ];
-
   return (
-    <main className="w-full min-h-screen bg-brand-pink-light/40 dark:bg-brand-pink-bg-dark text-black dark:text-white py-12 px-4 sm:px-8 lg:px-20 transition-colors">
+    <main
+      className="w-full min-h-screen pb-20 bg-brand-light-surface-0 dark:bg-brand-dark-surface-0 text-brand-black dark:text-brand-white py-12 px-4 sm:px-8 lg:px-20 transition-colors"
+      style={{ backgroundImage: "url('/backgrounds/bg-grid.svg')", backgroundPosition:"center", backgroundSize:"cover" }}
+    >
       <div className="max-w-7xl mx-auto mb-8">
-        <span className="font-jocham text-5xl sm:text-6xl text-brand-pink leading-none block">
-          {getTitle()}
-        </span>
-        <div className="flex items-center gap-2 mt-3 mb-1">
-          <div className="w-8 h-0.5 bg-brand-pink-light dark:bg-brand-pink/50" />
-          <span className="text-brand-pink-light dark:text-brand-pink/70 text-lg">✦</span>
-          <div className="w-8 h-0.5 bg-brand-pink-light dark:bg-brand-pink/50" />
+        <div className="w-full flex justify-between items-center">
+          <PageTitle title={title} />
+          {hasFilters && (
+            <div className="flex flex-col items-center">
+              <Y2KBadge text={"Coleção"} />
+
+              <div className="flex gap-3 p-3 z-3">
+                <PillY2K
+                  active={!params.subcategory}
+                  onClick={() => setFilter({ subcategory: undefined })}
+                >
+                  {t("listing.filterAll")}
+                </PillY2K>
+
+                {subcategories.map((sub) => (
+                  <PillY2K
+                    key={sub.id}
+                    active={params.subcategory === sub.slug}
+                    onClick={() => setFilter({ subcategory: sub.slug })}
+                  >
+                    {pickSubLabel(sub, i18n.language)}
+                  </PillY2K>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
-        <p className="text-gray-500 dark:text-gray-400 font-poppins text-sm mt-2">
+      </div>
+
+      <div className="max-w-7xl mx-auto mb-4 mt-20 flex flex-col flex-wrap gap-4">
+        <div className="flex gap-2">
+          {SORT_OPTIONS.map(({ value, labelKey, Icon }) => {
+            const active = (params.sort ?? "") === value;
+            return (
+              <Pill
+                key={value}
+                active={active}
+                onClick={() => setFilter({ sort: value || undefined })}
+              >
+                <Icon size={12} strokeWidth={2.5} />
+                {t(labelKey)}
+              </Pill>
+            );
+          })}
+        </div>
+        <p className="text-brand-black/60 dark:text-brand-white/40 font-poppins text-sm">
           {t("listing.resultCount", { count: products.length })}
         </p>
       </div>
 
-      <div className="max-w-7xl mx-auto mb-8 flex flex-wrap gap-2">
-        {sortPills.map((opt) => {
-          const active = (params.sort ?? "") === opt.value;
-          return (
-            <button
-              key={opt.value}
-              onClick={() => setFilter({ sort: opt.value || undefined })}
-              className={clsx(
-                "font-poppins font-bold text-xs uppercase tracking-wider px-4 py-2 border-2 border-black dark:border-brand-pink transition-all cursor-pointer",
-                active
-                  ? "bg-brand-pink text-white shadow-[3px_3px_0_#000] dark:shadow-[3px_3px_0_#000] -translate-y-0.5"
-                  : "bg-white dark:bg-[#1a1a1a] text-black dark:text-white hover:bg-brand-pink hover:text-white dark:hover:bg-brand-pink shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#FF00B6] hover:shadow-[3px_3px_0_#000] hover:-translate-y-0.5",
-              )}
-            >
-              {opt.label}
-            </button>
-          );
-        })}
-      </div>
-
+      {/* grid de produtos */}
       <div className="max-w-7xl mx-auto">
         {products.length === 0 ? (
           <div className="border-4 border-black dark:border-brand-pink shadow-[6px_6px_0_#000] dark:shadow-[6px_6px_0_#FF00B6] bg-white dark:bg-[#1a1a1a] p-16 text-center">
-            <p className="font-poppins font-bold text-xl mb-2">{t("listing.noResults")}</p>
-            <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">{t("listing.noResultsDesc")}</p>
+            <p className="font-poppins font-bold text-xl mb-2">
+              {t("listing.noResults")}
+            </p>
+            <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
+              {t("listing.noResultsDesc")}
+            </p>
             <button
               onClick={() => router.push("/products")}
               className="inline-block font-poppins font-bold text-sm uppercase tracking-wider text-black dark:text-white border-2 border-black dark:border-brand-pink px-6 py-3 shadow-[4px_4px_0_#FF00B6] hover:shadow-[6px_6px_0_#FF00B6] hover:-translate-y-0.5 transition-all"
@@ -107,10 +171,11 @@ export function ProductsPageContent({ products, params }: ProductsPageContentPro
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {products.map((product, i) => (
-              <ProductCard key={product.id} product={product} index={i} />
+              <ProductCardY2K key={product.id} product={product} index={i} />
             ))}
+            {/* <ProductCardY2K /> */}
           </div>
         )}
       </div>

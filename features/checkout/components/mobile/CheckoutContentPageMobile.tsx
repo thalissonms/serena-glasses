@@ -18,8 +18,9 @@ import { useCheckoutPricing } from "@features/checkout/hooks/useCheckoutPricing"
 import { useCheckoutSubmission } from "@features/checkout/hooks/useCheckoutSubmission";
 import { useEmptyCartGuard } from "@features/checkout/hooks/useEmptyCartGuard";
 import clsx from "clsx";
-import PageInterceptTransition from "@/features/navigation/components/mobile/modals/PageInterceptTransition";
-import { ShoppingBag } from "lucide-react";
+import PageInterceptTransition from "@features/navigation/components/mobile/modals/PageInterceptTransition";
+import { ShoppingBagIcon } from "@heroicons/react/24/solid";
+
 
 function StepIndicator({ current, total }: { current: number; total: number }) {
   return (
@@ -97,16 +98,17 @@ const CheckoutModalContent = () => {
 
   return (
     <div
-      className="min-h-screen text-black dark:text-white"
+      className="min-h-screen text-black dark:text-white bg-brand-pink-light/15 dark:bg-brand-black-dark"
       role="dialog"
       aria-modal="true"
       aria-label={t("checkout.title")}
     >
+
       <ModalNavHeader
         pageToBack="/products"
         onBack={handleBack}
         display={t("checkout.title")}
-        Icon={ShoppingBag}
+        Icon={ShoppingBagIcon}
         buttons={{ labelBack: t("cart.back") }}
       />
       <StepIndicator current={currentIndex} total={totalSteps} />
@@ -167,7 +169,7 @@ const CheckoutModalContent = () => {
 export default function CheckoutPageContentMobile() {
   return (
     <PageInterceptTransition>
-      <CheckoutModalContent></CheckoutModalContent>
+      <CheckoutModalContent />
     </PageInterceptTransition>
   );
 }

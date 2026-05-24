@@ -14,7 +14,7 @@ export default async function AdminV2CategoryEditPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  await requireAdmin();
+  await requireAdmin("/admin-v2/login");
   const { id } = await params;
   const db = getSupabaseServer();
 

@@ -19,7 +19,7 @@ interface CheckItem {
  * Verifica disponibilidade de cada item antes de criar pedido.
  * Retorna lista de itens com problema (vazia = OK pra prosseguir).
  *
- * NÃ£o usa lock transacional â€” race condition aceita por ora (MVP).
+ * NÃ£o usa lock transacional â€" race condition aceita por ora (MVP).
  */
 export async function checkStockAvailability(
   items: CheckItem[],
@@ -65,7 +65,7 @@ export async function checkStockAvailability(
       shortages.push({
         variantId: item.variantId,
         productName: item.productName ?? "Produto",
-        colorName: "â€”",
+        colorName: "—",
         requested: item.quantity,
         available: 0,
       });

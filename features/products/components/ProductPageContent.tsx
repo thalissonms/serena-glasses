@@ -8,14 +8,18 @@ import ProductInfo from "./ProductInfo";
 import ProductMediaViewer from "./ProductMediaViewer";
 import { useTheme } from "@shared/providers/ThemeProvider";
 
+import type { ReviewItem } from "./ProductReviews";
+
 interface ProductPageContentProps {
   product: Product;
   videoSrc?: string;
+  reviews?: ReviewItem[];
 }
 
 export default function ProductPageContent({
   product,
   videoSrc,
+  reviews,
 }: ProductPageContentProps) {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
@@ -67,7 +71,7 @@ export default function ProductPageContent({
           <ProductDelivery />
         </div>
       </section>
-      <ProductDescription product={product} />
+      <ProductDescription product={product} reviews={reviews} />
     </main>
   );
 }

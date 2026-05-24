@@ -48,6 +48,13 @@ export const PATCH = withAdmin<{ id: string }>(async (req, { params }) => {
     }
   }
 
+  // Dispara review request quando muda para delivered
+  if (status === "delivered") {
+    const { generateAndSendReviewRequests } = await import("@features/emails/services/sendOrderEmail");
+    await generateAndSendReviewRequests(id)
+      .catch((err) => console.error("[admin/orders] review request error:", err));
+  }
+
   // Dispara email de cancelamento
   if (status === "cancelled") {
     const { data: order } = await getSupabaseServer()

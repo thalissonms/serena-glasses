@@ -3,10 +3,8 @@ import { useSmartBack } from "@features/navigation/hooks/useBackIntercept";
 import clsx from "clsx";
 import {
   ArrowLeft,
-  BaggageClaim,
   LucideIcon,
   Share2Icon,
-  ShoppingBag,
 } from "lucide-react";
 
 export default function ModalNavHeader({
@@ -52,17 +50,15 @@ export default function ModalNavHeader({
           "h-[56] flex flex-col items-center justify-center pt-1 -mt-1",
         )}
       >
-        <div className="flex items-center justify-center min-w-90">
+        <div className="flex items-center justify-center min-w-90 gap-1">
           {Icon && (
             <Icon
-              size={subtitle ? 24 : 26}
-              strokeWidth={2.5}
-              className="text-brand-blue drop-shadow-[2px_2px_0] drop-shadow-black mb-1"
+              className={clsx("text-brand-pink/40 mb-0.5 stroke-[2.5px] drop-shadow-brand-black/10", subtitle ? "w-5.5 h-5.5" : "w-6 h-6")}
             />
           )}
           <h1
             className={clsx(
-              "text-white px-2 text-center text-shadow-[2px_2px_0px] text-shadow-brand-black font-family-jocham font-light tracking-wide truncate",
+              "text-black/80 text-center text-shadow-[2px_2px_0px] text-shadow-brand-pink/50 font-family-jocham font-light tracking-wide truncate",
               subtitle ? "text-[28px]" : "text-[32px]",
             )}
           >
@@ -80,7 +76,7 @@ export default function ModalNavHeader({
           <button
             type="button"
             aria-label={buttons.labelShared}
-            onClick={() => handleShared}
+            onClick={handleShared}
             className="p-2 cursor-pointer"
           >
             <Share2Icon

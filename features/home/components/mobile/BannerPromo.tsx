@@ -29,7 +29,7 @@ const BannerPromo = () => {
           animate="animate"
           exit="exit"
           style={{ originY: 0 }}
-          className="w-full h-20 relative bg-gray-200 flex items-center shadow-[4px_4px_0px] shadow-brand-black dark:shadow-brand-blue border-2 border-brand-black dark:border-brand-pink-light justify-center"
+          className="w-full h-20 relative bg-brand-light-surface-2 dark:bg-brand-dark-surface-2 flex items-center shadow-[4px_4px_0px] shadow-brand-black dark:shadow-brand-yellow border-2 border-brand-black justify-center"
         >
           <motion.button
             className="absolute right-1 top-1 text-black"

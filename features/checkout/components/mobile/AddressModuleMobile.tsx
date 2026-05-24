@@ -16,7 +16,7 @@ import { useCheckoutForm } from "../../providers/checkout.rhf";
 import { useCepAutofill } from "../../hooks/useCepAutofill";
 import type { ShippingQuoteOption } from "@shared/lib/melhor-envio/types";
 import { ShippingOptions } from "../ShippingOptions";
-import { SectionHeader } from "../SectionHeader";
+import { SectionHeaderMobile } from "./SectionHeaderMobile";
 import { y2kToast } from "@shared/lib/y2kToast";
 
 const STATE_OPTIONS = Object.values(BrazilianState).map((s) => ({
@@ -33,7 +33,10 @@ export function AddressModuleMobile({ nextStep }: AddressModuleMobileProps) {
   const { control, trigger } = useCheckoutForm();
   const cep = useWatch({ control, name: "address.cep" }) as string;
   const street = useWatch({ control, name: "address.street" }) as string;
-  const neighborhood = useWatch({ control, name: "address.neighborhood" }) as string;
+  const neighborhood = useWatch({
+    control,
+    name: "address.neighborhood",
+  }) as string;
   const city = useWatch({ control, name: "address.city" }) as string;
   const state = useWatch({ control, name: "address.state" }) as string;
   const number = useWatch({ control, name: "address.number" }) as string;
@@ -123,23 +126,26 @@ export function AddressModuleMobile({ nextStep }: AddressModuleMobileProps) {
     } else {
       y2kToast.error(
         t("address.fillRequired", {
-          defaultValue: "Preencha todos os campos do endereço antes de continuar.",
+          defaultValue:
+            "Preencha todos os campos do endereço antes de continuar.",
         }),
       );
     }
   };
 
-  const showStreetInput = showAddressBody && !lockedFields.has("street") && !street;
+  const showStreetInput =
+    showAddressBody && !lockedFields.has("street") && !street;
   const showNeighborhoodInput =
     showAddressBody && !lockedFields.has("neighborhood") && !neighborhood;
   const showCityInput = showAddressBody && !lockedFields.has("city") && !city;
-  const showStateInput = showAddressBody && !lockedFields.has("state") && !state;
+  const showStateInput =
+    showAddressBody && !lockedFields.has("state") && !state;
 
   return (
     <div className="p-6 transition-colors">
-      <SectionHeader step={1} title={t("address.title")} />
+      <SectionHeaderMobile step={1} title={t("address.title")} />
       <div className="flex flex-col gap-4">
-        <div className="flex items-start gap-2 h-32">
+        <div className="relative flex items-start gap-2 h-32">
           <RHFCEPInput
             name="address.cep"
             label={t("address.cep")}
@@ -169,6 +175,13 @@ export function AddressModuleMobile({ nextStep }: AddressModuleMobileProps) {
                 </div>
               )}
             </button>
+            <a
+              href="https://buscacepinter.correios.com.br/app/endereco/index.php"
+              target="_blank"
+              className="text-sm font-bold absolute top-18 right-16 text-brand-pink/80 hover:to-brand-pink"
+            >
+              Não sei meu CEP
+            </a>
           </div>
         </div>
 
@@ -176,8 +189,12 @@ export function AddressModuleMobile({ nextStep }: AddressModuleMobileProps) {
 
         {showAddressBody && (
           <>
-            <div className="flex items-center gap-3 pl-2 pr-1 font-semibold bg-white shadow-[4px_4px_0px] -mt-12 mb-2 shadow-brand-black border-2 border-black py-3">
-              <MapPin size={30} strokeWidth={2} className="text-brand-pink shrink-0" />
+            <div className="flex items-center gap-3 pl-2 pr-1 font-semibold bg-white shadow-[4px_4px_0px] -mt-8 mb-2 shadow-brand-black border-2 border-black py-3">
+              <MapPin
+                size={30}
+                strokeWidth={2}
+                className="text-brand-pink shrink-0"
+              />
               <span className="tracking-tight text-sm">
                 {[street, neighborhood, city, state].filter(Boolean).join(", ")}
               </span>

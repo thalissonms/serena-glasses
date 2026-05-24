@@ -82,11 +82,11 @@ export function inputCls(error?: string, extra?: string, variant: InputVariant =
   }
   return clsx(
     "w-full px-3 py-2.5 border-2 font-inter text-sm bg-white dark:bg-[#0a0a0a] dark:text-white dark:placeholder:text-gray-500",
-    "focus:outline-none transition-colors duration-150",
+    "focus:outline-none transition-all duration-300 focus:shadow-[4px_4px_0px]",
     "disabled:opacity-50 disabled:cursor-not-allowed",
     error
       ? "border-red-500 focus:border-red-500"
-      : "border-black dark:border-brand-pink focus:border-brand-pink",
+      : "border-pink-300 md:shadow-none md:border-black dark:border-brand-pink focus:border-brand-pink",
     extra,
   );
 }

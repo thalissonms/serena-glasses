@@ -2,9 +2,11 @@
 
 import { motion, PanInfo, useAnimation } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useEffect, useMemo, useRef } from "react";
 import { useMounted } from "@shared/hooks/useMounted";
 import { useIsDesktop } from "@shared/hooks/useIsDesktop";
+import { HeartIcon, StarIcon } from "@heroicons/react/24/solid";
+import clsx from "clsx";
 
 type Props = {
   children: ReactNode;
@@ -102,10 +104,35 @@ export default function PageInterceptTransition({ children }: Props) {
     });
   };
 
+  const particles = useMemo(
+    () =>
+      Array.from({ length: 60 }).map((_, i) => ({
+        id: i,
+        size: Math.random() * 5 + 1,
+        opacity: Math.random() * 0.18 + 0.04,
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+      })),
+    [],
+  );
+
+  const sparkles = useMemo(
+    () =>
+      Array.from({ length: 20 }).map((_, i) => ({
+        id: i,
+        size: Math.random() * 10 + 6,
+        opacity: Math.random() * 0.2 + 0.05,
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        rotate: Math.random() * 180,
+      })),
+    [],
+  );
+
   return (
     <motion.div
       ref={containerRef}
-      className="fixed inset-0 z-100 bg-brand-pink-light dark:bg-brand-pink-bg-dark overflow-y-auto min-h-screen touch-pan-y"
+      className="fixed inset-0 z-100 bg-white overflow-y-auto min-h-screen touch-pan-y"
       initial={{ x: "100%" }}
       animate={controls}
       exit={{ x: "100%" }}
@@ -119,6 +146,59 @@ export default function PageInterceptTransition({ children }: Props) {
         if (info.offset.x < 0) controls.set({ x: 0 });
       }}
     >
+
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-linear-to-b from-brand-pink/5 dark:from-brand-pink-bg-dark via-transparent to-brand-pink-light/20 dark:to-brand-pink-dark/5" />
+
+        {particles.map((particle) => (
+          <div
+            key={particle.id}
+            className={clsx(
+              "absolute rounded-full bg-brand-pink",
+            )}
+            style={{
+              width: particle.size,
+              height: particle.size,
+              left: particle.left,
+              top: particle.top,
+              opacity: particle.opacity,
+              filter: "blur(0.6px)",
+              boxShadow: "0 0 12px rgba(255,0,182,0.25)",
+            }}
+          />
+        ))}
+
+        {sparkles.map((sparkle, i) => {
+          const Icon = i % 2 === 0 ? StarIcon : HeartIcon;
+
+          return (
+            <Icon
+              key={sparkle.id}
+              className={clsx("absolute text-brand-pink")}
+              style={{
+                width: sparkle.size,
+                height: sparkle.size,
+                left: sparkle.left,
+                top: sparkle.top,
+                opacity: sparkle.opacity,
+                transform: `rotate(${sparkle.rotate}deg)`,
+                filter: `
+            drop-shadow(0 0 6px rgba(255,255,255,0.6))
+            drop-shadow(0 0 12px rgba(255,0,182,0.35))
+          `,
+              }}
+            />
+          );
+        })}
+
+        <div
+          className="absolute inset-0 opacity-[1] mix-blend-overlay"
+          style={{
+            backgroundImage:
+              "url('https://grainy-gradients.vercel.app/noise.svg')",
+          }}
+        />
+      </div>
       {children}
     </motion.div>
   );

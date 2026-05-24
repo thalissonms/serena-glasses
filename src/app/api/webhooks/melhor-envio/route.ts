@@ -2,7 +2,7 @@
 import { getSupabaseServer } from "@shared/lib/supabase/server";
 import type { MeWebhookEvent } from "@shared/lib/melhor-envio/types";
 
-// ME does not support HMAC signing â€” auth via secret token in URL query param
+// ME does not support HMAC signing â€" auth via secret token in URL query param
 function verifyToken(request: NextRequest): boolean {
   const secret = process.env.MELHOR_ENVIO_WEBHOOK_SECRET;
   if (!secret) return process.env.NODE_ENV !== "production";
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
 
     switch (event) {
       case "order.posted": {
-        // Only send shipped email once â€” idempotency via me_status
+        // Only send shipped email once â€" idempotency via me_status
         const alreadyPosted = order.me_status === "posted";
 
         await getSupabaseServer()
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
         await getSupabaseServer().from("orders").update(updateFields).eq("id", order.id);
 
         if (sendDeliveredEmail) {
-          const { sendOrderDeliveredEmail } = await import(
+          const { sendOrderDeliveredEmail, generateAndSendReviewRequests } = await import(
             "@features/emails/services/sendOrderEmail"
           );
           await sendOrderDeliveredEmail({
@@ -94,6 +94,9 @@ export async function POST(request: NextRequest) {
             name: order.full_name.split(" ")[0],
             email: order.email,
           }).catch((err) => console.error("[webhook/me] delivered email error:", err));
+
+          await generateAndSendReviewRequests(order.id)
+            .catch((err) => console.error("[webhook/me] review request error:", err));
         }
         break;
       }
@@ -137,7 +140,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ ok: true });
   } catch (err) {
-    // Always return 200 â€” 500 would cause ME to retry indefinitely
+    // Always return 200 â€" 500 would cause ME to retry indefinitely
     console.error("[webhook/me] error:", (err as Error)?.message ?? String(err));
     return NextResponse.json({ ok: true });
   }

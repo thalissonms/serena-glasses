@@ -10,7 +10,7 @@ import { getHomeStoriesList } from "@features/admin/services/homeStoriesList.ser
 import StoriesListClient from "@features/admin-v2/components/stories/StoriesListClient";
 
 export default async function StoriesPage() {
-  await requireAdmin();
+  await requireAdmin("/admin-v2/login");
   const stories = await getHomeStoriesList();
 
   return (

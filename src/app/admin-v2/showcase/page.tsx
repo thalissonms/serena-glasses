@@ -50,7 +50,7 @@ const STATUS_BADGES: Array<{ v: "pending" | "paid" | "processing" | "shipped" | 
 ];
 
 export default async function AdminV2ShowcasePage() {
-  await requireAdmin();
+  await requireAdmin("/admin-v2/login");
 
   return (
     <div className="flex flex-col gap-12 max-w-4xl pb-20">

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Page: AdminV2Dashboard — painel de controle principal do admin-v2.
  *
  * Row 1: tira de métricas (receita/pedidos/AOV/clientes) com seletor Hoje/7d/30d/Total.
@@ -33,7 +33,7 @@ const getMeHealth = unstable_cache(
 );
 
 export default async function AdminV2Dashboard() {
-  await requireAdmin();
+  await requireAdmin("/admin-v2/login");
 
   const [data, health] = await Promise.all([
     getDashboardV2Data(),

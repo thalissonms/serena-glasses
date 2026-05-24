@@ -162,14 +162,14 @@ function PolaroidWithLifecycle({ polaroid }: { polaroid: Polaroid }) {
 function PolaroidCard({ product }: { product: string }) {
   return (
     <div className="w-24 h-32 sm:w-28 sm:h-36 md:w-36 md:h-48 lg:w-40 lg:h-52 xl:w-44 xl:h-56 noise-overlay-white dark:noise-overlay-black noise-overlay-blend flex flex-col items-center pt-2 md:pt-3 rounded-sm shadow-lg cursor-pointer select-none hover:scale-110 hover:z-50 hover:rotate-0 transition-all duration-300 ease-out">
-      <div className="w-[87.5%] h-[70%] bg-pink-200 dark:bg-brand-pink-dark/20 rounded-sm overflow-hidden relative border border-gray-100 dark:border-black">
+      <div className="w-[87.5%] h-[70%] justify-center flex bg-linear from-brand-white via-brand-pink-light to-brand-white overflow-hidden relative border border-brand-black/30 dark:border-brand-black/10">
         <Image
           src={product}
           alt=""
           role="presentation"
           fill
           sizes="(max-width: 640px) 84px, (max-width: 768px) 98px, (max-width: 1024px) 126px, 154px"
-          className="object-contain p-1 md:p-1.5 sepia-50"
+          className="object-contain sepia-50"
           draggable={false}
           loading="lazy"
         />

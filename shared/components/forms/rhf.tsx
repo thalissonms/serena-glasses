@@ -1,5 +1,9 @@
 "use client";
-import { Controller, useFormContext, type RegisterOptions } from "react-hook-form";
+import {
+  Controller,
+  useFormContext,
+  type RegisterOptions,
+} from "react-hook-form";
 
 import { TextInput, type TextInputProps } from "./inputs/TextInput";
 import { NumberInput, type NumberInputProps } from "./inputs/NumberInput";
@@ -24,7 +28,12 @@ type RHF<T> = Omit<T, "value" | "onChange" | "onBlur" | "error"> & {
 
 // ─── Text ──────────────────────────────────────────────────────────────
 
-export function RHFTextInput({ name, rules, id, ...props }: RHF<TextInputProps>) {
+export function RHFTextInput({
+  name,
+  rules,
+  id,
+  ...props
+}: RHF<TextInputProps>) {
   const { control } = useFormContext();
   return (
     <Controller
@@ -47,7 +56,12 @@ export function RHFTextInput({ name, rules, id, ...props }: RHF<TextInputProps>)
 
 // ─── Number ────────────────────────────────────────────────────────────
 
-export function RHFNumberInput({ name, rules, id, ...props }: RHF<NumberInputProps>) {
+export function RHFNumberInput({
+  name,
+  rules,
+  id,
+  ...props
+}: RHF<NumberInputProps>) {
   const { control } = useFormContext();
   return (
     <Controller
@@ -70,7 +84,12 @@ export function RHFNumberInput({ name, rules, id, ...props }: RHF<NumberInputPro
 
 // ─── Masked (generic) ──────────────────────────────────────────────────
 
-export function RHFMaskedInput({ name, rules, id, ...props }: RHF<MaskedInputProps>) {
+export function RHFMaskedInput({
+  name,
+  rules,
+  id,
+  ...props
+}: RHF<MaskedInputProps>) {
   const { control } = useFormContext();
   return (
     <Controller
@@ -145,14 +164,14 @@ export function RHFCEPInput({ name, rules, id, ...props }: MaskedPreset) {
       control={control}
       rules={rules}
       render={({ field, fieldState }) => (
-        <CEPInput
-          {...props}
-          id={id ?? name}
-          value={field.value ?? ""}
-          onChange={field.onChange}
-          onBlur={field.onBlur}
-          error={fieldState.error?.message}
-        />
+          <CEPInput
+            {...props}
+            id={id ?? name}
+            value={field.value ?? ""}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+            error={fieldState.error?.message}
+          />
       )}
     />
   );
@@ -160,7 +179,12 @@ export function RHFCEPInput({ name, rules, id, ...props }: MaskedPreset) {
 
 // ─── Select ────────────────────────────────────────────────────────────
 
-export function RHFSelectInput({ name, rules, id, ...props }: RHF<SelectInputProps>) {
+export function RHFSelectInput({
+  name,
+  rules,
+  id,
+  ...props
+}: RHF<SelectInputProps>) {
   const { control } = useFormContext();
   return (
     <Controller
@@ -183,7 +207,10 @@ export function RHFSelectInput({ name, rules, id, ...props }: RHF<SelectInputPro
 
 // ─── Checkbox ──────────────────────────────────────────────────────────
 
-type RHFCheckbox = Omit<CheckboxInputProps, "checked" | "onChange" | "onBlur" | "error"> & {
+type RHFCheckbox = Omit<
+  CheckboxInputProps,
+  "checked" | "onChange" | "onBlur" | "error"
+> & {
   name: string;
   rules?: RegisterOptions;
 };
@@ -210,7 +237,12 @@ export function RHFCheckboxInput({ name, rules, ...props }: RHFCheckbox) {
 
 // ─── Phone ─────────────────────────────────────────────────────────────
 
-export function RHFPhoneInput({ name, rules, id, ...props }: RHF<PhoneInputProps>) {
+export function RHFPhoneInput({
+  name,
+  rules,
+  id,
+  ...props
+}: RHF<PhoneInputProps>) {
   const { control } = useFormContext();
   return (
     <Controller
@@ -233,7 +265,12 @@ export function RHFPhoneInput({ name, rules, id, ...props }: RHF<PhoneInputProps
 
 // ─── Date ──────────────────────────────────────────────────────────────
 
-export function RHFDateInput({ name, rules, id, ...props }: RHF<DateInputProps>) {
+export function RHFDateInput({
+  name,
+  rules,
+  id,
+  ...props
+}: RHF<DateInputProps>) {
   const { control } = useFormContext();
   return (
     <Controller
@@ -256,7 +293,12 @@ export function RHFDateInput({ name, rules, id, ...props }: RHF<DateInputProps>)
 
 // ─── DateTime ──────────────────────────────────────────────────────────
 
-export function RHFDateTimeInput({ name, rules, id, ...props }: RHF<DateTimeInputProps>) {
+export function RHFDateTimeInput({
+  name,
+  rules,
+  id,
+  ...props
+}: RHF<DateTimeInputProps>) {
   const { control } = useFormContext();
   return (
     <Controller
@@ -279,7 +321,10 @@ export function RHFDateTimeInput({ name, rules, id, ...props }: RHF<DateTimeInpu
 
 // ─── Price (cents) ─────────────────────────────────────────────────────
 
-type RHFPrice = Omit<PriceInputProps, "value" | "onChange" | "onBlur" | "error"> & {
+type RHFPrice = Omit<
+  PriceInputProps,
+  "value" | "onChange" | "onBlur" | "error"
+> & {
   name: string;
   rules?: RegisterOptions;
 };

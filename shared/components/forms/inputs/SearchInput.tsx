@@ -1,7 +1,7 @@
 "use client";
 
 import { forwardRef } from "react";
-import { X } from "lucide-react";
+import { Search, X } from "lucide-react";
 import clsx from "clsx";
 
 interface SearchInputProps {
@@ -48,9 +48,9 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
     const inputEl = (
       <div
         className={clsx(
-          "relative flex items-center bg-brand-pink-light dark:bg-brand-pink-dark transition-all duration-200",
+          "relative flex items-center bg-brand-pink-light dark:bg-brand-dark-surface-0 transition-all duration-200 group",
           isLg
-            ? "border-4 border-black dark:border-brand-pink"
+            ? "border-2 border-black dark:border-brand-pink"
             : "border-2 border-black/60 dark:border-brand-pink",
           !isLg && rotated && "-rotate-1 focus-within:rotate-0",
           // className só vai no inputEl quando NÃO há wrapper externo
@@ -67,9 +67,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
           aria-hidden="true"
         >
           {leftIcon ?? (isLg ? "✦" : (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-            </svg>
+            <Search className="text-brand-black/80 dark:text-brand-white/80 group-focus-within:text-brand-pink dark:group-focus-within:text-brand-pink-light" strokeWidth={isLg ? 2.5 : 3} size={isLg ? 16 : 18} />
           ))}
         </span>
 
@@ -90,17 +88,17 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
           aria-label={ariaLabel ?? placeholder}
           placeholder={placeholder}
           className={clsx(
-            "flex-1 bg-transparent outline-none font-poppins uppercase placeholder-brand-pink/60 placeholder:font-semibold dark:placeholder:text-brand-pink-light/20 text-black dark:text-white",
+            "flex-1 bg-transparent outline-none font-poppins uppercase placeholder-brand-black/40 dark:placeholder:text-brand-white/40 focus:placeholder-brand-pink/60 dark:focus:placeholder-brand-pink-light/80 text-brand-black dark:text-brand-white",
             isLg
-              ? "px-5 py-5 text-sm tracking-[0.2em]"
-              : "px-2 py-2 text-xs",
+              ? "py-2 text-sm tracking-[0.2em] placeholder:font-semibold"
+              : "px-2 py-2 text-base",
           )}
         />
 
         {loading && (
           isLg ? (
             <span
-              className="mr-5 shrink-0 text-brand-pink text-xl font-jocham leading-none animate-spin"
+              className="absolute right-1 shrink-0 text-brand-pink text-xl font-jocham leading-none animate-spin"
               style={{ animationDuration: "1.5s" }}
               aria-hidden="true"
             >
@@ -108,7 +106,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
             </span>
           ) : (
             <span
-              className="mr-2 w-3 h-3 shrink-0 rounded-full border-2 border-brand-pink border-t-transparent animate-spin"
+              className="w-3 h-3 absolute right-1.5 shrink-0 rounded-full border-2 border-brand-pink border-t-transparent animate-spin"
               aria-hidden="true"
             />
           )
@@ -134,9 +132,6 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
     );
 
     if (!rotated || isLg) return inputEl;
-
-    // wrapper externo recebe className (ex: "flex-1") e overflow-hidden
-    // que impede os cantos rotacionados do inputEl de causarem overflow em X
     return (
       <div className={clsx("relative group overflow-hidden", className)}>
         <div className="absolute inset-0 bg-brand-pink-light transform rotate-1 border border-black/40" />

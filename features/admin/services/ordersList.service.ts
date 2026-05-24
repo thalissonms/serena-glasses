@@ -35,7 +35,7 @@ export async function getOrdersList(filters: OrderFilters = {}): Promise<OrdersL
   if (from) query = query.gte("created_at", `${from}T00:00:00`);
   if (to) query = query.lte("created_at", `${to}T23:59:59`);
   if (q) {
-    // VÃ­rgulas e parÃªnteses quebram o parser de .or() â€” sanitiza
+    // VÃ­rgulas e parÃªnteses quebram o parser de .or() â€" sanitiza
     const safeQ = q.replace(/[,()]/g, "");
     if (safeQ) {
       query = query.or(

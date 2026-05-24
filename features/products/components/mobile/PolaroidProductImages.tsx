@@ -9,7 +9,6 @@ import { usePolaroidCarousel } from "../../hooks/usePolaroidCarousel";
 import { Heart } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { cva } from "class-variance-authority";
-import { discountPercentage } from "../../utils/formatPrice";
 
 type Props = {
   product: Product;
@@ -49,7 +48,7 @@ export function PolaroidProductImage({
       <div
         ref={imageContainerRef}
         className={clsx(
-          "relative aspect-square bg-brand-black dark:bg-brand-black-dark",
+          "relative aspect-square bg-brand-light-surface-2 dark:bg-brand-dark-surface-2",
           isZooming ? "overflow-visible z-50" : "overflow-hidden",
         )}
         onTouchStart={handleTouchStart}

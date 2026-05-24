@@ -14,7 +14,7 @@ import {
 } from "@features/admin-v2/components/coupons/CouponsListClient";
 
 export default async function CouponsPage() {
-  await requireAdmin();
+  await requireAdmin("/admin-v2/login");
   const supabase = getSupabaseServer();
 
   const [{ data: coupons }, { data: usageData }] = await Promise.all([

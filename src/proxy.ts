@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
-import { checkoutLimiter, couponLimiter, trackLimiter, shippingQuoteLimiter, searchLimiter } from "@shared/lib/ratelimit";
+import { checkoutLimiter, couponLimiter, trackLimiter, shippingQuoteLimiter, searchLimiter, reviewSubmitLimiter } from "@shared/lib/ratelimit";
 import type { Ratelimit } from "@upstash/ratelimit";
 
 const PUBLIC_ADMIN_PATHS = new Set(["/admin/login", "/admin-v2/login"]);
@@ -98,6 +98,7 @@ export async function proxy(request: NextRequest) {
   else if (pathname === "/api/checkout/shipping/quote" && verb === "POST") limiter = shippingQuoteLimiter;
   else if (pathname === "/order/track") limiter = trackLimiter;
   else if ((pathname === "/api/search" || pathname === "/api/search/facets") && verb === "GET") limiter = searchLimiter;
+  else if (pathname === "/api/review/submit" && verb === "POST") limiter = reviewSubmitLimiter;
 
   if (limiter) {
     const ip = getIp(request);
@@ -153,7 +154,9 @@ export async function proxy(request: NextRequest) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
       }
       const loginUrl = request.nextUrl.clone();
-      loginUrl.pathname = "/admin/login";
+      loginUrl.pathname = pathname.startsWith("/admin-v2")
+        ? "/admin-v2/login"
+        : "/admin/login";
       return NextResponse.redirect(loginUrl);
     }
 

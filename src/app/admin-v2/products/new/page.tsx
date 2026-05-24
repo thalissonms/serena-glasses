@@ -10,7 +10,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 export default async function AdminV2ProductNewPage() {
-  await requireAdmin();
+  await requireAdmin("/admin-v2/login");
   const categories = await getCategoriesList();
 
   return (

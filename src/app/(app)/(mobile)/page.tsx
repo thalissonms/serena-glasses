@@ -8,6 +8,7 @@ import {
   getNewProducts,
 } from "@features/products/services/productService";
 import NewArrivalsMobile from "@features/home/components/mobile/NewArrivalsMobile";
+import StartsBackgroud from "@/shared/components/layout/Backgrounds/StartsBackground";
 
 export default async function HomePage() {
   const [newProducts, allProducts] = await Promise.all([
@@ -17,14 +18,14 @@ export default async function HomePage() {
 
   return (
     <>
-      <article className="text-black dark:text-white transition-colors transition-duration-300">
+      <article className="text-brand-black dark:text-brand-white transition-colors transition-duration-300 scroll-smooth">
         <div className="sticky top-0 hidden md:block">
           <SerenaCollageBackground>
             <Showcase />
           </SerenaCollageBackground>
         </div>
-        <div className="relative z-10 bg-white dark:bg-brand-pink-bg-dark hidden md:block">
-          <NewArrivals products={newProducts} />
+        <div className="relative hidden md:block">
+            <NewArrivals products={newProducts} />
         </div>
         <div className="md:hidden block max-w-[100vw]">
           <NewArrivalsMobile products={allProducts} />

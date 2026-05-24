@@ -105,11 +105,13 @@ function buildSpecs(
 
 interface ProductDescriptionProps {
   product: Product;
+  reviews?: ReviewItem[];
 }
 
-export default function ProductDescription({ product }: ProductDescriptionProps) {
+export default function ProductDescription({ product, reviews }: ProductDescriptionProps) {
   const { t } = useTranslation("products");
   const specs = buildSpecs(product, t);
+  const displayReviews = reviews && reviews.length > 0 ? reviews : REVIEWS;
 
   return (
     <section className="w-full md:max-w-[96vw] mx-auto px-4 pb-12 md:px-20 md:pb-24 flex flex-col gap-10 md:gap-20 bg-white dark:bg-brand-pink-dark py-10 transition-colors">
@@ -121,12 +123,10 @@ export default function ProductDescription({ product }: ProductDescriptionProps)
         <div className="flex-1 h-0.75 bg-black dark:bg-brand-pink" />
       </div>
 
-     
-
       <ProductEditorial product={product} />
       <ProductSpecs specs={specs} />
       <ProductLookbook items={LOOKBOOK} />
-      <ProductReviews reviews={REVIEWS} />
+      <ProductReviews reviews={displayReviews} />
     </section>
   );
 }

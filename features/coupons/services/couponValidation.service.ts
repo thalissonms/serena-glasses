@@ -103,7 +103,7 @@ export async function validateCoupon(input: ValidateCouponInput): Promise<Valida
       return { ok: false, error: COUPON_ERRORS.USAGE_LIMIT_USER };
     }
 
-    // 8. Primeira compra apenas â€” checa por email E por CPF (OR: qualquer um bloqueia)
+    // 8. Primeira compra apenas â€" checa por email E por CPF (OR: qualquer um bloqueia)
     if (coupon.first_purchase_only) {
       const normalizedCpf = cpf?.replace(/\D/g, "") ?? null;
 
@@ -135,7 +135,7 @@ export async function validateCoupon(input: ValidateCouponInput): Promise<Valida
   // 9. Calcula desconto sobre o subtotal elegÃ­vel
   let discount: number;
   if (coupon.discount_type === "free_shipping") {
-    discount = 0; // desconto de subtotal Ã© zero â€” frete Ã© zerado no checkout
+    discount = 0; // desconto de subtotal Ã© zero â€" frete Ã© zerado no checkout
   } else if (coupon.discount_type === "percentage") {
     discount = Math.floor((eligibleSubtotal * coupon.discount_value) / 100);
   } else {

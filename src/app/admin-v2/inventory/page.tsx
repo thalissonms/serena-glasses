@@ -13,7 +13,7 @@ import type { InventoryVariant } from "@features/admin-v2/components/inventory/I
 export const dynamic = "force-dynamic";
 
 export default async function AdminV2InventoryPage() {
-  await requireAdmin();
+  await requireAdmin("/admin-v2/login");
 
   const supabase = getSupabaseServer();
 

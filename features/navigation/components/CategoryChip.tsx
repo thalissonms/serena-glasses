@@ -35,24 +35,24 @@ export function CategoryChip({
     <>
       <div
         className={clsx(
-          "relative flex items-center justify-center rounded-full transition-all duration-300",
+          "relative flex items-center justify-center rounded-full transition-all duration-300 py-0.5",
           active
             ? [
                 `${width} ${height}`,
                 "border-4 border-brand-yellow",
-                "dark:ring-offset-brand-pink-light ring-offset-brand-pink-dark ring-offset-4",
+                "dark:ring-offset-brand-purple ring-offset-brand-dark-surface-1 ring-offset-4",
                 "shadow-[2px_2px_0px_4px] shadow-brand-blue",
               ]
             : [
                 `${width} ${height}`,
-                "border-[3px] border-neutral-300 dark:border-neutral-600",
+                "border-[3px] border-brand-light-surface-2 dark:border-brand-dark-surface-2",
               ],
         )}
       >
         <div
           className={clsx(
             "absolute inset-0 rounded-full",
-            active ? "bg-brand-pink" : "bg-neutral-100 dark:bg-neutral-800",
+            active ? "bg-brand-pink" : "bg-brand-white/75 dark:bg-brand-black/60",
           )}
         />
 
@@ -74,14 +74,13 @@ export function CategoryChip({
             className={clsx(
               "relative z-10 transition-colors duration-300",
               active
-                ? "text-brand-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                ? "text-brand-white drop-shadow-[0_1px_2px] shadow-brand-black"
                 : "text-neutral-400 dark:text-neutral-500",
             )}
           />
         ) : null}
       </div>
 
-      {/* Label */}
       {showLabel && (
         <span
           className={clsx(

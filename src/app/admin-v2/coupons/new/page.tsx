@@ -15,7 +15,7 @@ import {
 } from "@features/admin-v2/components/coupons/CouponFormClient";
 
 export default async function CouponNewPage() {
-  await requireAdmin();
+  await requireAdmin("/admin-v2/login");
   const supabase = getSupabaseServer();
 
   const [{ data: products }, { data: categories }] = await Promise.all([

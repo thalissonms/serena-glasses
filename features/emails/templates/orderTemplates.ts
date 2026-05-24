@@ -215,3 +215,33 @@ export function buildOrderCancelledEmail(params: Pick<OrderEmailParams, "orderNu
       </p>
     </td></tr>`);
 }
+
+export function buildReviewRequestEmail(params: {
+  name: string;
+  productName: string;
+  reviewUrl: string;
+  expiresInDays?: number;
+}): string {
+  const { name, productName, reviewUrl, expiresInDays = 14 } = params;
+  return wrapInLayout(`
+    <tr><td style="padding:32px;">
+      <p style="margin:0 0 8px;font-size:16px;color:#111;">Olá, <strong>${name}</strong>!</p>
+      <p style="margin:0 0 8px;font-size:14px;color:#555;line-height:1.6;">
+        Seu pedido foi entregue — que tal nos contar o que achou?
+      </p>
+      <p style="margin:0 0 24px;font-size:14px;color:#555;line-height:1.6;">
+        Sua opinião sobre <strong>${productName}</strong> ajuda outras clientes a escolherem melhor e nos ajuda a melhorar sempre.
+      </p>
+      <div style="text-align:center;margin:0 0 28px;">
+        <a href="${reviewUrl}" style="display:inline-block;background:#FF00B6;color:#fff;text-decoration:none;font-family:'Poppins',sans-serif;font-weight:900;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:16px 32px;border:2px solid #000;box-shadow:4px 4px 0 #000;">
+          &#9733; Avaliar meu pedido
+        </a>
+      </div>
+      <p style="margin:0 0 0;font-size:11px;color:#bbb;text-align:center;line-height:1.6;">
+        Este link é pessoal e expira em ${expiresInDays} dias.
+      </p>
+      <p style="margin:20px 0 0;font-size:12px;color:#aaa;text-align:center;line-height:1.6;">
+        Dúvidas? Fale com a gente pelo Instagram <strong>@serenaglasses</strong>
+      </p>
+    </td></tr>`);
+}

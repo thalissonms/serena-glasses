@@ -137,13 +137,13 @@ const NAV_GROUPS: NavGroup[] = [
         scaffold: true,
       },
       {
-        href: "/admin-v2/abandoned-carts",
+        href: "/admin-v2/carts",
         label: "Carrinhos Aband.",
         icon: ShoppingCart,
         scaffold: true,
       },
       {
-        href: "/admin-v2/tracking",
+        href: "/admin-v2/shipments",
         label: "Rastreamento",
         icon: Truck,
         scaffold: true,
@@ -179,6 +179,12 @@ const NAV_GROUPS: NavGroup[] = [
         href: "/admin-v2/push",
         label: "Notif. Push",
         icon: Bell,
+        scaffold: true,
+      },
+      {
+        href: "/admin-v2/emails",
+        label: "Templates Email",
+        icon: Mail,
         scaffold: true,
       },
     ],
@@ -235,8 +241,8 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { href: "/admin-v2/settings", label: "Configurações", icon: Settings },
       {
-        href: "/admin-v2/shipping",
-        label: "Frete",
+        href: "/admin-v2/shipping-zones",
+        label: "Zonas Frete",
         icon: Truck,
         scaffold: true,
       },
@@ -247,9 +253,15 @@ const NAV_GROUPS: NavGroup[] = [
         scaffold: true,
       },
       {
-        href: "/admin-v2/admin-users",
-        label: "Usuários Admin",
+        href: "/admin-v2/team",
+        label: "Equipe Admin",
         icon: ShieldCheck,
+        scaffold: true,
+      },
+      {
+        href: "/admin-v2/logs",
+        label: "Logs de Erro",
+        icon: FileText,
         scaffold: true,
       },
       {
@@ -274,6 +286,7 @@ const NAV_GROUPS: NavGroup[] = [
         href: "/admin-v2/integrations/melhor-envio",
         label: "Melhor Envio",
         icon: Truck,
+        scaffold: true,
       },
       {
         href: "/admin-v2/integrations/mercadopago",
@@ -296,6 +309,12 @@ const NAV_GROUPS: NavGroup[] = [
       {
         href: "/admin-v2/integrations/webhooks",
         label: "Webhooks",
+        icon: Zap,
+        scaffold: true,
+      },
+      {
+        href: "/admin-v2/integrations/bling",
+        label: "Bling ERP",
         icon: Zap,
         scaffold: true,
       },
@@ -331,13 +350,13 @@ export default function Sidebar() {
       </div>
 
       <nav className="flex-1 overflow-y-auto scrollbar-admin py-3 px-2">
-        {NAV_GROUPS.filter(group => !group.allScaffold).map((group) => (
+        {NAV_GROUPS.map((group) => (
           <div key={group.id} className="mb-5">
             <span className="font-mono font-semibold text-[18px] uppercase tracking-[0.3em] text-brand-blue/80 px-3 mb-1.5 select-none">
               {group.label}
             </span>
             <div className="flex flex-col gap-1 my-2 ml-0.5">
-              {group.items.filter(items => !items.scaffold).map((item) => {
+              {group.items.map((item) => {
                 const active = isActive(pathname, item);
                 const Icon = item.icon;
                 return (
@@ -378,7 +397,7 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      <div className="flex-shrink-0 border-t border-white/5 p-2">
+      <div className="shrink-0 border-t border-white/5 p-2">
         <button
           type="button"
           onClick={handleLogout}

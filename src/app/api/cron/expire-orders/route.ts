@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Update failed" }, { status: 500 });
   }
 
-  // Fire-and-forget â€” email failures don't rollback the cancellation
+  // Fire-and-forget â€" email failures don't rollback the cancellation
   await Promise.allSettled(
     expired.map((order) => {
       const [first] = order.full_name.split(" ");

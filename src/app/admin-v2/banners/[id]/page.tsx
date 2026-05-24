@@ -16,7 +16,7 @@ export default async function BannerEditPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  await requireAdmin();
+  await requireAdmin("/admin-v2/login");
   const { id } = await params;
   const supabase = getSupabaseServer();
 

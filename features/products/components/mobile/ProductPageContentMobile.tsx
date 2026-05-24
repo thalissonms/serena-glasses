@@ -18,7 +18,9 @@ import { getPrimaryTag } from "@features/products/utils/getPrimaryTag";
 import { shareProduct } from "@features/products/utils/polaroidCard.utils";
 import ModalNavHeader from "@features/navigation/components/mobile/modals/ModalNavHeader";
 
-export function ProductPageMobileContent({ product }: { product: Product }) {
+import type { ReviewItem } from "../ProductReviews";
+
+export function ProductPageMobileContent({ product, reviews }: { product: Product; reviews?: ReviewItem[] }) {
   const { t, i18n } = useTranslation("products");
   const firstInStock = product.variants.findIndex((v) => v.inStock);
   const [selectedColor, setSelectedColor] = useState(
@@ -107,7 +109,7 @@ export function ProductPageMobileContent({ product }: { product: Product }) {
           <ProductDelivery />
         </section>
         <Y2KDivider className="px-4" />
-        <ProductDescription product={product} />
+        <ProductDescription product={product} reviews={reviews} />
         <footer className="w-full h-18 fixed bottom-0 bg-brand-pink-light/60 dark:bg-brand-pink-bg-dark/40 backdrop-blur-lg shadow-[-4px_-4px_6px] shadow-black/25 py-2 px-2 z-50">
           <ProductActionsMobile
             product={product}

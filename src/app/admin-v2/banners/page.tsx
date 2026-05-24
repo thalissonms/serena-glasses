@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Page: /admin-v2/banners — listagem de site_banners com preview visual colorido.
  *
  * Carrega todos os banners ordenados por display_order e passa ao BannersListClient.
@@ -10,7 +10,7 @@ import { getSiteBannersList } from "@features/admin/services/siteBannersList.ser
 import BannersListClient from "@features/admin-v2/components/banners/BannersListClient";
 
 export default async function BannersPage() {
-  await requireAdmin();
+  await requireAdmin("/admin-v2/login");
   const banners = await getSiteBannersList();
 
   return (

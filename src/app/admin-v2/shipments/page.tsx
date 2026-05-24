@@ -12,7 +12,7 @@ import type { TrackingEvent, OrderTimeline } from "@features/admin-v2/components
 export const dynamic = "force-dynamic";
 
 export default async function AdminV2ShipmentsPage() {
-  await requireAdmin();
+  await requireAdmin("/admin-v2/login");
 
   const supabase = getSupabaseServer();
 

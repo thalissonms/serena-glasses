@@ -8,7 +8,7 @@ import { getCategoriesWithSubs } from "@features/admin/services/categoriesList.s
 import CategoriesListClient from "@features/admin-v2/components/categories/CategoriesListClient";
 
 export default async function AdminV2CategoriesPage() {
-  await requireAdmin();
+  await requireAdmin("/admin-v2/login");
   const categories = await getCategoriesWithSubs();
   return <CategoriesListClient initialCategories={categories} />;
 }

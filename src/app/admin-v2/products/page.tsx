@@ -11,7 +11,7 @@ import ProductsListClient from "@features/admin-v2/components/products/ProductsL
 export const dynamic = "force-dynamic";
 
 export default async function AdminV2ProductsPage() {
-  await requireAdmin();
+  await requireAdmin("/admin-v2/login");
   const [products, categories] = await Promise.all([
     getProductsList(),
     getCategoriesList(),

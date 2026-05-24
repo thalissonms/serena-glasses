@@ -12,7 +12,7 @@ import type { ReviewRow } from "@features/admin-v2/components/reviews/ReviewsLis
 export const dynamic = "force-dynamic";
 
 export default async function AdminV2ReviewsPage() {
-  await requireAdmin();
+  await requireAdmin("/admin-v2/login");
 
   const supabase = getSupabaseServer();
 
@@ -21,6 +21,7 @@ export default async function AdminV2ReviewsPage() {
     .select(
       `
       id, product_id, author_name, rating, comment, status, verified, created_at,
+      city, purchased_at,
       products (
         name,
         product_images ( url, position )
@@ -52,6 +53,8 @@ export default async function AdminV2ReviewsPage() {
       status: r.status ?? "pending",
       verified: r.verified ?? null,
       created_at: r.created_at ?? null,
+      city: (r as unknown as { city?: string | null }).city ?? null,
+      purchased_at: (r as unknown as { purchased_at?: string | null }).purchased_at ?? null,
     };
   });
 

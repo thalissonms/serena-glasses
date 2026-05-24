@@ -12,7 +12,7 @@ import type { WishlistRow } from "@features/admin-v2/components/wishlist/Wishlis
 export const dynamic = "force-dynamic";
 
 export default async function AdminV2WishlistPage() {
-  await requireAdmin();
+  await requireAdmin("/admin-v2/login");
 
   const supabase = getSupabaseServer();
 

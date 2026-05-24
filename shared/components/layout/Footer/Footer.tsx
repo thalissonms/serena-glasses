@@ -21,17 +21,17 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-y-10 md:gap-y-0 md:gap-x-8 text-center border-b border-gray-700 dark:border-brand-pink/30 pb-10 mb-10">
           {[
             {
-              icon: <Truck className="w-7 h-7 text-white dark:text-brand-pink-dark" />,
+              icon: <Truck className="w-7 h-7 text-white dark:text-brand-dark-surface-0 dark:text-brand-pink-dark" />,
               title: t("highlights.freeShipping"),
               desc: t("highlights.freeShippingDesc"),
             },
             {
-              icon: <Shield className="w-7 h-7 text-white dark:text-brand-pink-dark" />,
+              icon: <Shield className="w-7 h-7 text-white dark:text-brand-dark-surface-0 dark:text-brand-pink-dark" />,
               title: t("highlights.uvProtection"),
               desc: t("highlights.uvProtectionDesc"),
             },
             {
-              icon: <Star className="w-7 h-7 text-white dark:text-brand-pink-dark" />,
+              icon: <Star className="w-7 h-7 text-white dark:text-brand-dark-surface-0 dark:text-brand-pink-dark" />,
               title: t("highlights.premiumQuality"),
               desc: t("highlights.premiumQualityDesc"),
             },

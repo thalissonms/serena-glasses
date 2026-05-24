@@ -45,7 +45,11 @@ import { CSS } from "@dnd-kit/utilities";
 import type { ProductEditData } from "@features/admin/services/productEdit.service";
 import type { VariantWithStockInterface } from "@features/admin/types/productVariant.interface";
 import type { ProductImageInterface } from "@features/admin/types/productImage.interface";
-import type { CategoryRow } from "@features/categories/types/category.types";
+import type {
+  CategoryRow,
+  CategoryWithSubs,
+  SubcategoryRow,
+} from "@features/categories/types/category.types";
 import {
   FRAME_SHAPES,
   FRAME_MATERIALS,
@@ -92,8 +96,7 @@ function SectionDivider({ label }: { label: string }) {
   );
 }
 
-interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: string;
 }
@@ -171,11 +174,16 @@ const detailsSchema = z.object({
       return !isNaN(n) && n >= 1;
     }, "Mínimo 1 grama"),
   category_id: z.string().optional(),
+  subcategory_ids: z.array(z.string()).optional(),
   max_installments: z.string().optional(),
   frame_shape: z.string().optional(),
   frame_material: z.string().optional(),
   lens_type: z.string().optional(),
   uv_protection: z.boolean(),
+  featured: z.boolean(),
+  is_new: z.boolean(),
+  is_sale: z.boolean(),
+  is_outlet: z.boolean(),
   dimensions: z.string().max(100).optional(),
   short_description: z.string().max(500).optional(),
   description: z.string().max(5000).optional(),
@@ -195,6 +203,17 @@ const LENS_TYPE_OPTIONS = [
   { value: "", label: "Sem tipo" },
   ...LENS_TYPES.map((s) => ({ value: s, label: s })),
 ];
+const FLAG_LABELS: {
+  key: "featured" | "is_new" | "is_sale" | "is_outlet";
+  label: string;
+  color: string;
+}[] = [
+  { key: "featured", label: "Destaque", color: "#FFD700" },
+  { key: "is_new", label: "Novidade", color: "#9B00FF" },
+  { key: "is_sale", label: "Sale", color: "#FF00B6" },
+  { key: "is_outlet", label: "Outlet", color: "#FF7700" },
+];
+
 const INSTALLMENTS_OPTIONS = [
   { value: "1", label: "1x (sem parcelamento)" },
   ...Array.from({ length: 11 }, (_, i) => ({
@@ -208,9 +227,10 @@ function DetailsTab({
   categories,
 }: {
   product: ProductEditData;
-  categories: CategoryRow[];
+  categories: CategoryWithSubs[];
 }) {
   const slugTouched = useRef(false);
+  // const [subcategories, setSubcategories] = useState<SubcategoryRow[]>([]);
 
   const {
     register,
@@ -231,11 +251,16 @@ function DetailsTab({
         : "",
       weight: product.weight != null ? String(product.weight) : "",
       category_id: product.category_id ?? "",
+      subcategory_ids: product.subcategory_ids ?? [],
       max_installments: String(product.max_installments),
       frame_shape: product.frame_shape ?? "",
       frame_material: product.frame_material ?? "",
       lens_type: product.lens_type ?? "",
       uv_protection: product.uv_protection,
+      featured: product.featured,
+      is_new: product.is_new,
+      is_sale: product.is_sale,
+      is_outlet: product.is_outlet,
       dimensions: product.dimensions ?? "",
       short_description: product.short_description ?? "",
       description: product.description ?? "",
@@ -243,6 +268,28 @@ function DetailsTab({
   });
 
   const nameValue = watch("name");
+  const selectedCategoryId = watch("category_id");
+  const subcategories = React.useMemo(
+    () =>
+      categories.find((cat) => cat.id === selectedCategoryId)?.subcategories ??
+      [],
+    [categories, selectedCategoryId],
+  );
+  useEffect(() => {
+    const validSubIds = subcategories.map((s) => s.id);
+
+    const current = watch("subcategory_ids") ?? [];
+
+    const filtered = current.filter((id) => validSubIds.includes(id));
+
+    if (filtered.length !== current.length) {
+      setValue("subcategory_ids", filtered, {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+    }
+  }, [selectedCategoryId, subcategories, watch, setValue]);
+
   useEffect(() => {
     if (!slugTouched.current) {
       setValue("slug", toSlug(nameValue ?? ""), { shouldValidate: false });
@@ -262,6 +309,10 @@ function DetailsTab({
       slug: data.slug,
       price: parsePrice(data.price),
       uv_protection: data.uv_protection,
+      featured: data.featured,
+      is_new: data.is_new,
+      is_sale: data.is_sale,
+      is_outlet: data.is_outlet,
       compare_at_price: data.compare_at_price
         ? parsePrice(data.compare_at_price)
         : null,
@@ -274,6 +325,7 @@ function DetailsTab({
       lens_type: data.lens_type || null,
     };
     if (data.category_id) payload.category_id = data.category_id;
+    if (data.subcategory_ids) payload.subcategory_ids = data.subcategory_ids;
     if (data.max_installments)
       payload.max_installments = parseInt(data.max_installments, 10);
 
@@ -364,18 +416,68 @@ function DetailsTab({
 
       {/* Row 3: category + dimensions */}
       <div className="grid grid-cols-2 gap-4">
-        <Controller
-          name="category_id"
-          control={control}
-          render={({ field }) => (
-            <Select
-              label="Categoria"
-              options={categoryOptions}
-              value={field.value ?? ""}
-              onValueChange={(v) => field.onChange(v)}
+        <div className="flex flex-col gap-2">
+          <Controller
+            name="category_id"
+            control={control}
+            render={({ field }) => (
+              <Select
+                label="Categoria"
+                options={categoryOptions}
+                value={field.value ?? ""}
+                onValueChange={(v) => field.onChange(v)}
+              />
+            )}
+          />
+          <div className="flex flex-col gap-1">
+            <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/40 select-none">
+              Subcategoria(s)
+            </span>
+            <Controller
+              key={selectedCategoryId || "no-category"}
+              name="subcategory_ids"
+              control={control}
+              render={({ field }) => {
+                const filtered = subcategories.filter(
+                  (s) => s.category_id === watch("category_id"),
+                );
+
+                return (
+                  <div className="flex flex-wrap gap-2">
+                    {filtered.map((sub) => {
+                      const values = field.value ?? [];
+                      const active = values.includes(sub.id);
+
+                      return (
+                        <button
+                          key={sub.id}
+                          type="button"
+                          onClick={() => {
+                            if (active) {
+                              field.onChange(
+                                values.filter((id: string) => id !== sub.id),
+                              );
+                            } else {
+                              field.onChange([...values, sub.id]);
+                            }
+                          }}
+                          className={clsx(
+                            "px-4 py-2.5 font-mono text-[9px] uppercase tracking-widest border-2 transition-all duration-150 cursor-pointer",
+                            active
+                              ? "border-[#00F0FF]/40 text-[#00F0FF] bg-[#00F0FF]/8 shadow-[0_0_10px_rgba(0,240,255,0.2)]"
+                              : "border-white/10 text-white/25 hover:border-white/25 bg-transparent",
+                          )}
+                        >
+                          {sub.name_pt}
+                        </button>
+                      );
+                    })}
+                  </div>
+                );
+              }}
             />
-          )}
-        />
+          </div>
+        </div>
         <Input
           label="Dimensões"
           placeholder="Ex: 145-20-140"
@@ -441,11 +543,52 @@ function DetailsTab({
                     : "border-white/10 text-white/30 hover:border-white/20",
                 )}
               >
-                {field.value ? <ToggleRight size={14} /> : <ToggleLeft size={14} />}
+                {field.value ? (
+                  <ToggleRight size={14} />
+                ) : (
+                  <ToggleLeft size={14} />
+                )}
                 Proteção UV
               </button>
             )}
           />
+        </div>
+      </div>
+
+      {/* Flags */}
+      <div>
+        <SectionDivider label="Flags" />
+        <div className="flex gap-2 flex-wrap mt-3">
+          {FLAG_LABELS.map(({ key, label, color }) => (
+            <Controller
+              key={key}
+              name={key}
+              control={control}
+              render={({ field }) => (
+                <button
+                  type="button"
+                  onClick={() => field.onChange(!field.value)}
+                  className={clsx(
+                    "px-4 py-2.5 font-mono text-[9px] uppercase tracking-widest border-2 transition-all duration-150",
+                    !field.value &&
+                      "border-white/10 text-white/25 hover:border-white/25 bg-transparent",
+                  )}
+                  style={
+                    field.value
+                      ? {
+                          color,
+                          borderColor: `${color}60`,
+                          backgroundColor: `${color}12`,
+                          boxShadow: `0 0 10px ${color}25`,
+                        }
+                      : undefined
+                  }
+                >
+                  {label}
+                </button>
+              )}
+            />
+          ))}
         </div>
       </div>
 
@@ -471,7 +614,12 @@ function DetailsTab({
       </div>
 
       <div className="flex justify-end pt-2">
-        <Button type="submit" variant="primary" size="md" loading={isSubmitting}>
+        <Button
+          type="submit"
+          variant="primary"
+          size="md"
+          loading={isSubmitting}
+        >
           <Save size={12} />
           Salvar Detalhes
         </Button>
@@ -484,9 +632,7 @@ function DetailsTab({
 
 const variantAddSchema = z.object({
   color_name: z.string().min(1, "Obrigatório").max(60),
-  color_hex: z
-    .string()
-    .regex(/^#[0-9a-fA-F]{6}$/, "Formato: #RRGGBB"),
+  color_hex: z.string().regex(/^#[0-9a-fA-F]{6}$/, "Formato: #RRGGBB"),
   in_stock: z.boolean(),
 });
 type VariantAddData = z.infer<typeof variantAddSchema>;
@@ -615,7 +761,11 @@ function VariantCard({
               : "text-white/25 hover:text-white/40",
           )}
         >
-          {variant.in_stock ? <ToggleRight size={14} /> : <ToggleLeft size={14} />}
+          {variant.in_stock ? (
+            <ToggleRight size={14} />
+          ) : (
+            <ToggleLeft size={14} />
+          )}
           {variant.in_stock ? "Em estoque" : "Fora de estoque"}
         </button>
         <button
@@ -638,7 +788,8 @@ function VariantsTab({
   productId: string;
   initialVariants: VariantWithStockInterface[];
 }) {
-  const [variants, setVariants] = useState<VariantWithStockInterface[]>(initialVariants);
+  const [variants, setVariants] =
+    useState<VariantWithStockInterface[]>(initialVariants);
   const [showAddForm, setShowAddForm] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
@@ -722,7 +873,11 @@ function VariantsTab({
         size="sm"
         footer={
           <>
-            <Button variant="secondary" size="sm" onClick={() => setDeleteId(null)}>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => setDeleteId(null)}
+            >
               Cancelar
             </Button>
             <Button
@@ -839,14 +994,23 @@ function VariantsTab({
                       : "border-white/10 text-white/30 hover:border-white/20",
                   )}
                 >
-                  {field.value ? <ToggleRight size={14} /> : <ToggleLeft size={14} />}
+                  {field.value ? (
+                    <ToggleRight size={14} />
+                  ) : (
+                    <ToggleLeft size={14} />
+                  )}
                   Em estoque
                 </button>
               )}
             />
           </div>
           <div className="flex items-center gap-3">
-            <Button type="submit" variant="primary" size="sm" loading={isSubmitting}>
+            <Button
+              type="submit"
+              variant="primary"
+              size="sm"
+              loading={isSubmitting}
+            >
               <Plus size={11} />
               Adicionar
             </Button>
@@ -1006,9 +1170,10 @@ function ImagesTab({
 
     const oldIndex = images.findIndex((i) => i.id === active.id);
     const newIndex = images.findIndex((i) => i.id === over.id);
-    const reordered = arrayMove(images, oldIndex, newIndex).map(
-      (img, idx) => ({ ...img, position: idx }),
-    );
+    const reordered = arrayMove(images, oldIndex, newIndex).map((img, idx) => ({
+      ...img,
+      position: idx,
+    }));
     setImages(reordered);
 
     await Promise.all(
@@ -1082,7 +1247,11 @@ function ImagesTab({
         size="sm"
         footer={
           <>
-            <Button variant="secondary" size="sm" onClick={() => setDeleteId(null)}>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => setDeleteId(null)}
+            >
               Cancelar
             </Button>
             <Button
@@ -1372,7 +1541,11 @@ function SeoTab({
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5 max-w-xl">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      noValidate
+      className="space-y-5 max-w-xl"
+    >
       <Input
         label="Título SEO"
         placeholder="Título para motores de busca (máx. 200)"
@@ -1431,7 +1604,12 @@ function SeoTab({
       </div>
 
       <div className="flex justify-end pt-2">
-        <Button type="submit" variant="primary" size="md" loading={isSubmitting}>
+        <Button
+          type="submit"
+          variant="primary"
+          size="md"
+          loading={isSubmitting}
+        >
           <Save size={12} />
           Salvar SEO
         </Button>
@@ -1444,7 +1622,7 @@ function SeoTab({
 
 interface Props {
   product: ProductEditData;
-  categories: CategoryRow[];
+  categories: CategoryWithSubs[];
 }
 
 export default function ProductEditClient({ product, categories }: Props) {
@@ -1477,7 +1655,11 @@ export default function ProductEditClient({ product, categories }: Props) {
         size="sm"
         footer={
           <>
-            <Button variant="secondary" size="sm" onClick={() => setDeleteOpen(false)}>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => setDeleteOpen(false)}
+            >
               Cancelar
             </Button>
             <Button
@@ -1493,8 +1675,8 @@ export default function ProductEditClient({ product, categories }: Props) {
         }
       >
         <p className="font-mono text-[11px] text-white/60">
-          Desativar{" "}
-          <span className="text-white font-bold">{product.name}</span>?
+          Desativar <span className="text-white font-bold">{product.name}</span>
+          ?
         </p>
       </Modal>
 
@@ -1565,10 +1747,7 @@ export default function ProductEditClient({ product, categories }: Props) {
           />
         </div>
         <div className={clsx(activeTab !== "images" && "hidden")}>
-          <ImagesTab
-            productId={product.id}
-            initialImages={product.images}
-          />
+          <ImagesTab productId={product.id} initialImages={product.images} />
         </div>
         <div className={clsx(activeTab !== "video" && "hidden")}>
           <VideoTab

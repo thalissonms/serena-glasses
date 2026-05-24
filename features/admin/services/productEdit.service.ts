@@ -28,6 +28,10 @@ export interface ProductEditData {
   seo_description: string | null;
   seo_keywords: string[] | null;
   max_installments: number;
+  featured: boolean;
+  is_new: boolean;
+  is_sale: boolean;
+  is_outlet: boolean;
   video_url: string | null;
   variants: VariantWithStockInterface[];
   images: ProductImageInterface[];
@@ -39,7 +43,7 @@ export async function getProductForEdit(id: string): Promise<ProductEditData | n
     .select(
       `
       id, name, slug, code, description, short_description,
-      price, compare_at_price, max_installments, category_id,
+      price, compare_at_price, max_installments, featured, is_new, is_sale, is_outlet, category_id,
       categories ( id, slug, name_pt, name_en, name_es ),
       product_subcategories ( subcategory_id ),
       frame_shape, frame_material, lens_type,
@@ -151,6 +155,10 @@ export async function getProductForEdit(id: string): Promise<ProductEditData | n
     seo_description: product.seo_description,
     seo_keywords: product.seo_keywords,
     max_installments: product.max_installments as number,
+    featured: (product as unknown as { featured: boolean }).featured ?? false,
+    is_new: (product as unknown as { is_new: boolean }).is_new ?? false,
+    is_sale: (product as unknown as { is_sale: boolean }).is_sale ?? false,
+    is_outlet: (product as unknown as { is_outlet: boolean }).is_outlet ?? false,
     video_url: product.video_url,
     variants: variantsWithStock,
     images,

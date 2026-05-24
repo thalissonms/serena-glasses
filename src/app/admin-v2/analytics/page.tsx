@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Page: /admin-v2/analytics — dashboard SCAFFOLD de analytics de vendas.
  *
  * Server Component: agrega orders dos últimos 30 dias por dia em JS.
@@ -13,7 +13,7 @@ import type { DayRevenue } from "@features/admin-v2/components/analytics/Analyti
 export const dynamic = "force-dynamic";
 
 export default async function AdminV2AnalyticsPage() {
-  await requireAdmin();
+  await requireAdmin("/admin-v2/login");
 
   const supabase = getSupabaseServer();
 

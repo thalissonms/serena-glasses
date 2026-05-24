@@ -74,7 +74,7 @@ function NavPagesInner({
         <NavItem
           key="/"
           item={{ href: "/", label: t("home") }}
-          active={isActive(usePathname(), "/")}
+          active={isActive(pathname, "/")}
         />
         {pages.map((item) => {
           const active = isNavActive(pathname, searchParams, item.href);
@@ -87,27 +87,48 @@ function NavPagesInner({
 
 function NavItem({ item, active }: { item: Page; active: boolean }) {
   return (
-    <li className="relative group list-none">
+    <li
+      className={clsx(
+        "relative group list-none rounded-sm",
+        active
+          ? "bg-brand-light-surface-2/90 dark:bg-brand-dark-surface-1"
+          : "bg-brand-light-surface-2 dark:bg-brand-dark-surface-1/80",
+      )}
+    >
       <div
         className={clsx(
-          "absolute inset-0 bg-brand-pink-light dark:bg-brand-pink-dark border-2 border-black transition-transform duration-300",
-          "shadow-[3px_3px_0px_#000] rotate-1 dark:shadow-[3px_3px_0px] ",
-          !active &&
-            "group-hover:rotate-2 group-hover:shadow-[5px_5px_0px_#000] dark:border-brand-pink-light dark:shadow-brand-pink-light",
-          active &&
-            "rotate-2 shadow-[5px_5px_0px_#000] dark:shadow-brand-pink dark:border-brand-pink",
+          "w-full h-6 absolute bottom-0 left-0 pointer-events-none",
+          "bg-linear-0 from-brand-black/20 via-brand-black/10 dark:from-brand-black/50 dark:via-brand-black/25 to-transparent",
         )}
       />
+
+      <div
+        className={clsx(
+          "absolute inset-0 border-2 transition-all duration-300",
+          "border-brand-black dark:border-brand-dark-surface-0",
+          "shadow-brand-black dark:shadow-brand-dark-surface-0",
+          active
+            ? "rotate-2 shadow-[5px_5px_0px]"
+            : "rotate-1 shadow-[3px_3px_0px] group-hover:rotate-2 group-hover:shadow-[5px_5px_0px]",
+        )}
+      />
+
       <Link
         href={item.href}
         aria-current={active ? "page" : undefined}
         prefetch
         className={clsx(
-          "relative font-black block px-4 py-2 font-inter uppercase text-sm tracking-wider border-2 border-black ",
-          "transform -rotate-1 transition-transform duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-pink-500",
+          "relative font-black block px-4 py-2 font-inter uppercase text-sm tracking-wider",
+          "border-2 border-brand-black truncate transition-all duration-300",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-pink-500",
           active
-            ? "text-brand-pink rotate-0 dark:text-brand-pink dark:border-brand-pink"
-            : "text-black dark:text-brand-pink-light dark:border-brand-pink-light  hover:text-brand-pink dark:hover:text-brand-pink-light group-hover:rotate-0",
+            ? "-rotate-1 text-brand-pink dark:text-brand-pink dark:border-brand-pink"
+            : [
+                "-rotate-1 group-hover:rotate-0",
+                "text-brand-black dark:text-brand-pink-light dark:border-brand-pink-light",
+                "group-hover:text-brand-pink dark:group-hover:text-brand-pink-light",
+                "text-shadow-[1px_1px_0px] text-shadow-brand-black/20 dark:text-shadow-brand-white/10",
+              ],
         )}
       >
         {item.label}

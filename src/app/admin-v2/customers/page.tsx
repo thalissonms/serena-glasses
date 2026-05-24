@@ -12,7 +12,7 @@ import type { CustomerRow } from "@features/admin-v2/components/customers/Custom
 export const dynamic = "force-dynamic";
 
 export default async function AdminV2CustomersPage() {
-  await requireAdmin();
+  await requireAdmin("/admin-v2/login");
 
   const supabase = getSupabaseServer();
 

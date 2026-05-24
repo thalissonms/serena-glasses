@@ -22,7 +22,7 @@ export function isAdminEmail(email: string | null | undefined): boolean {
 export type AdminUser = { id: string; email: string };
 
 /**
- * API Routes â€” valida session via cookie e checa allowlist.
+ * API Routes â€" valida session via cookie e checa allowlist.
  * Retorna null se nÃ£o autorizado (route handler retorna 401).
  */
 export async function getAdminFromCookies(): Promise<AdminUser | null> {
@@ -35,11 +35,11 @@ export async function getAdminFromCookies(): Promise<AdminUser | null> {
 }
 
 /**
- * Server Components â€” valida cookie de session e checa allowlist.
- * Redireciona pra /admin/login se nÃ£o autorizado.
+ * Server Components — valida cookie de session e checa allowlist.
+ * loginPath padrão /admin/login; passar /admin-v2/login para rotas v2.
  */
-export async function requireAdmin(): Promise<AdminUser> {
+export async function requireAdmin(loginPath = "/admin/login"): Promise<AdminUser> {
   const admin = await getAdminFromCookies();
-  if (!admin) redirect("/admin/login");
+  if (!admin) redirect(loginPath);
   return admin;
 }

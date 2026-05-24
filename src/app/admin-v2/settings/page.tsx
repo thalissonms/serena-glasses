@@ -12,7 +12,7 @@ import { getAllSettings } from "@features/admin/services/siteSettings.service";
 import SettingsClient from "@features/admin-v2/components/settings/SettingsClient";
 
 export default async function SettingsPage() {
-  await requireAdmin();
+  await requireAdmin("/admin-v2/login");
   const settings = await getAllSettings();
 
   return (

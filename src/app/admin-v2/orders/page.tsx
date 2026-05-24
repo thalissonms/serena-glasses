@@ -19,7 +19,7 @@ export default async function AdminV2OrdersPage(props: {
     page?: string;
   }>;
 }) {
-  await requireAdmin();
+  await requireAdmin("/admin-v2/login");
 
   const sp = await props.searchParams;
   const page = Math.max(1, Number(sp.page ?? 1));

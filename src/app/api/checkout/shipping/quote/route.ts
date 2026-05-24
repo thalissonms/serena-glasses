@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
   const { cep, items } = parsed.data;
   const key = cacheKey(cep, items);
 
-  // Cache lookup â€” Redis preferred, in-memory fallback
+  // Cache lookup â€" Redis preferred, in-memory fallback
   if (redis) {
     const cached = await redis.get<ShippingQuoteOption[]>(key);
     if (cached) return NextResponse.json({ options: cached });
