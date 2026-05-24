@@ -11,7 +11,14 @@ export function NewArrivals({ products }: { products: Product[] }) {
   const { t } = useTranslation("home");
 
   return (
-    <section className="relative py-16 sm:py-20 md:py-24 bg-brand-light-surface-0 dark:bg-brand-dark-surface-0">
+    <section
+      className="relative py-16 sm:py-20 md:py-24 bg-brand-light-surface-0 dark:bg-brand-dark-surface-0"
+      style={{
+        backgroundImage: "url('/backgrounds/bg-grid.svg')",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+      }}
+    >
       <StartsBackgroud>
         <div className="absolute md:-top-4 lg:-top-8 left-0 z-30 w-full h-2 md:h-4 lg:h-6 xl:h-8 bg-linear-to-t from-brand-light-surface-0 dark:from-brand-dark-surface-0 via-brand-light-surface-0/40 dark:via-brand-dark-surface-0/40 to-transparent" />
         <div className="max-w-8xl mx-auto px-4 sm:px-8 lg:px-20">
