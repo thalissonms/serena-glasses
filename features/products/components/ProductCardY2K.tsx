@@ -33,7 +33,7 @@ export default function ProductCardY2K({ product }: ProductCardProps) {
     selectedColorIndex,
   );
 
-  // const primaryImage = product.images.find((img) => img.isPrimary) ?? product.images[0];
+  const primaryImage = product.images.find((img) => img.isPrimary) ?? product.images[0];
   const uniqueColors = product.variants.filter(
     (v, i, arr) => arr.findIndex((x) => x.color.slug === v.color.slug) === i,
   );
@@ -109,16 +109,16 @@ export default function ProductCardY2K({ product }: ProductCardProps) {
             </div>
           ))}
         </div>
-
+{/* 
         <Image
-          src="/products/ft-2.png"
+          src="/products/ft-5.png"
           alt={product.name}
           fill
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className="object-cover absolute transition-transform duration-500"
           draggable={false}
-        />
-        {/*
+        /> */}
+        
           {primaryImage ? (
             <Image
               src={primaryImage.url}
@@ -140,7 +140,7 @@ export default function ProductCardY2K({ product }: ProductCardProps) {
               </svg>
             </div>
           )}
-          */}
+         
       </div>
 
       <div className="w-full -mt-8 sm:-mt-10 md:-mt-12 lg:-mt-15.75 z-10">
