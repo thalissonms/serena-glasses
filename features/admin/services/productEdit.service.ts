@@ -1,7 +1,7 @@
 ﻿import { getSupabaseServer } from "@shared/lib/supabase/server";
-import { STOCK_RESERVING_STATUSES } from "../consts/products.const";
-import type { VariantWithStockInterface } from "../types/productVariant.interface";
-import type { ProductImageInterface } from "../types/productImage.interface";
+import { STOCK_RESERVING_STATUSES } from "../../admin/consts/products.const";
+import type { VariantWithStockInterface } from "../types/product/productVariant.interface";
+import type { ProductImageInterface } from "../types/product/productImage.interface";
 import type { CategoryRef } from "@features/products/types/product.types";
 
 export interface ProductEditData {

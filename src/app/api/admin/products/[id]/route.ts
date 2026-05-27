@@ -1,7 +1,7 @@
 ﻿import { NextResponse } from "next/server";
 import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
-import { productPatchSchema } from "@features/admin/schemas/productEdit.schema";
+import { productPatchSchema } from "@features/admin/schemas/zodSchemas/productEdit.schema";
 
 export const PATCH = withAdmin<{ id: string }>(async (req, { params }) => {
   const { id } = await params;

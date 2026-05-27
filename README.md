@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Serena Glasses
 
-## Getting Started
+Modern full-stack ecommerce platform focused on performance, UX and scalable architecture.
 
-First, run the development server:
+## Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Serena Glasses is a full-stack ecommerce project built with modern web technologies, featuring a complete shopping flow, integrated admin dashboard, payment processing, shipping automation and mobile-first experience.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This project is being developed as a real-world product, focusing on scalability, architecture and production-ready integrations.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+* Product catalog with categories and filters
+* Wishlist system
+* Full cart and checkout flow
+* Mercado Pago payment integration
+* Melhor Envio shipping integration
+* Admin dashboard for products/orders/categories
+* Responsive mobile-first experience
+* Email automation with Resend
+* Webhook-based order updates
+* Coupon system
+* Retry payment flow
+* Authentication with Supabase
+* Route protection and server-side validation
 
-## Learn More
+## Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+### Frontend
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+* Next.js 15
+* React 19
+* TypeScript
+* Tailwind CSS
+* Framer Motion
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### State & Forms
 
-## Deploy on Vercel
+* React Query
+* Redux Toolkit
+* React Hook Form
+* Zod
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Backend & Services
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* Supabase
+* PostgreSQL
+* Mercado Pago
+* Melhor Envio
+* Resend
+* Upstash
+
+## Architecture
+
+The project follows a modular architecture pattern:
+
+Components → Hooks → Services → API Routes → External Services
+
+Focused on:
+
+* scalability
+* separation of concerns
+* reusable components
+* maintainability
+
+ Mobile Experience
+
+The mobile version is not just a responsive adaptation of the desktop interface.
+
+It was designed with dedicated navigation flows using Next.js Parallel Routes to create a more native-app-like experience.
+
+## Security & Reliability
+
+* Server-side validation
+* Webhook signature validation
+* Rate limiting with Upstash
+* Protected admin routes
+* Role validation with Supabase RLS
+* Secure payment tokenization
+
+## Status
+
+Currently under active development.
+
+Some features and admin modules are still being refined before public release.
+
+## 🌐 Live Project
+
+[Serena Glasses](https://serena-glasses.vercel.app)
+
+## Author
+
+Thalisson Silva
+
+* LinkedIn: linkedin.com/in/thalisson-silva-a5b047191
+* GitHub: github.com/thalissonms

@@ -1,5 +1,5 @@
-import type { VariantWithStockInterface } from "../types/productVariant.interface";
-import type { VariantStockType } from "../types/productVariant.interface";
+import type { VariantWithStockInterface } from "../types/product/productVariant.interface";
+import type { VariantStockType } from "../types/product/productVariant.interface";
 
 /**
  * Soma o estoque de todas as variantes de um produto.

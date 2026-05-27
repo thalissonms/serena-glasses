@@ -1,6 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useWatch } from "react-hook-form";
+
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import clsx from "clsx";
@@ -11,13 +10,11 @@ import {
   RHFCEPInput,
   RHFSelectInput,
 } from "@shared/components/forms";
-import { useCartStore } from "@features/cart/store/cart.store";
 import { useCheckoutForm } from "../../providers/checkout.rhf";
-import { useCepAutofill } from "../../hooks/useCepAutofill";
-import type { ShippingQuoteOption } from "@shared/lib/melhor-envio/types";
 import { ShippingOptions } from "../ShippingOptions";
 import { SectionHeaderMobile } from "./SectionHeaderMobile";
 import { y2kToast } from "@shared/lib/y2kToast";
+import { useAddressLogic } from "../../hooks/useAddressLogic";
 
 const STATE_OPTIONS = Object.values(BrazilianState).map((s) => ({
   value: s,
@@ -30,94 +27,31 @@ interface AddressModuleMobileProps {
 
 export function AddressModuleMobile({ nextStep }: AddressModuleMobileProps) {
   const { t } = useTranslation("checkout");
-  const { control, trigger } = useCheckoutForm();
-  const cep = useWatch({ control, name: "address.cep" }) as string;
-  const street = useWatch({ control, name: "address.street" }) as string;
-  const neighborhood = useWatch({
-    control,
-    name: "address.neighborhood",
-  }) as string;
-  const city = useWatch({ control, name: "address.city" }) as string;
-  const state = useWatch({ control, name: "address.state" }) as string;
-  const number = useWatch({ control, name: "address.number" }) as string;
-
-  const items = useCartStore((s) => s.items);
-  const setSelectedShipping = useCartStore((s) => s.setSelectedShipping);
   const {
-    lockedFields,
-    loading: cepLoading,
-    error: cepError,
-    resolved,
+    street,
+    neighborhood,
+    city,
+    state,
+    number,
+
+    cepLoading,
+    cepError,
     handleFetch,
-  } = useCepAutofill();
 
-  const [quoteOptions, setQuoteOptions] = useState<ShippingQuoteOption[]>([]);
-  const [quoteLoading, setQuoteLoading] = useState(false);
-  const [quoteError, setQuoteError] = useState<string | null>(null);
+    quoteOptions,
+    quoteLoading,
+    quoteError,
 
-  const itemsKey = JSON.stringify(
-    items.map((i) => ({ variantId: i.variantId, quantity: i.quantity })),
-  );
+    canSearch,
 
-  useEffect(() => {
-    const cleanCep = (cep ?? "").replace(/\D/g, "");
-    if (cleanCep.length !== 8 || items.length === 0) {
-      setQuoteOptions([]);
-      setQuoteError(null);
-      setSelectedShipping(null);
-      return;
-    }
+    showAddressBody,
+    showStreetInput,
+    showNeighborhoodInput,
+    showCityInput,
+    showStateInput,
+  } = useAddressLogic();
 
-    let cancelled = false;
-    setQuoteError(null);
-
-    const timerId = setTimeout(() => {
-      setQuoteLoading(true);
-      fetch("/api/checkout/shipping/quote", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          cep: cleanCep,
-          items: items.map((i) => ({
-            variantId: i.variantId,
-            quantity: i.quantity,
-          })),
-        }),
-      })
-        .then((r) => r.json())
-        .then((data: { options?: ShippingQuoteOption[]; error?: string }) => {
-          if (cancelled) return;
-          if (data.error) {
-            setQuoteError(data.error);
-            setQuoteOptions([]);
-            setSelectedShipping(null);
-          } else {
-            const opts = data.options ?? [];
-            setQuoteOptions(opts);
-            if (opts.length === 1) setSelectedShipping(opts[0]);
-            else setSelectedShipping(null);
-          }
-        })
-        .catch(() => {
-          if (!cancelled) {
-            setQuoteError("Erro ao calcular frete. Tente novamente.");
-            setQuoteOptions([]);
-          }
-        })
-        .finally(() => {
-          if (!cancelled) setQuoteLoading(false);
-        });
-    }, 400);
-
-    return () => {
-      cancelled = true;
-      clearTimeout(timerId);
-    };
-  }, [cep, itemsKey, items.length, setSelectedShipping]);
-
-  const cleanCep = (cep ?? "").replace(/\D/g, "");
-  const canSearch = cleanCep.length === 8 && !cepLoading;
-  const showAddressBody = resolved || Boolean(street);
+  const { trigger } = useCheckoutForm();
 
   const handleShippingSelected = async () => {
     const valid = await trigger("address");
@@ -132,14 +66,6 @@ export function AddressModuleMobile({ nextStep }: AddressModuleMobileProps) {
       );
     }
   };
-
-  const showStreetInput =
-    showAddressBody && !lockedFields.has("street") && !street;
-  const showNeighborhoodInput =
-    showAddressBody && !lockedFields.has("neighborhood") && !neighborhood;
-  const showCityInput = showAddressBody && !lockedFields.has("city") && !city;
-  const showStateInput =
-    showAddressBody && !lockedFields.has("state") && !state;
 
   return (
     <div className="p-6 transition-colors">

@@ -3,7 +3,7 @@ import { createServerClient } from "@supabase/ssr";
 import { checkoutLimiter, couponLimiter, trackLimiter, shippingQuoteLimiter, searchLimiter, reviewSubmitLimiter } from "@shared/lib/ratelimit";
 import type { Ratelimit } from "@upstash/ratelimit";
 
-const PUBLIC_ADMIN_PATHS = new Set(["/admin/login", "/admin-v2/login"]);
+const PUBLIC_ADMIN_PATHS = new Set(["/admin/login", "/admin/login"]);
 
 const STATIC_EXT = /\.(ico|png|jpg|jpeg|gif|webp|svg|css|js|woff2?|ttf|eot|map)$/i;
 
@@ -86,6 +86,12 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const verb = request.method;
 
+  // Video upload: body pode ter até 50 MB. Passagem direta sem modificar headers
+  // para evitar buffering do stream pelo middleware. Auth via withAdmin na rota.
+  if (/^\/api\/admin\/products\/[^/]+\/video$/.test(pathname) && verb === "POST") {
+    return NextResponse.next();
+  }
+
   const nonce = btoa(crypto.randomUUID());
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-pathname", pathname);
@@ -154,8 +160,8 @@ export async function proxy(request: NextRequest) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
       }
       const loginUrl = request.nextUrl.clone();
-      loginUrl.pathname = pathname.startsWith("/admin-v2")
-        ? "/admin-v2/login"
+      loginUrl.pathname = pathname.startsWith("/admin")
+        ? "/admin/login"
         : "/admin/login";
       return NextResponse.redirect(loginUrl);
     }
@@ -197,7 +203,7 @@ export const config = {
   matcher: [
     // Admin and rate-limited API routes
     "/admin/:path*",
-    "/admin-v2/:path*",
+    "/admin/:path*",
     "/api/admin/:path*",
     "/api/checkout",
     "/api/checkout/coupon/validate",

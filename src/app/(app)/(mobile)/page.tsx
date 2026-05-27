@@ -8,7 +8,6 @@ import {
   getNewProducts,
 } from "@features/products/services/productService";
 import NewArrivalsMobile from "@features/home/components/mobile/NewArrivalsMobile";
-import StartsBackgroud from "@/shared/components/layout/Backgrounds/StartsBackground";
 
 export default async function HomePage() {
   const [newProducts, allProducts] = await Promise.all([

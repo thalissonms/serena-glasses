@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ALLOWED_CATEGORY_ICONS } from "../consts/categoryIcons";
+import { ALLOWED_CATEGORY_ICONS } from "../consts/categoryIcons.const";
 
 const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 

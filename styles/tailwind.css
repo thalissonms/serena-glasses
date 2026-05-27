@@ -141,7 +141,7 @@
   --font-size-xl: 1.25rem;
   --font-size-2xl: 1.5rem;
 
-  /* Admin-v2 Y2K Chrome — accent tokens */
+  /* admin Y2K Chrome — accent tokens */
   --color-accent-cyan: #00f0ff;
   --color-accent-gold: #ffd700;
   --font-family-mono: var(--font-jetbrains-mono), "Courier New", monospace;
@@ -408,7 +408,7 @@ body {
   scrollbar-color: #ff00b6 #fff0fa;
   scrollbar-width: thin;
 }
-/* Admin-v2 Y2K Chrome — Keyframes */
+/* admin Y2K Chrome — Keyframes */
 @keyframes scanline {
   0% {
     transform: translateY(-100%);
@@ -440,7 +440,7 @@ body {
   }
 }
 
-/* Admin-v2 Y2K Chrome — Utility classes */
+/* admin Y2K Chrome — Utility classes */
 .font-mono {
   font-family: var(--font-family-mono);
 }

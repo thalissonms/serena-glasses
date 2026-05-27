@@ -1,6 +1,6 @@
 ﻿import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { STOCK_RESERVING_STATUSES } from "../consts/products.const";
-import type { ProductType } from "../types/products.type";
+import type { ProductType } from "../types/product/products.type";
 import type { CategoryRef } from "@features/products/types/product.types";
 
 type DbVariant = {

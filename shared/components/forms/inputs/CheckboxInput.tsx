@@ -42,7 +42,7 @@ export function CheckboxInput({
         {/* Y2K checkbox box */}
         <span
           className={clsx(
-            "w-5 h-5 border-2 flex items-center justify-center flex-shrink-0 transition-all duration-150",
+            "w-5 h-5 border-2 flex items-center justify-center shrink-0 transition-all duration-150",
             checked
               ? "bg-brand-pink border-brand-pink shadow-[2px_2px_0_#000]"
               : "bg-white border-black group-hover:border-brand-pink",

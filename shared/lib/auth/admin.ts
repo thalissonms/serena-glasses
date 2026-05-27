@@ -36,7 +36,7 @@ export async function getAdminFromCookies(): Promise<AdminUser | null> {
 
 /**
  * Server Components — valida cookie de session e checa allowlist.
- * loginPath padrão /admin/login; passar /admin-v2/login para rotas v2.
+ * loginPath padrão /admin/login; passar /admin/login para rotas v2.
  */
 export async function requireAdmin(loginPath = "/admin/login"): Promise<AdminUser> {
   const admin = await getAdminFromCookies();

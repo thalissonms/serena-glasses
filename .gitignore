@@ -46,3 +46,10 @@ next-env.d.ts
 # Agent guidance files (local only)
 /AGENT
 /.playwright-mcp
+
+# Dev
+/dev
+ /mock 
+ dev-server.log
+/app/_admin
+/features/_admin

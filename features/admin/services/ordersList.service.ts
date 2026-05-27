@@ -1,5 +1,5 @@
 ﻿import { getSupabaseServer } from "@shared/lib/supabase/server";
-import type { OrderInterface } from "../types/orders.interface";
+import type { OrderInterface } from "../types/order/orders.interface";
 
 export interface OrderFilters {
   q?: string;

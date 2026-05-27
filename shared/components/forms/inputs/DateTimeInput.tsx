@@ -192,7 +192,7 @@ export function DateTimeInput({
         <span className={clsx("font-inter text-sm", !value && (isAdmin ? "text-gray-500" : "text-gray-400"))}>
           {value ? formatDisplay(value) : placeholder}
         </span>
-        <Calendar size={15} className={clsx("flex-shrink-0 ml-2", isAdmin ? "text-gray-500" : "text-gray-400")} />
+        <Calendar size={15} className={clsx("shrink-0 ml-2", isAdmin ? "text-gray-500" : "text-gray-400")} />
       </button>
 
       {isOpen && (

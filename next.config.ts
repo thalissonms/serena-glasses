@@ -159,6 +159,9 @@ const nextConfig: NextConfig = {
    */
   experimental: {
     optimizeCss: isProd,
+    serverActions: {
+      bodySizeLimit: "50mb",
+    },
   },
 
   /**

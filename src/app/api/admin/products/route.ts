@@ -1,7 +1,7 @@
 ﻿import { NextResponse } from "next/server";
 import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
-import { productCreateSchema } from "@features/admin/schemas/productCreate.schema";
+import { productCreateSchema } from "@features/admin/schemas/product/payload/productCreate.schema";
 import { generateNextProductCode } from "@features/admin/utils/generateProductCode";
 
 const CODE_RETRY_LIMIT = 5;

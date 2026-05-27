@@ -74,7 +74,7 @@ export function PhoneInput({
             "border-2 border-black px-2 py-2.5 font-inter text-sm bg-white",
             "focus:outline-none focus:border-brand-pink transition-colors",
             "disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer",
-            "w-24 flex-shrink-0",
+            "w-24 shrink-0",
           )}
         >
           {COUNTRIES.map((c) => (

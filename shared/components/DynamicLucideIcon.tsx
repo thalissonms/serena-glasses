@@ -1,7 +1,7 @@
 "use client";
 import { lazy, Suspense, type ComponentType } from "react";
 import { HelpCircle, type LucideProps } from "lucide-react";
-import { ALLOWED_CATEGORY_ICONS } from "@features/admin/consts/categoryIcons";
+import { ALLOWED_CATEGORY_ICONS } from "@/features/admin/consts/categoryIcons.const";
 
 interface Props extends LucideProps {
   name: string;
