@@ -38,5 +38,20 @@
     ],
     "css.validate": false,
     "scss.validate": false,
-    "editor.inlineSuggest.enabled": true
+    "editor.inlineSuggest.enabled": true,
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#5C0042",
+        "titleBar.activeBackground": "#81005C",
+        "titleBar.activeForeground": "#FFF9FD",
+        "titleBar.inactiveBackground": "#5C0042",
+        "titleBar.inactiveForeground": "#FFF9FD",
+        "statusBar.debuggingBackground": "#271820",
+        "statusBar.debuggingForeground": "#FFF8FC",
+        "statusBar.noFolderBackground": "#271820",
+        "statusBar.noFolderForeground": "#FFF8FC",
+        "statusBar.background": "#334e99",
+        "statusBar.foreground": "#ffffff",
+        "sash.hoverBorder": "#334e99"
+    },
+    "windowColors.🌈 BaseColor": "#FF00B6"
 }

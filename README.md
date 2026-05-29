@@ -98,18 +98,18 @@ The platform includes a complete shopping experience, a fully integrated admin d
 
 ## Architecture
 
-The project follows a layered architecture pattern:
+The project follows a layered architecture pattern, documented in detail at [`AGENT/CODE_STANDARDS.md`](./AGENT/CODE_STANDARDS.md):
 
 ```txt
-Components
+Schemas & Types
   ↓
-Hooks
+Mappers (optional)
   ↓
 Services
   ↓
-API Routes
+Hooks
   ↓
-External Services
+Components
 ```
 
 The architecture focuses on:

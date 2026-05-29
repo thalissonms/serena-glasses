@@ -4,7 +4,6 @@
  *
  * Tabs: Detalhes / Textos & SEO / Mídia. Todos os campos renderizam no DOM (tabs com
  * hidden/show) para que React Hook Form registre todos os campos independente da aba ativa.
- * POST core fields → PATCH campos opcionais → redirect para edit page.
  *
  * Usado em: src/app/admin/products/new/page.tsx.
  */
@@ -12,106 +11,51 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { toast } from "sonner";
 import { clsx } from "clsx";
 import Link from "next/link";
 import { ArrowRight, Sparkles, AlertCircle } from "lucide-react";
+import Image from "next/image";
+
 import type { CategoryRow } from "@features/categories/types/category.types";
 import { Button } from "@features/admin/components/primitives/Button";
 import { Input } from "@features/admin/components/primitives/Input";
 import { Select } from "@features/admin/components/primitives/Select";
+import Textarea from "../primitives/inputs/Textarea";
+
 import {
   FRAME_MATERIAL_OPTIONS,
   FRAME_SHAPE_OPTIONS,
   LENS_TYPE_OPTIONS,
 } from "../../consts/productSpecs.const.";
-import Image from "next/image";
-import Textarea from "../primitives/inputs/Textarea";
 import { INSTALLMENTS_OPTIONS } from "../../consts/instamentsOptions.const";
 import { TabId } from "../../types/product/tabId.type";
 import { TABS_CREATE } from "../../consts/tabs.const";
+
+import { productCreateFormSchema } from "../../schemas/product/form/productCreateForm.schema";
+import type { ProductCreateFormData } from "../../types/product/productCreateFormData.type";
+import { useProductCreate } from "../../hooks/product/useProductCreate.hook";
+import { isApiError } from "../../utils/isApiError";
+import { toSlug } from "../../utils/stringToSlug";
+import { FLAG_LABELS } from "../../consts/flagsLabels.const";
 
 interface Props {
   categories: CategoryRow[];
 }
 
-const formSchema = z.object({
-  name: z
-    .string()
-    .min(2, "Mínimo 2 caracteres")
-    .max(120, "Máximo 120 caracteres"),
-  slug: z
-    .string()
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Apenas a-z, 0-9 e hífens")
-    .max(120),
-  price: z.string().refine((v) => {
-    const n = parseFloat(v.replace(",", "."));
-    return !isNaN(n) && n > 0;
-  }, "Preço inválido — ex: 199,90"),
-  compare_at_price: z
-    .string()
-    .optional()
-    .refine((v) => {
-      if (!v || v === "") return true;
-      const n = parseFloat(v.replace(",", "."));
-      return !isNaN(n) && n >= 0;
-    }, "Valor inválido"),
-  weight: z.string().refine((v) => {
-    const n = parseInt(v, 10);
-    return !isNaN(n) && n >= 1;
-  }, "Mínimo 1 grama"),
-  category_id: z.string().optional(),
-  max_installments: z.string().optional(),
-  description: z.string().max(5000, "Máximo 5000 caracteres").optional(),
-  short_description: z.string().max(500, "Máximo 500 caracteres").optional(),
-  featured: z.boolean(),
-  is_new: z.boolean(),
-  is_sale: z.boolean(),
-  is_outlet: z.boolean(),
-  frame_shape: z.string().optional(),
-  frame_material: z.string().optional(),
-  lens_type: z.string().optional(),
-  seo_title: z.string().max(200, "Máximo 200 caracteres").optional(),
-  seo_description: z.string().max(500, "Máximo 500 caracteres").optional(),
-});
-
-type FormData = z.infer<typeof formSchema>;
-
-function toSlug(name: string): string {
-  return name
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-z0-9\s-]/g, "")
-    .trim()
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
-function parsePrice(v: string): number {
-  return Math.round(parseFloat(v.replace(",", ".")) * 100);
-}
-
-const DETAILS_FIELDS: (keyof FormData)[] = ["name", "slug", "price", "weight"];
-const TEXTS_FIELDS: (keyof FormData)[] = [
+const DETAILS_FIELDS: (keyof ProductCreateFormData)[] = ["name", "slug", "price", "weight"];
+const TEXTS_FIELDS: (keyof ProductCreateFormData)[] = [
   "description",
   "seo_title",
   "seo_description",
-];
-
-const FLAG_LABELS: { key: keyof FormData; label: string; color: string }[] = [
-  { key: "featured", label: "Destaque", color: "#FFD700" },
-  { key: "is_new", label: "Novidade", color: "#00F0FF" },
-  { key: "is_sale", label: "Sale", color: "#FF00B6" },
-  { key: "is_outlet", label: "Outlet", color: "#FF7700" },
 ];
 
 export default function ProductCreateForm({ categories }: Props) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<TabId>("details");
   const slugTouched = useRef(false);
+
+  const createMutation = useProductCreate();
 
   const {
     register,
@@ -120,9 +64,9 @@ export default function ProductCreateForm({ categories }: Props) {
     setValue,
     setError,
     control,
-    formState: { errors, isSubmitting },
-  } = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+    formState: { errors },
+  } = useForm<ProductCreateFormData>({
+    resolver: zodResolver(productCreateFormSchema),
     defaultValues: {
       name: "",
       slug: "",
@@ -156,68 +100,23 @@ export default function ProductCreateForm({ categories }: Props) {
   const detailsHasError = DETAILS_FIELDS.some((k) => k in errors);
   const textsHasError = TEXTS_FIELDS.some((k) => k in errors);
 
-  async function onSubmit(data: FormData) {
-    const priceInt = parsePrice(data.price);
-    const weightInt = parseInt(data.weight, 10);
-
-    const createPayload: Record<string, unknown> = {
-      name: data.name,
-      slug: data.slug,
-      price: priceInt,
-      weight: weightInt,
-    };
-    if (data.category_id) createPayload.category_id = data.category_id;
-
-    const res = await fetch("/api/admin/products", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(createPayload),
-    });
-
-    if (res.status === 409) {
-      setError("slug", { message: "Slug já em uso — tente outro" });
-      setActiveTab("details");
-      return;
+  async function onSubmit(data: ProductCreateFormData) {
+    try {
+      const { id, code } = await createMutation.mutateAsync(data);
+      toast.success(`Produto criado! SKU: ${code}`);
+      router.push(`/admin/products/${id}`);
+    } catch (err: unknown) {
+      if (isApiError(err)) {
+        if (err.status === 409) {
+          setError("slug", { message: "Slug já em uso — tente outro" });
+          setActiveTab("details");
+          return;
+        }
+        toast.error(err.message);
+        return;
+      }
+      toast.error("Erro inesperado ao criar produto");
     }
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      toast.error(err.error ?? "Erro ao criar produto");
-      return;
-    }
-
-    const { id, code } = await res.json();
-
-    const patchPayload: Record<string, unknown> = {};
-    if (data.compare_at_price)
-      patchPayload.compare_at_price = parsePrice(data.compare_at_price);
-    if (data.description) patchPayload.description = data.description;
-    if (data.short_description)
-      patchPayload.short_description = data.short_description;
-    if (data.max_installments && data.max_installments !== "1") {
-      patchPayload.max_installments = parseInt(data.max_installments, 10);
-    }
-    if (data.featured) patchPayload.featured = true;
-    if (data.is_new) patchPayload.is_new = true;
-    if (data.is_sale) patchPayload.is_sale = true;
-    if (data.is_outlet) patchPayload.is_outlet = true;
-    if (data.frame_shape) patchPayload.frame_shape = data.frame_shape;
-    if (data.frame_material) patchPayload.frame_material = data.frame_material;
-    if (data.lens_type) patchPayload.lens_type = data.lens_type;
-    if (data.seo_title) patchPayload.seo_title = data.seo_title;
-    if (data.seo_description)
-      patchPayload.seo_description = data.seo_description;
-
-    if (Object.keys(patchPayload).length > 0) {
-      await fetch(`/api/admin/products/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(patchPayload),
-      });
-    }
-
-    toast.success(`Produto criado! SKU: ${code}`);
-    router.push(`/admin/products/${id}`);
   }
 
   const categoryOptions = [
@@ -463,9 +362,6 @@ export default function ProductCreateForm({ categories }: Props) {
                 {...register("short_description")}
                 error={errors.short_description?.message}
               />
-              <label className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/40">
-                Descrição Curta
-              </label>
             </div>
 
             <div className="flex flex-col gap-1.5">
@@ -551,7 +447,7 @@ export default function ProductCreateForm({ categories }: Props) {
           type="submit"
           variant="primary"
           size="lg"
-          loading={isSubmitting}
+          loading={createMutation.isPending}
         >
           Criar Produto
           <ArrowRight size={13} />
