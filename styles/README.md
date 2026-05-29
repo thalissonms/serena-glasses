@@ -48,4 +48,3 @@ Identidade visual Y2K brutalista com Tailwind CSS v4. A fonte da verdade é `tai
 - Nunca usar `style={}` para algo que Tailwind faz
 - Preferir composição de classes Tailwind a CSS modules
 - `clsx` para merge condicional de classes
-- Token-set detalhado em `AGENT/UX_UI_PLAN.md` §1
