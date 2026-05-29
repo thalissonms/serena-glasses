@@ -45,11 +45,13 @@ next-env.d.ts
 
 # Agent guidance files (local only)
 /AGENT
-/.playwright-mcp
+/.claude
+/.github
 
 # Dev
 /dev
- /mock 
+/mock
+/CLAUDE.md
  dev-server.log
 /app/_admin
 /features/_admin
