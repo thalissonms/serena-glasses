@@ -41,4 +41,3 @@ Categorias, banners e outros conteúdos do DB usam colunas localizadas: `name_pt
 - Adicionar keys nos **3 idiomas** ao mesmo tempo. Nunca commitar com idioma faltando.
 - Keys em `camelCase`: `t("page.colorLabel")` não `t("page.color_label")`.
 - Máximo 3 níveis de aninhamento.
-- Ver detalhes em `AGENT/CODE_STANDARDS.md` §15.
