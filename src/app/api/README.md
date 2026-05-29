@@ -60,4 +60,3 @@ REST API routes via Next.js App Router. Todas as rotas admin são protegidas por
 - **Status codes:** 200 (ok) · 201 (criado) · 400 (validação) · 401 (auth) · 404 (não encontrado) · 409 (conflito) · 500 (erro)
 - **Body fields:** snake_case (matching DB)
 - **Rate limiting:** configurado em `src/proxy.ts`, limiters em `shared/lib/ratelimit.ts`
-- **Detalhes:** [CODE_STANDARDS.md §10](../../../AGENT/CODE_STANDARDS.md)
