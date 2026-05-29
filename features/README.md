@@ -49,7 +49,6 @@ features/<feature>/
 - **Cruzando features:** sempre alias `@features/<feature>/...`
 - **Utils puros** de outra feature: OK importar cross-feature
 - **Componentes client** de outra feature: NÃO importar — mover para `shared/components/`
-- Ver detalhes completos em [CODE_ORGANIZATION.md](../AGENT/CODE_ORGANIZATION.md)
 
 ## Testes
 
