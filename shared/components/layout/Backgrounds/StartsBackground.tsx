@@ -7,7 +7,13 @@ const HEART_SVG = "M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.2
 type Particle = { x: number; y: number; size: number; baseSize: number; opacity: number; speed: number; phase: number; };
 type Sparkle = Particle & { type: "star" | "heart"; rotation: number; rotationSpeed: number; };
 
-export default function StartsBackgroud({ children }: { children: ReactNode }) {
+interface StartsBackgroundProps {
+  children?: ReactNode;
+  variant?: "default" | "faint";
+  particleCount?: number;
+}
+
+export default function StartsBackground({ children, variant = "default", particleCount = 40 }: StartsBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -26,12 +32,15 @@ export default function StartsBackgroud({ children }: { children: ReactNode }) {
     window.addEventListener("resize", resize);
     resize();
 
-    const particles: Particle[] = Array.from({ length: 40 }).map(() => ({
+    const getParticleOpacity = () => variant === "faint" ? Math.random() * 0.18 + 0.04 : Math.random() * 0.5 + 0.1;
+    const getSparkleOpacity = () => variant === "faint" ? Math.random() * 0.2 + 0.05 : Math.random() * 0.5 + 0.1;
+
+    const particles: Particle[] = Array.from({ length: particleCount }).map(() => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       baseSize: Math.random() * 2.5 + 0.5,
       size: 0,
-      opacity: Math.random() * 0.5 + 0.1,
+      opacity: getParticleOpacity(),
       speed: Math.random() * 0.02 + 0.01,
       phase: Math.random() * Math.PI * 2,
     }));
@@ -41,7 +50,7 @@ export default function StartsBackgroud({ children }: { children: ReactNode }) {
       y: Math.random() * canvas.height,
       baseSize: Math.random() * 10 + 6,
       size: 0,
-      opacity: Math.random() * 0.5 + 0.1,
+      opacity: getSparkleOpacity(),
       speed: Math.random() * 0.04 + 0.02,
       phase: Math.random() * Math.PI * 2,
       type: i % 2 === 0 ? "star" : "heart",
@@ -59,10 +68,10 @@ export default function StartsBackgroud({ children }: { children: ReactNode }) {
       particles.forEach((p) => {
         p.phase += p.speed;
         p.size = p.baseSize + Math.sin(p.phase) * (p.baseSize * 0.5);
-
+        
         ctx.beginPath();
         ctx.arc(p.x, p.y, Math.abs(p.size), 0, Math.PI * 2);
-
+        
         ctx.shadowBlur = 6;
         ctx.shadowColor = `rgba(${pinkColor}, 0.5)`;
         ctx.fillStyle = `rgba(${pinkColor}, ${p.opacity})`;
@@ -72,27 +81,25 @@ export default function StartsBackgroud({ children }: { children: ReactNode }) {
       sparkles.forEach((s) => {
         s.phase += s.speed;
         s.rotation += s.rotationSpeed;
-
+        
         const scale = 1 + Math.sin(s.phase) * 0.3;
         const currentOpacity = s.opacity + Math.sin(s.phase) * 0.2;
 
         ctx.save();
         ctx.translate(s.x, s.y);
         ctx.rotate(s.rotation);
-
-
+        
         const scaleFactor = (s.baseSize / 24) * scale;
         ctx.translate(-12 * scaleFactor, -12 * scaleFactor);
         ctx.scale(scaleFactor, scaleFactor);
 
         ctx.shadowBlur = 8;
         ctx.shadowColor = "rgba(255,255,255,0.4)";
-        ctx.fillStyle = `rgba(${pinkColor}, ${Math.max(0.1, currentOpacity)})`;
+        ctx.fillStyle = `rgba(${pinkColor}, ${Math.max(0.02, currentOpacity)})`;
         ctx.fill(s.type === "star" ? starPath : heartPath);
 
         ctx.restore();
       });
-
 
       animationFrameId = requestAnimationFrame(render);
     };
@@ -103,7 +110,7 @@ export default function StartsBackgroud({ children }: { children: ReactNode }) {
       window.removeEventListener("resize", resize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [variant, particleCount]);
 
   return (
     <>
