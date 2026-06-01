@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { ArrowLeft, ArrowRight, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -79,7 +79,7 @@ export default function CartModalContent() {
             <ul className="flex flex-col gap-3 list-none p-0 m-0" aria-label={t("cart.title")}>
               <AnimatePresence initial={false}>
                 {items.map((item) => (
-                  <motion.li
+                  <m.li
                     key={item.variantId}
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -159,7 +159,7 @@ export default function CartModalContent() {
                         </div>
                       </div>
                     </div>
-                  </motion.li>
+                  </m.li>
                 ))}
               </AnimatePresence>
             </ul>

@@ -19,6 +19,7 @@ import { ThemeProvider } from "@shared/providers/ThemeProvider";
 import { getSetting } from "@features/admin/services/siteSettings.service";
 import ModalPresence from "@shared/navigation/components/mobile/modals/ModalPresence";
 import { Y2KToaster } from "@shared/components/Y2KToaster";
+import { AnimationProvider } from "@shared/providers/AnimationProvider";
 
 const themeInitScript = `
 (function() {
@@ -154,11 +155,13 @@ export default async function RootLayout({
         <ThemeProvider>
           <QueryProvider>
             <I18nProvider>
-              <SpeedInsights />
-              <Analytics />
-              <main className="min-h-screen">{children}</main>
-              <ModalPresence modal={modal} />
-              <Y2KToaster />
+              <AnimationProvider>
+                <SpeedInsights />
+                <Analytics />
+                <main className="min-h-screen">{children}</main>
+                <ModalPresence modal={modal} />
+                <Y2KToaster />
+              </AnimationProvider>
             </I18nProvider>
           </QueryProvider>
         </ThemeProvider>

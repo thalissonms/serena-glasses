@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Heart } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useWishlist, useToggleWishlist } from "@features/wishlist/hooks/useWishlist";
 import clsx from "clsx";
@@ -58,7 +58,7 @@ export function WishlistButtonY2K({
       {tooltip && (
         <AnimatePresence>
           {showTooltip && (
-            <motion.div
+            <m.div
               className="absolute -top-9 left-1/2 -translate-x-1/2 bg-brand-pink border-2 border-black dark:border-brand-pink-light text-white text-[11px] font-black uppercase tracking-wide px-2.5 py-1 shadow-[2px_4px_0px] shadow-black dark:shadow-brand-blue whitespace-nowrap pointer-events-none z-50"
               initial={{ opacity: 0, y: 6, scale: 0.85 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -66,7 +66,7 @@ export function WishlistButtonY2K({
               transition={{ duration: 0.2 }}
             >
               ♥ {t("button.added")}!!!
-            </motion.div>
+            </m.div>
           )}
         </AnimatePresence>
       )}
@@ -74,7 +74,7 @@ export function WishlistButtonY2K({
       <AnimatePresence>
         {burst &&
           PARTICLES.map((p, i) => (
-            <motion.div
+            <m.div
               key={i}
               className="absolute inset-0 flex items-center justify-center pointer-events-none z-40"
               initial={{ opacity: 1, x: 0, y: 0, scale: 0, rotate: 0 }}
@@ -83,7 +83,7 @@ export function WishlistButtonY2K({
               transition={{ duration: 0.55, ease: "easeOut", delay: i * 0.025 }}
             >
               <Heart size={11} className="fill-brand-pink text-brand-pink" strokeWidth={0} />
-            </motion.div>
+            </m.div>
           ))}
       </AnimatePresence>
 
@@ -116,7 +116,7 @@ export function WishlistButtonY2K({
           )}
         >
           <div className="z-3 w-7 h-7 top-0.5 left-0.5 absolute flex justify-center items-center">
-            <motion.div
+            <m.div
               animate={burst ? { scale: [1, 1.4, 0.9, 1.1, 1] } : {}}
               transition={{ duration: 0.4, ease: "easeInOut" }}
             >
@@ -128,7 +128,7 @@ export function WishlistButtonY2K({
                     : "text-brand-black/90 dark:text-brand-dark-surface-1/90 group-hover:text-brand-pink dark:group-hover:text-brand-blue/90",
                 )}
               />
-            </motion.div>
+            </m.div>
           </div>
 
           <div className="z-3 w-7 h-7 top-0.5 left-0.5 absolute flex justify-center items-center">

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useStoryViewer } from "@features/home/hooks/useStoryViewer";
 import { useHomeStories } from "@features/home/hooks/useHomeStories";
@@ -88,7 +88,7 @@ const VideoReelsMobile = () => {
   if (stories.length === 0) return null;
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
@@ -167,7 +167,7 @@ const VideoReelsMobile = () => {
           );
         })}
       </div>
-    </motion.div>
+    </m.div>
   );
 };
 

@@ -2,7 +2,7 @@
 
 import { SmartLink } from "@shared/components/SmartLink";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Star } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { Product } from "@features/products/types/product.types";
@@ -39,7 +39,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
       tabIndex={!product.inStock ? -1 : undefined}
       onClick={!product.inStock ? (e) => e.preventDefault() : undefined}
     >
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
@@ -196,7 +196,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
             </div>
           </div>
         </div>
-      </motion.div>
+      </m.div>
     </SmartLink>
   );
 }

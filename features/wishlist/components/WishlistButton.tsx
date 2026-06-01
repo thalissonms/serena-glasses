@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Heart, HeartPlusIcon } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
   useWishlist,
@@ -59,7 +59,7 @@ export function WishlistButton({
       {tooltip && (
         <AnimatePresence>
           {showTooltip && (
-            <motion.div
+            <m.div
               className="absolute -top-9 left-1/2 -translate-x-1/2 bg-brand-pink border-2 border-black dark:border-brand-pink-light text-white text-[11px] font-black uppercase tracking-wide px-2.5 py-1 shadow-[2px_4px_0px] shadow-black dark:shadow-brand-blue whitespace-nowrap pointer-events-none z-50"
               initial={{ opacity: 0, y: 6, scale: 0.85 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -67,7 +67,7 @@ export function WishlistButton({
               transition={{ duration: 0.2 }}
             >
               ♥ {t("button.added")}!!!
-            </motion.div>
+            </m.div>
           )}
         </AnimatePresence>
       )}
@@ -75,7 +75,7 @@ export function WishlistButton({
       <AnimatePresence>
         {burst &&
           PARTICLES.map((p, i) => (
-            <motion.div
+            <m.div
               key={i}
               className="absolute inset-0 flex items-center justify-center pointer-events-none z-40"
               initial={{ opacity: 1, x: 0, y: 0, scale: 0, rotate: 0 }}
@@ -94,7 +94,7 @@ export function WishlistButton({
                 className="fill-brand-pink text-brand-pink"
                 strokeWidth={0}
               />
-            </motion.div>
+            </m.div>
           ))}
       </AnimatePresence>
       <button
@@ -105,7 +105,7 @@ export function WishlistButton({
         disabled={isPending}
         className={className}
       >
-        <motion.div
+        <m.div
           animate={burst ? { scale: [1, 1.4, 0.9, 1.1, 1] } : {}}
           transition={{ duration: 0.4, ease: "easeInOut" }}
         >
@@ -114,7 +114,7 @@ export function WishlistButton({
             strokeWidth={2.5}
             className={isWishlisted ? "fill-brand-pink text-brand-pink" : ""}
           />
-        </motion.div>
+        </m.div>
       </button>
     </div>
   );

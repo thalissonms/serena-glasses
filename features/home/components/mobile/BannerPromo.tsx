@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, Variants } from "framer-motion";
+import { AnimatePresence, m, Variants } from "framer-motion";
 import { X } from "lucide-react";
 import { useState } from "react";
 
@@ -23,7 +23,7 @@ const BannerPromo = () => {
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div
+        <m.div
           variants={slideDown}
           initial="initial"
           animate="animate"
@@ -31,15 +31,15 @@ const BannerPromo = () => {
           style={{ originY: 0 }}
           className="w-full h-20 relative bg-brand-light-surface-2 dark:bg-brand-dark-surface-2 flex items-center shadow-[4px_4px_0px] shadow-brand-black dark:shadow-brand-yellow border-2 border-brand-black justify-center"
         >
-          <motion.button
+          <m.button
             className="absolute right-1 top-1 text-black"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { delay: 0.55 } }}
             onClick={() => setIsOpen(false)}
           >
             <X size={20} />
-          </motion.button>
-        </motion.div>
+          </m.button>
+        </m.div>
       )}
     </AnimatePresence>
   );

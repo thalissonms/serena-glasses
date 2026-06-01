@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
 interface StoryViewerShellProps {
@@ -57,7 +57,7 @@ export function StoryViewerShell({ isOpen, onClose, children }: StoryViewerShell
       {isOpen && (
         <>
           {/* Backdrop */}
-          <motion.div
+          <m.div
             data-story-overlay=""
             key="story-backdrop"
             className="fixed inset-0 z-60 bg-black/90"
@@ -69,7 +69,7 @@ export function StoryViewerShell({ isOpen, onClose, children }: StoryViewerShell
           />
 
           {/* Painel principal */}
-          <motion.div
+          <m.div
             data-story-overlay=""
             key="story-panel"
             role="dialog"
@@ -89,7 +89,7 @@ export function StoryViewerShell({ isOpen, onClose, children }: StoryViewerShell
             }}
           >
             {children}
-          </motion.div>
+          </m.div>
         </>
       )}
     </AnimatePresence>,

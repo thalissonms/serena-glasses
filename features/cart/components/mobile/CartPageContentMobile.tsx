@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import {
   ArrowLeft,
   ArrowRight,
@@ -75,7 +75,7 @@ function CartModalContent({
           >
             <AnimatePresence initial={false}>
               {items.map((item) => (
-                <motion.li
+                <m.li
                   key={item.variantId}
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -164,7 +164,7 @@ function CartModalContent({
                       </div>
                     </div>
                   </div>
-                </motion.li>
+                </m.li>
               ))}
             </AnimatePresence>
           </ul>

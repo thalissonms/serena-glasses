@@ -1,7 +1,7 @@
 "use client";
 
 import { SmartLink } from "@shared/components/SmartLink";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { ArrowRight, Ban, MessageCircle, Share, Share2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { cva } from "class-variance-authority";
@@ -73,7 +73,7 @@ export function PolaroidProductCard({
   const router = useRouter();
 
   return (
-    <motion.article
+    <m.article
       aria-labelledby={`feed-product-${product.id}-name`}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -242,6 +242,6 @@ export function PolaroidProductCard({
           </div>
         </div>
       </div>
-    </motion.article>
+    </m.article>
   );
 }

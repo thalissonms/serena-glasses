@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { SmartLink } from "@shared/components/SmartLink";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { formatPrice } from "@features/products/utils/formatPrice";
@@ -68,7 +68,7 @@ export default function CartPageContent({
             >
               <AnimatePresence initial={false}>
                 {items.map((item, i) => (
-                  <motion.li
+                  <m.li
                     key={item.variantId}
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -159,7 +159,7 @@ export default function CartPageContent({
                         </div>
                       </div>
                     </div>
-                  </motion.li>
+                  </m.li>
                 ))}
               </AnimatePresence>
             </ul>

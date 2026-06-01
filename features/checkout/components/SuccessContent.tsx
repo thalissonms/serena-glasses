@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { CheckCircle, ShoppingBag } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -13,14 +13,14 @@ export function SuccessContent({ orderNumber }: SuccessContentProps) {
 
   return (
     <main className="w-full min-h-screen bg-[#FFF0FA] dark:bg-[#0a0a0a] text-black dark:text-white flex items-center justify-center py-20 px-4 transition-colors">
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 32 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
         className="w-full max-w-lg"
       >
         <div className="bg-white dark:bg-[#1a1a1a] border-4 border-black dark:border-brand-pink shadow-[8px_8px_0_#FF00B6] p-10 text-center">
-          <motion.div
+          <m.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring", stiffness: 200, damping: 12 }}
@@ -30,9 +30,9 @@ export function SuccessContent({ orderNumber }: SuccessContentProps) {
               <div className="absolute inset-0 bg-brand-pink rounded-full transform rotate-3 scale-110 opacity-20" />
               <CheckCircle size={72} strokeWidth={1.5} className="text-brand-pink relative" />
             </div>
-          </motion.div>
+          </m.div>
 
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.35 }}
@@ -82,9 +82,9 @@ export function SuccessContent({ orderNumber }: SuccessContentProps) {
                 </Link>
               )}
             </div>
-          </motion.div>
+          </m.div>
         </div>
-      </motion.div>
+      </m.div>
     </main>
   );
 }

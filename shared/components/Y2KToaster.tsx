@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { y2kToast, type Y2KToastItem } from "@shared/lib/y2kToast";
 import clsx from "clsx";
 
@@ -39,7 +39,7 @@ export function Y2KToaster() {
     >
       <AnimatePresence initial={false}>
         {toasts.map((t) => (
-          <motion.div
+          <m.div
             key={t.id}
             initial={{ opacity: 0, x: 80, scale: 0.97 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
@@ -61,7 +61,7 @@ export function Y2KToaster() {
               </p>
             </div>
 
-            <motion.div
+            <m.div
               initial={{ scaleX: 1 }}
               animate={{ scaleX: 0 }}
               transition={{ duration: DURATION / 1000, ease: "linear" }}
@@ -77,7 +77,7 @@ export function Y2KToaster() {
             >
               <X size={13} strokeWidth={2.5} />
             </button>
-          </motion.div>
+          </m.div>
         ))}
       </AnimatePresence>
     </div>

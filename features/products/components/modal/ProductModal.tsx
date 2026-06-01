@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from "framer-motion";
 import { useProductModal } from '../../hooks/useProductModal';
 import { Expand, Share2, X } from 'lucide-react';
 import ProductPageContent from '../ProductPageContent';
@@ -44,7 +44,7 @@ export default function ProductModal() {
         <AnimatePresence>
             {selectedProduct && (
                 <section className="fixed inset-0 z-100 flex h-screen w-screen items-center justify-center bg-brand-black/30 backdrop-blur-sm">
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, scale: 0 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0 }}
@@ -138,7 +138,7 @@ export default function ProductModal() {
                                 reviews={[]}
                             />
                         </div>
-                    </motion.div>
+                    </m.div>
                 </section>
             )}
         </AnimatePresence>

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import type { SiteBannerRow } from "@features/home/types/siteBanner.types";
 
@@ -82,7 +82,7 @@ export function TopBanner() {
   return (
     <AnimatePresence>
       {banner && (
-        <motion.div
+        <m.div
           key={banner.id}
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: "auto", opacity: 1 }}
@@ -97,7 +97,7 @@ export function TopBanner() {
           ) : (
             inner
           )}
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

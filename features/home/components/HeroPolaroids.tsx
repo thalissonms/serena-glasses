@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { goldenAngle, goldenOffsetX } from "../utils/goldenRatioAngles";
 
 interface PolaroidProduct {
@@ -64,7 +64,7 @@ export function HeroPolaroids({ products }: HeroPolaroidsProps) {
           const opacity = isTop ? 1 : Math.max(0.3, 1 - depthFromTop * 0.2);
 
           return (
-            <motion.div
+            <m.div
               key={`${counter - stack.length + stackPos}-${productIdx}`}
               initial={{
                 y: -350,
@@ -99,7 +99,7 @@ export function HeroPolaroids({ products }: HeroPolaroidsProps) {
                 product={products[productIdx]}
                 isFeatured={isTop}
               />
-            </motion.div>
+            </m.div>
           );
         })}
       </AnimatePresence>

@@ -5,7 +5,7 @@ import { ArrowLeft, SlidersHorizontal, X } from "lucide-react";
 import Image from "next/image";
 import { SearchInput } from "@shared/components/forms/inputs/SearchInput";
 import { useTranslation } from "react-i18next";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { useSmartBack } from "@/shared/navigation/hooks/useBackIntercept";
 import { useSearch, useSearchFacets } from "@features/search/hooks/useSearch";
 import { formatPrice } from "@features/products/utils/formatPrice";
@@ -63,7 +63,7 @@ function FiltersSheet({
   }
 
   return (
-    <motion.div
+    <m.div
       initial={{ y: "100%" }}
       animate={{ y: 0 }}
       exit={{ y: "100%" }}
@@ -188,7 +188,7 @@ function FiltersSheet({
           {t("filters.apply")}
         </button>
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -382,7 +382,7 @@ export default function SearchMobileContent({ initialQuery = "" }: SearchMobileC
                   const img = item.images.find((i) => i.isPrimary) ?? item.images[0];
                   const colorDot = item.variants?.[0]?.color;
                   return (
-                    <motion.li
+                    <m.li
                       key={item.id}
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -440,7 +440,7 @@ export default function SearchMobileContent({ initialQuery = "" }: SearchMobileC
 
                         <span className="text-black/20 dark:text-white/20 shrink-0" aria-hidden="true">›</span>
                       </a>
-                    </motion.li>
+                    </m.li>
                   );
                 })}
               </AnimatePresence>
@@ -453,7 +453,7 @@ export default function SearchMobileContent({ initialQuery = "" }: SearchMobileC
       <AnimatePresence>
         {showFilters && (
           <>
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}

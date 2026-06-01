@@ -1,7 +1,7 @@
 // PolaroidProductImage.tsx
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import clsx from "clsx";
 import { Product } from "../../types";
@@ -57,7 +57,7 @@ export function PolaroidProductImage({
       >
         <AnimatePresence>
           {wishlistBurst && (
-            <motion.div
+            <m.div
               key="heart-burst"
               className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
               initial={{ opacity: 1, scale: 0.4 }}
@@ -70,16 +70,16 @@ export function PolaroidProductImage({
                 className="fill-brand-pink text-brand-pink drop-shadow-[0_0_12px] shadow-brand-pink"
                 strokeWidth={0}
               />
-            </motion.div>
+            </m.div>
           )}
         </AnimatePresence>
-        <motion.div
+        <m.div
           className="absolute inset-0"
           animate={{ scale: zoomScale }}
           transition={{ type: "spring", stiffness: 400, damping: 30 }}
         >
           <AnimatePresence mode="wait" initial={false}>
-            <motion.div
+            <m.div
               key={currentIndex}
               initial={{ opacity: 0, x: swipeDirection * 80 }}
               animate={{ opacity: 1, x: 0 }}
@@ -115,9 +115,9 @@ export function PolaroidProductImage({
                   </svg>
                 </div>
               )}
-            </motion.div>
+            </m.div>
           </AnimatePresence>
-        </motion.div>
+        </m.div>
         {/* Y2K Badges — fora do wrapper de zoom para não escalar com a imagem */}
         <div className="absolute top-2 left-2 z-10 flex gap-1.5">
           {product.isNew && (

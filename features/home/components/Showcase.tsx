@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import { StackedPolaroids } from "./StackedPolaroids";
 import { useGeneratedStars } from "../utils/generatedStars";
 import { useTranslation } from "react-i18next";
@@ -41,7 +41,7 @@ const Showcase = () => {
 
   return (
     <section className="relative overflow-hidden h-[60vh] w-full -mt-24">
-      <motion.div
+      <m.div
         className="w-full absolute top-0 left-0 h-[72.4vh] bg-brand-light-surface-0 dark:bg-brand-dark-surface-0 z-50"
         style={{ opacity: overlayOpacity }}
       />
@@ -51,7 +51,7 @@ const Showcase = () => {
       {mounted && (
         <div className="absolute inset-0 z-15">
           {stars.map((star, i) => (
-            <motion.div
+            <m.div
               key={i}
               initial={{ opacity: 0 }}
               animate={{ opacity: [0, 0.8, 0.3, 1, 0] }}
@@ -77,7 +77,7 @@ const Showcase = () => {
       )}
 
       <div className="absolute inset-0 z-40 flex items-center justify-center pt-24">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.85, y: -30 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1.0, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -97,7 +97,7 @@ const Showcase = () => {
             role="img"
           />
           <div className="absolute inset-0 -z-10 blur-3xl opacity-30 bg-brand-pink dark:bg-brand-purple/70 rounded-full scale-75" />
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

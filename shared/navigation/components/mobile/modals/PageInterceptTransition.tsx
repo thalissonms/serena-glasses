@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, PanInfo, useAnimation } from "framer-motion";
+import { m, PanInfo, useAnimation } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { ReactNode, useEffect, useRef } from "react";
 import { useMounted } from "@shared/hooks/useMounted";
@@ -104,7 +104,7 @@ export default function PageInterceptTransition({ children }: Props) {
   };
 
   return (
-    <motion.div
+    <m.div
       ref={containerRef}
       className="fixed inset-0 z-100 bg-white overflow-y-auto min-h-screen touch-pan-y"
       initial={{ x: "100%" }}
@@ -130,6 +130,6 @@ export default function PageInterceptTransition({ children }: Props) {
         </StartsBackground>
       )}
       {!enabled && children}
-    </motion.div>
+    </m.div>
   );
 }

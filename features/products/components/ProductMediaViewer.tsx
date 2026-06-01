@@ -1,7 +1,7 @@
 "use client";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 
 const textStyles = [
   { text: "text-brand-pink", shadow: "drop-shadow-[3px_3px_0px_#00BFFF]" },
@@ -61,7 +61,7 @@ export default function ProductMediaViewer({
     >
       <AnimatePresence>
         {flickering && (
-          <motion.div
+          <m.div
             className="absolute w-full h-full bg-brand-black z-20"
             initial={{ opacity: 0.75 }}
             animate={{ opacity: 0.75 }}

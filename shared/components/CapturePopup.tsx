@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
@@ -53,7 +53,7 @@ export function CapturePopup({
       {isOpen && (
         <>
           {showOverlay && (
-            <motion.div
+            <m.div
               key="popup-overlay"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -64,7 +64,7 @@ export function CapturePopup({
               aria-hidden="true"
             />
           )}
-          <motion.div
+          <m.div
             key="popup-panel"
             role="dialog"
             aria-modal="true"
@@ -108,7 +108,7 @@ export function CapturePopup({
                 )}
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </>
       )}
     </AnimatePresence>,

@@ -1,7 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { AnimatePresence, m } from "framer-motion";
 
 export default function ModalPresence({ modal }: { modal: React.ReactNode }) {
 
@@ -9,13 +8,13 @@ export default function ModalPresence({ modal }: { modal: React.ReactNode }) {
 
   return (
     <AnimatePresence mode="wait">
-      <motion.div
+      <m.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
         {modal}
-      </motion.div>
+      </m.div>
     </AnimatePresence>
   );
 }

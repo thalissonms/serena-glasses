@@ -1,5 +1,5 @@
 "use client";
-import { motion, type Variants } from "framer-motion";
+import { m, type Variants } from "framer-motion";
 import { ReactNode } from "react";
 import type { StepDirection } from "../../hooks/useCheckoutSteps";
 
@@ -36,7 +36,7 @@ interface StepSlideProps {
  */
 export function StepSlide({ direction, children }: StepSlideProps) {
   return (
-    <motion.div
+    <m.div
       custom={direction}
       variants={variants}
       initial="enter"
@@ -46,6 +46,6 @@ export function StepSlide({ direction, children }: StepSlideProps) {
       className="will-change-transform"
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { X, Star } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
@@ -33,7 +33,7 @@ export function ReviewsOverlay() {
       {open && (
         <>
           {/* Backdrop */}
-          <motion.div
+          <m.div
             key="backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -45,7 +45,7 @@ export function ReviewsOverlay() {
           />
 
           {/* Sheet */}
-          <motion.div
+          <m.div
             key="sheet"
             ref={sheetRef}
             role="dialog"
@@ -103,7 +103,7 @@ export function ReviewsOverlay() {
                 {t("feed.writeReview")} ✎
               </button>
             </div>
-          </motion.div>
+          </m.div>
         </>
       )}
     </AnimatePresence>

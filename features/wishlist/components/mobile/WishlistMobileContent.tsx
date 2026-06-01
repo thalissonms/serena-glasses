@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { ArrowLeft, ArrowRight, Heart } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -128,7 +128,7 @@ export default function WishlistMobileContent() {
                   .sort((a, b) => a.position - b.position)[0];
 
                 return (
-                  <motion.li
+                  <m.li
                     key={item.id}
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -200,7 +200,7 @@ export default function WishlistMobileContent() {
                         Ver produto <ArrowRight size={10} aria-hidden="true" />
                       </a>
                     </div>
-                  </motion.li>
+                  </m.li>
                 );
               })}
             </AnimatePresence>

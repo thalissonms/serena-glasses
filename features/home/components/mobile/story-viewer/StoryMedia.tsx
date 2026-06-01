@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { Heart } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import type { HomeStory } from "@features/home/types/homeStory.types";
 import { useDoubleTap } from "@features/products/hooks/useDoubleTap";
 import { useSwipe } from "@features/products/hooks/useSwipe";
@@ -172,7 +172,7 @@ export function StoryMedia({ story, onPrev, onNext, onPauseChange, onDurationCha
 
       <AnimatePresence>
         {showBurst && (
-          <motion.div
+          <m.div
             key="burst"
             initial={{ scale: 0.4, opacity: 0 }}
             animate={{ scale: 1.4, opacity: 1 }}
@@ -184,7 +184,7 @@ export function StoryMedia({ story, onPrev, onNext, onPauseChange, onDurationCha
               size={120}
               className="text-brand-pink fill-brand-pink drop-shadow-[0_4px_12px_rgba(255,0,182,0.6)]"
             />
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </div>
