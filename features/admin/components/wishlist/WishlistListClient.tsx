@@ -10,6 +10,7 @@
  * Usado em: src/app/admin/wishlist/page.tsx.
  */
 import { useState, useMemo } from "react";
+import { fmtDate, fmtDateTime } from "../../utils/formatDate";
 import { Search, Heart, ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
 import { AsciiEmpty } from "@features/admin/components/motifs/AsciiEmpty";
 import { DevBadge } from "@features/admin/components/motifs/DevBadge";
@@ -28,10 +29,7 @@ interface Props {
 
 type SortKey = "total_favorites" | "last_added";
 
-function fmtDate(iso: string | null) {
-  if (!iso) return "—";
-  return new Date(iso).toLocaleDateString("pt-BR");
-}
+
 
 export function WishlistListClient({ items }: Props) {
   const [q, setQ] = useState("");

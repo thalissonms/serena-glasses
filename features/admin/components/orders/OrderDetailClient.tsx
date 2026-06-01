@@ -9,6 +9,7 @@
  * Usado em: src/app/admin/orders/[id]/page.tsx.
  */
 import { type ReactNode, useState } from "react";
+import { fmtDate, fmtDateTime } from "../../utils/formatDate";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -128,16 +129,7 @@ function fmtPrice(cents: number | null | undefined): string {
   );
 }
 
-function fmtDateTime(iso: string | null | undefined): string {
-  if (!iso) return "—";
-  return new Date(iso).toLocaleString("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
+
 
 function fmtCEP(cep: string | null): string {
   if (!cep) return "—";

@@ -1,14 +1,5 @@
 "use client";
-/**
- * Component: BannerFormClient — formulário create/edit de site_banners com Y2K Chrome.
- *
- * Create: POST /api/admin/site-banners.
- * Edit: PATCH /api/admin/site-banners/[id].
- * Live preview do banner com bg_color e text_color em tempo real.
- * Color fields controlados via Controller para sincronizar picker + hex input.
- *
- * Usado em: /admin/banners/new e /admin/banners/[id].
- */
+
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -17,6 +8,9 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ChevronLeft, Save, Megaphone, ExternalLink } from "lucide-react";
 import type { SiteBannerRow } from "@features/home/types/siteBanner.types";
+import { useCreateSiteBanner, useUpdateSiteBanner } from "../../hooks/banner/useSiteBanner.hook";
+import { isApiError } from "../../utils/isApiError";
+import { toDatetimeLocal, toISO } from "../../utils/datetimeInputs";
 
 const formSchema = z.object({
   message_pt: z.string().min(1, "Obrigatório").max(200, "Máximo 200 caracteres"),
@@ -44,21 +38,14 @@ interface Props {
   banner?: SiteBannerRow;
 }
 
-function toDatetimeLocal(iso: string | null | undefined): string {
-  if (!iso) return "";
-  return iso.slice(0, 16);
-}
-
-function toISO(local: string | undefined): string | undefined {
-  if (!local) return undefined;
-  const d = new Date(local);
-  return isNaN(d.getTime()) ? undefined : d.toISOString();
-}
 
 export default function BannerFormClient({ banner }: Props) {
   const router = useRouter();
   const isEdit = !!banner;
-  const [saving, setSaving] = useState(false);
+
+  const createMutation = useCreateSiteBanner();
+  const updateMutation = useUpdateSiteBanner();
+  const saving = createMutation.isPending || updateMutation.isPending;
 
   const {
     register,
@@ -88,7 +75,6 @@ export default function BannerFormClient({ banner }: Props) {
   const msgPt = watch("message_pt");
 
   async function onSubmit(data: FormData) {
-    setSaving(true);
     try {
       const payload = {
         message_pt: data.message_pt,
@@ -104,29 +90,21 @@ export default function BannerFormClient({ banner }: Props) {
         display_order: data.display_order,
       };
 
-      const url = isEdit
-        ? `/api/admin/site-banners/${banner.id}`
-        : "/api/admin/site-banners";
-      const method = isEdit ? "PATCH" : "POST";
-
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const err = (await res.json().catch(() => ({}))) as { error?: string };
-        throw new Error(err.error ?? "Erro desconhecido");
+      if (isEdit) {
+        await updateMutation.mutateAsync({ id: banner!.id, payload });
+      } else {
+        await createMutation.mutateAsync(payload);
       }
 
       toast.success(isEdit ? "Banner atualizado" : "Banner criado");
       router.push("/admin/banners");
       router.refresh();
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Falha ao salvar");
-    } finally {
-      setSaving(false);
+    } catch (e: unknown) {
+      if (isApiError(e)) {
+        toast.error(e.message);
+      } else {
+        toast.error(e instanceof Error ? e.message : "Falha ao salvar");
+      }
     }
   }
 
@@ -140,37 +118,37 @@ export default function BannerFormClient({ banner }: Props) {
     "font-mono text-[10px] uppercase tracking-[0.3em] text-[#00F0FF]/50 border-b border-white/5 pb-2 mb-1";
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="max-w-2xl space-y-6">
       <div className="flex items-center gap-4">
         <button
           onClick={() => router.back()}
-          className="text-white/25 hover:text-white transition-colors"
+          className="text-white/25 transition-colors hover:text-white"
         >
           <ChevronLeft size={20} />
         </button>
         <div>
-          <h1 className="font-shrikhand text-3xl text-white tracking-wider flex items-center gap-3">
+          <h1 className="font-shrikhand flex items-center gap-3 text-3xl tracking-wider text-white">
             <Megaphone size={24} className="text-[#FF00B6]" />
             {isEdit ? "Editar Banner" : "Novo Banner"}
           </h1>
           {isEdit && (
-            <p className="font-mono text-[10px] text-white/25 mt-1 uppercase tracking-widest">
+            <p className="mt-1 font-mono text-[10px] tracking-widest text-white/25 uppercase">
               ID: {banner.id.slice(0, 8)}…
             </p>
           )}
         </div>
       </div>
 
-      <div className="border-2 border-[#FF00B6]/30 overflow-hidden shadow-[4px_4px_0_#FF00B6]">
-        <div className="font-mono text-[9px] uppercase tracking-widest text-white/20 px-3 py-1.5 bg-[#111] border-b border-white/10">
+      <div className="overflow-hidden border-2 border-[#FF00B6]/30 shadow-[4px_4px_0_#FF00B6]">
+        <div className="border-b border-white/10 bg-[#111] px-3 py-1.5 font-mono text-[9px] tracking-widest text-white/20 uppercase">
           Preview
         </div>
         <div
-          className="h-10 flex items-center justify-center px-6"
+          className="flex h-10 items-center justify-center px-6"
           style={{ backgroundColor: bgColor || "#FF00B6" }}
         >
           <span
-            className="font-poppins text-sm font-semibold truncate"
+            className="font-poppins truncate text-sm font-semibold"
             style={{ color: textColor || "#FFFFFF" }}
           >
             {msgPt || "Texto do banner aparece aqui…"}
@@ -212,7 +190,7 @@ export default function BannerFormClient({ banner }: Props) {
           </div>
           <div>
             <label className={labelCls}>
-              <ExternalLink size={9} className="inline mr-1" />
+              <ExternalLink size={9} className="mr-1 inline" />
               URL do link (opcional)
             </label>
             <input
@@ -235,12 +213,12 @@ export default function BannerFormClient({ banner }: Props) {
                 control={control}
                 name="bg_color"
                 render={({ field }) => (
-                  <div className="flex gap-2 items-center">
+                  <div className="flex items-center gap-2">
                     <input
                       type="color"
                       value={field.value}
                       onChange={(e) => field.onChange(e.target.value)}
-                      className="w-10 h-[38px] bg-transparent border-2 border-white/10 cursor-pointer p-0.5 shrink-0"
+                      className="h-[38px] w-10 shrink-0 cursor-pointer border-2 border-white/10 bg-transparent p-0.5"
                     />
                     <input
                       type="text"
@@ -262,12 +240,12 @@ export default function BannerFormClient({ banner }: Props) {
                 control={control}
                 name="text_color"
                 render={({ field }) => (
-                  <div className="flex gap-2 items-center">
+                  <div className="flex items-center gap-2">
                     <input
                       type="color"
                       value={field.value}
                       onChange={(e) => field.onChange(e.target.value)}
-                      className="w-10 h-[38px] bg-transparent border-2 border-white/10 cursor-pointer p-0.5 shrink-0"
+                      className="h-[38px] w-10 shrink-0 cursor-pointer border-2 border-white/10 bg-transparent p-0.5"
                     />
                     <input
                       type="text"
@@ -316,23 +294,23 @@ export default function BannerFormClient({ banner }: Props) {
             />
           </div>
           <div className="flex items-center gap-6 pt-1">
-            <label className="flex items-center gap-2.5 cursor-pointer select-none">
+            <label className="flex cursor-pointer items-center gap-2.5 select-none">
               <input
                 {...register("active")}
                 type="checkbox"
-                className="w-4 h-4 accent-[#FF00B6]"
+                className="h-4 w-4 accent-[#FF00B6]"
               />
-              <span className="font-mono text-xs text-white/50 uppercase tracking-wider">
+              <span className="font-mono text-xs tracking-wider text-white/50 uppercase">
                 Ativo
               </span>
             </label>
-            <label className="flex items-center gap-2.5 cursor-pointer select-none">
+            <label className="flex cursor-pointer items-center gap-2.5 select-none">
               <input
                 {...register("dismissible")}
                 type="checkbox"
-                className="w-4 h-4 accent-[#FF00B6]"
+                className="h-4 w-4 accent-[#FF00B6]"
               />
-              <span className="font-mono text-xs text-white/50 uppercase tracking-wider">
+              <span className="font-mono text-xs tracking-wider text-white/50 uppercase">
                 Fechável pelo usuário
               </span>
             </label>
@@ -343,7 +321,7 @@ export default function BannerFormClient({ banner }: Props) {
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center gap-2 bg-linear-to-r from-[#FF00B6] to-[#00F0FF] text-black font-mono text-xs font-bold uppercase tracking-widest px-5 py-2.5 border-2 border-black shadow-[4px_4px_0_#000] hover:-translate-x-px hover:-translate-y-px hover:shadow-[5px_5px_0_#000] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 border-2 border-black bg-linear-to-r from-[#FF00B6] to-[#00F0FF] px-5 py-2.5 font-mono text-xs font-bold tracking-widest text-black uppercase shadow-[4px_4px_0_#000] transition-all hover:-translate-x-px hover:-translate-y-px hover:shadow-[5px_5px_0_#000] disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Save size={13} />
             {saving ? "Salvando…" : "Salvar Banner"}
@@ -351,7 +329,7 @@ export default function BannerFormClient({ banner }: Props) {
           <button
             type="button"
             onClick={() => router.back()}
-            className="font-mono text-xs uppercase tracking-widest text-white/30 hover:text-white/60 transition-colors px-4 py-2.5 border border-white/10 hover:border-white/20"
+            className="border border-white/10 px-4 py-2.5 font-mono text-xs tracking-widest text-white/30 uppercase transition-colors hover:border-white/20 hover:text-white/60"
           >
             Cancelar
           </button>

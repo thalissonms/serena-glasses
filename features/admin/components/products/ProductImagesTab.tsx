@@ -30,6 +30,7 @@ import {
 } from "../../hooks/product/useProductImage.hook";
 import { Button } from "../primitives/Button";
 import { Modal } from "../primitives/Modal";
+import { AdminUploadBox } from "../primitives/AdminUploadBox";
 
 function SortableImageCard({
   image,
@@ -140,7 +141,6 @@ export function ImagesTab({
 }) {
   const [images, setImages] = useState<ProductImageInterface[]>(initialImages);
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const uploadMutation = useUploadImage(productId);
   const deleteMutation = useDeleteImage(productId);
@@ -172,8 +172,7 @@ export function ImagesTab({
     }
   }
 
-  async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const files = e.target.files;
+  async function handleUpload(files: FileList) {
     if (!files || files.length === 0) return;
     
     for (const file of Array.from(files)) {
@@ -186,8 +185,6 @@ export function ImagesTab({
         }
       }
     }
-    
-    if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
   async function confirmDelete() {
@@ -251,35 +248,16 @@ export function ImagesTab({
         </p>
       </Modal>
 
-      <div
-        className="relative border-2 border-dashed border-[#00F0FF]/20 p-6 flex flex-col items-center gap-3 cursor-pointer hover:border-[#00F0FF]/40 transition-colors"
-        onClick={() => !uploadMutation.isPending && fileInputRef.current?.click()}
-      >
-        {uploadMutation.isPending ? (
-          <span className="font-mono text-[9px] uppercase tracking-widest text-[#00F0FF]/60 animate-neon-pulse">
-            Enviando...
-          </span>
-        ) : (
-          <>
-            <Upload size={18} className="text-[#00F0FF]/30" />
-            <p className="font-mono text-[9px] uppercase tracking-widest text-white/25 text-center">
-              Clique para selecionar imagens
-            </p>
-            <p className="font-mono text-[8px] text-white/15">
-              JPEG · PNG · WebP — máx. 5 MB por arquivo
-            </p>
-          </>
-        )}
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          multiple
-          onChange={handleUpload}
-          className="hidden"
-          disabled={uploadMutation.isPending}
-        />
-      </div>
+      <AdminUploadBox
+        onFilesSelect={handleUpload}
+        accept="image/jpeg,image/png,image/webp"
+        multiple
+        isUploading={uploadMutation.isPending}
+        title="Clique para selecionar imagens"
+        subtitle="JPEG · PNG · WebP — máx. 5 MB por arquivo"
+        icon={<Upload size={18} />}
+        themeColor="cyan"
+      />
 
       {images.length > 0 ? (
         <DndContext

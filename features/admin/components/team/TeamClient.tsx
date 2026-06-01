@@ -10,6 +10,7 @@
  * Usado em: src/app/admin/team/page.tsx.
  */
 import { Users, ShieldCheck, Clock, Lock, Circle } from "lucide-react";
+import { fmtDate, fmtDateTime } from "../../utils/formatDate";
 import { AsciiEmpty } from "@features/admin/components/motifs/AsciiEmpty";
 
 export interface AdminProfile {
@@ -50,10 +51,7 @@ const PLANNED_ROLES = [
   },
 ];
 
-function fmtDate(ts: string | null) {
-  if (!ts) return "—";
-  return new Date(ts).toLocaleDateString("pt-BR");
-}
+
 
 function initials(email: string | null, name: string | null) {
   if (name) return name.slice(0, 2).toUpperCase();

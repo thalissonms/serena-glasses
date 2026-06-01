@@ -9,6 +9,7 @@
  * Usado em: src/app/admin/logs/page.tsx.
  */
 import { useState, useMemo } from "react";
+import { fmtDate, fmtDateTime } from "../../utils/formatDate";
 import { FileText, ChevronDown, ChevronRight, AlertCircle, Info, Zap, Bug, Search } from "lucide-react";
 import { DevBadge } from "@features/admin/components/motifs/DevBadge";
 import { AsciiEmpty } from "@features/admin/components/motifs/AsciiEmpty";
@@ -54,12 +55,7 @@ function EventTypeBadge({ type }: { type: string }) {
   );
 }
 
-function fmtDateTime(iso: string) {
-  return new Date(iso).toLocaleString("pt-BR", {
-    day: "2-digit", month: "2-digit", year: "2-digit",
-    hour: "2-digit", minute: "2-digit", second: "2-digit",
-  });
-}
+
 
 function LogRow({ log }: { log: ErrorLog }) {
   const [expanded, setExpanded] = useState(false);

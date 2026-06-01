@@ -1,15 +1,5 @@
 "use client";
-/**
- * Component: CouponFormClient — formulário CRUD de cupons com estética Y2K Chrome.
- *
- * Create (POST /api/admin/coupons) e Edit (PATCH /api/admin/coupons/[id]).
- * discount_type radio controla campos condicionais (discount_value, max_discount_cents).
- * applies_to radio controla multi-select de produtos ou categorias.
- * Datas: datetime-local → ISO antes de enviar.
- * Code: imutável em modo edit. Forçado uppercase/trim no submit.
- *
- * Usado em: /admin/coupons/new e /admin/coupons/[id].
- */
+
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -31,6 +21,7 @@ import {
 } from "lucide-react";
 import { Button } from "@features/admin/components/primitives/Button";
 import { Input } from "@features/admin/components/primitives/Input";
+import { toDatetimeLocal, toISO } from "../../utils/datetimeInputs";
 
 const codeRegex = /^[A-Z0-9_-]+$/;
 
@@ -116,25 +107,10 @@ interface Props {
   categories: CategoryOption[];
 }
 
-function toDatetimeLocal(iso: string | null | undefined): string {
-  if (!iso) return "";
-  const d = new Date(iso);
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-}
-
-function toIso(local: string | null | undefined): string | undefined {
-  if (!local) return undefined;
-  try {
-    return new Date(local).toISOString();
-  } catch {
-    return undefined;
-  }
-}
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="font-mono text-[9px] uppercase tracking-[0.35em] text-[#FF00B6]/70 mb-4 pb-2 border-b border-[#FF00B6]/10">
+    <h3 className="mb-4 border-b border-[#FF00B6]/10 pb-2 font-mono text-[9px] tracking-[0.35em] text-[#FF00B6]/70 uppercase">
       {children}
     </h3>
   );
@@ -143,7 +119,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 function FieldError({ message }: { message?: string }) {
   if (!message) return null;
   return (
-    <p className="flex items-center gap-1.5 mt-1.5 font-mono text-[9px] uppercase tracking-wider text-red-400">
+    <p className="mt-1.5 flex items-center gap-1.5 font-mono text-[9px] tracking-wider text-red-400 uppercase">
       <AlertCircle size={9} />
       {message}
     </p>
@@ -163,22 +139,20 @@ function Toggle({
     <button
       type="button"
       onClick={() => onChange(!checked)}
-      className="flex items-center gap-3 group"
+      className="group flex items-center gap-3"
     >
       <span
-        className={`relative w-10 h-5 border transition-all duration-200 shrink-0 ${
-          checked ? "bg-[#FF00B6]/15 border-[#FF00B6]/50" : "bg-white/4 border-white/10"
-        }`}
+        className={`relative w-10 h-5 border transition-all duration-200 shrink-0 ${checked ? "bg-[#FF00B6]/15 border-[#FF00B6]/50" : "bg-white/4 border-white/10"
+          }`}
       >
         <span
-          className={`absolute top-0.5 w-4 h-4 transition-all duration-200 ${
-            checked
+          className={`absolute top-0.5 w-4 h-4 transition-all duration-200 ${checked
               ? "left-5 bg-[#FF00B6] shadow-[0_0_8px_rgba(255,0,182,0.5)]"
               : "left-0.5 bg-white/20"
-          }`}
+            }`}
         />
       </span>
-      <span className="font-mono text-[10px] uppercase tracking-wider text-white/60 group-hover:text-white/80 transition-colors">
+      <span className="font-mono text-[10px] tracking-wider text-white/60 uppercase transition-colors group-hover:text-white/80">
         {label}
       </span>
     </button>
@@ -205,32 +179,30 @@ function RadioOption<T extends string>({
     <button
       type="button"
       onClick={() => onSelect(value)}
-      className={`flex items-center gap-3 px-4 py-3 border text-left transition-all duration-150 ${
-        selected
+      className={`flex items-center gap-3 px-4 py-3 border text-left transition-all duration-150 ${selected
           ? "border-[#FF00B6]/50 bg-[#FF00B6]/6 shadow-[inset_1px_1px_0_rgba(255,0,182,0.12)]"
           : "border-white/8 hover:border-white/20 bg-white/2"
-      }`}
+        }`}
     >
       <span
-        className={`shrink-0 w-3 h-3 border rounded-full transition-all duration-150 ${
-          selected
+        className={`shrink-0 w-3 h-3 border rounded-full transition-all duration-150 ${selected
             ? "border-[#FF00B6] bg-[#FF00B6] shadow-[0_0_6px_rgba(255,0,182,0.5)]"
             : "border-white/20"
-        }`}
+          }`}
       />
       {icon && (
         <span className={`shrink-0 ${selected ? "text-[#FF00B6]" : "text-white/25"}`}>
           {icon}
         </span>
       )}
-      <div className="flex-1 min-w-0">
+      <div className="min-w-0 flex-1">
         <p
           className={`font-mono text-[10px] uppercase tracking-wider ${selected ? "text-white" : "text-white/50"}`}
         >
           {label}
         </p>
         {description && (
-          <p className="font-mono text-[8px] text-white/25 mt-0.5">{description}</p>
+          <p className="mt-0.5 font-mono text-[8px] text-white/25">{description}</p>
         )}
       </div>
     </button>
@@ -264,21 +236,21 @@ function MultiSelectProducts({
 
   return (
     <div className={`border ${error ? "border-red-500/40" : "border-white/8"}`}>
-      <div className="p-2 border-b border-white/5">
+      <div className="border-b border-white/5 p-2">
         <div className="relative">
-          <Search size={10} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/25" />
+          <Search size={10} className="absolute top-1/2 left-3 -translate-y-1/2 text-white/25" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar produto..."
-            className="w-full bg-transparent pl-8 pr-3 py-1.5 font-mono text-[10px] text-white placeholder:text-white/20 outline-none"
+            className="w-full bg-transparent py-1.5 pr-3 pl-8 font-mono text-[10px] text-white outline-none placeholder:text-white/20"
           />
           {search && (
             <button
               type="button"
               onClick={() => setSearch("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/20 hover:text-white/50"
+              className="absolute top-1/2 right-3 -translate-y-1/2 text-white/20 hover:text-white/50"
             >
               <X size={10} />
             </button>
@@ -287,7 +259,7 @@ function MultiSelectProducts({
       </div>
       <div className="max-h-48 overflow-y-auto">
         {filtered.length === 0 ? (
-          <p className="p-4 font-mono text-[9px] text-white/20 text-center">Nenhum produto</p>
+          <p className="p-4 text-center font-mono text-[9px] text-white/20">Nenhum produto</p>
         ) : (
           filtered.map((p) => {
             const isSel = selected.includes(p.id);
@@ -296,16 +268,14 @@ function MultiSelectProducts({
                 key={p.id}
                 type="button"
                 onClick={() => toggle(p.id)}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-all duration-100 border-b border-white/3 last:border-b-0 ${
-                  isSel ? "bg-[#FF00B6]/6" : "hover:bg-white/2"
-                }`}
+                className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-all duration-100 border-b border-white/3 last:border-b-0 ${isSel ? "bg-[#FF00B6]/6" : "hover:bg-white/2"
+                  }`}
               >
                 <span
-                  className={`shrink-0 w-3 h-3 border transition-all ${
-                    isSel
+                  className={`shrink-0 w-3 h-3 border transition-all ${isSel
                       ? "border-[#FF00B6] bg-[#FF00B6] shadow-[0_0_6px_rgba(255,0,182,0.4)]"
                       : "border-white/15"
-                  }`}
+                    }`}
                 />
                 <span
                   className={`font-poppins text-[11px] flex-1 min-w-0 truncate ${isSel ? "text-white" : "text-white/50"}`}
@@ -313,7 +283,7 @@ function MultiSelectProducts({
                   {p.name}
                 </span>
                 {p.code && (
-                  <span className="font-mono text-[8px] text-white/20 shrink-0">{p.code}</span>
+                  <span className="shrink-0 font-mono text-[8px] text-white/20">{p.code}</span>
                 )}
               </button>
             );
@@ -321,8 +291,8 @@ function MultiSelectProducts({
         )}
       </div>
       {selected.length > 0 && (
-        <div className="p-2 border-t border-white/5 bg-white/1">
-          <p className="font-mono text-[8px] text-[#FF00B6]/60 uppercase tracking-wider">
+        <div className="border-t border-white/5 bg-white/1 p-2">
+          <p className="font-mono text-[8px] tracking-wider text-[#FF00B6]/60 uppercase">
             {selected.length} produto{selected.length !== 1 ? "s" : ""} selecionado
             {selected.length !== 1 ? "s" : ""}
           </p>
@@ -354,7 +324,7 @@ function MultiSelectCategories({
     <div className={`border ${error ? "border-red-500/40" : "border-white/8"}`}>
       <div className="max-h-48 overflow-y-auto">
         {categories.length === 0 ? (
-          <p className="p-4 font-mono text-[9px] text-white/20 text-center">
+          <p className="p-4 text-center font-mono text-[9px] text-white/20">
             Nenhuma categoria
           </p>
         ) : (
@@ -365,23 +335,21 @@ function MultiSelectCategories({
                 key={cat.slug}
                 type="button"
                 onClick={() => toggle(cat.slug)}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-all duration-100 border-b border-white/3 last:border-b-0 ${
-                  isSel ? "bg-[#FF00B6]/6" : "hover:bg-white/2"
-                }`}
+                className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-all duration-100 border-b border-white/3 last:border-b-0 ${isSel ? "bg-[#FF00B6]/6" : "hover:bg-white/2"
+                  }`}
               >
                 <span
-                  className={`shrink-0 w-3 h-3 border transition-all ${
-                    isSel
+                  className={`shrink-0 w-3 h-3 border transition-all ${isSel
                       ? "border-[#FF00B6] bg-[#FF00B6] shadow-[0_0_6px_rgba(255,0,182,0.4)]"
                       : "border-white/15"
-                  }`}
+                    }`}
                 />
                 <span
                   className={`font-poppins text-[11px] flex-1 min-w-0 truncate ${isSel ? "text-white" : "text-white/50"}`}
                 >
                   {cat.name_pt}
                 </span>
-                <span className="font-mono text-[8px] text-white/20 shrink-0">
+                <span className="shrink-0 font-mono text-[8px] text-white/20">
                   {cat.slug}
                 </span>
               </button>
@@ -390,8 +358,8 @@ function MultiSelectCategories({
         )}
       </div>
       {selected.length > 0 && (
-        <div className="p-2 border-t border-white/5 bg-white/1">
-          <p className="font-mono text-[8px] text-[#FF00B6]/60 uppercase tracking-wider">
+        <div className="border-t border-white/5 bg-white/1 p-2">
+          <p className="font-mono text-[8px] tracking-wider text-[#FF00B6]/60 uppercase">
             {selected.length} categoria{selected.length !== 1 ? "s" : ""} selecionada
             {selected.length !== 1 ? "s" : ""}
           </p>
@@ -449,8 +417,8 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
           data.applies_to === "products" ? data.applicable_product_ids : null,
         applicable_categories:
           data.applies_to === "categories" ? data.applicable_categories : null,
-        valid_from: toIso(data.valid_from),
-        valid_until: toIso(data.valid_until) ?? null,
+        valid_from: toISO(data.valid_from),
+        valid_until: toISO(data.valid_until) ?? null,
       };
 
       const url =
@@ -498,18 +466,18 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
           <button
             type="button"
             onClick={() => router.push("/admin/coupons")}
-            className="p-2 text-white/25 hover:text-white/70 border border-white/8 hover:border-white/20 transition-all"
+            className="border border-white/8 p-2 text-white/25 transition-all hover:border-white/20 hover:text-white/70"
           >
             <ChevronLeft size={14} />
           </button>
           <div>
-            <div className="flex items-center gap-2 mb-0.5">
+            <div className="mb-0.5 flex items-center gap-2">
               <Tag size={16} className="text-[#FF00B6]" />
-              <h1 className="font-shrikhand text-xl text-white tracking-wide">
+              <h1 className="font-shrikhand text-xl tracking-wide text-white">
                 {mode === "create" ? "NOVO CUPOM" : `EDITAR: ${initialData?.code}`}
               </h1>
             </div>
-            <p className="font-mono text-[9px] uppercase tracking-widest text-white/25">
+            <p className="font-mono text-[9px] tracking-widest text-white/25 uppercase">
               {mode === "create"
                 ? "Criar novo cupom de desconto"
                 : "Editar configurações do cupom"}
@@ -524,7 +492,7 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
 
       <div className="grid grid-cols-2 gap-6">
         <div className="flex flex-col gap-6">
-          <div className="bg-[#111] border border-white/8 p-5 shadow-[4px_4px_0_rgba(255,0,182,0.12)]">
+          <div className="border border-white/8 bg-[#111] p-5 shadow-[4px_4px_0_rgba(255,0,182,0.12)]">
             <SectionLabel>Identificação</SectionLabel>
             <div className="flex flex-col gap-4">
               <Input
@@ -550,7 +518,7 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
             </div>
           </div>
 
-          <div className="bg-[#111] border border-white/8 p-5 shadow-[4px_4px_0_rgba(255,0,182,0.12)]">
+          <div className="border border-white/8 bg-[#111] p-5 shadow-[4px_4px_0_rgba(255,0,182,0.12)]">
             <SectionLabel>Tipo de Desconto</SectionLabel>
             <div className="flex flex-col gap-2">
               <Controller
@@ -652,7 +620,7 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
             )}
           </div>
 
-          <div className="bg-[#111] border border-white/8 p-5 shadow-[4px_4px_0_rgba(255,0,182,0.12)]">
+          <div className="border border-white/8 bg-[#111] p-5 shadow-[4px_4px_0_rgba(255,0,182,0.12)]">
             <SectionLabel>Aplicação</SectionLabel>
             <div className="flex flex-col gap-2">
               <Controller
@@ -690,7 +658,7 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
 
             {appliesTo === "products" && (
               <div className="mt-4">
-                <p className="font-mono text-[9px] uppercase tracking-wider text-white/40 mb-2">
+                <p className="mb-2 font-mono text-[9px] tracking-wider text-white/40 uppercase">
                   Produtos elegíveis
                 </p>
                 <Controller
@@ -710,7 +678,7 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
 
             {appliesTo === "categories" && (
               <div className="mt-4">
-                <p className="font-mono text-[9px] uppercase tracking-wider text-white/40 mb-2">
+                <p className="mb-2 font-mono text-[9px] tracking-wider text-white/40 uppercase">
                   Categorias elegíveis
                 </p>
                 <Controller
@@ -731,7 +699,7 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
         </div>
 
         <div className="flex flex-col gap-6">
-          <div className="bg-[#111] border border-white/8 p-5 shadow-[4px_4px_0_rgba(0,240,255,0.12)]">
+          <div className="border border-white/8 bg-[#111] p-5 shadow-[4px_4px_0_rgba(0,240,255,0.12)]">
             <SectionLabel>Condições</SectionLabel>
             <div className="flex flex-col gap-4">
               <Controller
@@ -765,7 +733,7 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
             </div>
           </div>
 
-          <div className="bg-[#111] border border-white/8 p-5 shadow-[4px_4px_0_rgba(0,240,255,0.12)]">
+          <div className="border border-white/8 bg-[#111] p-5 shadow-[4px_4px_0_rgba(0,240,255,0.12)]">
             <SectionLabel>Limites de Uso</SectionLabel>
             <div className="flex flex-col gap-4">
               <Controller
@@ -807,33 +775,33 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
             </div>
           </div>
 
-          <div className="bg-[#111] border border-white/8 p-5 shadow-[4px_4px_0_rgba(0,240,255,0.12)]">
+          <div className="border border-white/8 bg-[#111] p-5 shadow-[4px_4px_0_rgba(0,240,255,0.12)]">
             <SectionLabel>Validade</SectionLabel>
             <div className="flex flex-col gap-4">
               <div>
-                <label className="block font-mono text-[9px] uppercase tracking-wider text-white/40 mb-2">
+                <label className="mb-2 block font-mono text-[9px] tracking-wider text-white/40 uppercase">
                   Válido a partir de (opcional)
                 </label>
                 <input
                   type="datetime-local"
                   {...register("valid_from")}
-                  className="w-full bg-transparent border border-[#FF00B6]/15 focus:border-[#FF00B6] focus:shadow-[0_0_8px_rgba(255,0,182,0.2)] px-3 py-2.5 font-mono text-[11px] text-white outline-none transition-all duration-150 [color-scheme:dark]"
+                  className="w-full border border-[#FF00B6]/15 bg-transparent px-3 py-2.5 font-mono text-[11px] text-white [color-scheme:dark] transition-all duration-150 outline-none focus:border-[#FF00B6] focus:shadow-[0_0_8px_rgba(255,0,182,0.2)]"
                 />
               </div>
               <div>
-                <label className="block font-mono text-[9px] uppercase tracking-wider text-white/40 mb-2">
+                <label className="mb-2 block font-mono text-[9px] tracking-wider text-white/40 uppercase">
                   Válido até (opcional)
                 </label>
                 <input
                   type="datetime-local"
                   {...register("valid_until")}
-                  className="w-full bg-transparent border border-[#FF00B6]/15 focus:border-[#FF00B6] focus:shadow-[0_0_8px_rgba(255,0,182,0.2)] px-3 py-2.5 font-mono text-[11px] text-white outline-none transition-all duration-150 [color-scheme:dark]"
+                  className="w-full border border-[#FF00B6]/15 bg-transparent px-3 py-2.5 font-mono text-[11px] text-white [color-scheme:dark] transition-all duration-150 outline-none focus:border-[#FF00B6] focus:shadow-[0_0_8px_rgba(255,0,182,0.2)]"
                 />
               </div>
             </div>
           </div>
 
-          <div className="bg-[#111] border border-white/8 p-5 shadow-[4px_4px_0_rgba(0,240,255,0.12)]">
+          <div className="border border-white/8 bg-[#111] p-5 shadow-[4px_4px_0_rgba(0,240,255,0.12)]">
             <SectionLabel>Status</SectionLabel>
             <Controller
               control={control}
@@ -850,11 +818,11 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
         </div>
       </div>
 
-      <div className="flex items-center justify-between p-4 border border-white/8 bg-white/1">
+      <div className="flex items-center justify-between border border-white/8 bg-white/1 p-4">
         <button
           type="button"
           onClick={() => router.push("/admin/coupons")}
-          className="font-mono text-[9px] uppercase tracking-widest text-white/25 hover:text-white/60 transition-colors"
+          className="font-mono text-[9px] tracking-widest text-white/25 uppercase transition-colors hover:text-white/60"
         >
           ← Voltar para cupons
         </button>

@@ -10,6 +10,7 @@
  * Usado em: src/app/admin/customers/page.tsx.
  */
 import { useState, useMemo } from "react";
+import { fmtDate, fmtDateTime } from "../../utils/formatDate";
 import { Search, Users, ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
 import { AsciiEmpty } from "@features/admin/components/motifs/AsciiEmpty";
 import { DevBadge } from "@features/admin/components/motifs/DevBadge";
@@ -38,10 +39,7 @@ function formatBRL(cents: number) {
   });
 }
 
-function fmtDate(iso: string | null) {
-  if (!iso) return "—";
-  return new Date(iso).toLocaleDateString("pt-BR");
-}
+
 
 const COLS: {
   label: string;

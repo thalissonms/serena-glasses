@@ -1,16 +1,5 @@
 "use client";
-/**
- * Component: StoryFormClient — formulário create/edit de home_stories com Y2K Chrome.
- *
- * Create: POST /api/admin/home-stories.
- * Edit: PATCH /api/admin/home-stories/[id].
- * Kind "product": product_code lookup para resolver product_id.
- * Kind "manual": upload de mídia via POST /api/admin/home-stories/upload (bucket home-stories),
- *   preview inline, todos os campos de texto i18n.
- * Em edit mode, kind é imutável; mostra campos relevantes para o kind do story.
- *
- * Usado em: /admin/stories/new e /admin/stories/[id].
- */
+
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -29,6 +18,7 @@ import {
   Loader2,
 } from "lucide-react";
 import type { HomeStoryRow } from "@features/home/types/homeStory.types";
+import { toDatetimeLocal, toISO } from "../../utils/datetimeInputs";
 
 const commonFields = {
   display_order: z.number().int().nonnegative(),
@@ -83,16 +73,6 @@ interface Props {
   story?: HomeStoryRow;
 }
 
-function toDatetimeLocal(iso: string | null | undefined): string {
-  if (!iso) return "";
-  return iso.slice(0, 16);
-}
-
-function toISO(s: string | undefined): string | undefined {
-  if (!s) return undefined;
-  const d = new Date(s);
-  return isNaN(d.getTime()) ? undefined : d.toISOString();
-}
 
 const inputCls =
   "w-full bg-[#0f0f0f] border-2 border-[#FF00B6]/20 focus:border-[#FF00B6] text-white font-mono text-sm px-3 py-2 outline-none transition-colors placeholder:text-white/20";
@@ -132,13 +112,13 @@ function CommonFields<T extends { display_order: number; active: boolean; starts
         />
         {errors.display_order && <p className={errorCls}>{errors.display_order.message}</p>}
       </div>
-      <label className="flex items-center gap-2.5 cursor-pointer select-none">
+      <label className="flex cursor-pointer items-center gap-2.5 select-none">
         <input
           {...(register as (name: string) => object)("active")}
           type="checkbox"
-          className="w-4 h-4 accent-[#FF00B6]"
+          className="h-4 w-4 accent-[#FF00B6]"
         />
-        <span className="font-mono text-xs text-white/50 uppercase tracking-wider">Ativo</span>
+        <span className="font-mono text-xs tracking-wider text-white/50 uppercase">Ativo</span>
       </label>
     </div>
   );
@@ -177,19 +157,19 @@ function UploadWidget({
   return (
     <div className="space-y-2">
       {value ? (
-        <div className="relative border-2 border-[#00F0FF]/30 bg-[#0f0f0f] p-2 max-w-[120px]">
+        <div className="relative max-w-[120px] border-2 border-[#00F0FF]/30 bg-[#0f0f0f] p-2">
           {mediaType === "image" ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={value} alt="preview" className="w-full aspect-9/16 object-cover" />
+            <img src={value} alt="preview" className="aspect-9/16 w-full object-cover" />
           ) : (
-            <div className="w-full aspect-9/16 flex items-center justify-center bg-[#111]">
+            <div className="flex aspect-9/16 w-full items-center justify-center bg-[#111]">
               <VideoIcon size={20} className="text-white/30" />
             </div>
           )}
           <button
             type="button"
             onClick={() => onChange("")}
-            className="absolute top-1 right-1 w-5 h-5 flex items-center justify-center bg-black/70 text-white/50 hover:text-[#FF00B6] transition-colors"
+            className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center bg-black/70 text-white/50 transition-colors hover:text-[#FF00B6]"
           >
             <X size={11} />
           </button>
@@ -199,14 +179,14 @@ function UploadWidget({
           type="button"
           onClick={() => fileRef.current?.click()}
           disabled={uploading}
-          className="flex flex-col items-center justify-center gap-2 w-full h-28 border-2 border-dashed border-[#FF00B6]/25 bg-[#0f0f0f] hover:border-[#FF00B6]/50 transition-colors disabled:opacity-50"
+          className="flex h-28 w-full flex-col items-center justify-center gap-2 border-2 border-dashed border-[#FF00B6]/25 bg-[#0f0f0f] transition-colors hover:border-[#FF00B6]/50 disabled:opacity-50"
         >
           {uploading ? (
-            <Loader2 size={20} className="text-[#FF00B6] animate-spin" />
+            <Loader2 size={20} className="animate-spin text-[#FF00B6]" />
           ) : (
             <Upload size={20} className="text-[#FF00B6]/50" />
           )}
-          <span className="font-mono text-[10px] uppercase tracking-widest text-white/25">
+          <span className="font-mono text-[10px] tracking-widest text-white/25 uppercase">
             {uploading ? "Enviando…" : `Clique para enviar ${mediaType === "image" ? "imagem" : "vídeo"}`}
           </span>
         </button>
@@ -333,7 +313,7 @@ function CreateProductForm({ onSuccess }: { onSuccess: () => void }) {
         <div className={panelTitleCls}>Produto</div>
         <div>
           <label className={labelCls}>
-            <Package size={10} className="inline mr-1" />
+            <Package size={10} className="mr-1 inline" />
             Código do produto *
           </label>
           <input
@@ -344,12 +324,12 @@ function CreateProductForm({ onSuccess }: { onSuccess: () => void }) {
           {errors.product_code && (
             <p className={errorCls}>{errors.product_code.message}</p>
           )}
-          <p className="font-mono text-[10px] text-white/20 mt-1">
+          <p className="mt-1 font-mono text-[10px] text-white/20">
             O código é convertido para maiúsculas automaticamente.
           </p>
         </div>
       </div>
-      <CommonFields register={register as Parameters<typeof CommonFields>[0]["register"]} errors={errors} />
+      <CommonFields register={register as unknown as Parameters<typeof CommonFields>[0]["register"]} errors={errors} />
       <SaveRow saving={saving} />
     </form>
   );
@@ -414,14 +394,14 @@ function CreateManualForm({ onSuccess }: { onSuccess: () => void }) {
           <label className={labelCls}>Tipo de mídia *</label>
           <div className="flex gap-4">
             {(["image", "video"] as const).map((t) => (
-              <label key={t} className="flex items-center gap-2 cursor-pointer select-none">
+              <label key={t} className="flex cursor-pointer items-center gap-2 select-none">
                 <input
                   {...register("media_type")}
                   type="radio"
                   value={t}
                   className="accent-[#FF00B6]"
                 />
-                <span className="font-mono text-xs text-white/50 uppercase tracking-wider flex items-center gap-1">
+                <span className="flex items-center gap-1 font-mono text-xs tracking-wider text-white/50 uppercase">
                   {t === "image" ? <ImageIcon size={12} /> : <VideoIcon size={12} />}
                   {t === "image" ? "Imagem" : "Vídeo"}
                 </span>
@@ -446,7 +426,7 @@ function CreateManualForm({ onSuccess }: { onSuccess: () => void }) {
         register={(name) => register(name as keyof CreateManualData)}
         errors={errors}
       />
-      <CommonFields register={register as Parameters<typeof CommonFields>[0]["register"]} errors={errors} />
+      <CommonFields register={register as unknown as Parameters<typeof CommonFields>[0]["register"]} errors={errors} />
       <SaveRow saving={saving} />
     </form>
   );
@@ -561,7 +541,7 @@ function SaveRow({ saving }: { saving: boolean }) {
       <button
         type="submit"
         disabled={saving}
-        className="flex items-center gap-2 bg-linear-to-r from-[#FF00B6] to-[#00F0FF] text-black font-mono text-xs font-bold uppercase tracking-widest px-5 py-2.5 border-2 border-black shadow-[4px_4px_0_#000] hover:-translate-x-px hover:-translate-y-px hover:shadow-[5px_5px_0_#000] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+        className="flex items-center gap-2 border-2 border-black bg-linear-to-r from-[#FF00B6] to-[#00F0FF] px-5 py-2.5 font-mono text-xs font-bold tracking-widest text-black uppercase shadow-[4px_4px_0_#000] transition-all hover:-translate-x-px hover:-translate-y-px hover:shadow-[5px_5px_0_#000] disabled:cursor-not-allowed disabled:opacity-50"
       >
         <Save size={13} />
         {saving ? "Salvando…" : "Salvar Story"}
@@ -569,7 +549,7 @@ function SaveRow({ saving }: { saving: boolean }) {
       <button
         type="button"
         onClick={() => router.back()}
-        className="font-mono text-xs uppercase tracking-widest text-white/30 hover:text-white/60 transition-colors px-4 py-2.5 border border-white/10 hover:border-white/20"
+        className="border border-white/10 px-4 py-2.5 font-mono text-xs tracking-widest text-white/30 uppercase transition-colors hover:border-white/20 hover:text-white/60"
       >
         Cancelar
       </button>
@@ -588,21 +568,21 @@ export default function StoryFormClient({ story }: Props) {
   }
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="max-w-2xl space-y-6">
       <div className="flex items-center gap-4">
         <button
           onClick={() => router.back()}
-          className="text-white/25 hover:text-white transition-colors"
+          className="text-white/25 transition-colors hover:text-white"
         >
           <ChevronLeft size={20} />
         </button>
         <div>
-          <h1 className="font-shrikhand text-3xl text-white tracking-wider flex items-center gap-3">
+          <h1 className="font-shrikhand flex items-center gap-3 text-3xl tracking-wider text-white">
             <PlaySquare size={24} className="text-[#FF00B6]" />
             {isEdit ? "Editar Story" : "Novo Story"}
           </h1>
           {isEdit && (
-            <p className="font-mono text-[10px] text-white/25 mt-1 uppercase tracking-widest">
+            <p className="mt-1 font-mono text-[10px] tracking-widest text-white/25 uppercase">
               kind: {story.kind} — ID: {story.id.slice(0, 8)}…
             </p>
           )}
@@ -615,15 +595,14 @@ export default function StoryFormClient({ story }: Props) {
         <>
           <div className="border-2 border-white/10 bg-[#1a1a1a] p-4">
             <div className={panelTitleCls}>Tipo de story</div>
-            <div className="flex gap-6 mt-3">
+            <div className="mt-3 flex gap-6">
               {(["manual", "product"] as const).map((k) => (
                 <label
                   key={k}
-                  className={`flex items-center gap-2.5 cursor-pointer select-none px-3 py-2 border-2 transition-colors ${
-                    selectedKind === k
-                      ? "border-[#FF00B6]/60 bg-[#FF00B6]/5 text-white"
-                      : "border-white/10 text-white/30 hover:border-white/20"
-                  }`}
+                  className={`flex items-center gap-2.5 cursor-pointer select-none px-3 py-2 border-2 transition-colors ${selectedKind === k
+                    ? "border-[#FF00B6]/60 bg-[#FF00B6]/5 text-white"
+                    : "border-white/10 text-white/30 hover:border-white/20"
+                    }`}
                 >
                   <input
                     type="radio"
@@ -638,7 +617,7 @@ export default function StoryFormClient({ story }: Props) {
                   ) : (
                     <Package size={14} />
                   )}
-                  <span className="font-mono text-xs uppercase tracking-wider">
+                  <span className="font-mono text-xs tracking-wider uppercase">
                     {k === "manual" ? "Manual (mídia)" : "Produto"}
                   </span>
                 </label>

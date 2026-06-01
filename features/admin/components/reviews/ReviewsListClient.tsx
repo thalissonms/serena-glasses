@@ -1,5 +1,6 @@
 "use client";
 import { useState, useMemo, useCallback } from "react";
+import { fmtDate, fmtDateTime } from "../../utils/formatDate";
 import {
   Search,
   Star,
@@ -39,10 +40,7 @@ const STATUS_CHIPS: { value: StatusFilter; label: string }[] = [
   { value: "rejected", label: "REJEITADO" },
 ];
 
-function fmtDate(iso: string | null) {
-  if (!iso) return null;
-  return new Date(iso).toLocaleDateString("pt-BR");
-}
+
 
 function StarRating({ rating }: { rating: number }) {
   return (

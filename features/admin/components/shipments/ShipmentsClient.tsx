@@ -10,6 +10,7 @@
  * Usado em: src/app/admin/shipments/page.tsx.
  */
 import { useState, useMemo } from "react";
+import { fmtDate, fmtDateTime } from "../../utils/formatDate";
 import { Truck, Search, ChevronDown, ChevronRight, Clock, Package, CheckCircle, AlertTriangle, XCircle, MapPin } from "lucide-react";
 import { DevBadge } from "@features/admin/components/motifs/DevBadge";
 import { AsciiEmpty } from "@features/admin/components/motifs/AsciiEmpty";
@@ -67,12 +68,7 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-function fmtDateTime(iso: string) {
-  return new Date(iso).toLocaleString("pt-BR", {
-    day: "2-digit", month: "2-digit", year: "2-digit",
-    hour: "2-digit", minute: "2-digit",
-  });
-}
+
 
 function TimelineRow({ timeline }: { timeline: OrderTimeline }) {
   const [expanded, setExpanded] = useState(false);
