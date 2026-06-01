@@ -2,8 +2,8 @@
 import { Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { isNavActive } from "@/shared/navigation/utils/isActive";
-import { CategoryChip } from "@/shared/navigation/components";
+import { isNavActive } from "@shared/navigation/utils/isActive";
+import { CategoryChip } from "@shared/navigation/components";
 import { useCategories } from "@features/categories/hooks/useCategories";
 import type { CategoryWithSubs } from "@features/categories/types/category.types";
 import { pickLocale } from "@shared/utils/pickLocale";
@@ -33,7 +33,7 @@ function FilterChips({
   );
 
   return (
-    <div className="flex flex-row gap-3 overflow-x-auto px-4 py-3 scrollbar-hide">
+    <div className="scrollbar-hide flex flex-row gap-3 overflow-x-auto px-4 py-3">
       <CategoryChip
         item={{ label: "Home", href: "/" }}
         allChip
@@ -69,7 +69,7 @@ function FilterChipsFallback({
   });
 
   return (
-    <div className="flex flex-row gap-3 overflow-x-auto px-4 py-3 scrollbar-hide">
+    <div className="scrollbar-hide flex flex-row gap-3 overflow-x-auto px-4 py-3">
       <CategoryChip
         item={{ href: "/products", label: "Todos" }}
         active={!anyActive}

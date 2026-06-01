@@ -2,7 +2,7 @@ import { ReviewsOverlay } from "@features/products/components/ReviewsOverlay";
 import { CapturePopupTrigger } from "@shared/components/CapturePopupTrigger";
 import { Footer } from "@shared/components/layout";
 import { WhatsAppFloat } from "@shared/components/WhatsAppFloat";
-import { Nav } from "@/shared/navigation/components/Nav";
+import { Nav } from "@shared/navigation/components/Nav";
 import { TopBanner } from "@shared/components/layout/TopBanner";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
