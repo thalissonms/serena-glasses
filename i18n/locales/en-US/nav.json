@@ -1,0 +1,14 @@
+{
+  "mainNavigation": "Main navigation",
+  "home": "Home",
+  "searchPlaceholder": "Search...",
+  "toggleTheme": {
+    "toLight": "Switch to light mode",
+    "toDark": "Switch to dark mode"
+  },
+  "whatsapp": "Chat on WhatsApp",
+  "wishlist": "Wishlist",
+  "menu": "Menu",
+  "search": "Search",
+  "cart": "Cart"
+}

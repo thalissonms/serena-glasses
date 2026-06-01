@@ -1,0 +1,16 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/expire-orders",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/cron/retry-failed-payments",
+      "schedule": "*/30 * * * *"
+    },
+    {
+      "path": "/api/cron/refresh-tracking",
+      "schedule": "0 6 * * *"
+    }
+  ]
+}

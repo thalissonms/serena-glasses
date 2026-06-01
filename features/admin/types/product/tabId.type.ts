@@ -1,0 +1,1 @@
+export type TabId = "details" | "variants" | "images" | "video" | "seo" | "details" | "texts" | "media";

@@ -39,3 +39,19 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Migration files
+/migrations
+
+# Agent guidance files (local only)
+/AGENT
+/.claude
+/.github
+
+# Dev
+/dev
+/mock
+/CLAUDE.md
+ dev-server.log
+/app/_admin
+/features/_admin

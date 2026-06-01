@@ -3,5 +3,62 @@
     "home": "Início",
     "products": "Produtos",
     "contact": "Contato"
+  },
+  "showcase": {
+    "logoAlt": "Logo da Serena Glasses"
+  },
+  "carousel": {
+    "prev": "Produto anterior",
+    "next": "Próximo produto",
+    "goTo": "Ir para produto"
+  },
+  "highlights": {
+    "freeShipping": "FRETE GRÁTIS",
+    "freeShippingDesc": "Em compras acima de R$ 199,00 para todo o Brasil",
+    "uvProtection": "PROTEÇÃO UV400",
+    "uvProtectionDesc": "Máxima proteção contra raios ultravioleta em todos os modelos",
+    "premiumQuality": "QUALIDADE PREMIUM",
+    "premiumQualityDesc": "Materiais de alta qualidade e design exclusivo"
+  },
+  "footer": {
+    "about": "Sobre a",
+    "siteMap": "Mapa do Site",
+    "followUs": "Siga-nos",
+    "credits": "Créditos",
+    "developedBy": "Desenvolvido por",
+    "allRightsReserved": "Todos os direitos reservados.",
+    "links": {
+      "home": "Início",
+      "outlet": "Outlet",
+      "promotions": "Promoções"
+    }
+  },
+  "newArrivals": {
+    "title": "Novidades",
+    "subtitle": "Acabou de chegar na Serena",
+    "viewAll": "Ver todos os modelos"
+  },
+  "reels": {
+    "title": "News",
+    "subtitle": "os óculos em movimento",
+    "dotLabel": "Ir para vídeo {{number}}"
+  },
+  "catalog": {
+    "ariaLabel": "Catálogo de produtos"
+  },
+  "storyViewer": {
+    "close": "Fechar",
+    "story": "Story {{current}} de {{total}}",
+    "like": "Favoritar",
+    "unlike": "Remover dos favoritos",
+    "reviews": "Ver avaliações",
+    "share": "Compartilhar",
+    "comment": "Comentar",
+    "soldOut": "ESGOTADO",
+    "tapLeft": "Story anterior",
+    "tapRight": "Próximo story",
+    "title": "Visualizador de stories",
+    "loading": "Carregando vídeo…",
+    "videoError": "Não foi possível reproduzir o vídeo"
   }
 }

@@ -1,0 +1,116 @@
+﻿import { getSupabaseServer } from "@shared/lib/supabase/server";
+import { STOCK_RESERVING_STATUSES } from "../consts/products.const";
+import type { ProductType } from "../types/product/products.type";
+import type { CategoryRef } from "@features/products/types/product.types";
+
+type DbVariant = {
+  id: string;
+  color_name: string;
+  color_hex: string;
+  in_stock: boolean;
+  stock_quantity: number;
+};
+
+type DbCategoryRef = {
+  id: string;
+  slug: string;
+  name_pt: string;
+  name_en: string | null;
+  name_es: string | null;
+};
+
+type DbProductRow = {
+  id: string;
+  name: string;
+  slug: string;
+  code: string | null;
+  price: number;
+  active: boolean;
+  featured: boolean;
+  category_id: string | null;
+  categories: DbCategoryRef | DbCategoryRef[] | null;
+  is_new: boolean;
+  is_sale: boolean;
+  is_outlet: boolean;
+  product_images: { url: string; alt: string | null; position: number }[] | null;
+  product_variants: DbVariant[] | null;
+};
+
+function toCategoryRef(raw: DbProductRow["categories"]): CategoryRef | null {
+  const cat = Array.isArray(raw) ? raw[0] : raw;
+  return cat
+    ? {
+        id: cat.id,
+        slug: cat.slug,
+        name_pt: cat.name_pt,
+        name_en: cat.name_en,
+        name_es: cat.name_es,
+      }
+    : null;
+}
+
+/**
+ * Lista produtos pro admin com estoque agregado por variante.
+ * Calcula reserved/available a partir de order_items + orders (status != cancelled).
+ */
+export async function getProductsList(): Promise<ProductType[]> {
+  const { data: productsData } = await getSupabaseServer()
+    .from("products")
+    .select(
+      `
+      id, name, slug, code, price, active, featured, category_id, is_new, is_sale, is_outlet,
+      categories ( id, slug, name_pt, name_en, name_es ),
+      product_images (url, alt, position),
+      product_variants (id, color_name, color_hex, in_stock, stock_quantity)
+      `,
+    )
+    .order("created_at", { ascending: false });
+
+  const products = (productsData ?? []) as DbProductRow[];
+
+  const variantIds = products.flatMap((p) => p.product_variants?.map((v) => v.id) ?? []);
+
+  // Agrega quantidade reservada por variant_id (status != cancelled)
+  const reservedByVariant = new Map<string, number>();
+  if (variantIds.length > 0) {
+    const { data: itemsData } = await getSupabaseServer()
+      .from("order_items")
+      .select("variant_id, quantity, orders!inner(status)")
+      .in("variant_id", variantIds)
+      .in("orders.status", STOCK_RESERVING_STATUSES as unknown as string[]);
+
+    for (const row of (itemsData ?? []) as { variant_id: string; quantity: number }[]) {
+      const prev = reservedByVariant.get(row.variant_id) ?? 0;
+      reservedByVariant.set(row.variant_id, prev + (row.quantity ?? 0));
+    }
+  }
+
+  return products.map((p) => ({
+    id: p.id,
+    name: p.name,
+    slug: p.slug,
+    code: p.code,
+    price: p.price,
+    active: p.active,
+    featured: p.featured,
+    category: toCategoryRef(p.categories),
+    is_new: p.is_new,
+    is_sale: p.is_sale,
+    is_outlet: p.is_outlet,
+    product_images: p.product_images,
+    product_variants: (p.product_variants ?? []).map((v) => {
+      const reserved = reservedByVariant.get(v.id) ?? 0;
+      return {
+        id: v.id,
+        color_name: v.color_name,
+        color_hex: v.color_hex,
+        in_stock: v.in_stock,
+        stock: {
+          total: v.stock_quantity,
+          reserved,
+          available: Math.max(0, v.stock_quantity - reserved),
+        },
+      };
+    }),
+  }));
+}

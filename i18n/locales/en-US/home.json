@@ -3,5 +3,62 @@
     "home": "Home",
     "products": "Products",
     "contact": "Contact"
+  },
+  "showcase": {
+    "logoAlt": "Serena Glasses logo"
+  },
+  "carousel": {
+    "prev": "Previous product",
+    "next": "Next product",
+    "goTo": "Go to product"
+  },
+  "highlights": {
+    "freeShipping": "FREE SHIPPING",
+    "freeShippingDesc": "On orders over R$ 199.00 shipped across Brazil",
+    "uvProtection": "UV400 PROTECTION",
+    "uvProtectionDesc": "Maximum protection against ultraviolet rays on all models",
+    "premiumQuality": "PREMIUM QUALITY",
+    "premiumQualityDesc": "High-quality materials and exclusive design"
+  },
+  "footer": {
+    "about": "About",
+    "siteMap": "Sitemap",
+    "followUs": "Follow us",
+    "credits": "Credits",
+    "developedBy": "Developed by",
+    "allRightsReserved": "All rights reserved.",
+    "links": {
+      "home": "Home",
+      "outlet": "Outlet",
+      "promotions": "Promotions"
+    }
+  },
+  "newArrivals": {
+    "title": "New Arrivals",
+    "subtitle": "Just landed at Serena",
+    "viewAll": "View all styles"
+  },
+  "reels": {
+    "title": "News",
+    "subtitle": "glasses in motion",
+    "dotLabel": "Go to video {{number}}"
+  },
+  "catalog": {
+    "ariaLabel": "Product catalog"
+  },
+  "storyViewer": {
+    "close": "Close",
+    "story": "Story {{current}} of {{total}}",
+    "like": "Like",
+    "unlike": "Remove from favorites",
+    "reviews": "See reviews",
+    "share": "Share",
+    "comment": "View product",
+    "soldOut": "SOLD OUT",
+    "tapLeft": "Previous story",
+    "tapRight": "Next story",
+    "title": "Story viewer",
+    "loading": "Loading video…",
+    "videoError": "Could not play video"
   }
 }

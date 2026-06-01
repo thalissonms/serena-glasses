@@ -1,0 +1,117 @@
+{
+  "page": {
+    "colorLabel": "Color:",
+    "addToCart": "Añadir al Carrito",
+    "addToCartAria": "Añadir {{name}} al carrito",
+    "added": "✓ ¡Añadido!",
+    "buyNow": "Comprar Ahora",
+    "buyNowAria": "Comprar {{name}} ahora",
+    "installments": "Hasta 6 cuotas sin intereses",
+    "back": "Volver",
+    "delivery": {
+      "sectionTitle": "Envío & Garantías",
+      "daily": {
+        "title": " Envío en 2 días hábiles.",
+        "desc": " Realizamos envíos en un plazo de 2 días hábiles a todo Brasil."
+      },
+      "exchange": {
+        "title": "Cambio gratis",
+        "desc": "¿No te gustó? Cambio sin costo en hasta 7 días"
+      },
+      "uv": {
+        "title": "Protección UV400",
+        "desc": "Lente de policarbonato resistente con bloqueo total de rayos UV"
+      }
+    }
+  },
+  "listing": {
+    "title": "Todos los Lentes",
+    "titleOutlet": "Outlet",
+    "titleSale": "Promociones",
+    "resultCount": "{{count}} producto encontrado",
+    "resultCount_plural": "{{count}} productos encontrados",
+    "filterAll": "Todos",
+    "filterSunglasses": "Solares",
+    "filterMiniDrop": "Mini Drop",
+    "filterAccessories": "Accesorios",
+    "filterOutlet": "Outlet",
+    "filterSale": "Promociones",
+    "sortFeatured": "Destacados",
+    "sortNewest": "Más Recientes",
+    "sortPriceAsc": "Menor Precio",
+    "sortPriceDesc": "Mayor Precio",
+    "sortRating": "Mejor Valorados",
+    "noResults": "Ningún producto encontrado",
+    "noResultsDesc": "Intenta quitar algunos filtros para ver más resultados"
+  },
+  "card": {
+    "newBadge": "Nuevo",
+    "outletBadge": "Outlet",
+    "soldOut": "Agotado",
+    "addToFavorites": "Añadir a favoritos"
+  },
+  "feed": {
+    "actionLike": "Favoritar",
+    "actionComment": "Ver reseñas de",
+    "actionShare": "Compartir",
+    "actionSave": "Guardar",
+    "viewReviews": "Ver las {{count}} reseñas",
+    "reviewsTitle": "Reseñas",
+    "reviewsClose": "Cerrar reseñas",
+    "writeReview": "Escribir reseña",
+    "actionView": "Ver producto",
+    "unavailable": "No disponible",
+    "soldOut": "Agotado"
+  },
+  "attributes": {
+    "frameShape": {
+      "round": "Redondo",
+      "square": "Cuadrado",
+      "cat-eye": "Cat Eye",
+      "aviator": "Aviador",
+      "rectangle": "Rectangular",
+      "oversized": "Oversized",
+      "geometric": "Geométrico",
+      "butterfly": "Mariposa"
+    },
+    "frameMaterial": {
+      "acetate": "Acetato",
+      "metal": "Metal",
+      "mixed": "Mixto",
+      "plastic": "Plástico",
+      "titanium": "Titanio"
+    },
+    "lensType": {
+      "polarized": "Polarizada",
+      "gradient": "Degradado",
+      "mirrored": "Espejada",
+      "solid": "Sólida",
+      "photochromic": "Fotocromática"
+    }
+  },
+  "description": {
+    "stats": {
+      "protectionLabel": "Protección total",
+      "colorsLabel": "Colores exclusivos",
+      "weightLabel": "Ultraliviano",
+      "exchangeLabel": "Cambio gratis"
+    },
+    "specs": {
+      "title": "Especificaciones",
+      "format": "Forma",
+      "protection": "Protección",
+      "lensMaterial": "Material de lente",
+      "frame": "Montura",
+      "weight": "Peso",
+      "totalWidth": "Ancho total"
+    },
+    "lookbook": {
+      "title": "Lookbook"
+    },
+    "reviews": {
+      "title": "Reseñas",
+      "count": "{{count}} reseñas",
+      "verified": "✓ Verificado"
+    }
+  }
+}
