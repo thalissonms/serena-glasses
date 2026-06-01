@@ -40,7 +40,13 @@ export default async function ProductPage({
 
   return (
     <>
-      <div className="hidden md:block">
+      <div className="hidden md:block"
+        style={{
+          backgroundImage: "url('/backgrounds/bg-grid.svg')",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+        }}
+      >
         <ProductPageContent product={product} videoSrc={product.videoUrl} reviews={reviews} />
       </div>
       <div className="md:hidden">

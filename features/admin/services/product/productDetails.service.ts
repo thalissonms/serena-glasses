@@ -1,4 +1,4 @@
-import { ProductPatchInput } from "../../schemas/zodSchemas/productEdit.schema";
+import { ProductPatchInput } from "../../schemas/product/payload/productEdit.schema";
 import { ApiError } from "../../types/error/apiError.interface";
 
 export async function updateProduct(

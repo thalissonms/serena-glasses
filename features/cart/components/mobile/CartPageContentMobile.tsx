@@ -13,10 +13,10 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { formatPrice } from "@features/products/utils/formatPrice";
-import { useSmartBack } from "@features/navigation/hooks/useBackIntercept";
-import PageInterceptTransition from "@features/navigation/components/mobile/modals/PageInterceptTransition";
+import { useSmartBack } from "@/shared/navigation/hooks/useBackIntercept";
+import PageInterceptTransition from "@/shared/navigation/components/mobile/modals/PageInterceptTransition";
 import { CartItem } from "../../types/cart.types";
-import ModalNavHeader from "@features/navigation/components/mobile/modals/ModalNavHeader";
+import ModalNavHeader from "@/shared/navigation/components/mobile/modals/ModalNavHeader";
 
 function CartModalContent({
   items,

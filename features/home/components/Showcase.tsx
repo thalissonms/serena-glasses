@@ -40,7 +40,7 @@ const Showcase = () => {
   );
 
   return (
-    <section className="relative overflow-hidden h-[72.4vh] w-full -mt-24">
+    <section className="relative overflow-hidden h-[60vh] w-full -mt-24">
       <motion.div
         className="w-full absolute top-0 left-0 h-[72.4vh] bg-brand-light-surface-0 dark:bg-brand-dark-surface-0 z-50"
         style={{ opacity: overlayOpacity }}
@@ -93,7 +93,7 @@ const Showcase = () => {
             width={900}
             height={900}
             priority
-            className="w-60 sm:w-68 md:w-80 lg:w-96 xl:w-md 2xl:w-32rem object-contain drop-shadow-2xl"
+            className="w-60 sm:w-68 md:w-80 lg:w-96 xl:w-100 2xl:w-md object-contain drop-shadow-2xl"
             role="img"
           />
           <div className="absolute inset-0 -z-10 blur-3xl opacity-30 bg-brand-pink dark:bg-brand-purple/70 rounded-full scale-75" />

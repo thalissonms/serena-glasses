@@ -114,13 +114,13 @@ export default function ProductDescription({ product, reviews }: ProductDescript
   const displayReviews = reviews && reviews.length > 0 ? reviews : REVIEWS;
 
   return (
-    <section className="w-full md:max-w-[96vw] mx-auto px-4 pb-12 md:px-20 md:pb-24 flex flex-col gap-10 md:gap-20 bg-white dark:bg-brand-pink-dark py-10 transition-colors">
+    <section className="w-full md:max-w-[96vw] mx-auto px-4 pb-12 md:px-20 md:pb-24 flex flex-col gap-10 md:gap-20 bg-transparent py-10 transition-colors">
       <div className="flex items-center gap-4">
-        <div className="flex-1 h-0.75 bg-black dark:bg-brand-pink" />
+        <div className="flex-1 h-0.75 bg-brand-black dark:bg-brand-pink" />
         <span className="text-xs font-black uppercase tracking-[0.3em] text-brand-pink px-2">
           {product.name}
         </span>
-        <div className="flex-1 h-0.75 bg-black dark:bg-brand-pink" />
+        <div className="flex-1 h-0.75 bg-brand-black dark:bg-brand-pink" />
       </div>
 
       <ProductEditorial product={product} />

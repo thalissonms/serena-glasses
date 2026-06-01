@@ -26,7 +26,7 @@ export default function ProductLookbook({ items }: ProductLookbookProps) {
         {items.map((item, i) => (
           <div
             key={item.id}
-            className="relative border-4 border-black shadow-[5px_5px_0_#000] overflow-hidden group"
+            className="relative border-4 border-brand-black shadow-[5px_5px_0_var(--brand-black)] overflow-hidden group"
             style={{ aspectRatio: "3/4" }}
           >
             <div
@@ -47,10 +47,10 @@ export default function ProductLookbook({ items }: ProductLookbookProps) {
               </svg>
 
               <span
-                className="relative z-10 text-xs font-black uppercase tracking-widest px-3 py-1 border-2 border-black"
+                className="relative z-10 text-xs font-black uppercase tracking-widest px-3 py-1 border-2 border-brand-black"
                 style={{
-                  backgroundColor: i % 2 === 0 ? "#FF00B6" : "#fff",
-                  color: i % 2 === 0 ? "#fff" : "#000",
+                  backgroundColor: i % 2 === 0 ? "var(--brand-pink)" : "var(--brand-white)",
+                  color: i % 2 === 0 ? "var(--brand-white)" : "var(--brand-black)",
                 }}
               >
                 {item.label}

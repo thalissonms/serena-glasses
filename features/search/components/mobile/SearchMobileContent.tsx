@@ -6,7 +6,7 @@ import Image from "next/image";
 import { SearchInput } from "@shared/components/forms/inputs/SearchInput";
 import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion } from "framer-motion";
-import { useSmartBack } from "@features/navigation/hooks/useBackIntercept";
+import { useSmartBack } from "@/shared/navigation/hooks/useBackIntercept";
 import { useSearch, useSearchFacets } from "@features/search/hooks/useSearch";
 import { formatPrice } from "@features/products/utils/formatPrice";
 import type { SearchFilters } from "@features/search/types/search.types";

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { productPatchSchema } from "../schemas/productEdit.schema";
+import { productPatchSchema } from "../schemas/product/payload/productEdit.schema";
 
 describe("productPatchSchema — max_installments", () => {
   it("aceita max_installments nos limites (1 e 12)", () => {

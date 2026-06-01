@@ -26,12 +26,12 @@ export default function ProductEditorial({ product }: ProductEditorialProps) {
           aria-hidden
         ></span>
         <span
-          className="font-poppins font-black text-4xl md:text-5xl uppercase leading-[1.05] text-black dark:text-white"
-          style={{ textShadow: "4px 3px 0 #FF00B6" }}
+          className="font-poppins font-black text-4xl md:text-5xl uppercase leading-[1.05] text-brand-black dark:text-brand-white"
+          style={{ textShadow: "4px 3px 0 var(--brand-pink)" }}
         >
           {product.name}
         </span>
-        <p className="mt-6 text-base text-gray-600 dark:text-gray-300 leading-relaxed max-w-md">
+        <p className="mt-6 text-base text-brand-black/60 dark:text-brand-white/80 leading-relaxed max-w-md">
           {product.description}
         </p>
       </div>
@@ -40,12 +40,12 @@ export default function ProductEditorial({ product }: ProductEditorialProps) {
         {stats.map((s) => (
           <div
             key={s.num + s.sub}
-            className="border-4 border-black dark:border-brand-pink bg-white dark:bg-[#1a1a1a] shadow-[5px_5px_0_#FF00B6] p-5 flex flex-col gap-1"
+            className="border-4 border-brand-black dark:border-brand-pink bg-brand-light-surface-0 dark:bg-brand-dark-surface-1 shadow-[5px_5px_0_var(--brand-pink)] p-5 flex flex-col gap-1"
           >
             <span className="font-poppins font-black text-3xl text-brand-pink leading-none">
               {s.num}
             </span>
-            <span className="text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">
+            <span className="text-xs font-bold uppercase tracking-widest text-brand-black/50 dark:text-brand-white/60">
               {s.sub}
             </span>
           </div>

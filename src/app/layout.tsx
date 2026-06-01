@@ -17,7 +17,8 @@ import { siteConfig } from "@shared/config";
 import { QueryProvider } from "@shared/providers/QueryProvider";
 import { ThemeProvider } from "@shared/providers/ThemeProvider";
 import { getSetting } from "@features/admin/services/siteSettings.service";
-import ModalPresence from "@features/navigation/components/mobile/modals/ModalPresence";
+import ModalPresence from "@shared/navigation/components/mobile/modals/ModalPresence";
+import { Y2KToaster } from "@shared/components/Y2KToaster";
 
 const themeInitScript = `
 (function() {
@@ -154,9 +155,10 @@ export default async function RootLayout({
           <QueryProvider>
             <I18nProvider>
               <SpeedInsights />
-              <Analytics/>
+              <Analytics />
               <main className="min-h-screen">{children}</main>
               <ModalPresence modal={modal} />
+              <Y2KToaster />
             </I18nProvider>
           </QueryProvider>
         </ThemeProvider>

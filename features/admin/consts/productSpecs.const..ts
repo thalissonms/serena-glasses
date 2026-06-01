@@ -1,4 +1,4 @@
-import { FRAME_MATERIALS, FRAME_SHAPES, LENS_TYPES } from "../schemas/zodSchemas/productEdit.schema";
+import { FRAME_MATERIALS, FRAME_SHAPES, LENS_TYPES } from "../schemas/product/payload/productEdit.schema";
 
 export const FRAME_SHAPE_OPTIONS = [
   { value: "", label: "Sem forma" },

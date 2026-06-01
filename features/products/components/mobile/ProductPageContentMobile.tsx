@@ -1,7 +1,7 @@
 "use client";
 
-import { useSmartBack } from "@features/navigation/hooks/useBackIntercept";
-import PageInterceptTransition from "@features/navigation/components/mobile/modals/PageInterceptTransition";
+import { useSmartBack } from "@/shared/navigation/hooks/useBackIntercept";
+import PageInterceptTransition from "@/shared/navigation/components/mobile/modals/PageInterceptTransition";
 import { ArrowLeft, Share2Icon } from "lucide-react";
 import { WishlistButton } from "@features/wishlist/components/WishlistButton";
 import ProductActionsMobile from "@features/products/components/mobile/ProductActionsMobile";
@@ -16,7 +16,7 @@ import ProductDescription from "../ProductDescription";
 import { Y2KDivider } from "@features/home/components/mobile/Y2KDivider";
 import { getPrimaryTag } from "@features/products/utils/getPrimaryTag";
 import { shareProduct } from "@features/products/utils/polaroidCard.utils";
-import ModalNavHeader from "@features/navigation/components/mobile/modals/ModalNavHeader";
+import ModalNavHeader from "@/shared/navigation/components/mobile/modals/ModalNavHeader";
 
 import type { ReviewItem } from "../ProductReviews";
 

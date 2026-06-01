@@ -1,6 +1,6 @@
 "use client";
 
-import PageInterceptTransition from "@features/navigation/components/mobile/modals/PageInterceptTransition";
+import PageInterceptTransition from "@/shared/navigation/components/mobile/modals/PageInterceptTransition";
 import WishlistMobileContent from "./WishlistMobileContent";
 
 export default function WishlistModalContent() {

@@ -35,41 +35,41 @@ const supabaseHostname = supabaseUrl
  */
 const securityHeaders = isProd
   ? [
-      {
-        key: "Referrer-Policy",
-        value: "strict-origin-when-cross-origin",
-      },
-      {
-        key: "X-Frame-Options",
-        value: "SAMEORIGIN",
-      },
-      {
-        key: "X-Content-Type-Options",
-        value: "nosniff",
-      },
-      {
-        key: "X-DNS-Prefetch-Control",
-        value: "on",
-      },
-      {
-        key: "Permissions-Policy",
-        value:
-          "camera=(), microphone=(), geolocation=(), fullscreen=(self)",
-      },
-      {
-        key: "Strict-Transport-Security",
-        value:
-          "max-age=63072000; includeSubDomains; preload",
-      },
-      {
-        key: "Cross-Origin-Opener-Policy",
-        value: "same-origin-allow-popups",
-      },
-      {
-        key: "Cross-Origin-Resource-Policy",
-        value: "same-site",
-      },
-    ]
+    {
+      key: "Referrer-Policy",
+      value: "strict-origin-when-cross-origin",
+    },
+    {
+      key: "X-Frame-Options",
+      value: "SAMEORIGIN",
+    },
+    {
+      key: "X-Content-Type-Options",
+      value: "nosniff",
+    },
+    {
+      key: "X-DNS-Prefetch-Control",
+      value: "on",
+    },
+    {
+      key: "Permissions-Policy",
+      value:
+        "camera=(), microphone=(), geolocation=(), fullscreen=(self)",
+    },
+    {
+      key: "Strict-Transport-Security",
+      value:
+        "max-age=63072000; includeSubDomains; preload",
+    },
+    {
+      key: "Cross-Origin-Opener-Policy",
+      value: "same-origin-allow-popups",
+    },
+    {
+      key: "Cross-Origin-Resource-Policy",
+      value: "same-site",
+    },
+  ]
   : [];
 
 const nextConfig: NextConfig = {
@@ -94,12 +94,12 @@ const nextConfig: NextConfig = {
       // Host específico do projeto Supabase
       ...(supabaseHostname
         ? [
-            {
-              protocol: "https" as const,
-              hostname: supabaseHostname,
-              pathname: "/**",
-            },
-          ]
+          {
+            protocol: "https" as const,
+            hostname: supabaseHostname,
+            pathname: "/**",
+          },
+        ]
         : []),
 
       // Fallback wildcard para Supabase Storage
@@ -135,6 +135,7 @@ const nextConfig: NextConfig = {
     formats: ["image/webp"],
 
     minimumCacheTTL: 60,
+    qualities: [25, 50, 75, 90, 100]
   },
 
   /**
@@ -174,11 +175,11 @@ const nextConfig: NextConfig = {
        */
       ...(securityHeaders.length > 0
         ? [
-            {
-              source: "/(.*)",
-              headers: securityHeaders,
-            },
-          ]
+          {
+            source: "/(.*)",
+            headers: securityHeaders,
+          },
+        ]
         : []),
 
       /**

@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useWishlist, useToggleWishlist } from "@features/wishlist/hooks/useWishlist";
 import { formatPrice } from "@features/products/utils/formatPrice";
-import { useSmartBack } from "@features/navigation/hooks/useBackIntercept";
+import { useSmartBack } from "@/shared/navigation/hooks/useBackIntercept";
 
 function SkeletonCard() {
   return (

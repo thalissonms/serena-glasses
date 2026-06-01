@@ -1,7 +1,7 @@
 "use client";
 import { useTranslation } from "react-i18next";
-import { BreadcrumbProps } from "@features/navigation/types/breadcrumb.types";
-import Breadcrumb from "@features/navigation/components/Breadcrumb";
+import { BreadcrumbProps } from "@/shared/navigation/types/breadcrumb.types";
+import Breadcrumb from "@/shared/navigation/components/Breadcrumb";
 import { ShoppingBag } from "lucide-react";
 
 const CheckoutHeader = ({

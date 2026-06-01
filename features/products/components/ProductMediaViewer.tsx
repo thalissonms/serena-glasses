@@ -55,14 +55,14 @@ export default function ProductMediaViewer({
   return (
     <div
       className={clsx(
-        "relative aspect-9/16 border-4 border-black dark:border-brand-pink-light shadow-[8px_8px_0px] shadow-brand-pink dark:shadow-brand-blue overflow-hidden bg-black",
+        "relative aspect-9/16 border-4 border-brand-black dark:border-brand-pink-light shadow-[8px_8px_0px] shadow-brand-pink dark:shadow-brand-blue overflow-hidden bg-brand-black",
         className,
       )}
     >
       <AnimatePresence>
         {flickering && (
           <motion.div
-            className="absolute w-full h-full bg-black z-20"
+            className="absolute w-full h-full bg-brand-black z-20"
             initial={{ opacity: 0.75 }}
             animate={{ opacity: 0.75 }}
             exit={{ opacity: 0 }}
@@ -90,11 +90,11 @@ export default function ProductMediaViewer({
           className="absolute inset-0 w-full h-full object-cover"
         />
       ) : (
-        <div className="absolute inset-0 bg-[#111]" aria-hidden="true" />
+        <div className="absolute inset-0 bg-brand-black/90" aria-hidden="true" />
       )}
 
       <div
-        className="absolute inset-0 bg-black/20 flex items-center justify-center pointer-events-none z-30"
+        className="absolute inset-0 bg-brand-black/20 flex items-center justify-center pointer-events-none z-30"
         aria-hidden="true"
       >
         <h2

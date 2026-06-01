@@ -1,6 +1,6 @@
 "use client";
 
-import PageInterceptTransition from "@features/navigation/components/mobile/modals/PageInterceptTransition";
+import PageInterceptTransition from "@/shared/navigation/components/mobile/modals/PageInterceptTransition";
 import { CheckoutFormProvider } from "@features/checkout/providers/checkout.rhf";
 import { useMounted } from "@shared/hooks/useMounted";
 import CheckoutPageContentMobile from "@features/checkout/components/mobile/CheckoutContentPageMobile";

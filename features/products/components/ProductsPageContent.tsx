@@ -19,6 +19,8 @@ import { Pill, PillY2K } from "@shared/components/ui/Pills";
 import useFilterProducts from "../hooks/useFilterProducts";
 import { ListingParams } from "../types/productsFindParams.type";
 import ProductCardY2K from "./ProductCardY2K";
+import ProductModal from "./modal/ProductModal";
+import { useProductModal } from "../hooks/useProductModal";
 
 function getTitle(
   params: ListingParams,
@@ -66,6 +68,7 @@ export function ProductsPageContent({
   const router = useRouter();
   const { data: categories } = useCategories();
   const { buildUrl } = useFilterProducts();
+  const { selectedProduct, isOpen } = useProductModal();
 
   function setFilter(updates: Partial<ListingParams>) {
     const next = { ...params, ...updates };
@@ -85,13 +88,9 @@ export function ProductsPageContent({
 
   const hasFilters = subcategories.length > 0;
 
-  if (process.env.NODE_ENV === "development") {
-    console.log("[dev] products", products);
-  }
-
   return (
     <main
-      className="w-full min-h-screen pb-20 bg-brand-light-surface-0 dark:bg-brand-dark-surface-0 text-brand-black dark:text-brand-white py-12 transition-colors"
+      className="min-h-screen w-full bg-brand-light-surface-0 py-12 pb-20 text-brand-black transition-colors dark:bg-brand-dark-surface-0 dark:text-brand-white"
       style={{
         backgroundImage: "url('/backgrounds/bg-grid.svg')",
         backgroundPosition: "center",
@@ -99,12 +98,12 @@ export function ProductsPageContent({
       }}
     >
       <div className="max-w-8xl mx-auto px-4 sm:px-8 lg:px-20">
-        <div className="w-full flex justify-between items-center mb-8">
+        <div className="mb-8 flex w-full items-center justify-between">
           <PageTitle title={title} />
           {hasFilters && (
             <div className="flex flex-col items-center">
               <Y2KBadge text={"Coleção"} />
-              <div className="flex gap-3 p-3 z-3">
+              <div className="z-3 flex gap-3 p-3">
                 <PillY2K
                   active={!params.subcategory}
                   onClick={() => setFilter({ subcategory: undefined })}
@@ -125,8 +124,8 @@ export function ProductsPageContent({
           )}
         </div>
 
-        <div className="mb-4 mt-20 flex flex-col gap-2">
-          <div className="flex gap-2 justify-center">
+        <div className="mt-20 mb-4 flex flex-col gap-2">
+          <div className="flex justify-center gap-2">
             {SORT_OPTIONS.map(({ value, labelKey, Icon }) => {
               const active = (params.sort ?? "") === value;
               return (
@@ -142,23 +141,23 @@ export function ProductsPageContent({
             })}
           </div>
           <div className="flex justify-center">
-            <p className="text-brand-black/60 dark:text-brand-white/40 font-poppins text-sm">
+            <p className="font-poppins text-sm text-brand-black/60 dark:text-brand-white/40">
               {t("listing.resultCount", { count: products.length })}
             </p>
           </div>
         </div>
 
         {products.length === 0 ? (
-          <div className="border-4 border-black dark:border-brand-pink shadow-[6px_6px_0_#000] dark:shadow-[6px_6px_0] dark:shadow-brand-pink bg-white dark:bg-[#1a1a1a] p-16 text-center">
-            <p className="font-poppins font-bold text-xl mb-2">
+          <div className="border-4 border-black bg-white p-16 text-center shadow-[6px_6px_0_#000] dark:border-brand-pink dark:bg-[#1a1a1a] dark:shadow-[6px_6px_0] dark:shadow-brand-pink">
+            <p className="font-poppins mb-2 text-xl font-bold">
               {t("listing.noResults")}
             </p>
-            <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
+            <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">
               {t("listing.noResultsDesc")}
             </p>
             <button
               onClick={() => router.push("/products")}
-              className="inline-block font-poppins font-bold text-sm uppercase tracking-wider text-black dark:text-white border-2 border-black dark:border-brand-pink px-6 py-3 shadow-[4px_4px_0] dark:shadow-brand-pink hover:shadow-[6px_6px_0] hover:dark:shadow-brand-pink hover:-translate-y-0.5 transition-all"
+              className="font-poppins inline-block border-2 border-black px-6 py-3 text-sm font-bold tracking-wider text-black uppercase shadow-[4px_4px_0] transition-all hover:-translate-y-0.5 hover:shadow-[6px_6px_0] dark:border-brand-pink dark:text-white dark:shadow-brand-pink hover:dark:shadow-brand-pink"
             >
               {t("listing.filterAll")} →
             </button>
@@ -169,6 +168,9 @@ export function ProductsPageContent({
               <ProductCardY2K key={product.id} product={product} index={i} />
             ))}
           </div>
+        )}
+        {isOpen && selectedProduct && (
+          <ProductModal />
         )}
       </div>
     </main>

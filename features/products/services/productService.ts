@@ -323,3 +323,15 @@ export async function getNewProducts(): Promise<Product[]> {
   if (error || !data) return [];
   return enrichWithStock(data as DbProduct[]);
 }
+
+export async function getPromotionProducts(): Promise<Product[]> {
+  const { data, error } = await getSupabaseServer()
+    .from("products")
+    .select(SELECT)
+    .eq("active", true)
+    .eq("is_outlet", true)
+    .order("created_at", { ascending: false });
+
+  if (error || !data) return [];
+  return enrichWithStock(data as DbProduct[]);
+}

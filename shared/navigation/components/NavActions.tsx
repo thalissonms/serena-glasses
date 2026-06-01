@@ -9,7 +9,7 @@ import { WishlistDropdown } from "@features/wishlist/components/WishlistDropdown
 import { ThemeToggle } from "@shared/components/ThemeToggle";
 import { MobileNav } from "./mobile/MobileNav";
 import { useMounted } from "@shared/hooks/useMounted";
-import ButtonIconY2K, { ButtonNavActionProps } from "../../../shared/components/ui/ButtonIconY2K";
+import ButtonIconY2K, { ButtonNavActionProps } from "../../components/ui/ButtonIconY2K";
 
 
 

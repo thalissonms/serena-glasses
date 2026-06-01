@@ -1,5 +1,5 @@
 "use client";
-import { useSmartBack } from "@features/navigation/hooks/useBackIntercept";
+import { useSmartBack } from "@/shared/navigation/hooks/useBackIntercept";
 import clsx from "clsx";
 import {
   ArrowLeft,

@@ -23,7 +23,7 @@ function StarRow({ count }: { count: number }) {
           key={i}
           size={14}
           className={
-            i < count ? "text-brand-yellow fill-brand-yellow" : "text-gray-300 dark:text-gray-700 fill-gray-300 dark:fill-gray-700"
+            i < count ? "text-brand-yellow fill-brand-yellow" : "text-brand-black/20 dark:text-brand-white/20 fill-brand-black/20 dark:fill-brand-white/20"
           }
         />
       ))}
@@ -45,13 +45,13 @@ export default function ProductReviews({ reviews }: ProductReviewsProps) {
           </h3>
         </div>
 
-        <div className="flex items-center gap-3 border-4 border-black dark:border-brand-pink px-5 py-2 shadow-[4px_4px_0_#FF00B6] bg-white dark:bg-[#1a1a1a]">
+        <div className="flex items-center gap-3 border-4 border-brand-black dark:border-brand-pink px-5 py-2 shadow-[4px_4px_0_var(--brand-pink)] bg-brand-light-surface-0 dark:bg-brand-dark-surface-1">
           <span className="font-poppins font-black text-4xl text-brand-pink leading-none">
             {avgStars}
           </span>
           <div className="flex flex-col gap-1">
             <StarRow count={5} />
-            <span className="text-xs text-gray-500 dark:text-gray-400 font-bold">
+            <span className="text-xs text-brand-black/50 dark:text-brand-white/60 font-bold">
               {t("description.reviews.count", { count: reviews.length })}
             </span>
           </div>
@@ -62,14 +62,14 @@ export default function ProductReviews({ reviews }: ProductReviewsProps) {
         {reviews.map((review, i) => (
           <div
             key={i}
-            className={`border-4 border-black dark:border-brand-pink shadow-[5px_5px_0_#000] dark:shadow-[5px_5px_0_#FF00B6] p-5 flex flex-col gap-3 ${
+            className={`border-4 border-brand-black dark:border-brand-pink shadow-[5px_5px_0_var(--brand-black)] dark:shadow-[5px_5px_0_var(--brand-pink)] p-5 flex flex-col gap-3 ${
               i === 0 ? "md:col-span-2 lg:col-span-1" : ""
-            } bg-white dark:bg-[#1a1a1a]`}
+            } bg-brand-light-surface-0 dark:bg-brand-dark-surface-1`}
           >
             <div className="flex items-start justify-between">
               <div>
                 <p className="font-black text-sm uppercase tracking-wide">{review.name}</p>
-                <p className="text-xs text-gray-400 dark:text-gray-500">
+                <p className="text-xs text-brand-black/40 dark:text-brand-white/50">
                   {review.city} · {review.date}
                 </p>
               </div>
@@ -82,7 +82,7 @@ export default function ProductReviews({ reviews }: ProductReviewsProps) {
 
             <StarRow count={review.stars} />
 
-            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed border-l-4 border-brand-pink pl-3">
+            <p className="text-sm text-brand-black/70 dark:text-brand-white/80 leading-relaxed border-l-4 border-brand-pink pl-3">
               {review.text}
             </p>
           </div>

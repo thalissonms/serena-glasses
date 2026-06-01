@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { HomeStory } from "@features/home/types/homeStory.types";
 import { DynamicLucideIcon } from "@shared/components/DynamicLucideIcon";
-import { CategoryChip } from "@/features/navigation/components";
+import { CategoryChip } from "@/shared/navigation/components";
 import clsx from "clsx";
 
 interface StoryHeaderProps {

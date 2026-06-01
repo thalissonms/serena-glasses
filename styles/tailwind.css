@@ -392,20 +392,25 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #fff0fa;
-  border-left: 2px solid #000;
+  background: transparent;
+  border: none;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ff00b6;
-  border: 2px solid #000;
+  background: var(--brand-pink);
+  border: 2px solid var(--brand-black);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #000;
+  background: var(--brand-black);
 }
+
+::-webkit-scrollbar-button {
+  display: none;
+}
+
 * {
-  scrollbar-color: #ff00b6 #fff0fa;
+  scrollbar-color: var(--brand-pink) transparent;
   scrollbar-width: thin;
 }
 /* admin Y2K Chrome — Keyframes */

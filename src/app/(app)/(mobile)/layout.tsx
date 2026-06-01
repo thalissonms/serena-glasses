@@ -1,6 +1,6 @@
 import { TopBanner } from "@shared/components/layout/TopBanner";
-import { NavMobileTopBar } from "@features/navigation/components/mobile/NavMobileTopBar";
-import NavBottom from "@/features/navigation/components/mobile/NavBottom";
+import { NavMobileTopBar } from "@/shared/navigation/components/mobile/NavMobileTopBar";
+import NavBottom from "@/shared/navigation/components/mobile/NavBottom";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (

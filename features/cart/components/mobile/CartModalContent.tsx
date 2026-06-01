@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { useCartStore } from "@features/cart/store/cart.store";
 import { formatPrice } from "@features/products/utils/formatPrice";
-import { useSmartBack } from "@features/navigation/hooks/useBackIntercept";
-import PageInterceptTransition from "@features/navigation/components/mobile/modals/PageInterceptTransition";
+import { useSmartBack } from "@/shared/navigation/hooks/useBackIntercept";
+import PageInterceptTransition from "@/shared/navigation/components/mobile/modals/PageInterceptTransition";
 
 export default function CartModalContent() {
   const { t } = useTranslation("checkout");
