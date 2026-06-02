@@ -43,26 +43,26 @@ export default function BannersListClient({ banners: initial }: Props) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0">
         <div>
           <h1 className="font-shrikhand text-3xl tracking-wider text-white">BANNERS</h1>
-          <p className="mt-1 font-mono text-[10px] tracking-widest text-white/30 uppercase">
+          <p className="mt-1 font-mono text-[12px] tracking-widest text-white/30 uppercase">
             {banners.length} banner{banners.length !== 1 ? "s" : ""} cadastrado
             {banners.length !== 1 ? "s" : ""}
           </p>
         </div>
         <button
           onClick={() => router.push("/admin/banners/new")}
-          className="flex items-center gap-2 border-2 border-black bg-linear-to-r from-[#FF00B6] to-[#00F0FF] px-4 py-2 font-mono text-xs font-bold tracking-widest text-black uppercase shadow-[4px_4px_0_#000] transition-all hover:-translate-x-px hover:-translate-y-px hover:shadow-[5px_5px_0_#000]"
+          className="flex items-center gap-2 border-2 border-black bg-linear-to-r from-[var(--brand-pink)] to-brand-pink px-4 py-2 font-mono text-base font-bold tracking-widest text-black uppercase transition-colors hover:bg-brand-pink-light rounded-none"
         >
-          <Plus size={14} />
-          Novo Banner
+          <Plus size={17} />
+          [ Novo Banner ]
         </button>
       </div>
 
       {banners.length === 0 ? (
-        <div className="border-2 border-dashed border-white/10 bg-[#0f0f0f] p-20 text-center">
-          <div className="font-mono text-xs tracking-[0.4em] text-white/15 uppercase">
+        <div className="border-2 border-dashed border-white/10 bg-[#050505] p-20 text-center">
+          <div className="font-mono text-base tracking-[0.4em] text-white/15 uppercase">
             NENHUM BANNER CADASTRADO
           </div>
         </div>
@@ -75,74 +75,74 @@ export default function BannersListClient({ banners: initial }: Props) {
             return (
               <div
                 key={b.id}
-                className="border-2 border-white/10 bg-[#1a1a1a] shadow-[4px_4px_0_#000] transition-all duration-150 hover:border-[#00F0FF]/30"
+                className="border border-brand-pink/30 bg-[#050505] shadow-[inset_0_0_15px_rgba(255,0,182,0.05)] transition-colors duration-150 hover:bg-[#050505] rounded-none"
               >
                 <div
                   className="flex h-11 items-center gap-3 overflow-hidden px-4"
                   style={{ backgroundColor: b.bg_color }}
                 >
                   <span
-                    className="font-poppins flex-1 truncate text-sm font-semibold"
+                    className="font-poppins flex-1 truncate text-base font-semibold"
                     style={{ color: b.text_color }}
                   >
                     {b.message_pt}
                   </span>
                   {b.link_url && (
                     <span
-                      className="flex shrink-0 items-center gap-1 font-mono text-[10px] opacity-50"
+                      className="flex shrink-0 items-center gap-1 font-mono text-[12px] opacity-50"
                       style={{ color: b.text_color }}
                     >
-                      <ExternalLink size={10} />
+                      <ExternalLink size={13} />
                       {b.link_url.replace(/^https?:\/\//, "").slice(0, 32)}
                     </span>
                   )}
                 </div>
 
-                <div className="flex items-center justify-between px-4 py-2.5">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 px-4 py-2.5">
                   <div className="flex flex-wrap items-center gap-3">
                     <span
-                      className={`inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest px-2 py-0.5 border ${sc.cls}`}
+                      className={`inline-flex items-center gap-1.5 font-mono text-[12px] uppercase tracking-widest px-2 py-0.5 border ${sc.cls}`}
                     >
-                      <span className={`w-1.5 h-1.5 rounded-full ${sc.dot}`} />
-                      {sc.label}
+                      <span className={`w-1.5 h-1.5 rounded-none ${sc.dot}`} />
+                      {"//"} {sc.label}
                     </span>
 
                     {b.dismissible && (
-                      <span className="inline-flex items-center gap-1 border border-white/10 px-2 py-0.5 font-mono text-[10px] tracking-widest text-white/25 uppercase">
-                        <XIcon size={9} />
+                      <span className="inline-flex items-center gap-1 border border-white/10 px-2 py-0.5 font-mono text-[12px] tracking-widest text-white/25 uppercase">
+                        <XIcon size={12} />
                         Fechável
                       </span>
                     )}
 
                     {(b.starts_at || b.ends_at) && (
-                      <span className="inline-flex items-center gap-1 font-mono text-[10px] text-white/25">
-                        <Clock size={9} />
+                      <span className="inline-flex items-center gap-1 font-mono text-[12px] text-white/25">
+                        <Clock size={12} />
                         {b.starts_at && fmtDate(b.starts_at)}
                         {b.starts_at && b.ends_at && " → "}
                         {b.ends_at && fmtDate(b.ends_at)}
                       </span>
                     )}
 
-                    <span className="font-mono text-[10px] text-white/15">
-                      ordem #{b.display_order}
+                    <span className="font-mono text-[12px] text-white/15">
+                      {"//"} ordem #{b.display_order}
                     </span>
                   </div>
 
                   <div className="flex items-center gap-1">
                     <button
                       onClick={() => router.push(`/admin/banners/${b.id}`)}
-                      className="p-1.5 text-white/25 transition-colors hover:text-[#00F0FF]"
+                      className="p-1.5 text-white/25 transition-colors hover:text-brand-pink"
                       title="Editar"
                     >
-                      <Pencil size={13} />
+                      <Pencil size={16} />
                     </button>
                     <button
                       onClick={() => handleDelete(b.id)}
                       disabled={deleting === b.id}
-                      className="p-1.5 text-white/25 transition-colors hover:text-[#FF00B6] disabled:opacity-20"
+                      className="p-1.5 text-white/25 transition-colors hover:text-brand-pink disabled:opacity-20"
                       title="Deletar"
                     >
-                      <Trash2 size={13} />
+                      <Trash2 size={16} />
                     </button>
                   </div>
                 </div>

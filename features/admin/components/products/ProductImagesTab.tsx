@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { toast } from "sonner";
 import { clsx } from "clsx";
 import { Trash2, GripVertical, X, Upload } from "lucide-react";
@@ -79,7 +79,7 @@ function SortableImageCard({
       ref={setNodeRef}
       style={style}
       className={clsx(
-        "group relative border border-white/8 bg-[#141414] overflow-hidden",
+        "group relative border border-white/8 bg-[#0a0a0a] overflow-hidden",
         isDragging && "shadow-[0_0_20px_rgba(255,0,182,0.4)]",
       )}
     >
@@ -96,7 +96,7 @@ function SortableImageCard({
           className="absolute inset-0 flex items-start justify-end p-1.5 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing"
         >
           <div className="bg-black/60 p-1">
-            <GripVertical size={12} className="text-white/60" />
+            <GripVertical size={15} className="text-white/60" />
           </div>
         </div>
         <button
@@ -104,11 +104,10 @@ function SortableImageCard({
           onClick={() => onDelete(image.id)}
           className="absolute bottom-1.5 right-1.5 bg-black/70 p-1 text-red-400 opacity-0 group-hover:opacity-100 transition-opacity hover:text-red-300"
         >
-          <X size={10} />
+          <X size={13} />
         </button>
         <div className="absolute top-1.5 left-1.5 bg-black/60 px-1.5 py-0.5">
-          <span className="font-mono text-[8px] text-white/40">
-            #{image.position + 1}
+          <span className="font-mono text-[10px] text-white/40">{"// "}#{image.position + 1}
           </span>
         </div>
       </div>
@@ -122,8 +121,8 @@ function SortableImageCard({
           disabled={patchAltMutation.isPending}
           className={clsx(
             "w-full bg-transparent border-b border-white/8 pb-0.5",
-            "font-mono text-[9px] text-white/50 placeholder:text-white/20",
-            "outline-none focus:border-[#FF00B6]/40 transition-colors",
+            "font-mono text-[11px] text-white/50 placeholder:text-white/20",
+            "outline-none focus:border-brand-pink/40 transition-colors",
             "disabled:opacity-50",
           )}
         />
@@ -237,13 +236,13 @@ export function ImagesTab({
               loading={deleteMutation.isPending}
               onClick={confirmDelete}
             >
-              <Trash2 size={11} />
+              <Trash2 size={14} />
               Excluir
             </Button>
           </>
         }
       >
-        <p className="font-mono text-[11px] text-white/60">
+        <p className="font-mono text-[13px] text-white/60">
           A imagem será removida permanentemente do storage.
         </p>
       </Modal>
@@ -269,7 +268,7 @@ export function ImagesTab({
             items={images.map((i) => i.id)}
             strategy={rectSortingStrategy}
           >
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
               {images.map((img) => (
                 <SortableImageCard
                   key={img.id}
@@ -284,8 +283,7 @@ export function ImagesTab({
         </DndContext>
       ) : (
         <div className="flex flex-col items-center justify-center py-8 border border-dashed border-white/8">
-          <p className="font-mono text-[9px] uppercase tracking-widest text-white/20">
-            Nenhuma imagem
+          <p className="font-mono text-[11px] uppercase tracking-widest text-white/20">{"// "}Nenhuma imagem
           </p>
         </div>
       )}

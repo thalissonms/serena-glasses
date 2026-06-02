@@ -78,7 +78,7 @@ function formatDate(iso: string | null): string {
 function DiscountTypeBadge({ type }: { type: CouponRow["discount_type"] }) {
   if (type === "percentage") {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 font-mono text-[8px] uppercase tracking-[0.2em] border border-[#FF00B6]/30 bg-[#FF00B6]/8 text-[#FF00B6]">
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.2em] border border-brand-pink/30 bg-brand-pink/8 text-brand-pink">
         <Percent size={7} />
         PERCENT
       </span>
@@ -86,14 +86,14 @@ function DiscountTypeBadge({ type }: { type: CouponRow["discount_type"] }) {
   }
   if (type === "fixed") {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 font-mono text-[8px] uppercase tracking-[0.2em] border border-[#00F0FF]/30 bg-[#00F0FF]/8 text-[#00F0FF]">
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.2em] border border-brand-pink/30 bg-brand-pink/8 text-brand-pink">
         <DollarSign size={7} />
         FIXO
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 font-mono text-[8px] uppercase tracking-[0.2em] border border-emerald-500/30 bg-emerald-500/8 text-emerald-400">
+    <span className="inline-flex items-center gap-1 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.2em] border border-emerald-500/30 bg-emerald-500/8 text-emerald-400">
       <Truck size={7} />
       FRETE
     </span>
@@ -189,16 +189,15 @@ export function CouponsListClient({ coupons: initial }: Props) {
       <div className="flex items-start justify-between">
         <div>
           <div className="flex items-center gap-3 mb-1">
-            <Tag size={18} className="text-[#FF00B6]" />
-            <h1 className="font-shrikhand text-2xl text-white tracking-wide">CUPONS</h1>
+            <Tag size={18} className="text-brand-pink" />
+            <h1 className="font-poppins font-black text-2xl text-white tracking-wide">CUPONS</h1>
           </div>
-          <p className="font-mono text-[10px] uppercase tracking-widest text-white/25">
-            {coupons.length} cupons no sistema
+          <p className="font-mono text-[12px] uppercase tracking-widest text-white/25">{"// "}{coupons.length} cupons no sistema
           </p>
         </div>
         <Link href="/admin/coupons/new">
           <Button variant="primary" size="sm">
-            <Plus size={11} />
+            <Plus size={14} />
             Novo Cupom
           </Button>
         </Link>
@@ -216,15 +215,15 @@ export function CouponsListClient({ coupons: initial }: Props) {
                 setTab(t);
                 setPage(1);
               }}
-              className={`relative px-5 py-2.5 font-mono text-[9px] uppercase tracking-[0.2em] transition-all duration-150 border-b-2 ${
+              className={`relative px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.2em] transition-all duration-150 border-b-2 ${
                 active
-                  ? "text-[#FF00B6] border-[#FF00B6] -mb-px"
+                  ? "text-brand-pink border-brand-pink -mb-px"
                   : "text-white/30 hover:text-white/60 border-transparent"
               }`}
             >
               {labels[t]}
               <span
-                className={`ml-2 font-mono text-[8px] ${active ? "text-[#FF00B6]/60" : "text-white/15"}`}
+                className={`ml-2 font-mono text-[10px] ${active ? "text-brand-pink/60" : "text-white/15"}`}
               >
                 {tabCounts[t]}
               </span>
@@ -240,7 +239,7 @@ export function CouponsListClient({ coupons: initial }: Props) {
               setSearch(e.target.value);
               setPage(1);
             }}
-            prefix={<Search size={11} />}
+            prefix={<Search size={14} />}
             suffix={
               search ? (
                 <button
@@ -248,7 +247,7 @@ export function CouponsListClient({ coupons: initial }: Props) {
                   onClick={() => setSearch("")}
                   className="pr-3 text-white/25 hover:text-white/60"
                 >
-                  <X size={11} />
+                  <X size={14} />
                 </button>
               ) : null
             }
@@ -259,12 +258,11 @@ export function CouponsListClient({ coupons: initial }: Props) {
       {paginated.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 border border-white/5">
           <Tag size={32} className="text-white/10 mb-4" />
-          <p className="font-mono text-[10px] uppercase tracking-widest text-white/20">
-            Nenhum cupom encontrado
+          <p className="font-mono text-[12px] uppercase tracking-widest text-white/20">{"// "}Nenhum cupom encontrado
           </p>
           <Link href="/admin/coupons/new" className="mt-4">
             <Button variant="ghost" size="sm">
-              <Plus size={10} />
+              <Plus size={13} />
               Criar primeiro cupom
             </Button>
           </Link>
@@ -286,7 +284,7 @@ export function CouponsListClient({ coupons: initial }: Props) {
                 ].map((h, i) => (
                   <th
                     key={h}
-                    className={`px-4 py-3 font-mono text-[8px] uppercase tracking-[0.25em] text-white/25 ${i >= 6 ? "text-center" : "text-left"} ${i === 7 ? "text-right" : ""}`}
+                    className={`px-4 py-3 font-mono text-[10px] uppercase tracking-[0.25em] text-white/25 ${i >= 6 ? "text-center" : "text-left"} ${i === 7 ? "text-right" : ""}`}
                   >
                     {h}
                   </th>
@@ -299,20 +297,19 @@ export function CouponsListClient({ coupons: initial }: Props) {
                 return (
                   <tr
                     key={coupon.id}
-                    className={`border-b border-white/4 transition-all duration-150 ${expired ? "opacity-50" : "hover:bg-[#FF00B6]/3"}`}
+                    className={`border-b border-white/4 transition-all duration-150 ${expired ? "opacity-50" : "hover:bg-brand-pink/3"}`}
                   >
                     <td className="px-4 py-3">
                       <div>
-                        <span className="font-mono text-[13px] font-bold text-white tracking-wider">
+                        <span className="font-mono text-[15px] font-bold text-white tracking-wider">
                           {coupon.code}
                         </span>
                         {coupon.description && (
-                          <p className="font-mono text-[9px] text-white/30 mt-0.5 max-w-[200px] truncate">
-                            {coupon.description}
+                          <p className="font-mono text-[11px] text-white/30 mt-0.5 max-w-[200px] truncate">{"// "}{coupon.description}
                           </p>
                         )}
                         {coupon.first_purchase_only && (
-                          <span className="inline-block mt-1 font-mono text-[7px] uppercase tracking-widest text-[#FFD700]/60 border border-[#FFD700]/20 px-1.5 py-0.5">
+                          <span className="inline-block mt-1 font-mono text-[9px] uppercase tracking-widest text-[#FFD700]/60 border border-[#FFD700]/20 px-1.5 py-0.5">
                             1ª compra
                           </span>
                         )}
@@ -322,12 +319,11 @@ export function CouponsListClient({ coupons: initial }: Props) {
                       <DiscountTypeBadge type={coupon.discount_type} />
                     </td>
                     <td className="px-4 py-3">
-                      <span className="font-mono text-[13px] font-bold text-white">
+                      <span className="font-mono text-[15px] font-bold text-white">
                         {formatDiscount(coupon)}
                       </span>
                       {coupon.max_discount_cents != null && (
-                        <p className="font-mono text-[8px] text-white/25">
-                          máx{" "}
+                        <p className="font-mono text-[10px] text-white/25">{"// "}máx{" "}
                           {new Intl.NumberFormat("pt-BR", {
                             style: "currency",
                             currency: "BRL",
@@ -339,27 +335,26 @@ export function CouponsListClient({ coupons: initial }: Props) {
                       <div className="flex items-center gap-1.5">
                         {coupon.valid_until && (
                           <Calendar
-                            size={9}
+                            size={12}
                             className={expired ? "text-red-400/60" : "text-white/20"}
                           />
                         )}
                         <span
-                          className={`font-mono text-[10px] ${expired ? "text-red-400/60" : "text-white/50"}`}
+                          className={`font-mono text-[12px] ${expired ? "text-red-400/60" : "text-white/50"}`}
                         >
                           {formatDate(coupon.valid_until)}
                         </span>
                       </div>
                       {expired && (
-                        <span className="font-mono text-[7px] uppercase tracking-widest text-red-400/60">
+                        <span className="font-mono text-[9px] uppercase tracking-widest text-red-400/60">
                           expirado
                         </span>
                       )}
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-1.5">
-                        <Users size={9} className="text-white/20" />
-                        <span className="font-mono text-[10px] text-white/50">
-                          {coupon.usage_count}
+                        <Users size={12} className="text-white/20" />
+                        <span className="font-mono text-[12px] text-white/50">{"// "}{coupon.usage_count}
                           {coupon.usage_limit_total != null ? (
                             <span className="text-white/25"> / {coupon.usage_limit_total}</span>
                           ) : (
@@ -369,8 +364,7 @@ export function CouponsListClient({ coupons: initial }: Props) {
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="font-mono text-[9px] text-white/35 uppercase tracking-wider">
-                        {coupon.applies_to === "all"
+                      <span className="font-mono text-[11px] text-white/35 uppercase tracking-wider">{"// "}{coupon.applies_to === "all"
                           ? "Todos"
                           : coupon.applies_to === "products"
                             ? "Produtos"
@@ -384,14 +378,14 @@ export function CouponsListClient({ coupons: initial }: Props) {
                         disabled={pendingToggles.has(coupon.id)}
                         className={`relative w-10 h-5 border transition-all duration-200 disabled:opacity-40 ${
                           coupon.active
-                            ? "bg-[#FF00B6]/15 border-[#FF00B6]/40"
+                            ? "bg-brand-pink/15 border-brand-pink/40"
                             : "bg-white/4 border-white/10"
                         }`}
                       >
                         <span
                           className={`absolute top-0.5 w-4 h-4 transition-all duration-200 ${
                             coupon.active
-                              ? "left-5 bg-[#FF00B6] shadow-[0_0_8px_rgba(255,0,182,0.5)]"
+                              ? "left-5 bg-brand-pink shadow-[0_0_8px_rgba(255,0,182,0.5)]"
                               : "left-0.5 bg-white/20"
                           }`}
                         />
@@ -401,16 +395,16 @@ export function CouponsListClient({ coupons: initial }: Props) {
                       <div className="flex items-center justify-end gap-2">
                         <Link
                           href={`/admin/coupons/${coupon.id}`}
-                          className="p-1.5 text-white/25 hover:text-[#00F0FF] transition-colors duration-150"
+                          className="p-1.5 text-white/25 hover:text-brand-pink transition-colors duration-150"
                         >
-                          <Pencil size={12} />
+                          <Pencil size={15} />
                         </Link>
                         <button
                           type="button"
                           onClick={() => setConfirmDelete(coupon.id)}
                           className="p-1.5 text-white/25 hover:text-red-400 transition-colors duration-150"
                         >
-                          <Trash2 size={12} />
+                          <Trash2 size={15} />
                         </button>
                       </div>
                     </td>
@@ -421,27 +415,25 @@ export function CouponsListClient({ coupons: initial }: Props) {
           </table>
 
           {pages > 1 && (
-            <div className="flex items-center justify-between px-4 py-3 border-t border-white/5 bg-white/1">
-              <span className="font-mono text-[9px] text-white/20">
-                {filtered.length} cupons · página {page} de {pages}
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 px-4 py-3 border-t border-white/5 bg-white/1">
+              <span className="font-mono text-[11px] text-white/20">{"// "}{filtered.length} cupons · página {page} de {pages}
               </span>
               <div className="flex gap-1">
                 <button
                   type="button"
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page === 1}
-                  className="px-3 py-1 font-mono text-[9px] text-white/30 hover:text-white/60 border border-white/5 hover:border-white/15 disabled:opacity-30 transition-all"
-                >
-                  ←
+                  className="px-3 py-1 font-mono text-[11px] text-white/30 hover:text-white/60 border border-white/5 hover:border-white/15 disabled:opacity-30 transition-all"
+                >{"// "}←
                 </button>
                 {Array.from({ length: pages }, (_, i) => i + 1).map((p) => (
                   <button
                     key={p}
                     type="button"
                     onClick={() => setPage(p)}
-                    className={`px-3 py-1 font-mono text-[9px] border transition-all ${
+                    className={`px-3 py-1 font-mono text-[11px] border transition-all ${
                       p === page
-                        ? "text-[#FF00B6] border-[#FF00B6]/40 bg-[#FF00B6]/8"
+                        ? "text-brand-pink border-brand-pink/40 bg-brand-pink/8"
                         : "text-white/30 border-white/5 hover:border-white/15 hover:text-white/60"
                     }`}
                   >
@@ -452,9 +444,8 @@ export function CouponsListClient({ coupons: initial }: Props) {
                   type="button"
                   onClick={() => setPage((p) => Math.min(pages, p + 1))}
                   disabled={page === pages}
-                  className="px-3 py-1 font-mono text-[9px] text-white/30 hover:text-white/60 border border-white/5 hover:border-white/15 disabled:opacity-30 transition-all"
-                >
-                  →
+                  className="px-3 py-1 font-mono text-[11px] text-white/30 hover:text-white/60 border border-white/5 hover:border-white/15 disabled:opacity-30 transition-all"
+                >{"// "}→
                 </button>
               </div>
             </div>
@@ -464,11 +455,11 @@ export function CouponsListClient({ coupons: initial }: Props) {
 
       {confirmDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75">
-          <div className="bg-[#111] border border-white/10 shadow-[4px_4px_0_#FF00B6] p-6 w-96">
-            <h3 className="font-mono text-[11px] uppercase tracking-widest text-red-400 mb-3">
+          <div className="bg-[#111] border border-white/10 shadow-[4px_4px_0_var(--brand-pink)] p-6 w-96">
+            <h3 className="font-mono text-[13px] uppercase tracking-widest text-red-400 mb-3">
               Desativar cupom
             </h3>
-            <p className="font-poppins text-sm text-white/70 mb-5">
+            <p className="font-poppins text-base text-white/70 mb-5">
               O cupom será desativado (soft delete). O histórico de usos é preservado.
             </p>
             <div className="flex gap-3 justify-end">

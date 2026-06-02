@@ -118,13 +118,13 @@ export function VariantsTab({
               loading={deleteMutation.isPending}
               onClick={confirmDelete}
             >
-              <Trash2 size={11} />
+              <Trash2 size={14} />
               Excluir
             </Button>
           </>
         }
       >
-        <p className="font-mono text-[11px] text-white/60">
+        <p className="font-mono text-[13px] text-white/60">
           Excluir a variante{" "}
           <span
             className="font-bold"
@@ -138,12 +138,11 @@ export function VariantsTab({
 
       {variants.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-12 border border-dashed border-white/10">
-          <p className="font-mono text-[9px] uppercase tracking-widest text-white/20">
-            Nenhuma variante cadastrada
+          <p className="font-mono text-[11px] uppercase tracking-widest text-white/20">{"// "}Nenhuma variante cadastrada
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {variants.map((v) => (
             <VariantCard
               key={v.id}
@@ -159,12 +158,11 @@ export function VariantsTab({
         <form
           onSubmit={handleSubmit(onAddVariant)}
           noValidate
-          className="border border-[#FF00B6]/20 bg-[#0f0f0f] p-4 space-y-4"
+          className="border border-brand-pink/20 bg-[#050505] p-4 space-y-4"
         >
-          <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#FF00B6]/60">
-            Nova Variante
+          <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-brand-pink/60">{"// "}Nova Variante
           </p>
-          <div className="grid grid-cols-3 gap-4 items-end">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
             <Input
               label="Nome da Cor *"
               placeholder="Ex: Azul Marinho"
@@ -172,15 +170,14 @@ export function VariantsTab({
               error={errors.color_name?.message}
             />
             <div className="flex flex-col gap-1.5">
-              <label className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/40">
-                Hex da Cor *
+              <label className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/40">{"// "}Hex da Cor *
               </label>
               <div
                 className={clsx(
-                  "flex items-center bg-[#1a1a1a] border-2 transition-all duration-150",
+                  "flex items-center bg-[#0a0a0a] border-2 transition-all duration-150",
                   errors.color_hex
                     ? "border-red-500/60"
-                    : "border-[#FF00B6]/20 focus-within:border-[#FF00B6]",
+                    : "border-brand-pink/20 focus-within:border-brand-pink",
                 )}
               >
                 <Controller
@@ -199,15 +196,14 @@ export function VariantsTab({
                         value={field.value}
                         onChange={(e) => field.onChange(e.target.value)}
                         placeholder="#000000"
-                        className="flex-1 bg-transparent px-2 py-2.5 font-mono text-[12px] text-white outline-none placeholder:text-white/20"
+                        className="flex-1 bg-transparent px-2 py-2.5 font-mono text-[14px] text-white outline-none placeholder:text-white/20"
                       />
                     </>
                   )}
                 />
               </div>
               {errors.color_hex && (
-                <p className="font-mono text-[9px] uppercase tracking-wider text-red-400">
-                  {errors.color_hex.message}
+                <p className="font-mono text-[11px] uppercase tracking-wider text-red-400">{"// "}{errors.color_hex.message}
                 </p>
               )}
             </div>
@@ -220,16 +216,16 @@ export function VariantsTab({
                   onClick={() => field.onChange(!field.value)}
                   className={clsx(
                     "flex items-center gap-2 px-4 py-2.5 border-2 transition-all duration-150",
-                    "font-mono text-[9px] uppercase tracking-widest h-10.5",
+                    "font-mono text-[11px] uppercase tracking-widest h-10.5",
                     field.value
-                      ? "border-[#00F0FF]/40 text-[#00F0FF] bg-[#00F0FF]/8"
+                      ? "border-brand-pink/40 text-brand-pink bg-brand-pink/8"
                       : "border-white/10 text-white/30 hover:border-white/20",
                   )}
                 >
                   {field.value ? (
-                    <ToggleRight size={14} />
+                    <ToggleRight size={17} />
                   ) : (
-                    <ToggleLeft size={14} />
+                    <ToggleLeft size={17} />
                   )}
                   Em estoque
                 </button>
@@ -243,7 +239,7 @@ export function VariantsTab({
               size="sm"
               loading={isSubmitting || addMutation.isPending}
             >
-              <Plus size={11} />
+              <Plus size={14} />
               Adicionar
             </Button>
             <button
@@ -252,9 +248,8 @@ export function VariantsTab({
                 setShowAddForm(false);
                 reset();
               }}
-              className="font-mono text-[9px] uppercase tracking-widest text-white/25 hover:text-white/40 transition-colors"
-            >
-              Cancelar
+              className="font-mono text-[11px] uppercase tracking-widest text-white/25 hover:text-white/40 transition-colors"
+            >{"// "}Cancelar
             </button>
           </div>
         </form>
@@ -264,12 +259,12 @@ export function VariantsTab({
           onClick={() => setShowAddForm(true)}
           className={clsx(
             "w-full flex items-center justify-center gap-2 py-3",
-            "border border-dashed border-[#FF00B6]/20",
-            "font-mono text-[9px] uppercase tracking-widest text-[#FF00B6]/40",
-            "hover:text-[#FF00B6]/70 hover:border-[#FF00B6]/40 transition-all duration-150",
+            "border border-dashed border-brand-pink/20",
+            "font-mono text-[11px] uppercase tracking-widest text-brand-pink/40",
+            "hover:text-brand-pink/70 hover:border-brand-pink/40 transition-all duration-150",
           )}
         >
-          <Plus size={11} />
+          <Plus size={14} />
           Adicionar Cor
         </button>
       )}

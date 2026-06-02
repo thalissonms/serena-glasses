@@ -36,10 +36,10 @@ interface Props {
 }
 
 const inputCls =
-  "w-full bg-[#0f0f0f] border-2 border-[#FF00B6]/20 focus:border-[#FF00B6] text-white font-mono text-sm px-3 py-2 outline-none transition-colors placeholder:text-white/20";
-const labelCls = "block font-mono text-[10px] uppercase tracking-widest text-white/40 mb-1.5";
-const errorCls = "font-mono text-[10px] text-[#FF00B6] mt-1";
-const helperCls = "font-mono text-[10px] text-white/20 mt-1";
+  "w-full bg-[#050505] border-2 border-brand-pink/20 focus:border-brand-pink text-white font-mono text-base px-3 py-2 outline-none transition-colors placeholder:text-white/20";
+const labelCls = "block font-mono text-[12px] uppercase tracking-widest text-white/40 mb-1.5";
+const errorCls = "font-mono text-[12px] text-brand-pink mt-1";
+const helperCls = "font-mono text-[12px] text-white/20 mt-1";
 
 async function patchSetting(key: string, data: unknown) {
   const res = await fetch(`/api/admin/site-settings/${key}`, {
@@ -54,14 +54,12 @@ async function patchSetting(key: string, data: unknown) {
 }
 
 function AccordionPanel({
-  id,
   title,
   icon: Icon,
   isOpen,
   onToggle,
   children,
 }: {
-  id: string;
   title: string;
   icon: React.ElementType;
   isOpen: boolean;
@@ -69,7 +67,7 @@ function AccordionPanel({
   children: React.ReactNode;
 }) {
   return (
-    <div className="border-2 border-white/10 bg-[#1a1a1a] shadow-[4px_4px_0_#000]">
+    <div className="border border-white/10 bg-[#050505] shadow-[inset_0_0_15px_rgba(255,0,182,0.05)]">
       <button
         type="button"
         onClick={onToggle}
@@ -77,15 +75,15 @@ function AccordionPanel({
       >
         <div className="flex items-center gap-3">
           <Icon
-            size={16}
-            className={isOpen ? "text-[#FF00B6]" : "text-white/30"}
+            size={19}
+            className={isOpen ? "text-brand-pink" : "text-white/30"}
           />
-          <span className="font-mono text-xs uppercase tracking-widest text-white/70 font-semibold">
+          <span className="font-mono text-base uppercase tracking-widest text-white/70 font-semibold">
             {title}
           </span>
         </div>
         <ChevronDown
-          size={14}
+          size={17}
           className={`text-white/30 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
         />
       </button>
@@ -109,9 +107,9 @@ function ToggleField({
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
-        className="w-4 h-4 accent-[#FF00B6]"
+        className="w-4 h-4 accent-[var(--brand-pink)]"
       />
-      <span className="font-mono text-xs text-white/50 uppercase tracking-wider">{label}</span>
+      <span className="font-mono text-base text-white/50 uppercase tracking-wider">{label}</span>
     </label>
   );
 }
@@ -121,10 +119,10 @@ function SaveButton({ saving }: { saving: boolean }) {
     <button
       type="submit"
       disabled={saving}
-      className="flex items-center gap-2 bg-linear-to-r from-[#FF00B6] to-[#00F0FF] text-black font-mono text-[10px] font-bold uppercase tracking-widest px-4 py-2 border-2 border-black shadow-[3px_3px_0_#000] hover:-translate-x-px hover:-translate-y-px hover:shadow-[4px_4px_0_#000] transition-all disabled:opacity-50"
+      className="flex items-center gap-2 bg-brand-pink text-black font-mono text-[12px] font-bold uppercase tracking-widest px-4 py-2 border border-brand-pink hover:bg-brand-pink-light transition-all disabled:opacity-50 rounded-none"
     >
-      {saving ? <Loader2 size={11} className="animate-spin" /> : null}
-      {saving ? "Salvando…" : "Salvar"}
+      {saving ? <Loader2 size={14} className="animate-spin" /> : null}
+      {saving ? "[ SALVANDO... ]" : "[ SALVAR ]"}
     </button>
   );
 }
@@ -190,7 +188,7 @@ function FreeShippingPanel({ raw }: { raw: unknown }) {
         onChange={(v) => setValue("enabled", v)}
         label="Habilitado"
       />
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className={labelCls}>Valor mínimo (R$)</label>
           <input
@@ -209,7 +207,7 @@ function FreeShippingPanel({ raw }: { raw: unknown }) {
           {errors.label_pt && <p className={errorCls}>{errors.label_pt.message}</p>}
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className={labelCls}>Label EN</label>
           <input {...register("label_en")} className={inputCls} placeholder="Free shipping above R$299" />
@@ -286,7 +284,7 @@ function MaintenancePanel({ raw }: { raw: unknown }) {
         <input {...register("message_pt")} className={inputCls} placeholder="Site em manutenção. Voltamos em breve." />
         {errors.message_pt && <p className={errorCls}>{errors.message_pt.message}</p>}
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className={labelCls}>Mensagem EN</label>
           <input {...register("message_en")} className={inputCls} placeholder="Under maintenance." />
@@ -410,7 +408,7 @@ function WhatsappPanel({ raw }: { raw: unknown }) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <ToggleField checked={enabled} onChange={(v) => setValue("enabled", v)} label="Botão WhatsApp ativo" />
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className={labelCls}>Telefone (somente dígitos)</label>
           <input {...register("phone")} className={inputCls} placeholder="5511999999999" />
@@ -497,7 +495,7 @@ function PopupCapturePanel({ raw }: { raw: unknown }) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <ToggleField checked={enabled} onChange={(v) => setValue("enabled", v)} label="Pop-up ativo" />
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className={labelCls}>Título PT</label>
           <input {...register("title_pt")} className={inputCls} placeholder="Ganhe 10% OFF" />
@@ -518,7 +516,7 @@ function PopupCapturePanel({ raw }: { raw: unknown }) {
         <input {...register("description_pt")} className={inputCls} placeholder="Assine nossa newsletter e receba..." />
         {errors.description_pt && <p className={errorCls}>{errors.description_pt.message}</p>}
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className={labelCls}>Label botão primário PT</label>
           <input {...register("primary_label_pt")} className={inputCls} placeholder="Quero meu desconto" />
@@ -529,7 +527,7 @@ function PopupCapturePanel({ raw }: { raw: unknown }) {
           <input {...register("secondary_label_pt")} className={inputCls} placeholder="Não, obrigado" />
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {trigger === "delay" && (
           <div>
             <label className={labelCls}>Delay (ms)</label>
@@ -605,7 +603,7 @@ function InstallmentsBulkPanel({ raw }: { raw: unknown }) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <ToggleField checked={enabled} onChange={(v) => setValue("enabled", v)} label="Parcelamento em massa ativo" />
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className={labelCls}>Acima de (R$)</label>
           <input
@@ -687,18 +685,18 @@ function MelhorEnvioCard() {
 
   const statusColor =
     health?.connected
-      ? "#00F0FF"
+      ? "var(--brand-pink)"
       : !health?.connected
       ? "#FFD700"
-      : "#FF00B6";
+      : "var(--brand-pink)";
 
   return (
     <div className="space-y-4">
-      <div className="border-2 border-white/10 bg-[#1a1a1a] shadow-[4px_4px_0_#000]">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-white/5">
+      <div className="border border-brand-pink/30 bg-[#050505] shadow-[inset_0_0_15px_rgba(255,0,182,0.05)]">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 px-4 py-3 border-b border-white/5">
           <div className="flex items-center gap-2">
-            <Truck size={14} className="text-[#00F0FF]/60" />
-            <span className="font-mono text-[10px] uppercase tracking-widest text-white/50 font-semibold">
+            <Truck size={17} className="text-brand-pink/60" />
+            <span className="font-mono text-[12px] uppercase tracking-widest text-white/50 font-semibold">
               Melhor Envio
             </span>
           </div>
@@ -707,50 +705,50 @@ function MelhorEnvioCard() {
             disabled={loading}
             className="text-white/20 hover:text-white/50 transition-colors"
           >
-            <RefreshCw size={12} className={loading ? "animate-spin" : ""} />
+            <RefreshCw size={15} className={loading ? "animate-spin" : ""} />
           </button>
         </div>
         <div className="px-4 py-4">
           {loading ? (
             <div className="flex items-center gap-2">
-              <Loader2 size={14} className="text-white/20 animate-spin" />
-              <span className="font-mono text-[10px] text-white/20">Verificando…</span>
+              <Loader2 size={17} className="text-white/20 animate-spin" />
+              <span className="font-mono text-[12px] text-white/20">Verificando…</span>
             </div>
           ) : (
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 {health?.connected ? (
-                  <CheckCircle2 size={14} style={{ color: statusColor }} />
+                  <CheckCircle2 size={17} style={{ color: statusColor }} />
                 ) : (
-                  <XCircle size={14} style={{ color: statusColor }} />
+                  <XCircle size={17} style={{ color: statusColor }} />
                 )}
                 <span
-                  className="font-mono text-[11px] font-semibold uppercase tracking-wider"
+                  className="font-mono text-[13px] font-semibold uppercase tracking-wider"
                   style={{ color: statusColor }}
                 >
                   {health?.connected ? "Conectado" : !health?.connected && "Erro"}
                 </span>
               </div>
               {health?.message && (
-                <p className="font-mono text-[10px] text-white/30 leading-relaxed">
+                <p className="font-mono text-[12px] text-white/30 leading-relaxed">
                   {health.message}
                 </p>
               )}
               {!health?.connected && (
                 <Link
                   href="/api/admin/melhor-envio/oauth/start"
-                  className="inline-block font-mono text-[10px] uppercase tracking-widest border border-[#FFD700]/40 text-[#FFD700] px-3 py-1.5 hover:border-[#FFD700] transition-colors mt-1"
+                  className="inline-block font-mono text-[12px] uppercase tracking-widest border border-[#FFD700]/40 text-[#FFD700] px-3 py-1.5 hover:border-[#FFD700] transition-colors mt-1"
                 >
-                  Reconectar
+                  [ RECONECTAR ]
                 </Link>
               )}
               {/* {health?.quota && (
-                <p className="font-mono text-[10px] text-white/25">
+                <p className="font-mono text-[12px] text-white/25">
                   Quota: {health.quota.remaining}/{health.quota.limit}
                 </p>
               )}
               {health?.expires_at && (
-                <p className="font-mono text-[10px] text-white/20">
+                <p className="font-mono text-[12px] text-white/20">
                   Token expira:{" "}
                   {new Date(health.expires_at).toLocaleDateString("pt-BR")}
                 </p>
@@ -760,10 +758,10 @@ function MelhorEnvioCard() {
         </div>
       </div>
 
-      <div className="border-2 border-white/10 bg-[#1a1a1a] shadow-[4px_4px_0_#000]">
+      <div className="border border-brand-pink/30 bg-[#050505] shadow-[inset_0_0_15px_rgba(255,0,182,0.05)]">
         <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5">
-          <Send size={13} className="text-[#FF00B6]/60" />
-          <span className="font-mono text-[10px] uppercase tracking-widest text-white/50 font-semibold">
+          <Send size={16} className="text-brand-pink/60" />
+          <span className="font-mono text-[12px] uppercase tracking-widest text-white/50 font-semibold">
             Test Email
           </span>
         </div>
@@ -781,10 +779,10 @@ function MelhorEnvioCard() {
           <button
             type="submit"
             disabled={sending || !testEmail}
-            className="flex items-center gap-2 border-2 border-[#FF00B6]/40 text-[#FF00B6] font-mono text-[10px] uppercase tracking-widest px-4 py-2 hover:bg-[#FF00B6]/10 transition-colors disabled:opacity-30"
+            className="flex items-center gap-2 border-2 border-brand-pink/40 text-brand-pink font-mono text-[12px] uppercase tracking-widest px-4 py-2 hover:bg-brand-pink/10 transition-colors disabled:opacity-30"
           >
-            {sending ? <Loader2 size={11} className="animate-spin" /> : <Send size={11} />}
-            {sending ? "Enviando…" : "Enviar teste"}
+            {sending ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
+            {sending ? "[ ENVIANDO... ]" : "[ ENVIAR TESTE ]"}
           </button>
         </form>
       </div>
@@ -822,7 +820,7 @@ export default function SettingsClient({ settings }: Props) {
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-3 mb-6">
-        <Settings size={24} className="text-[#FF00B6]" />
+        <Settings size={24} className="text-brand-pink" />
         <h1 className="font-shrikhand text-3xl text-white tracking-wider">
           CONFIGURAÇÕES
         </h1>

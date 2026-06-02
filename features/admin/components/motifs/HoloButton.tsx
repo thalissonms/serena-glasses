@@ -20,17 +20,17 @@ export function HoloButton({ children, className, disabled, ...props }: Props) {
       {...props}
       disabled={disabled}
       className={clsx(
-        "inline-flex items-center justify-center gap-2",
+        "inline-flex items-center justify-center gap-2 rounded-none",
         "px-8 py-4 font-shrikhand text-lg uppercase tracking-widest text-black",
-        "bg-linear-to-r from-[#FF00B6] via-[#00F0FF] to-[#FFD700] bg-[length:300%_100%] animate-holo",
-        "shadow-[6px_6px_0_#00F0FF] hover:shadow-[3px_3px_0_#00F0FF] hover:translate-y-px",
-        "active:shadow-none active:translate-y-0.5",
+        "bg-linear-to-r from-[var(--brand-pink)] via-brand-pink to-[#FFD700] bg-[length:300%_100%] animate-holo",
+        "border border-brand-pink/30 shadow-[inset_0_0_15px_rgba(255,0,182,0.1)] hover:shadow-none hover:bg-brand-pink-light",
+        "active:shadow-none",
         "transition-all duration-150",
-        "disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none disabled:translate-y-0",
+        "disabled:opacity-40 disabled:cursor-not-allowed",
         className,
       )}
     >
-      {children}
+      [ {children} ]
     </button>
   );
 }

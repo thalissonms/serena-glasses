@@ -100,24 +100,24 @@ export default function SiteHightlight() {
 
     return (
         <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0">
                 <div>
                     <h1 className="font-shrikhand text-3xl tracking-wider text-white">SITE HIGHLIGHT</h1>
                 </div>
                 {!isEditing ? (
                     <button
                         onClick={() => setIsWarningModalOpen(true)}
-                        className="flex items-center gap-2 border-2 border-black bg-linear-to-r from-[#FF00B6] to-[#00F0FF] px-4 py-2 font-mono text-xs font-bold tracking-widest text-black uppercase shadow-[4px_4px_0_#000] transition-all hover:-translate-x-px hover:-translate-y-px hover:shadow-[5px_5px_0_#000]"
+                        className="flex items-center gap-2 border border-brand-pink bg-linear-to-r from-[var(--brand-pink)] to-brand-pink px-4 py-2 font-mono text-base font-bold tracking-widest text-black uppercase transition-colors hover:bg-brand-pink-light rounded-none"
                     >
                         {hasHighlight ? (
                             <>
-                                <ArrowLeftRight size={14} />
-                                Trocar Highlight
+                                <ArrowLeftRight size={17} />
+                                [ Trocar Highlight ]
                             </>
                         ) : (
                             <>
-                                <Plus size={14} />
-                                Adicionar Highlight
+                                <Plus size={17} />
+                                [ Adicionar Highlight ]
                             </>
                         )}
                     </button>
@@ -125,34 +125,34 @@ export default function SiteHightlight() {
                     <div className="flex gap-3">
                         <button
                             onClick={() => setIsEditing(false)}
-                            className="flex items-center gap-2 border border-white/20 px-4 py-2 font-mono text-xs tracking-widest text-white/50 uppercase transition-all hover:text-white"
+                            className="flex items-center gap-2 border border-white/20 px-4 py-2 font-mono text-base tracking-widest text-white/50 uppercase transition-all hover:text-white"
                         >
-                            <X size={14} />
+                            <X size={17} />
                             Cancelar
                         </button>
                         <button
                             onClick={handleSave}
                             disabled={updateMutation.isPending}
-                            className="flex items-center gap-2 border-2 border-black bg-linear-to-r from-[#FF00B6] to-[#00F0FF] px-4 py-2 font-mono text-xs font-bold tracking-widest text-black uppercase shadow-[4px_4px_0_#000] transition-all hover:-translate-x-px hover:-translate-y-px hover:shadow-[5px_5px_0_#000] disabled:opacity-50"
+                            className="flex items-center gap-2 border border-brand-pink bg-linear-to-r from-[var(--brand-pink)] to-brand-pink px-4 py-2 font-mono text-base font-bold tracking-widest text-black uppercase transition-colors hover:bg-brand-pink-light disabled:opacity-50 rounded-none"
                         >
-                            <Save size={14} />
-                            {updateMutation.isPending ? "Salvando..." : "Salvar"}
+                            <Save size={17} />
+                            [ {updateMutation.isPending ? "Salvando..." : "Salvar"} ]
                         </button>
                     </div>
                 )}
             </div>
 
             {isLoading ? (
-                <div className="border-2 border-dashed border-white/10 bg-[#0f0f0f] p-20 text-center animate-pulse">
-                    <div className="font-mono text-xs tracking-[0.4em] text-white/15 uppercase">
+                <div className="border-2 border-dashed border-white/10 bg-[#050505] p-20 text-center animate-pulse">
+                    <div className="font-mono text-base tracking-[0.4em] text-white/15 uppercase">
                         CARREGANDO...
                     </div>
                 </div>
             ) : isEditing ? (
-                <div className="grid grid-cols-2 gap-6 p-6 border-2 border-dashed border-[#FF00B6]/30 bg-[#0f0f0f]">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 border-2 border-dashed border-brand-pink/30 bg-[#050505]">
                     <div className="space-y-3">
-                        <div className="flex items-center gap-2 font-mono text-xs tracking-widest text-white/60 uppercase">
-                            <Sun size={14} className="text-[#00F0FF]" />
+                        <div className="flex items-center gap-2 font-mono text-base tracking-widest text-white/60 uppercase">
+                            <Sun size={17} className="text-brand-pink" />
                             Versão Claro
                         </div>
                         {previewLight ? (
@@ -167,9 +167,9 @@ export default function SiteHightlight() {
                                 />
                                 <button
                                     onClick={() => setPreviewLight(null)}
-                                    className="absolute top-2 right-2 bg-black/60 p-2 text-white/60 hover:text-[#FF00B6] transition-colors backdrop-blur-sm"
+                                    className="absolute top-2 right-2 bg-black/60 p-2 text-white/60 hover:text-brand-pink transition-colors backdrop-blur-sm"
                                 >
-                                    <Trash2 size={16} />
+                                    <Trash2 size={19} />
                                 </button>
                             </div>
                         ) : (
@@ -184,15 +184,15 @@ export default function SiteHightlight() {
                                 themeColor="cyan"
                             />
                         )}
-                        <p className="font-mono text-[9px] text-[#00F0FF]/50 uppercase tracking-widest mt-2 flex items-center gap-1.5">
-                            <AlertCircle size={10} />
+                        <p className="font-mono text-[11px] text-brand-pink/50 uppercase tracking-widest mt-2 flex items-center gap-1.5">
+                            <AlertCircle size={13} />
                             Resolução Recomendada: 1920x520
                         </p>
                     </div>
                     
                     <div className="space-y-3">
-                        <div className="flex items-center gap-2 font-mono text-xs tracking-widest text-white/60 uppercase">
-                            <Moon size={14} className="text-[#FF00B6]" />
+                        <div className="flex items-center gap-2 font-mono text-base tracking-widest text-white/60 uppercase">
+                            <Moon size={17} className="text-brand-pink" />
                             Versão Escuro
                         </div>
                         {previewDark ? (
@@ -207,9 +207,9 @@ export default function SiteHightlight() {
                                 />
                                 <button
                                     onClick={() => setPreviewDark(null)}
-                                    className="absolute top-2 right-2 bg-black/60 p-2 text-white/60 hover:text-[#FF00B6] transition-colors backdrop-blur-sm"
+                                    className="absolute top-2 right-2 bg-black/60 p-2 text-white/60 hover:text-brand-pink transition-colors backdrop-blur-sm"
                                 >
-                                    <Trash2 size={16} />
+                                    <Trash2 size={19} />
                                 </button>
                             </div>
                         ) : (
@@ -224,15 +224,15 @@ export default function SiteHightlight() {
                                 themeColor="pink"
                             />
                         )}
-                        <p className="font-mono text-[9px] text-[#FF00B6]/50 uppercase tracking-widest mt-2 flex items-center gap-1.5">
-                            <AlertCircle size={10} />
+                        <p className="font-mono text-[11px] text-brand-pink/50 uppercase tracking-widest mt-2 flex items-center gap-1.5">
+                            <AlertCircle size={13} />
                             Resolução Recomendada: 1920x520
                         </p>
                     </div>
                 </div>
             ) : !hasHighlight ? (
-                <div className="border-2 border-dashed border-white/10 bg-[#0f0f0f] p-20 text-center">
-                    <div className="font-mono text-xs tracking-[0.4em] text-white/15 uppercase">
+                <div className="border-2 border-dashed border-white/10 bg-[#050505] p-20 text-center">
+                    <div className="font-mono text-base tracking-[0.4em] text-white/15 uppercase">
                         NENHUM HIGHLIGHT ATIVO
                     </div>
                 </div>
@@ -267,11 +267,11 @@ export default function SiteHightlight() {
                             ) : null}
                         </div>
 
-                        <div className="flex items-center justify-between border-2 border-white/10 px-4 py-2.5 shadow-[4px_4px_0_#000] transition-all duration-150 hover:border-[#00F0FF]/30 mt-2 bg-[#111]">
+                        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 border border-brand-pink/30 px-4 py-2.5 shadow-[inset_0_0_15px_rgba(255,0,182,0.05)] transition-colors duration-150 hover:bg-[#050505] mt-2 bg-[#050505] rounded-none">
                             <div className="flex flex-wrap items-center gap-3">
-                                <span className={`inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest px-2 py-0.5 border border-[#00F0FF]/30 text-[#00F0FF] bg-[#00F0FF]/5`}>
-                                    <span className={`w-1.5 h-1.5 rounded-full bg-[#00F0FF] animate-pulse`} />
-                                    ATIVO AGORA
+                                <span className={`inline-flex items-center gap-1.5 font-mono text-[12px] uppercase tracking-widest px-2 py-0.5 border border-brand-pink/30 text-brand-pink bg-brand-pink/5`}>
+                                    <span className={`w-1.5 h-1.5 rounded-none bg-brand-pink animate-pulse`} />
+                                    {"//"} ATIVO AGORA
                                 </span>
                             </div>
 
@@ -279,10 +279,10 @@ export default function SiteHightlight() {
                                 <button
                                     onClick={handleDelete}
                                     disabled={updateMutation.isPending}
-                                    className="p-1.5 text-white/25 transition-colors hover:text-[#FF00B6] disabled:opacity-20"
+                                    className="p-1.5 text-white/25 transition-colors hover:text-brand-pink disabled:opacity-20"
                                     title="Deletar"
                                 >
-                                    <Trash2 size={13} />
+                                    <Trash2 size={16} />
                                 </button>
                             </div>
                         </div>
@@ -298,14 +298,14 @@ export default function SiteHightlight() {
             >
                 <div className="space-y-6">
                     <div className="flex flex-col gap-4">
-                        <p className="font-poppins text-sm text-white/70">
+                        <p className="font-poppins text-base text-white/70">
                             Para garantir a melhor qualidade visual na vitrine da loja, recomendamos fortemente que as imagens de Highlight tenham exatamente as dimensões de:
                         </p>
                         <div className="bg-[#111] border border-white/10 p-4 text-center">
-                            <span className="font-shrikhand text-2xl text-[#00F0FF] tracking-wider">
+                            <span className="font-shrikhand text-2xl text-brand-pink tracking-wider">
                                 1920 x 520
                             </span>
-                            <span className="block font-mono text-[10px] text-white/40 uppercase mt-2">Pixels (Largura x Altura)</span>
+                            <span className="block font-mono text-[12px] text-white/40 uppercase mt-2">Pixels (Largura x Altura)</span>
                         </div>
                     </div>
                     <div className="flex justify-end gap-3 border-t border-white/10 pt-4">

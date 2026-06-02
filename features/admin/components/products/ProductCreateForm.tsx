@@ -128,7 +128,7 @@ export default function ProductCreateForm({ categories }: Props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      <div className="flex border-b border-white/8 bg-[#1a1a1a]">
+      <div className="flex border-b border-white/8 bg-[#0a0a0a]">
         {TABS_CREATE.map((tab) => {
           const hasError =
             (tab.id === "details" && detailsHasError) ||
@@ -139,9 +139,9 @@ export default function ProductCreateForm({ categories }: Props) {
               type="button"
               onClick={() => setActiveTab(tab.id)}
               className={clsx(
-                "relative px-5 py-3 font-mono text-[9px] uppercase tracking-[0.2em] transition-colors duration-150 flex items-center gap-1.5",
+                "relative px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] transition-colors duration-150 flex items-center gap-1.5",
                 "after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5",
-                "after:bg-[#FF00B6] after:transition-transform after:duration-200 after:origin-left",
+                "after:bg-brand-pink after:transition-transform after:duration-200 after:origin-left",
                 "outline-none",
                 activeTab === tab.id
                   ? "text-white after:scale-x-100"
@@ -150,24 +150,23 @@ export default function ProductCreateForm({ categories }: Props) {
             >
               {tab.label}
               {hasError && (
-                <AlertCircle size={9} className="text-red-400 shrink-0" />
+                <AlertCircle size={12} className="text-red-400 shrink-0" />
               )}
             </button>
           );
         })}
       </div>
 
-      <div className="bg-[#141414] border border-white/5 border-t-0 p-6">
+      <div className="bg-[#0a0a0a] border border-white/5 border-t-0 p-6">
         <div className={clsx(activeTab !== "details" && "hidden")}>
-          <div className="flex items-center gap-2 mb-6 p-3 border border-[#00F0FF]/15 bg-[#00F0FF]/5">
-            <Sparkles size={11} className="text-[#00F0FF] shrink-0" />
-            <p className="font-mono text-[9px] uppercase tracking-widest text-[#00F0FF]/60">
-              O código SKU será gerado automaticamente após salvar — formato:
+          <div className="flex items-center gap-2 mb-6 p-3 border border-brand-pink/15 bg-brand-pink/5">
+            <Sparkles size={14} className="text-brand-pink shrink-0" />
+            <p className="font-mono text-[11px] uppercase tracking-widest text-brand-pink/60">{"// "}O código SKU será gerado automaticamente após salvar — formato:
               CAT-0001
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <Input
                 label="Nome *"
@@ -197,7 +196,7 @@ export default function ProductCreateForm({ categories }: Props) {
             </div>
           </div>
 
-          <div className="grid grid-cols-4 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
             <div>
               <Input
                 label="Preço (R$) *"
@@ -243,7 +242,7 @@ export default function ProductCreateForm({ categories }: Props) {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
               <Controller
                 name="category_id"
@@ -264,12 +263,11 @@ export default function ProductCreateForm({ categories }: Props) {
           <div className="mb-6">
             <div className="flex items-center gap-3 mb-3">
               <div className="h-px flex-1 bg-white/5" />
-              <span className="font-mono text-[8px] uppercase tracking-[0.3em] text-white/20">
-                Atributos Físicos
+              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/20">{"// "}Atributos Físicos
               </span>
               <div className="h-px flex-1 bg-white/5" />
             </div>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Controller
                 name="frame_shape"
                 control={control}
@@ -312,8 +310,7 @@ export default function ProductCreateForm({ categories }: Props) {
           <div>
             <div className="flex items-center gap-3 mb-3">
               <div className="h-px flex-1 bg-white/5" />
-              <span className="font-mono text-[8px] uppercase tracking-[0.3em] text-white/20">
-                Flags
+              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/20">{"// "}Flags
               </span>
               <div className="h-px flex-1 bg-white/5" />
             </div>
@@ -328,7 +325,7 @@ export default function ProductCreateForm({ categories }: Props) {
                       type="button"
                       onClick={() => field.onChange(!field.value)}
                       className={clsx(
-                        "px-4 py-2.5 font-mono text-[9px] uppercase tracking-widest border-2 transition-all duration-150",
+                        "px-4 py-2.5 font-mono text-[11px] uppercase tracking-widest border-2 transition-all duration-150",
                         !field.value &&
                           "border-white/10 text-white/25 hover:border-white/25 bg-transparent",
                       )}
@@ -376,8 +373,7 @@ export default function ProductCreateForm({ categories }: Props) {
 
             <div className="flex items-center gap-3">
               <div className="h-px flex-1 bg-white/5" />
-              <span className="font-mono text-[8px] uppercase tracking-[0.3em] text-white/20">
-                SEO
+              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/20">{"// "}SEO
               </span>
               <div className="h-px flex-1 bg-white/5" />
             </div>
@@ -392,24 +388,22 @@ export default function ProductCreateForm({ categories }: Props) {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/40">
-                Meta Descrição SEO
+              <label className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/40">{"// "}Meta Descrição SEO
               </label>
               <textarea
                 {...register("seo_description")}
                 rows={3}
                 placeholder="Descrição para resultados de busca (máx. 500)..."
                 className={clsx(
-                  "w-full bg-[#1a1a1a] border-2 border-[#FF00B6]/20 px-3 py-2.5",
-                  "font-mono text-[12px] text-white placeholder:text-white/20",
-                  "focus:border-[#FF00B6] focus:shadow-[0_0_8px_rgba(255,0,182,0.2)]",
+                  "w-full bg-[#0a0a0a] border-2 border-brand-pink/20 px-3 py-2.5",
+                  "font-mono text-[14px] text-white placeholder:text-white/20",
+                  "focus:border-brand-pink focus:shadow-[0_0_8px_rgba(255,0,182,0.2)]",
                   "focus:outline-none transition-all duration-150 resize-y",
                   errors.seo_description && "border-red-500/60",
                 )}
               />
               {errors.seo_description && (
-                <p className="font-mono text-[9px] uppercase tracking-wider text-red-400">
-                  {errors.seo_description.message}
+                <p className="font-mono text-[11px] uppercase tracking-wider text-red-400">{"// "}{errors.seo_description.message}
                 </p>
               )}
             </div>
@@ -424,11 +418,9 @@ export default function ProductCreateForm({ categories }: Props) {
               height={48}
               alt=""
             />
-            <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/25">
-              Disponível na edição do produto
+            <p className="font-mono text-[12px] uppercase tracking-[0.35em] text-white/25">{"// "}Disponível na edição do produto
             </p>
-            <p className="font-mono text-[9px] text-white/15 text-center max-w-xs leading-relaxed">
-              Após criar o produto, acesse a página de edição para fazer upload
+            <p className="font-mono text-[11px] text-white/15 text-center max-w-xs leading-relaxed">{"// "}Após criar o produto, acesse a página de edição para fazer upload
               de imagens e vídeos.
             </p>
           </div>
@@ -436,12 +428,11 @@ export default function ProductCreateForm({ categories }: Props) {
       </div>
 
       {/* Footer actions */}
-      <div className="flex items-center justify-between mt-6 pt-6 border-t border-white/5">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 mt-6 pt-6 border-t border-white/5">
         <Link
           href="/admin/products"
-          className="font-mono text-[9px] uppercase tracking-widest text-white/20 hover:text-white/40 transition-colors duration-150"
-        >
-          ← Cancelar
+          className="font-mono text-[11px] uppercase tracking-widest text-white/20 hover:text-white/40 transition-colors duration-150"
+        >{"// "}← Cancelar
         </Link>
         <Button
           type="submit"
@@ -450,7 +441,7 @@ export default function ProductCreateForm({ categories }: Props) {
           loading={createMutation.isPending}
         >
           Criar Produto
-          <ArrowRight size={13} />
+          <ArrowRight size={16} />
         </Button>
       </div>
     </form>

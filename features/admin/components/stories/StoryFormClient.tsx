@@ -75,12 +75,12 @@ interface Props {
 
 
 const inputCls =
-  "w-full bg-[#0f0f0f] border-2 border-[#FF00B6]/20 focus:border-[#FF00B6] text-white font-mono text-sm px-3 py-2 outline-none transition-colors placeholder:text-white/20";
-const labelCls = "block font-mono text-[10px] uppercase tracking-widest text-white/40 mb-1.5";
-const errorCls = "font-mono text-[10px] text-[#FF00B6] mt-1";
-const panelCls = "border-2 border-white/10 bg-[#1a1a1a] p-5 space-y-4";
+  "w-full bg-[#050505] border-2 border-brand-pink/20 focus:border-brand-pink text-white font-mono text-base px-3 py-2 outline-none transition-colors placeholder:text-white/20";
+const labelCls = "block font-mono text-[12px] uppercase tracking-widest text-white/40 mb-1.5";
+const errorCls = "font-mono text-[12px] text-brand-pink mt-1";
+const panelCls = "border-2 border-white/10 bg-[#0a0a0a] p-5 space-y-4";
 const panelTitleCls =
-  "font-mono text-[10px] uppercase tracking-[0.3em] text-[#00F0FF]/50 border-b border-white/5 pb-2 mb-1";
+  "font-mono text-[12px] uppercase tracking-[0.3em] text-brand-pink/50 border-b border-white/5 pb-2 mb-1";
 
 function CommonFields<T extends { display_order: number; active: boolean; starts_at?: string; ends_at?: string }>({
   register,
@@ -92,7 +92,7 @@ function CommonFields<T extends { display_order: number; active: boolean; starts
   return (
     <div className={panelCls}>
       <div className={panelTitleCls}>Agendamento</div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className={labelCls}>Início (opcional)</label>
           <input {...(register as (name: string) => object)("starts_at")} type="datetime-local" className={inputCls} />
@@ -116,9 +116,9 @@ function CommonFields<T extends { display_order: number; active: boolean; starts
         <input
           {...(register as (name: string) => object)("active")}
           type="checkbox"
-          className="h-4 w-4 accent-[#FF00B6]"
+          className="h-4 w-4 accent-[var(--brand-pink)]"
         />
-        <span className="font-mono text-xs tracking-wider text-white/50 uppercase">Ativo</span>
+        <span className="font-mono text-base tracking-wider text-white/50 uppercase">Ativo</span>
       </label>
     </div>
   );
@@ -157,7 +157,7 @@ function UploadWidget({
   return (
     <div className="space-y-2">
       {value ? (
-        <div className="relative max-w-[120px] border-2 border-[#00F0FF]/30 bg-[#0f0f0f] p-2">
+        <div className="relative max-w-[120px] border-2 border-brand-pink/30 bg-[#050505] p-2">
           {mediaType === "image" ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={value} alt="preview" className="aspect-9/16 w-full object-cover" />
@@ -169,9 +169,9 @@ function UploadWidget({
           <button
             type="button"
             onClick={() => onChange("")}
-            className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center bg-black/70 text-white/50 transition-colors hover:text-[#FF00B6]"
+            className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center bg-black/70 text-white/50 transition-colors hover:text-brand-pink"
           >
-            <X size={11} />
+            <X size={14} />
           </button>
         </div>
       ) : (
@@ -179,14 +179,14 @@ function UploadWidget({
           type="button"
           onClick={() => fileRef.current?.click()}
           disabled={uploading}
-          className="flex h-28 w-full flex-col items-center justify-center gap-2 border-2 border-dashed border-[#FF00B6]/25 bg-[#0f0f0f] transition-colors hover:border-[#FF00B6]/50 disabled:opacity-50"
+          className="flex h-28 w-full flex-col items-center justify-center gap-2 border-2 border-dashed border-brand-pink/25 bg-[#050505] transition-colors hover:border-brand-pink/50 disabled:opacity-50"
         >
           {uploading ? (
-            <Loader2 size={20} className="animate-spin text-[#FF00B6]" />
+            <Loader2 size={20} className="animate-spin text-brand-pink" />
           ) : (
-            <Upload size={20} className="text-[#FF00B6]/50" />
+            <Upload size={20} className="text-brand-pink/50" />
           )}
-          <span className="font-mono text-[10px] tracking-widest text-white/25 uppercase">
+          <span className="font-mono text-[12px] tracking-widest text-white/25 uppercase">
             {uploading ? "Enviando…" : `Clique para enviar ${mediaType === "image" ? "imagem" : "vídeo"}`}
           </span>
         </button>
@@ -220,7 +220,7 @@ function TextFieldsPanel({
         <input {...register("avatar_label")} className={`${inputCls} w-32 uppercase`} placeholder="NEW" maxLength={4} />
         {errors.avatar_label && <p className={errorCls}>{errors.avatar_label.message}</p>}
       </div>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <div>
           <label className={labelCls}>Título PT</label>
           <input {...register("title_pt")} className={inputCls} placeholder="Novidades" />
@@ -234,7 +234,7 @@ function TextFieldsPanel({
           <input {...register("title_es")} className={inputCls} placeholder="Novedades" />
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <div>
           <label className={labelCls}>Subtítulo PT</label>
           <input {...register("subtitle_pt")} className={inputCls} placeholder="Descubra a coleção" />
@@ -253,7 +253,7 @@ function TextFieldsPanel({
         <input {...register("cta_url")} className={inputCls} placeholder="https://serenaglasses.com.br/..." />
         {errors.cta_url && <p className={errorCls}>{errors.cta_url.message}</p>}
       </div>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <div>
           <label className={labelCls}>Label CTA PT</label>
           <input {...register("cta_label_pt")} className={inputCls} placeholder="Ver coleção" />
@@ -313,7 +313,7 @@ function CreateProductForm({ onSuccess }: { onSuccess: () => void }) {
         <div className={panelTitleCls}>Produto</div>
         <div>
           <label className={labelCls}>
-            <Package size={10} className="mr-1 inline" />
+            <Package size={13} className="mr-1 inline" />
             Código do produto *
           </label>
           <input
@@ -324,7 +324,7 @@ function CreateProductForm({ onSuccess }: { onSuccess: () => void }) {
           {errors.product_code && (
             <p className={errorCls}>{errors.product_code.message}</p>
           )}
-          <p className="mt-1 font-mono text-[10px] text-white/20">
+          <p className="mt-1 font-mono text-[12px] text-white/20">
             O código é convertido para maiúsculas automaticamente.
           </p>
         </div>
@@ -337,13 +337,12 @@ function CreateProductForm({ onSuccess }: { onSuccess: () => void }) {
 
 function CreateManualForm({ onSuccess }: { onSuccess: () => void }) {
   const [saving, setSaving] = useState(false);
-  const { register, handleSubmit, control, watch, setValue, formState: { errors } } = useForm<CreateManualData>({
+  const { register, handleSubmit, control, watch, formState: { errors } } = useForm<CreateManualData>({
     resolver: zodResolver(createManualSchema),
     defaultValues: { kind: "manual", media_type: "image", display_order: 0, active: true, media_url: "" },
   });
 
   const mediaType = watch("media_type");
-  const mediaUrl = watch("media_url");
 
   async function onSubmit(data: CreateManualData) {
     setSaving(true);
@@ -399,10 +398,10 @@ function CreateManualForm({ onSuccess }: { onSuccess: () => void }) {
                   {...register("media_type")}
                   type="radio"
                   value={t}
-                  className="accent-[#FF00B6]"
+                  className="accent-[var(--brand-pink)]"
                 />
-                <span className="flex items-center gap-1 font-mono text-xs tracking-wider text-white/50 uppercase">
-                  {t === "image" ? <ImageIcon size={12} /> : <VideoIcon size={12} />}
+                <span className="flex items-center gap-1 font-mono text-base tracking-wider text-white/50 uppercase">
+                  {t === "image" ? <ImageIcon size={15} /> : <VideoIcon size={15} />}
                   {t === "image" ? "Imagem" : "Vídeo"}
                 </span>
               </label>
@@ -434,7 +433,7 @@ function CreateManualForm({ onSuccess }: { onSuccess: () => void }) {
 
 function EditForm({ story, onSuccess }: { story: HomeStoryRow; onSuccess: () => void }) {
   const [saving, setSaving] = useState(false);
-  const { register, handleSubmit, control, watch, formState: { errors } } = useForm<EditData>({
+  const { register, handleSubmit, control, formState: { errors } } = useForm<EditData>({
     resolver: zodResolver(editSchema),
     defaultValues: {
       display_order: story.display_order,
@@ -501,8 +500,8 @@ function EditForm({ story, onSuccess }: { story: HomeStoryRow; onSuccess: () => 
         <div className={panelCls}>
           <div className={panelTitleCls}>Produto (imutável)</div>
           <div className="flex items-center gap-3 py-1">
-            <Package size={14} className="text-[#00F0FF]/50" />
-            <span className="font-mono text-xs text-white/40">
+            <Package size={17} className="text-brand-pink/50" />
+            <span className="font-mono text-base text-white/40">
               product_id: {story.product_id ?? "—"}
             </span>
           </div>
@@ -541,15 +540,15 @@ function SaveRow({ saving }: { saving: boolean }) {
       <button
         type="submit"
         disabled={saving}
-        className="flex items-center gap-2 border-2 border-black bg-linear-to-r from-[#FF00B6] to-[#00F0FF] px-5 py-2.5 font-mono text-xs font-bold tracking-widest text-black uppercase shadow-[4px_4px_0_#000] transition-all hover:-translate-x-px hover:-translate-y-px hover:shadow-[5px_5px_0_#000] disabled:cursor-not-allowed disabled:opacity-50"
+        className="flex items-center gap-2 border border-brand-pink bg-linear-to-r from-[var(--brand-pink)] to-brand-pink px-5 py-2.5 font-mono text-base font-bold tracking-widest text-black uppercase transition-colors hover:bg-brand-pink-light disabled:cursor-not-allowed disabled:opacity-50 rounded-none"
       >
-        <Save size={13} />
-        {saving ? "Salvando…" : "Salvar Story"}
+        <Save size={16} />
+        [ {saving ? "Salvando…" : "Salvar Story"} ]
       </button>
       <button
         type="button"
         onClick={() => router.back()}
-        className="border border-white/10 px-4 py-2.5 font-mono text-xs tracking-widest text-white/30 uppercase transition-colors hover:border-white/20 hover:text-white/60"
+        className="border border-white/10 px-4 py-2.5 font-mono text-base tracking-widest text-white/30 uppercase transition-colors hover:border-white/20 hover:text-white/60"
       >
         Cancelar
       </button>
@@ -578,11 +577,11 @@ export default function StoryFormClient({ story }: Props) {
         </button>
         <div>
           <h1 className="font-shrikhand flex items-center gap-3 text-3xl tracking-wider text-white">
-            <PlaySquare size={24} className="text-[#FF00B6]" />
+            <PlaySquare size={24} className="text-brand-pink" />
             {isEdit ? "Editar Story" : "Novo Story"}
           </h1>
           {isEdit && (
-            <p className="mt-1 font-mono text-[10px] tracking-widest text-white/25 uppercase">
+            <p className="mt-1 font-mono text-[12px] tracking-widest text-white/25 uppercase">
               kind: {story.kind} — ID: {story.id.slice(0, 8)}…
             </p>
           )}
@@ -593,14 +592,14 @@ export default function StoryFormClient({ story }: Props) {
         <EditForm story={story} onSuccess={handleSuccess} />
       ) : (
         <>
-          <div className="border-2 border-white/10 bg-[#1a1a1a] p-4">
+          <div className="border-2 border-white/10 bg-[#0a0a0a] p-4">
             <div className={panelTitleCls}>Tipo de story</div>
             <div className="mt-3 flex gap-6">
               {(["manual", "product"] as const).map((k) => (
                 <label
                   key={k}
                   className={`flex items-center gap-2.5 cursor-pointer select-none px-3 py-2 border-2 transition-colors ${selectedKind === k
-                    ? "border-[#FF00B6]/60 bg-[#FF00B6]/5 text-white"
+                    ? "border-brand-pink/60 bg-brand-pink/5 text-white"
                     : "border-white/10 text-white/30 hover:border-white/20"
                     }`}
                 >
@@ -610,14 +609,14 @@ export default function StoryFormClient({ story }: Props) {
                     value={k}
                     checked={selectedKind === k}
                     onChange={() => setSelectedKind(k)}
-                    className="accent-[#FF00B6]"
+                    className="accent-[var(--brand-pink)]"
                   />
                   {k === "manual" ? (
-                    <ImageIcon size={14} />
+                    <ImageIcon size={17} />
                   ) : (
-                    <Package size={14} />
+                    <Package size={17} />
                   )}
-                  <span className="font-mono text-xs tracking-wider uppercase">
+                  <span className="font-mono text-base tracking-wider uppercase">
                     {k === "manual" ? "Manual (mídia)" : "Produto"}
                   </span>
                 </label>

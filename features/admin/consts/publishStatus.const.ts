@@ -2,9 +2,9 @@ import { PublishStatus } from "../types/shared/publishStatus.type";
 
 export const PUBLISH_STATUS_CONFIG: Record<PublishStatus, { dot: string; label: string; cls: string }> = {
     live: {
-        dot: "bg-[#00F0FF]",
+        dot: "bg-brand-pink",
         label: "Ativo",
-        cls: "border-[#00F0FF]/40 text-[#00F0FF] shadow-[0_0_8px_#00F0FF30]",
+        cls: "border-brand-pink/40 text-brand-pink shadow-[0_0_8px_brand-pink30]",
     },
     scheduled: {
         dot: "bg-[#FFD700]",

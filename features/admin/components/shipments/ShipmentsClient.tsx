@@ -10,7 +10,7 @@
  * Usado em: src/app/admin/shipments/page.tsx.
  */
 import { useState, useMemo } from "react";
-import { fmtDate, fmtDateTime } from "../../utils/formatDate";
+import { fmtDateTime } from "../../utils/formatDate";
 import { Truck, Search, ChevronDown, ChevronRight, Clock, Package, CheckCircle, AlertTriangle, XCircle, MapPin } from "lucide-react";
 import { DevBadge } from "@features/admin/components/motifs/DevBadge";
 import { AsciiEmpty } from "@features/admin/components/motifs/AsciiEmpty";
@@ -39,9 +39,9 @@ interface Props {
 }
 
 const ME_STATUS_LABELS: Record<string, { label: string; color: string; bg: string; icon: typeof Truck }> = {
-  posted: { label: "Postado", color: "text-[#00F0FF]", bg: "bg-[#00F0FF]/10 border-[#00F0FF]/30", icon: Package },
+  posted: { label: "Postado", color: "text-brand-pink", bg: "bg-brand-pink/10 border-brand-pink/30", icon: Package },
   in_transit: { label: "Em Trânsito", color: "text-[#FFD700]", bg: "bg-[#FFD700]/10 border-[#FFD700]/30", icon: Truck },
-  out_for_delivery: { label: "Saiu p/ Entrega", color: "text-[#FF00B6]", bg: "bg-[#FF00B6]/10 border-[#FF00B6]/30", icon: MapPin },
+  out_for_delivery: { label: "Saiu p/ Entrega", color: "text-brand-pink", bg: "bg-brand-pink/10 border-brand-pink/30", icon: MapPin },
   delivered: { label: "Entregue", color: "text-emerald-400", bg: "bg-emerald-400/10 border-emerald-400/30", icon: CheckCircle },
   failed: { label: "Falha", color: "text-red-400", bg: "bg-red-400/10 border-red-400/30", icon: XCircle },
   exception: { label: "Exceção", color: "text-orange-400", bg: "bg-orange-400/10 border-orange-400/30", icon: AlertTriangle },
@@ -61,8 +61,8 @@ function StatusBadge({ status }: { status: string }) {
   const meta = getStatusMeta(status);
   const Icon = meta.icon;
   return (
-    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest border ${meta.bg} ${meta.color}`}>
-      <Icon size={9} />
+    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 font-mono text-[11px] uppercase tracking-widest border ${meta.bg} ${meta.color}`}>
+      <Icon size={12} />
       {meta.label}
     </span>
   );
@@ -72,11 +72,9 @@ function StatusBadge({ status }: { status: string }) {
 
 function TimelineRow({ timeline }: { timeline: OrderTimeline }) {
   const [expanded, setExpanded] = useState(false);
-  const lastMeta = getStatusMeta(timeline.last_status);
-  const LastIcon = lastMeta.icon;
-
+  
   return (
-    <div className="border border-white/5 bg-[#141414] shadow-[inset_1px_1px_0_rgba(255,255,255,0.03)]">
+    <div className="border border-white/5 bg-[#050505] hover:border-brand-pink/30 transition-colors shadow-[inset_0_0_15px_rgba(255,0,182,0.05)]">
       {/* Order header */}
       <button
         type="button"
@@ -84,21 +82,21 @@ function TimelineRow({ timeline }: { timeline: OrderTimeline }) {
         className="w-full flex items-center gap-4 px-5 py-3.5 text-left hover:bg-white/2 transition-colors group"
       >
         <span className={`shrink-0 transition-transform ${expanded ? "rotate-90" : ""}`}>
-          <ChevronRight size={13} className="text-white/25 group-hover:text-white/50" />
+          <ChevronRight size={16} className="text-white/25 group-hover:text-white/50" />
         </span>
-        <span className="font-mono text-[11px] text-[#00F0FF]/70 shrink-0 w-28">
+        <span className="font-mono text-[13px] text-brand-pink/70 shrink-0 w-28">
           #{timeline.order_number}
         </span>
-        <span className="font-mono text-[10px] text-white/30 flex-1 min-w-0 truncate">
+        <span className="font-mono text-[12px] text-white/30 flex-1 min-w-0 truncate">
           {timeline.user_email ?? "—"}
         </span>
         <span className="shrink-0">
           <StatusBadge status={timeline.last_status} />
         </span>
-        <span className="font-mono text-[9px] text-white/20 shrink-0">
+        <span className="font-mono text-[11px] text-white/20 shrink-0">
           {fmtDateTime(timeline.last_updated)}
         </span>
-        <span className="font-mono text-[9px] text-white/20 shrink-0 w-16 text-right">
+        <span className="font-mono text-[11px] text-white/20 shrink-0 w-16 text-right">
           {timeline.events.length} evento{timeline.events.length !== 1 ? "s" : ""}
         </span>
       </button>
@@ -118,20 +116,20 @@ function TimelineRow({ timeline }: { timeline: OrderTimeline }) {
                     <span className="absolute left-3 top-5 bottom-0 w-px bg-white/6" />
                   )}
                   {/* Node */}
-                  <div className="relative z-10 shrink-0 flex items-center justify-center w-6 h-6 mt-1.5 border border-white/10 bg-[#0f0f0f]"
+                  <div className="relative z-10 shrink-0 flex items-center justify-center w-6 h-6 mt-1.5 border border-white/10 bg-[#050505]"
                     style={{ boxShadow: isLast ? `0 0 8px ${meta.color.replace("text-", "").replace("[", "").replace("]", "")}22` : "none" }}>
-                    <Icon size={10} className={meta.color} />
+                    <Icon size={13} className={meta.color} />
                   </div>
                   {/* Content */}
                   <div className="flex-1 min-w-0 pb-4">
                     <div className="flex items-center gap-3 mb-1">
                       <StatusBadge status={evt.me_status} />
-                      <span className="font-mono text-[9px] text-white/20">
+                      <span className="font-mono text-[11px] text-white/20">
                         {fmtDateTime(evt.created_at)}
                       </span>
                     </div>
                     {evt.message && (
-                      <p className="font-mono text-[10px] text-white/40 leading-relaxed">
+                      <p className="font-mono text-[12px] text-white/40 leading-relaxed">
                         {evt.message}
                       </p>
                     )}
@@ -174,26 +172,26 @@ export function ShipmentsClient({ timelines }: Props) {
       <div className="flex flex-col gap-2">
         <DevBadge />
         <div className="flex items-center gap-3">
-          <Truck size={18} className="text-[#FF00B6]" />
+          <Truck size={18} className="text-brand-pink" />
           <h1 className="font-shrikhand text-2xl text-white tracking-wide">
             Rastreamento de Envios
           </h1>
         </div>
-        <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/25">
-          {timelines.length} pedido{timelines.length !== 1 ? "s" : ""} com eventos de rastreamento
+        <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/25">
+          {"// "} {timelines.length} pedido{timelines.length !== 1 ? "s" : ""} com eventos de rastreamento
         </p>
       </div>
 
       {/* KPI strip */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
         {[
           { label: "Total", value: counts.all ?? 0, color: "text-white/60" },
           { label: "Em Trânsito", value: counts.in_transit ?? 0, color: "text-[#FFD700]" },
-          { label: "Saiu p/ Entrega", value: counts.out_for_delivery ?? 0, color: "text-[#FF00B6]" },
+          { label: "Saiu p/ Entrega", value: counts.out_for_delivery ?? 0, color: "text-brand-pink" },
           { label: "Entregue", value: counts.delivered ?? 0, color: "text-emerald-400" },
         ].map((kpi) => (
-          <div key={kpi.label} className="border border-white/5 bg-[#141414] px-5 py-4 shadow-[inset_1px_1px_0_rgba(255,255,255,0.03)]">
-            <p className="font-mono text-[8px] uppercase tracking-[0.3em] text-white/25 mb-1">{kpi.label}</p>
+          <div key={kpi.label} className="border border-brand-pink/30 bg-[#050505] px-5 py-4 shadow-[inset_0_0_15px_rgba(255,0,182,0.05)]">
+            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/25 mb-1">{"// "} {kpi.label}</p>
             <p className={`font-mono text-2xl ${kpi.color}`}>{kpi.value}</p>
           </div>
         ))}
@@ -202,27 +200,27 @@ export function ShipmentsClient({ timelines }: Props) {
       {/* Filters */}
       <div className="flex items-center gap-3">
         <div className="relative flex-1 max-w-sm">
-          <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none" />
           <input
             type="text"
             placeholder="Buscar por número do pedido..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 bg-[#0f0f0f] border border-white/8 focus:border-[#FF00B6]/40 font-mono text-[11px] text-white/70 placeholder:text-white/20 outline-none transition-colors"
+            className="w-full pl-9 pr-4 py-2 bg-[#050505] border border-white/8 focus:border-brand-pink/40 font-mono text-[13px] text-white/70 placeholder:text-white/20 outline-none transition-colors"
           />
         </div>
         <div className="relative">
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="appearance-none pl-3 pr-8 py-2 bg-[#0f0f0f] border border-white/8 focus:border-[#00F0FF]/40 font-mono text-[11px] text-white/50 outline-none transition-colors cursor-pointer"
+            className="appearance-none pl-3 pr-8 py-2 bg-[#050505] border border-white/8 focus:border-brand-pink/40 font-mono text-[13px] text-white/50 outline-none transition-colors cursor-pointer"
           >
             <option value="all">Todos os status</option>
             {ALL_STATUSES.map((s) => (
               <option key={s} value={s}>{ME_STATUS_LABELS[s].label}</option>
             ))}
           </select>
-          <ChevronDown size={11} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none" />
+          <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none" />
         </div>
       </div>
 
@@ -240,8 +238,8 @@ export function ShipmentsClient({ timelines }: Props) {
         </div>
       )}
 
-      <p className="font-mono text-[8px] text-white/12 text-center uppercase tracking-[0.3em]">
-        {filtered.length} pedido{filtered.length !== 1 ? "s" : ""} exibidos — clique para expandir timeline
+      <p className="font-mono text-[10px] text-white/12 text-center uppercase tracking-[0.3em]">
+        {"// "} {filtered.length} pedido{filtered.length !== 1 ? "s" : ""} exibidos — clique para expandir timeline
       </p>
     </div>
   );

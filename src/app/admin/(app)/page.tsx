@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Page: AdminV2Dashboard — painel de controle principal do admin.
  *
  * Row 1: tira de métricas (receita/pedidos/AOV/clientes) com seletor Hoje/7d/30d/Total.
@@ -46,10 +46,10 @@ export default async function AdminV2Dashboard() {
     <div className="flex flex-col gap-5">
       <div className="flex items-start justify-between gap-4">
         <div className="flex flex-col mb-4 mt-2">
-          <span className="font-shrikhand text-[32px] text-white leading-none tracking-wide">
+          <span className="font-poppins text-[32px] text-white leading-none tracking-wide">
             Dashboard
           </span>
-          <span className="font-mono text-[16px] uppercase tracking-[0.3em] text-brand-pink-light/60 mt-2">
+          <span className="font-mono text-[18px] uppercase tracking-[0.3em] text-brand-pink-light/60 mt-2">
             Serena Admin · Sistema Operacional
           </span>
         </div>
@@ -65,7 +65,7 @@ export default async function AdminV2Dashboard() {
                 style={{ boxShadow: "0 0 6px #FFD700" }}
                 aria-hidden="true"
               />
-              <span className="font-mono text-[8px] uppercase tracking-wider text-brand-yellow">
+              <span className="font-mono text-[10px] uppercase tracking-wider text-brand-yellow">
                 {data.pendingCount}{" "}
                 {data.pendingCount === 1 ? "pendente" : "pendentes"}
               </span>
@@ -78,7 +78,7 @@ export default async function AdminV2Dashboard() {
                 style={{ boxShadow: "0 0 5px #FF3355" }}
                 aria-hidden="true"
               />
-              <span className="font-mono text-[8px] uppercase tracking-wider text-[#FF3355]/80">
+              <span className="font-mono text-[10px] uppercase tracking-wider text-[#FF3355]/80">
                 {lowStockCount} estoque baixo
               </span>
             </span>
@@ -97,7 +97,7 @@ export default async function AdminV2Dashboard() {
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         <section
-          className="bg-[#141414] border border-white/8 relative overflow-hidden shadow-[4px_4px_0px] shadow-gray-500"
+          className="bg-[#050505] border border-brand-pink/20 relative overflow-hidden shadow-[inset_0_0_15px_rgba(255,0,182,0.05)]"
           aria-label="Últimos pedidos"
         >
           <div
@@ -110,12 +110,12 @@ export default async function AdminV2Dashboard() {
           />
           <div className="relative z-10 p-5">
             <div className="flex items-center justify-between mb-4">
-              <p className="font-mono text-[8px] uppercase tracking-[0.35em] text-white/40">
+              <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/40">
                 Últimos Pedidos
               </p>
               <Link
                 href="/admin/orders"
-                className="font-mono text-[12px] uppercase tracking-wider text-brand-blue/60 hover:text-brand-blue transition-colors"
+                className="font-mono text-[14px] uppercase tracking-wider text-brand-blue/60 hover:text-brand-blue transition-colors"
               >
                 Ver todos →
               </Link>
@@ -125,7 +125,7 @@ export default async function AdminV2Dashboard() {
         </section>
 
         <section
-          className="bg-[#141414] border border-white/8 relative shadow-[4px_4px_0px] shadow-gray-500 overflow-hidden"
+          className="bg-[#050505] border border-brand-pink/20 relative shadow-[inset_0_0_15px_rgba(255,0,182,0.05)] overflow-hidden"
           aria-label="Alertas de estoque"
         >
           <div
@@ -138,7 +138,7 @@ export default async function AdminV2Dashboard() {
           />
           <div className="relative z-10 p-5">
             <div className="flex items-center justify-between mb-4">
-              <p className="font-mono text-[8px] uppercase tracking-[0.35em] text-white/40">
+              <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/40">
                 Estoque Baixo
               </p>
               <span className="font-mono text-4 text-white/25">
@@ -151,7 +151,7 @@ export default async function AdminV2Dashboard() {
       </div>
 
       <div
-        className="bg-[#141414] border border-white/8 p-5 shadow-[4px_4px_0px] shadow-blue-900 relative overflow-hidden"
+        className="bg-[#050505] border border-brand-pink/20 p-5 shadow-[inset_0_0_15px_rgba(255,0,182,0.05)] relative overflow-hidden"
       >
         <div
           className="absolute inset-0 pointer-events-none"

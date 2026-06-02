@@ -22,9 +22,9 @@ interface Props {
 }
 
 const dateInputClass = [
-  "bg-[#1a1a1a] border-2 border-[#FF00B6]/20 px-3 py-2.5",
-  "font-mono text-[11px] text-white outline-none transition-all duration-150",
-  "focus:border-[#FF00B6] focus:shadow-[0_0_8px_rgba(255,0,182,0.2)]",
+  "bg-[#0a0a0a] border-2 border-brand-pink/20 px-3 py-2.5",
+  "font-mono text-[13px] text-white outline-none transition-all duration-150",
+  "focus:border-brand-pink focus:shadow-[0_0_8px_rgba(255,0,182,0.2)]",
   "[color-scheme:dark]",
 ].join(" ");
 
@@ -40,7 +40,7 @@ export function DateRangePicker({ value, onChange, label, className }: Props) {
   return (
     <div className={`flex flex-col gap-1.5 ${className ?? ""}`}>
       {label && (
-        <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/40 select-none">
+        <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/40 select-none">
           {label}
         </span>
       )}
@@ -51,7 +51,7 @@ export function DateRangePicker({ value, onChange, label, className }: Props) {
           onChange={handleFrom}
           className={dateInputClass}
         />
-        <span className="font-mono text-[10px] text-white/20 select-none">›</span>
+        <span className="font-mono text-[12px] text-white/20 select-none">›</span>
         <input
           type="date"
           value={value.to}

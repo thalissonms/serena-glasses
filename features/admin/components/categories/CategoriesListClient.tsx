@@ -45,7 +45,7 @@ import type {
   CategoryWithSubs,
   SubcategoryRow,
 } from "@features/categories/types/category.types";
-import { ALLOWED_CATEGORY_ICONS } from "@/features/admin/consts/categoryIcons.const";
+import { ALLOWED_CATEGORY_ICONS } from "@features/admin/consts/categoryIcons.const";
 import { DynamicLucideIcon } from "@shared/components/DynamicLucideIcon";
 import { Button } from "@features/admin/components/primitives/Button";
 import { Input } from "@features/admin/components/primitives/Input";
@@ -98,12 +98,12 @@ function IconPickerModal({
             className={clsx(
               "flex flex-col items-center gap-1.5 p-3 border-2 transition-all duration-150",
               value === icon
-                ? "border-[#FF00B6]/60 bg-[#FF00B6]/10 text-[#FF00B6] shadow-[0_0_8px_rgba(255,0,182,0.2)]"
-                : "border-white/8 bg-[#141414] text-white/40 hover:border-white/20 hover:text-white/70",
+                ? "border-brand-pink/60 bg-brand-pink/10 text-brand-pink shadow-[0_0_8px_rgba(255,0,182,0.2)]"
+                : "border-white/8 bg-[#0a0a0a] text-white/40 hover:border-white/20 hover:text-white/70",
             )}
           >
             <DynamicLucideIcon name={icon} size={18} />
-            <span className="font-mono text-[7px] uppercase tracking-wider truncate w-full text-center">
+            <span className="font-mono text-[9px] uppercase tracking-wider truncate w-full text-center">
               {icon}
             </span>
           </button>
@@ -199,13 +199,12 @@ function CategoryCreateForm({ onCancel }: { onCancel: () => void }) {
       <form
         onSubmit={handleSubmit(onSubmit)}
         noValidate
-        className="border border-[#FF00B6]/20 bg-[#0f0f0f] p-5 space-y-4"
+        className="border border-brand-pink/20 bg-[#050505] p-5 space-y-4"
       >
-        <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-[#FF00B6]/60">
-          Nova Categoria
+        <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-brand-pink/60">{"// "}Nova Categoria
         </p>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
             label="Nome PT *"
             placeholder="Ex: Óculos de Sol"
@@ -231,31 +230,28 @@ function CategoryCreateForm({ onCancel }: { onCancel: () => void }) {
           />
         </div>
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="flex flex-col gap-1.5">
-            <label className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/40">
-              Ícone *
+            <label className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/40">{"// "}Ícone *
             </label>
             <button
               type="button"
               onClick={() => setIconPickerOpen(true)}
-              className="flex items-center gap-2.5 px-3 py-2.5 bg-[#1a1a1a] border-2 border-[#FF00B6]/20 hover:border-[#FF00B6]/50 transition-colors"
+              className="flex items-center gap-2.5 px-3 py-2.5 bg-[#0a0a0a] border-2 border-brand-pink/20 hover:border-brand-pink/50 transition-colors"
             >
               <DynamicLucideIcon
                 name={iconValue}
-                size={16}
-                className="text-[#FF00B6]/70 shrink-0"
+                size={19}
+                className="text-brand-pink/70 shrink-0"
               />
-              <span className="font-mono text-[10px] text-white/50 flex-1 text-left">
-                {iconValue}
+              <span className="font-mono text-[12px] text-white/50 flex-1 text-left">{"// "}{iconValue}
               </span>
-              <span className="font-mono text-[7px] uppercase tracking-widest text-white/20">
+              <span className="font-mono text-[9px] uppercase tracking-widest text-white/20">
                 Trocar
               </span>
             </button>
             {errors.icon_name && (
-              <p className="font-mono text-[9px] text-red-400">
-                {errors.icon_name.message}
+              <p className="font-mono text-[11px] text-red-400">{"// "}{errors.icon_name.message}
               </p>
             )}
           </div>
@@ -291,15 +287,14 @@ function CategoryCreateForm({ onCancel }: { onCancel: () => void }) {
             size="sm"
             loading={isSubmitting}
           >
-            <Plus size={11} />
+            <Plus size={14} />
             Criar e Editar
           </Button>
           <button
             type="button"
             onClick={onCancel}
-            className="font-mono text-[9px] uppercase tracking-widest text-white/25 hover:text-white/40 transition-colors"
-          >
-            Cancelar
+            className="font-mono text-[11px] uppercase tracking-widest text-white/25 hover:text-white/40 transition-colors"
+          >{"// "}Cancelar
           </button>
         </div>
       </form>
@@ -337,8 +332,8 @@ function SortableSubRow({
       }}
       className={clsx(
         "flex items-center gap-3 pl-12 pr-3 py-2.5",
-        "border-b border-white/4 bg-[#0f0f0f] group",
-        "hover:bg-[#131313] transition-colors",
+        "border-b border-white/4 bg-[#050505] group",
+        "hover:bg-[#0a0a0a] transition-colors",
         isDragging && "shadow-[0_0_12px_rgba(255,0,182,0.1)]",
       )}
     >
@@ -348,10 +343,10 @@ function SortableSubRow({
         {...listeners}
         className="text-white/12 hover:text-white/30 cursor-grab active:cursor-grabbing transition-colors shrink-0"
       >
-        <GripVertical size={11} />
+        <GripVertical size={14} />
       </button>
       <span className="w-px h-3 bg-white/8 shrink-0" />
-      <span className="flex-1 font-poppins text-[12px] text-white/45 truncate">
+      <span className="flex-1 font-poppins text-[14px] text-white/45 truncate">
         {sub.name_pt}
       </span>
       <button
@@ -360,18 +355,18 @@ function SortableSubRow({
         className={clsx(
           "flex items-center transition-colors shrink-0",
           sub.active
-            ? "text-[#00F0FF]/50 hover:text-[#00F0FF]"
+            ? "text-brand-pink/50 hover:text-brand-pink"
             : "text-white/15 hover:text-white/35",
         )}
       >
-        {sub.active ? <ToggleRight size={13} /> : <ToggleLeft size={13} />}
+        {sub.active ? <ToggleRight size={16} /> : <ToggleLeft size={16} />}
       </button>
       <button
         type="button"
         onClick={() => onDelete(sub.id, sub.name_pt)}
         className="text-red-500/20 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100 shrink-0"
       >
-        <Trash2 size={10} />
+        <Trash2 size={13} />
       </button>
     </div>
   );
@@ -496,13 +491,13 @@ function SortableCategoryRow({
               loading={deletingSubbing}
               onClick={confirmSubDelete}
             >
-              <Trash2 size={11} />
+              <Trash2 size={14} />
               Remover
             </Button>
           </>
         }
       >
-        <p className="font-mono text-[11px] text-white/60">
+        <p className="font-mono text-[13px] text-white/60">
           Remover{" "}
           <span className="text-white font-bold">{deleteSubTarget?.name}</span>
           ?
@@ -517,7 +512,7 @@ function SortableCategoryRow({
           {...listeners}
           className="text-white/15 hover:text-white/35 cursor-grab active:cursor-grabbing transition-colors shrink-0"
         >
-          <GripVertical size={14} />
+          <GripVertical size={17} />
         </button>
 
         <button
@@ -526,31 +521,30 @@ function SortableCategoryRow({
           className="text-white/25 hover:text-white/55 transition-colors shrink-0"
         >
           {expanded ? (
-            <ChevronDown size={12} />
+            <ChevronDown size={15} />
           ) : (
-            <ChevronRight size={12} />
+            <ChevronRight size={15} />
           )}
         </button>
 
-        <div className="shrink-0 w-5 h-5 flex items-center justify-center text-[#FF00B6]/55">
-          <DynamicLucideIcon name={category.icon_name} size={16} />
+        <div className="shrink-0 w-5 h-5 flex items-center justify-center text-brand-pink/55">
+          <DynamicLucideIcon name={category.icon_name} size={19} />
         </div>
 
-        <span className="flex-1 font-poppins font-semibold text-[13px] text-white truncate">
+        <span className="flex-1 font-poppins font-semibold text-[15px] text-white truncate">
           {category.name_pt}
         </span>
 
         {subs.length > 0 && (
-          <span className="font-mono text-[8px] text-white/18 shrink-0">
-            {subs.length} sub{subs.length > 1 ? "s" : ""}
+          <span className="font-mono text-[10px] text-white/18 shrink-0">{"// "}{subs.length} sub{subs.length > 1 ? "s" : ""}
           </span>
         )}
 
         <span
           className={clsx(
-            "font-mono text-[7px] uppercase tracking-widest px-1.5 py-0.5 border shrink-0",
+            "font-mono text-[9px] uppercase tracking-widest px-1.5 py-0.5 border shrink-0",
             category.kind === "flag"
-              ? "border-[#00F0FF]/25 text-[#00F0FF]/50"
+              ? "border-brand-pink/25 text-brand-pink/50"
               : "border-white/10 text-white/22",
           )}
         >
@@ -563,22 +557,22 @@ function SortableCategoryRow({
           className={clsx(
             "flex items-center transition-colors shrink-0",
             category.active
-              ? "text-[#00F0FF]/60 hover:text-[#00F0FF]"
+              ? "text-brand-pink/60 hover:text-brand-pink"
               : "text-white/18 hover:text-white/40",
           )}
         >
           {category.active ? (
-            <ToggleRight size={15} />
+            <ToggleRight size={18} />
           ) : (
-            <ToggleLeft size={15} />
+            <ToggleLeft size={18} />
           )}
         </button>
 
         <Link
           href={`/admin/categories/${category.id}`}
-          className="text-white/18 hover:text-[#FF00B6]/60 transition-colors opacity-0 group-hover:opacity-100 shrink-0"
+          className="text-white/18 hover:text-brand-pink/60 transition-colors opacity-0 group-hover:opacity-100 shrink-0"
         >
-          <Edit2 size={12} />
+          <Edit2 size={15} />
         </Link>
 
         <button
@@ -586,7 +580,7 @@ function SortableCategoryRow({
           onClick={() => onDelete(category.id, category.name_pt)}
           className="text-red-500/18 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100 shrink-0"
         >
-          <Trash2 size={12} />
+          <Trash2 size={15} />
         </button>
       </div>
 
@@ -616,9 +610,8 @@ function SortableCategoryRow({
               </SortableContext>
             </DndContext>
           ) : (
-            <div className="pl-12 pr-3 py-3 border-b border-white/4 bg-[#0f0f0f]">
-              <p className="font-mono text-[8px] uppercase tracking-widest text-white/15">
-                Sem subcategorias — adicione no edit
+            <div className="pl-12 pr-3 py-3 border-b border-white/4 bg-[#050505]">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-white/15">{"// "}Sem subcategorias — adicione no edit
               </p>
             </div>
           )}
@@ -729,26 +722,25 @@ export default function CategoriesListClient({ initialCategories }: Props) {
               loading={deleting}
               onClick={confirmDelete}
             >
-              <Trash2 size={11} />
+              <Trash2 size={14} />
               Desativar
             </Button>
           </>
         }
       >
-        <p className="font-mono text-[11px] text-white/60">
+        <p className="font-mono text-[13px] text-white/60">
           Desativar{" "}
           <span className="text-white font-bold">{deleteTarget?.name}</span>?
         </p>
       </Modal>
 
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 mb-6">
         <div>
-          <h1 className="font-shrikhand text-2xl text-white tracking-wide">
+          <h1 className="font-poppins font-black text-2xl text-white tracking-wide">
             Categorias
           </h1>
-          <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/25 mt-0.5">
-            {categories.length} categori{categories.length === 1 ? "a" : "as"}{" "}
+          <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/25 mt-0.5">{"// "}{categories.length} categori{categories.length === 1 ? "a" : "as"}{" "}
             · arraste para reordenar
           </p>
         </div>
@@ -757,7 +749,7 @@ export default function CategoriesListClient({ initialCategories }: Props) {
           size="sm"
           onClick={() => setShowCreate((p) => !p)}
         >
-          <Plus size={11} />
+          <Plus size={14} />
           Nova Categoria
         </Button>
       </div>
@@ -770,20 +762,17 @@ export default function CategoriesListClient({ initialCategories }: Props) {
 
       {categories.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 border border-dashed border-white/8">
-          <p className="font-mono text-[9px] uppercase tracking-widest text-white/20">
-            Nenhuma categoria — crie a primeira
+          <p className="font-mono text-[11px] uppercase tracking-widest text-white/20">{"// "}Nenhuma categoria — crie a primeira
           </p>
         </div>
       ) : (
-        <div className="border border-white/8 bg-[#141414]">
+        <div className="border border-white/8 bg-[#0a0a0a]">
           {/* Table header */}
-          <div className="flex items-center gap-3 px-3 py-2 border-b border-white/8 bg-[#0f0f0f]">
-            <span className="font-mono text-[8px] uppercase tracking-[0.3em] text-white/20 ml-11">
-              Nome
+          <div className="flex items-center gap-3 px-3 py-2 border-b border-white/8 bg-[#050505]">
+            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/20 ml-11">{"// "}Nome
             </span>
             <span className="flex-1" />
-            <span className="font-mono text-[8px] uppercase tracking-[0.3em] text-white/20 pr-14">
-              Tipo · Ativo
+            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/20 pr-14">{"// "}Tipo · Ativo
             </span>
           </div>
 

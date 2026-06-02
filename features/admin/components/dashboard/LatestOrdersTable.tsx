@@ -10,46 +10,38 @@ import Link from "next/link";
 import type { LatestOrder } from "@features/admin/services/dashboard.service";
 import { formatPrice } from "@features/products/utils/formatPrice";
 
-const STATUS_NEON: Record<string, { bg: string; color: string; glow: string }> = {
+const STATUS_NEON: Record<string, { bg: string; color: string }> = {
   pending: {
     bg: "rgba(255,215,0,0.08)",
     color: "#FFD700",
-    glow: "0 0 6px rgba(255,215,0,0.35)",
   },
   paid: {
-    bg: "rgba(0,240,255,0.08)",
-    color: "#00F0FF",
-    glow: "0 0 6px rgba(0,240,255,0.3)",
+    bg: "rgba(255,0,182,0.08)",
+    color: "var(--brand-pink)",
   },
   processing: {
     bg: "rgba(80,120,255,0.1)",
     color: "#8899FF",
-    glow: "0 0 6px rgba(80,120,255,0.3)",
   },
   shipped: {
     bg: "rgba(160,60,255,0.1)",
     color: "#BB77FF",
-    glow: "0 0 6px rgba(160,60,255,0.3)",
   },
   delivered: {
     bg: "rgba(0,240,120,0.08)",
     color: "#00EE88",
-    glow: "0 0 6px rgba(0,240,120,0.3)",
   },
   cancelled: {
     bg: "rgba(255,50,80,0.08)",
     color: "#FF5566",
-    glow: "0 0 6px rgba(255,50,80,0.3)",
   },
   refunded: {
     bg: "rgba(255,120,0,0.08)",
     color: "#FF8844",
-    glow: "0 0 6px rgba(255,120,0,0.3)",
   },
   payment_failed: {
     bg: "rgba(255,0,60,0.08)",
     color: "#FF2244",
-    glow: "0 0 6px rgba(255,0,60,0.3)",
   },
 };
 
@@ -81,7 +73,7 @@ export function LatestOrdersTable({ orders }: Props) {
   if (orders.length === 0) {
     return (
       <div className="flex items-center justify-center py-10">
-        <p className="font-mono text-[9px] uppercase tracking-widest text-white/15">
+        <p className="font-mono text-[11px] uppercase tracking-widest text-white/15">
           Sem pedidos recentes
         </p>
       </div>
@@ -96,7 +88,7 @@ export function LatestOrdersTable({ orders }: Props) {
             {["Pedido", "Cliente", "Valor", "Status", "Data"].map((h) => (
               <th
                 key={h}
-                className="pb-3 font-mono text-[12px] uppercase tracking-[0.3em] text-brand-pink/60 text-left border-b border-white/5"
+                className="pb-3 font-mono text-[14px] uppercase tracking-[0.3em] text-brand-pink/60 text-left border-b border-white/5"
               >
                 {h}
               </th>
@@ -115,35 +107,36 @@ export function LatestOrdersTable({ orders }: Props) {
                 <td className="py-2.5 pr-4">
                   <Link
                     href={`/admin/orders/${order.id}`}
-                    className="font-mono text-[11px] text-brand-blue/80 hover:text-brand-blue transition-colors"
+                    className="font-mono text-[13px] text-brand-blue/80 hover:text-brand-blue transition-colors"
                   >
                     #{order.order_number}
                   </Link>
                 </td>
                 <td className="py-2.5 pr-4 max-w-25">
-                  <span className="font-poppins text-[11px] text-white/55 truncate block">
+                  <span className="font-poppins text-[13px] text-white/55 truncate block">
                     {order.full_name}
                   </span>
                 </td>
                 <td className="py-2.5 pr-4">
-                  <span className="font-poppins font-bold text-[14px] text-white leading-none">
+                  <span className="font-poppins font-bold text-[16px] text-white leading-none">
                     {order.total !== null ? formatPrice(order.total) : "—"}
                   </span>
                 </td>
                 <td className="py-2.5 pr-4">
                   <span
-                    className="font-mono text-[8px] uppercase tracking-[0.15em] px-2 py-1 whitespace-nowrap"
+                    className="font-mono text-[10px] uppercase tracking-[0.15em] px-2 py-1 whitespace-nowrap rounded-none"
                     style={{
                       background: neon.bg,
                       color: neon.color,
-                      boxShadow: neon.glow,
+                      border: `1px solid ${neon.color}4d`,
+                      boxShadow: 'inset 0 0 15px rgba(255,0,182,0.05)',
                     }}
                   >
                     {STATUS_LABEL[order.status] ?? order.status}
                   </span>
                 </td>
                 <td className="py-2.5">
-                  <span className="font-mono text-[11px] text-white/70">
+                  <span className="font-mono text-[13px] text-white/70">
                     {shortDate(order.created_at)}
                   </span>
                 </td>

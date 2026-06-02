@@ -40,28 +40,28 @@ export function MetricStrip({ today, week, month, allTime }: Props) {
       value: formatPrice(current.revenue),
       sub: `${current.orders} pedido${current.orders !== 1 ? "s" : ""}`,
       icon: DollarSign,
-      accent: "#00EE88",
+      accent: "var(--brand-success)",
     },
     {
       label: "Pedidos",
       value: current.orders.toString(),
       sub: current.orders > 0 ? "confirmados" : "sem pedidos",
       icon: ShoppingCart,
-      accent: "#00F0FF",
+      accent: "var(--brand-pink)",
     },
     {
       label: "Ticket Médio",
       value: current.aov > 0 ? formatPrice(current.aov) : "—",
       sub: "por pedido pago",
       icon: TrendingUp,
-      accent: "#FFD700",
+      accent: "var(--brand-warning)",
     },
     {
       label: "Clientes",
       value: current.customers.toString(),
       sub: "compradores únicos",
       icon: Users,
-      accent: "#FF3355",
+      accent: "var(--brand-danger)",
     },
   ];
 
@@ -74,13 +74,13 @@ export function MetricStrip({ today, week, month, allTime }: Props) {
             type="button"
             onClick={() => setRange(key)}
             className={[
-              "px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.25em] border transition-all duration-150",
+              "px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.25em] border transition-all duration-150 rounded-none",
               range === key
-                ? "border-gray-400 text-gray-400 bg-gray-400/8 shadow-[0px_0px_8px] shadow-gray-400/25"
-                : "border-white/10 text-white/30 hover:border-white/20 hover:text-white/50 cursor-pointer",
+                ? "border-[var(--brand-pink)]/50 text-[var(--brand-pink)] bg-[var(--brand-pink)]/5 shadow-[inset_0_0_15px_rgba(255,0,182,0.1)]"
+                : "border-white/10 text-white/30 hover:border-white/20 hover:text-white/50 cursor-pointer bg-transparent",
             ].join(" ")}
           >
-            {label}
+            [ {label} ]
           </button>
         ))}
       </div>
@@ -89,17 +89,9 @@ export function MetricStrip({ today, week, month, allTime }: Props) {
         {metrics.map(({ label, value, sub, icon: Icon, accent }) => (
           <div
             key={label}
-            className="bg-[#141414] border border-white/15 p-5 relative overflow-hidden transition-transform duration-150 hover:-translate-x-px hover:-translate-y-px"
-            style={{ boxShadow: `4px 4px 0 ${accent}` }}
+            className="bg-[#050505] border border-white/15 p-5 relative overflow-hidden transition-transform duration-150 hover:-translate-x-px hover:-translate-y-px rounded-none"
+            style={{ border: `1px solid ${accent}`, boxShadow: `inset 0 0 15px ${accent}0d` }}
           >
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                boxShadow:
-                  "inset 1px 1px 0 rgba(255,255,255,0.06), inset -1px -1px 0 rgba(0,0,0,0.4)",
-              }}
-              aria-hidden="true"
-            />
             <div
               className="absolute inset-0 pointer-events-none opacity-[0.025]"
               style={{
@@ -112,18 +104,17 @@ export function MetricStrip({ today, week, month, allTime }: Props) {
 
             <div className="relative z-10 flex flex-col gap-3">
               <div className="flex items-center justify-between">
-                <span className="font-mono text-1 uppercase tracking-[0.35em] text-white/50">
+                <span className="font-mono text-[11px] uppercase tracking-[0.35em] text-white/50">
                   {label}
                 </span>
                 <Icon size={28} strokeWidth={2.5} style={{ color: accent, opacity: 0.8 }} />
               </div>
               <span
-                className="font-family-poppins font-bold text-[24px] leading-none text-white"
-                style={{ textShadow: `0 0 20px ${accent}20` }}
+                className="font-poppins font-bold text-[24px] leading-none text-white"
               >
                 {value}
               </span>
-              <span className="font-mono text-[14px] text-white/30">{sub}</span>
+              <span className="font-mono text-[12px] text-white/30 uppercase">{"//"} {sub}</span>
             </div>
           </div>
         ))}

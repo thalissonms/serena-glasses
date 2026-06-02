@@ -69,13 +69,13 @@ export default function ProductEditClient({ product, categories }: Props) {
               loading={deleting}
               onClick={handleDeleteProduct}
             >
-              <Trash2 size={11} />
+              <Trash2 size={14} />
               Desativar
             </Button>
           </>
         }
       >
-        <p className="font-mono text-[11px] text-white/60">
+        <p className="font-mono text-[13px] text-white/60">
           Desativar <span className="text-white font-bold">{product.name}</span>
           ?
         </p>
@@ -86,17 +86,16 @@ export default function ProductEditClient({ product, categories }: Props) {
         <div className="flex flex-col gap-1.5">
           <Link
             href="/admin/products"
-            className="flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-widest text-white/25 hover:text-[#FF00B6]/60 transition-colors w-fit"
+            className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest text-white/25 hover:text-brand-pink/60 transition-colors w-fit"
           >
-            <ArrowLeft size={10} />
+            <ArrowLeft size={13} />
             Produtos
           </Link>
-          <h1 className="font-shrikhand text-2xl text-white tracking-wide leading-tight">
+          <h1 className="font-poppins font-black text-2xl text-white tracking-wide leading-tight">
             {product.name}
           </h1>
           {product.code && (
-            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#00F0FF]/50">
-              SKU: {product.code}
+            <p className="font-mono text-[12px] uppercase tracking-[0.25em] text-brand-pink/50">{"// "}SKU: {product.code}
             </p>
           )}
         </div>
@@ -105,26 +104,26 @@ export default function ProductEditClient({ product, categories }: Props) {
           onClick={() => setDeleteOpen(true)}
           className={clsx(
             "flex items-center gap-1.5 px-4 py-2 border border-red-500/20",
-            "font-mono text-[9px] uppercase tracking-widest text-red-500/40",
+            "font-mono text-[11px] uppercase tracking-widest text-red-500/40",
             "hover:text-red-400 hover:border-red-400/40 transition-all duration-150",
           )}
         >
-          <Trash2 size={11} />
+          <Trash2 size={14} />
           Desativar
         </button>
       </div>
 
       {/* Tab bar */}
-      <div className="flex border-b border-white/8 bg-[#1a1a1a]">
+      <div className="flex border-b border-white/8 bg-[#0a0a0a]">
         {TABS_EDIT.map((tab) => (
           <button
             key={tab.id}
             type="button"
             onClick={() => setActiveTab(tab.id)}
             className={clsx(
-              "relative px-5 py-3 font-mono text-[9px] uppercase tracking-[0.2em] transition-colors duration-150",
+              "relative px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em] transition-colors duration-150",
               "after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5",
-              "after:bg-[#FF00B6] after:transition-transform after:duration-200 after:origin-left",
+              "after:bg-brand-pink after:transition-transform after:duration-200 after:origin-left",
               "outline-none",
               activeTab === tab.id
                 ? "text-white after:scale-x-100"
@@ -137,7 +136,7 @@ export default function ProductEditClient({ product, categories }: Props) {
       </div>
 
       {/* All panels always mounted — hidden via CSS to preserve form state */}
-      <div className="bg-[#141414] border border-white/5 border-t-0 p-6">
+      <div className="bg-[#0a0a0a] border border-white/5 border-t-0 p-6">
         <div className={clsx(activeTab !== "details" && "hidden")}>
           <DetailsTab product={product} categories={categories} />
         </div>

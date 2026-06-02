@@ -18,13 +18,13 @@ export default async function AdminV2ProductNewPage() {
       <div className="flex items-center gap-4 mb-8">
         <Link
           href="/admin/products"
-          className="flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-widest text-white/25 hover:text-[#FF00B6]/60 transition-colors duration-150"
+          className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest text-white/25 hover:text-brand-pink/60 transition-colors duration-150"
         >
-          <ArrowLeft size={10} />
+          <ArrowLeft size={13} />
           Produtos
         </Link>
         <div className="flex-1 h-px bg-white/5" />
-        <h1 className="font-shrikhand text-2xl text-white tracking-wide">NOVO PRODUTO</h1>
+        <h1 className="font-poppins text-2xl text-white tracking-wide">NOVO PRODUTO</h1>
       </div>
       <ProductCreateForm categories={categories} />
     </div>

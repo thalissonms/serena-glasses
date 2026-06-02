@@ -31,18 +31,18 @@ export function AdminUploadBox({
 
   const colors = {
     cyan: {
-      border: "border-[#00F0FF]/20 hover:border-[#00F0FF]/40",
-      borderUploading: "border-[#00F0FF]/40",
-      text: "text-[#00F0FF]/30",
-      textUploading: "text-[#00F0FF]/60",
-      bgProgress: "bg-[#00F0FF]",
+      border: "border-brand-pink/20 hover:border-brand-pink/40",
+      borderUploading: "border-brand-pink/40",
+      text: "text-brand-pink/30",
+      textUploading: "text-brand-pink/60",
+      bgProgress: "bg-brand-pink",
     },
     pink: {
-      border: "border-white/20 hover:border-[#FF00B6]/60",
-      borderUploading: "border-[#FF00B6]/40",
+      border: "border-white/20 hover:border-brand-pink/60",
+      borderUploading: "border-brand-pink/40",
       text: "text-white/20",
-      textUploading: "text-[#FF00B6]/60",
-      bgProgress: "bg-[#FF00B6]",
+      textUploading: "text-brand-pink/60",
+      bgProgress: "bg-brand-pink",
     },
   };
 
@@ -78,7 +78,7 @@ export function AdminUploadBox({
               size={18}
               className={clsx(
                 "animate-spin",
-                themeColor === "cyan" ? "text-[#00F0FF]" : "text-[#FF00B6]"
+                themeColor === "cyan" ? "text-brand-pink" : "text-brand-pink"
               )}
             />
             <div className="w-full max-w-[200px] bg-white/10 h-0.5 mt-1">
@@ -87,14 +87,14 @@ export function AdminUploadBox({
                 style={{ width: `${progress ?? 0}%` }}
               />
             </div>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-white/30">
+            <p className="font-mono text-[12px] uppercase tracking-widest text-white/30">
               {progress !== null ? `${progress}%` : "Enviando..."}
             </p>
           </>
         ) : (
           <span
             className={clsx(
-              "font-mono text-[9px] uppercase tracking-widest animate-neon-pulse",
+              "font-mono text-[11px] uppercase tracking-widest animate-neon-pulse",
               c.textUploading
             )}
           >
@@ -104,10 +104,10 @@ export function AdminUploadBox({
       ) : (
         <>
           <div className={c.text}>{icon}</div>
-          <p className="font-mono text-[9px] uppercase tracking-widest text-white/25 text-center">
+          <p className="font-mono text-[11px] uppercase tracking-widest text-white/25 text-center">
             {title}
           </p>
-          <p className="font-mono text-[8px] text-white/15 text-center">
+          <p className="font-mono text-[10px] text-white/15 text-center">
             {subtitle}
           </p>
         </>

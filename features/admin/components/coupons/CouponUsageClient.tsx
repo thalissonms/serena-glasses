@@ -43,21 +43,21 @@ function formatBRL(cents: number) {
 
 function DiscountTypeBadge({ type }: { type: string }) {
   const map: Record<string, { label: string; color: string }> = {
-    percentage: { label: "%", color: "text-[#00F0FF] border-[#00F0FF]/30 bg-[#00F0FF]/8" },
+    percentage: { label: "%", color: "text-brand-pink border-brand-pink/30 bg-brand-pink/8" },
     fixed_amount: { label: "R$", color: "text-[#FFD700] border-[#FFD700]/30 bg-[#FFD700]/8" },
     free_shipping: { label: "FRETE", color: "text-emerald-400 border-emerald-400/30 bg-emerald-400/8" },
   };
   const meta = map[type] ?? { label: type, color: "text-white/40 border-white/10 bg-white/5" };
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 font-mono text-[8px] uppercase tracking-widest border ${meta.color}`}>
+    <span className={`inline-flex items-center px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest border ${meta.color}`}>
       {meta.label}
     </span>
   );
 }
 
 const NEON_PALETTE = [
-  { border: "border-[#FF00B6]/25", glow: "shadow-[0_0_20px_rgba(255,0,182,0.06)]", accent: "text-[#FF00B6]", bar: "#FF00B6" },
-  { border: "border-[#00F0FF]/25", glow: "shadow-[0_0_20px_rgba(0,240,255,0.06)]", accent: "text-[#00F0FF]", bar: "#00F0FF" },
+  { border: "border-brand-pink/25", glow: "shadow-[0_0_20px_rgba(255,0,182,0.06)]", accent: "text-brand-pink", bar: "var(--brand-pink)" },
+  { border: "border-brand-pink/25", glow: "shadow-[0_0_20px_rgba(255,0,182,0.06)]", accent: "text-brand-pink", bar: "brand-pink" },
   { border: "border-[#FFD700]/25", glow: "shadow-[0_0_20px_rgba(255,215,0,0.06)]", accent: "text-[#FFD700]", bar: "#FFD700" },
   { border: "border-white/10", glow: "", accent: "text-white/40", bar: "rgba(255,255,255,0.15)" },
 ];
@@ -75,7 +75,7 @@ function CouponCard({ stat, rank, maxDiscount }: { stat: CouponStat; rank: numbe
   const barPct = maxDiscount > 0 ? (stat.total_discount_cents / maxDiscount) * 100 : 0;
 
   return (
-    <div className={`border ${palette.border} bg-[#141414] ${palette.glow} shadow-[inset_1px_1px_0_rgba(255,255,255,0.03)] flex flex-col gap-3 p-5`}>
+    <div className={`border ${palette.border} bg-[#0a0a0a] ${palette.glow} shadow-[inset_1px_1px_0_rgba(255,255,255,0.03)] flex flex-col gap-3 p-5`}>
       {/* Rank + code */}
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-3">
@@ -83,7 +83,7 @@ function CouponCard({ stat, rank, maxDiscount }: { stat: CouponStat; rank: numbe
             {String(rank + 1).padStart(2, "0")}
           </span>
           <div className="flex flex-col gap-1">
-            <span className="font-mono text-[13px] font-bold text-white/80 tracking-widest uppercase">
+            <span className="font-mono text-[15px] font-bold text-white/80 tracking-widest uppercase">
               {stat.coupon_code}
             </span>
             <DiscountTypeBadge type={stat.discount_type} />
@@ -93,7 +93,7 @@ function CouponCard({ stat, rank, maxDiscount }: { stat: CouponStat; rank: numbe
           <p className={`font-mono text-lg font-bold ${palette.accent}`}>
             {formatBRL(stat.total_discount_cents)}
           </p>
-          <p className="font-mono text-[8px] text-white/25 uppercase tracking-widest">descontado</p>
+          <p className="font-mono text-[10px] text-white/25 uppercase tracking-widest">{"// "}descontado</p>
         </div>
       </div>
 
@@ -110,14 +110,14 @@ function CouponCard({ stat, rank, maxDiscount }: { stat: CouponStat; rank: numbe
       </div>
 
       {/* Stats row */}
-      <div className="grid grid-cols-2 gap-3">
-        <div className="border border-white/5 bg-[#0f0f0f] px-3 py-2">
-          <p className="font-mono text-[8px] text-white/20 uppercase tracking-widest mb-0.5">Usos</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="border border-white/5 bg-[#050505] px-3 py-2">
+          <p className="font-mono text-[10px] text-white/20 uppercase tracking-widest mb-0.5">{"// "}Usos</p>
           <p className={`font-mono text-lg ${palette.accent}`}>{stat.total_uses}</p>
         </div>
-        <div className="border border-white/5 bg-[#0f0f0f] px-3 py-2">
-          <p className="font-mono text-[8px] text-white/20 uppercase tracking-widest mb-0.5">Ticket Médio</p>
-          <p className="font-mono text-[13px] text-white/50">
+        <div className="border border-white/5 bg-[#050505] px-3 py-2">
+          <p className="font-mono text-[10px] text-white/20 uppercase tracking-widest mb-0.5">{"// "}Ticket Médio</p>
+          <p className="font-mono text-[15px] text-white/50">
             {stat.total_uses > 0 ? formatBRL(Math.round(stat.total_discount_cents / stat.total_uses)) : "—"}
           </p>
         </div>
@@ -129,22 +129,20 @@ function CouponCard({ stat, rank, maxDiscount }: { stat: CouponStat; rank: numbe
           <button
             type="button"
             onClick={() => setShowEmails((v) => !v)}
-            className="flex items-center gap-1.5 font-mono text-[8px] uppercase tracking-widest text-white/25 hover:text-white/50 transition-colors"
+            className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-white/25 hover:text-white/50 transition-colors"
           >
-            <Users size={9} />
+            <Users size={12} />
             {stat.top_emails.length} cliente{stat.top_emails.length !== 1 ? "s" : ""}
-            <ChevronDown size={9} className={`transition-transform ${showEmails ? "rotate-180" : ""}`} />
+            <ChevronDown size={12} className={`transition-transform ${showEmails ? "rotate-180" : ""}`} />
           </button>
           {showEmails && (
             <ul className="mt-2 flex flex-col gap-0.5">
               {stat.top_emails.slice(0, 5).map((email) => (
-                <li key={email} className="font-mono text-[9px] text-white/30 truncate pl-3 border-l border-white/8">
-                  {email}
+                <li key={email} className="font-mono text-[11px] text-white/30 truncate pl-3 border-l border-white/8">{"// "}{email}
                 </li>
               ))}
               {stat.top_emails.length > 5 && (
-                <li className="font-mono text-[8px] text-white/20 pl-3">
-                  +{stat.top_emails.length - 5} outros
+                <li className="font-mono text-[10px] text-white/20 pl-3">{"// "}+{stat.top_emails.length - 5} outros
                 </li>
               )}
             </ul>
@@ -205,30 +203,29 @@ export function CouponUsageClient({ usages }: Props) {
       <div className="flex flex-col gap-2">
         <DevBadge />
         <div className="flex items-center gap-3">
-          <Tag size={18} className="text-[#FF00B6]" />
-          <h1 className="font-shrikhand text-2xl text-white tracking-wide">
+          <Tag size={18} className="text-brand-pink" />
+          <h1 className="font-poppins font-black text-2xl text-white tracking-wide">
             Uso de Cupons
           </h1>
         </div>
-        <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/25">
-          Top 10 cupons por desconto total — analytics completo em desenvolvimento
+        <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/25">{"// "}Top 10 cupons por desconto total — analytics completo em desenvolvimento
         </p>
       </div>
 
       {/* KPI strip */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
         {[
           { label: "Total de Usos", value: totals.totalUses, color: "text-white/60", icon: Tag },
-          { label: "Desconto Total", value: formatBRL(totals.totalDiscount), color: "text-[#FF00B6]", icon: TrendingDown },
-          { label: "Cupons Únicos", value: totals.uniqueCoupons, color: "text-[#00F0FF]", icon: Percent },
+          { label: "Desconto Total", value: formatBRL(totals.totalDiscount), color: "text-brand-pink", icon: TrendingDown },
+          { label: "Cupons Únicos", value: totals.uniqueCoupons, color: "text-brand-pink", icon: Percent },
           { label: "Clientes Únicos", value: totals.uniqueEmails, color: "text-[#FFD700]", icon: Users },
         ].map((kpi) => {
           const Icon = kpi.icon;
           return (
-            <div key={kpi.label} className="border border-white/5 bg-[#141414] px-5 py-4 shadow-[inset_1px_1px_0_rgba(255,255,255,0.03)]">
-              <div className="flex items-center justify-between mb-2">
-                <p className="font-mono text-[8px] uppercase tracking-[0.3em] text-white/25">{kpi.label}</p>
-                <Icon size={12} className={kpi.color} />
+            <div key={kpi.label} className="border border-white/5 bg-[#0a0a0a] px-5 py-4 shadow-[inset_1px_1px_0_rgba(255,255,255,0.03)]">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 mb-2">
+                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/25">{"// "}{kpi.label}</p>
+                <Icon size={15} className={kpi.color} />
               </div>
               <p className={`font-mono text-xl ${kpi.color}`}>{kpi.value}</p>
             </div>
@@ -238,27 +235,25 @@ export function CouponUsageClient({ usages }: Props) {
 
       {/* Date range filter */}
       <div className="flex items-center gap-3">
-        <span className="font-mono text-[9px] uppercase tracking-widest text-white/25">Período:</span>
+        <span className="font-mono text-[11px] uppercase tracking-widest text-white/25">{"// "}Período:</span>
         <input
           type="date"
           value={dateFrom}
           onChange={(e) => setDateFrom(e.target.value)}
-          className="px-3 py-2 bg-[#0f0f0f] border border-white/8 focus:border-[#FF00B6]/30 font-mono text-[10px] text-white/40 outline-none transition-colors"
+          className="px-3 py-2 bg-[#050505] border border-white/8 focus:border-brand-pink/30 font-mono text-[12px] text-white/40 outline-none transition-colors"
         />
-        <span className="font-mono text-[9px] text-white/20">até</span>
+        <span className="font-mono text-[11px] text-white/20">{"// "}até</span>
         <input
           type="date"
           value={dateTo}
           onChange={(e) => setDateTo(e.target.value)}
-          className="px-3 py-2 bg-[#0f0f0f] border border-white/8 focus:border-[#FF00B6]/30 font-mono text-[10px] text-white/40 outline-none transition-colors"
-        />
-        {(dateFrom || dateTo) && (
+          className="px-3 py-2 bg-[#050505] border border-white/8 focus:border-brand-pink/30 font-mono text-[12px] text-white/40 outline-none transition-colors"
+        />{"// "}{(dateFrom || dateTo) && (
           <button
             type="button"
             onClick={() => { setDateFrom(""); setDateTo(""); }}
-            className="font-mono text-[9px] uppercase tracking-widest text-white/25 hover:text-white/50 transition-colors border border-white/8 px-3 py-2"
-          >
-            Limpar
+            className="font-mono text-[11px] uppercase tracking-widest text-white/25 hover:text-white/50 transition-colors border border-white/8 px-3 py-2"
+          >{"// "}Limpar
           </button>
         )}
       </div>
@@ -274,8 +269,7 @@ export function CouponUsageClient({ usages }: Props) {
         </div>
       )}
 
-      <p className="font-mono text-[8px] text-white/12 text-center uppercase tracking-[0.3em]">
-        {stats.length} cupons exibidos de {totals.uniqueCoupons} únicos — clique nos cards para expandir emails
+      <p className="font-mono text-[10px] text-white/12 text-center uppercase tracking-[0.3em]">{"// "}{stats.length} cupons exibidos de {totals.uniqueCoupons} únicos — clique nos cards para expandir emails
       </p>
     </div>
   );

@@ -4,7 +4,6 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { toast } from "sonner";
 import { ChevronLeft, Save, Megaphone, ExternalLink } from "lucide-react";
 import type { SiteBannerRow } from "@features/home/types/siteBanner.types";
@@ -60,7 +59,7 @@ export default function BannerFormClient({ banner }: Props) {
       message_en: banner?.message_en ?? "",
       message_es: banner?.message_es ?? "",
       link_url: banner?.link_url ?? "",
-      bg_color: banner?.bg_color ?? "#FF00B6",
+      bg_color: banner?.bg_color ?? "var(--brand-pink)",
       text_color: banner?.text_color ?? "#FFFFFF",
       starts_at: toDatetimeLocal(banner?.starts_at),
       ends_at: toDatetimeLocal(banner?.ends_at),
@@ -109,13 +108,13 @@ export default function BannerFormClient({ banner }: Props) {
   }
 
   const inputCls =
-    "w-full bg-[#0f0f0f] border-2 border-[#FF00B6]/20 focus:border-[#FF00B6] text-white font-mono text-sm px-3 py-2 outline-none transition-colors placeholder:text-white/20";
+    "w-full bg-[#050505] border-2 border-brand-pink/20 focus:border-brand-pink text-white font-mono text-base px-3 py-2 outline-none transition-colors placeholder:text-white/20";
   const labelCls =
-    "block font-mono text-[10px] uppercase tracking-widest text-white/40 mb-1.5";
-  const errorCls = "font-mono text-[10px] text-[#FF00B6] mt-1";
-  const panelCls = "border-2 border-white/10 bg-[#1a1a1a] p-5 space-y-4";
+    "block font-mono text-[12px] uppercase tracking-widest text-white/40 mb-1.5";
+  const errorCls = "font-mono text-[12px] text-brand-pink mt-1";
+  const panelCls = "border-2 border-white/10 bg-[#0a0a0a] p-5 space-y-4";
   const panelTitleCls =
-    "font-mono text-[10px] uppercase tracking-[0.3em] text-[#00F0FF]/50 border-b border-white/5 pb-2 mb-1";
+    "font-mono text-[12px] uppercase tracking-[0.3em] text-brand-pink/50 border-b border-white/5 pb-2 mb-1";
 
   return (
     <div className="max-w-2xl space-y-6">
@@ -128,27 +127,27 @@ export default function BannerFormClient({ banner }: Props) {
         </button>
         <div>
           <h1 className="font-shrikhand flex items-center gap-3 text-3xl tracking-wider text-white">
-            <Megaphone size={24} className="text-[#FF00B6]" />
+            <Megaphone size={24} className="text-brand-pink" />
             {isEdit ? "Editar Banner" : "Novo Banner"}
           </h1>
           {isEdit && (
-            <p className="mt-1 font-mono text-[10px] tracking-widest text-white/25 uppercase">
+            <p className="mt-1 font-mono text-[12px] tracking-widest text-white/25 uppercase">
               ID: {banner.id.slice(0, 8)}…
             </p>
           )}
         </div>
       </div>
 
-      <div className="overflow-hidden border-2 border-[#FF00B6]/30 shadow-[4px_4px_0_#FF00B6]">
-        <div className="border-b border-white/10 bg-[#111] px-3 py-1.5 font-mono text-[9px] tracking-widest text-white/20 uppercase">
+      <div className="overflow-hidden border border-brand-pink/30 shadow-[inset_0_0_15px_rgba(255,0,182,0.05)] rounded-none">
+        <div className="border-b border-brand-pink/30 bg-[#050505] px-3 py-1.5 font-mono text-[11px] tracking-widest text-white/20 uppercase">
           Preview
         </div>
         <div
           className="flex h-10 items-center justify-center px-6"
-          style={{ backgroundColor: bgColor || "#FF00B6" }}
+          style={{ backgroundColor: bgColor || "var(--brand-pink)" }}
         >
           <span
-            className="font-poppins truncate text-sm font-semibold"
+            className="font-poppins truncate text-base font-semibold"
             style={{ color: textColor || "#FFFFFF" }}
           >
             {msgPt || "Texto do banner aparece aqui…"}
@@ -170,7 +169,7 @@ export default function BannerFormClient({ banner }: Props) {
               <p className={errorCls}>{errors.message_pt.message}</p>
             )}
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
               <label className={labelCls}>Mensagem EN</label>
               <input
@@ -190,7 +189,7 @@ export default function BannerFormClient({ banner }: Props) {
           </div>
           <div>
             <label className={labelCls}>
-              <ExternalLink size={9} className="mr-1 inline" />
+              <ExternalLink size={12} className="mr-1 inline" />
               URL do link (opcional)
             </label>
             <input
@@ -206,7 +205,7 @@ export default function BannerFormClient({ banner }: Props) {
 
         <div className={panelCls}>
           <div className={panelTitleCls}>Cores</div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className={labelCls}>Cor de Fundo</label>
               <Controller
@@ -225,7 +224,7 @@ export default function BannerFormClient({ banner }: Props) {
                       value={field.value}
                       onChange={(e) => field.onChange(e.target.value)}
                       className={inputCls}
-                      placeholder="#FF00B6"
+                      placeholder="var(--brand-pink)"
                     />
                   </div>
                 )}
@@ -266,7 +265,7 @@ export default function BannerFormClient({ banner }: Props) {
 
         <div className={panelCls}>
           <div className={panelTitleCls}>Agendamento e Configuração</div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className={labelCls}>Início (opcional)</label>
               <input
@@ -298,9 +297,9 @@ export default function BannerFormClient({ banner }: Props) {
               <input
                 {...register("active")}
                 type="checkbox"
-                className="h-4 w-4 accent-[#FF00B6]"
+                className="h-4 w-4 accent-[var(--brand-pink)]"
               />
-              <span className="font-mono text-xs tracking-wider text-white/50 uppercase">
+              <span className="font-mono text-base tracking-wider text-white/50 uppercase">
                 Ativo
               </span>
             </label>
@@ -308,9 +307,9 @@ export default function BannerFormClient({ banner }: Props) {
               <input
                 {...register("dismissible")}
                 type="checkbox"
-                className="h-4 w-4 accent-[#FF00B6]"
+                className="h-4 w-4 accent-[var(--brand-pink)]"
               />
-              <span className="font-mono text-xs tracking-wider text-white/50 uppercase">
+              <span className="font-mono text-base tracking-wider text-white/50 uppercase">
                 Fechável pelo usuário
               </span>
             </label>
@@ -321,15 +320,15 @@ export default function BannerFormClient({ banner }: Props) {
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center gap-2 border-2 border-black bg-linear-to-r from-[#FF00B6] to-[#00F0FF] px-5 py-2.5 font-mono text-xs font-bold tracking-widest text-black uppercase shadow-[4px_4px_0_#000] transition-all hover:-translate-x-px hover:-translate-y-px hover:shadow-[5px_5px_0_#000] disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex items-center gap-2 border-2 border-black bg-linear-to-r from-[var(--brand-pink)] to-brand-pink px-5 py-2.5 font-mono text-base font-bold tracking-widest text-black uppercase transition-colors hover:bg-brand-pink-light disabled:cursor-not-allowed disabled:opacity-50 rounded-none"
           >
-            <Save size={13} />
-            {saving ? "Salvando…" : "Salvar Banner"}
+            <Save size={16} />
+            [ {saving ? "Salvando…" : "Salvar Banner"} ]
           </button>
           <button
             type="button"
             onClick={() => router.back()}
-            className="border border-white/10 px-4 py-2.5 font-mono text-xs tracking-widest text-white/30 uppercase transition-colors hover:border-white/20 hover:text-white/60"
+            className="border border-white/10 px-4 py-2.5 font-mono text-base tracking-widest text-white/30 uppercase transition-colors hover:border-white/20 hover:text-white/60"
           >
             Cancelar
           </button>

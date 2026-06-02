@@ -99,28 +99,26 @@ export function SeoTab({
       />
 
       <div className="flex flex-col gap-1.5">
-        <label className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/40">
-          Keywords
+        <label className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/40">{"// "}Keywords
         </label>
         <div
           className={clsx(
-            "flex flex-wrap gap-1.5 p-2 bg-[#1a1a1a] border-2 border-[#FF00B6]/20",
-            "focus-within:border-[#FF00B6] focus-within:shadow-[0_0_8px_rgba(255,0,182,0.2)]",
+            "flex flex-wrap gap-1.5 p-2 bg-[#0a0a0a] border-2 border-brand-pink/20",
+            "focus-within:border-brand-pink focus-within:shadow-[0_0_8px_rgba(255,0,182,0.2)]",
             "transition-all duration-150 min-h-10.5",
           )}
         >
           {keywords.map((kw) => (
             <span
               key={kw}
-              className="flex items-center gap-1 px-2 py-0.5 bg-[#FF00B6]/10 border border-[#FF00B6]/20 font-mono text-[9px] text-[#FF00B6]/80"
-            >
-              {kw}
+              className="flex items-center gap-1 px-2 py-0.5 bg-brand-pink/10 border border-brand-pink/20 font-mono text-[11px] text-brand-pink/80"
+            >{"// "}{kw}
               <button
                 type="button"
                 onClick={() => removeKeyword(kw)}
-                className="text-[#FF00B6]/50 hover:text-[#FF00B6] transition-colors"
+                className="text-brand-pink/50 hover:text-brand-pink transition-colors"
               >
-                <X size={8} />
+                <X size={11} />
               </button>
             </span>
           ))}
@@ -132,11 +130,10 @@ export function SeoTab({
             placeholder={
               keywords.length === 0 ? "Digite e pressione Enter ou ," : ""
             }
-            className="flex-1 min-w-24 bg-transparent font-mono text-[11px] text-white placeholder:text-white/20 outline-none py-0.5 px-1"
+            className="flex-1 min-w-24 bg-transparent font-mono text-[13px] text-white placeholder:text-white/20 outline-none py-0.5 px-1"
           />
         </div>
-        <p className="font-mono text-[8px] uppercase tracking-wider text-white/20">
-          Enter ou vírgula para adicionar — máx. 30 keywords
+        <p className="font-mono text-[10px] uppercase tracking-wider text-white/20">{"// "}Enter ou vírgula para adicionar — máx. 30 keywords
         </p>
       </div>
 
@@ -147,7 +144,7 @@ export function SeoTab({
           size="md"
           loading={isSubmitting || seoMutation.isPending}
         >
-          <Save size={12} />
+          <Save size={15} />
           Salvar SEO
         </Button>
       </div>

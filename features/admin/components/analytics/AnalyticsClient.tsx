@@ -69,28 +69,28 @@ function RevenueBar({ day, revenue, maxRevenue }: {
             background: isEmpty
               ? "rgba(255,255,255,0.05)"
               : pct > 80
-                ? "linear-gradient(to top, #FF00B6, #FF6BD6)"
+                ? "linear-gradient(to top, var(--brand-pink), #FF6BD6)"
                 : pct > 40
-                  ? "linear-gradient(to top, #00F0FF, #7FD8FF)"
+                  ? "linear-gradient(to top, brand-pink, #7FD8FF)"
                   : "linear-gradient(to top, #FFD700, #FFE87A)",
             boxShadow: isEmpty
               ? "none"
               : pct > 80
                 ? "0 0 8px rgba(255,0,182,0.4)"
                 : pct > 40
-                  ? "0 0 8px rgba(0,240,255,0.3)"
+                  ? "0 0 8px rgba(255,0,182,0.3)"
                   : "0 0 6px rgba(255,215,0,0.25)",
           }}
         />
         {!isEmpty && (
-          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 bg-[#1a1a1a] border border-white/10 font-mono text-[7px] text-white/60 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-1.5 py-0.5 bg-[#0a0a0a] border border-white/10 font-mono text-[9px] text-white/60 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
             {formatBRL(revenue)}
             <br />
             {day.orders_count} ped.
           </div>
         )}
       </div>
-      <span className="font-mono text-[7px] text-white/20 rotate-45 origin-left translate-x-2">
+      <span className="font-mono text-[9px] text-white/20 rotate-45 origin-left translate-x-2">
         {fmtDay(day.day)}
       </span>
     </div>
@@ -118,16 +118,16 @@ export function AnalyticsClient({
       label: "Pedidos 30d",
       value: totalOrders.toString(),
       icon: ShoppingBag,
-      color: "text-[#00F0FF]",
-      border: "border-[#00F0FF]/20",
-      glow: "shadow-[0_0_20px_rgba(0,240,255,0.08)]",
+      color: "text-brand-pink",
+      border: "border-brand-pink/20",
+      glow: "shadow-[0_0_20px_rgba(255,0,182,0.08)]",
     },
     {
       label: "Ticket Médio",
       value: avgOrderValue > 0 ? formatBRL(avgOrderValue) : "—",
       icon: TrendingUp,
-      color: "text-[#FF00B6]",
-      border: "border-[#FF00B6]/20",
+      color: "text-brand-pink",
+      border: "border-brand-pink/20",
       glow: "shadow-[0_0_20px_rgba(255,0,182,0.08)]",
     },
     {
@@ -147,36 +147,36 @@ export function AnalyticsClient({
       <div className="flex flex-col gap-2">
         <DevBadge />
         <div className="flex items-center gap-3">
-          <BarChart2 size={18} className="text-[#FF00B6]" />
+          <BarChart2 size={18} className="text-brand-pink" />
           <h1 className="font-shrikhand text-2xl text-white tracking-wide">
             Analytics
           </h1>
         </div>
-        <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/25">
-          Últimos 30 dias — UI completa de analytics em desenvolvimento
+        <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/25">
+          {"// Últimos 30 dias — UI completa de analytics em desenvolvimento"}
         </p>
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
         {KPIS.map((kpi) => {
           const Icon = kpi.icon;
           return (
             <div
               key={kpi.label}
-              className={`border ${kpi.border} bg-[#141414] px-5 py-4 ${kpi.glow} shadow-[inset_1px_1px_0_rgba(255,255,255,0.03)]`}
+              className={`border ${kpi.border} bg-[#050505] px-5 py-4 ${kpi.glow} shadow-[inset_0_0_15px_rgba(255,0,182,0.05)]`}
             >
-              <div className="flex items-center justify-between mb-2">
-                <p className="font-mono text-[8px] uppercase tracking-[0.3em] text-white/25">
-                  {kpi.label}
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 mb-2">
+                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/25">
+                  {"// {kpi.label}"}
                 </p>
-                <Icon size={13} className={kpi.color} />
+                <Icon size={16} className={kpi.color} />
               </div>
               <p className={`font-mono text-xl ${kpi.color}`}>
                 {kpi.value}
               </p>
               {kpi.scaffold && (
-                <p className="font-mono text-[7px] text-white/20 mt-1 uppercase tracking-wider">
+                <p className="font-mono text-[9px] text-white/20 mt-1 uppercase tracking-wider">
                   requer pixel/GA
                 </p>
               )}
@@ -186,19 +186,19 @@ export function AnalyticsClient({
       </div>
 
       {/* Revenue Chart */}
-      <div className="border border-white/5 bg-[#141414] p-5 shadow-[inset_1px_1px_0_rgba(255,255,255,0.03)]">
-        <div className="flex items-center justify-between mb-4">
-          <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/40">
-            Receita Diária — Últimos 30 Dias
+      <div className="border border-white/5 bg-[#050505] p-5 shadow-[inset_0_0_15px_rgba(255,0,182,0.05)]">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 mb-4">
+          <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/40">
+            {"// Receita Diária — Últimos 30 Dias"}
           </p>
-          <span className="font-mono text-[8px] text-white/20 uppercase tracking-widest">
+          <span className="font-mono text-[10px] text-white/20 uppercase tracking-widest">
             hover para detalhes
           </span>
         </div>
 
         {dailyRevenue.length === 0 ? (
           <div className="flex items-center justify-center py-16">
-            <span className="font-mono text-[9px] uppercase tracking-widest text-white/20">
+            <span className="font-mono text-[11px] uppercase tracking-widest text-white/20">
               Sem dados de receita no período
             </span>
           </div>
@@ -215,43 +215,43 @@ export function AnalyticsClient({
           </div>
         )}
 
-        <div className="flex items-center justify-between mt-6 pt-3 border-t border-white/5">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 mt-6 pt-3 border-t border-white/5">
           <div className="flex items-center gap-4">
             {[
-              { color: "#FF00B6", label: "> 80% do pico" },
-              { color: "#00F0FF", label: "> 40% do pico" },
+              { color: "var(--brand-pink)", label: "> 80% do pico" },
+              { color: "brand-pink", label: "> 40% do pico" },
               { color: "#FFD700", label: "< 40% do pico" },
             ].map((l) => (
               <div key={l.label} className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5" style={{ backgroundColor: l.color }} />
-                <span className="font-mono text-[8px] text-white/25">{l.label}</span>
+                <span className="font-mono text-[10px] text-white/25">{l.label}</span>
               </div>
             ))}
           </div>
-          <span className="font-mono text-[8px] text-white/20">
+          <span className="font-mono text-[10px] text-white/20">
             Total: {formatBRL(totalRevenue)}
           </span>
         </div>
       </div>
 
       {/* Top Products (mock) */}
-      <div className="border border-white/5 bg-[#141414] shadow-[inset_1px_1px_0_rgba(255,255,255,0.03)]">
-        <div className="px-5 py-3 border-b border-white/5 flex items-center justify-between">
-          <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/40">
-            Top 10 Produtos por Receita
+      <div className="border border-white/5 bg-[#050505] shadow-[inset_0_0_15px_rgba(255,0,182,0.05)]">
+        <div className="px-5 py-3 border-b border-white/5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0">
+          <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/40">
+            {"// Top 10 Produtos por Receita"}
           </p>
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 font-mono text-[7px] uppercase tracking-widest border border-[#FFD700]/20 text-[#FFD700]/50">
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest border border-[#FFD700]/20 text-[#FFD700]/50">
             dados de demonstração
           </span>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-[#111111]">
+              <tr className="bg-[#050505] border-b border-brand-pink/30 shadow-[inset_0_0_15px_rgba(255,0,182,0.05)]">
                 {["#", "Produto", "SKU", "Receita", "Qtd. Vendida"].map((h) => (
                   <th
                     key={h}
-                    className="px-4 py-2.5 font-mono text-[8px] uppercase tracking-[0.2em] text-white/20 font-normal border-b border-white/5 text-left"
+                    className="px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-white/20 font-normal border-b border-white/5 text-left"
                   >
                     {h}
                   </th>
@@ -262,13 +262,13 @@ export function AnalyticsClient({
               {MOCK_TOP_PRODUCTS.map((p, i) => (
                 <tr
                   key={p.sku}
-                  className={`border-b border-white/3 transition-colors hover:bg-[#FF00B6]/3 ${
-                    i % 2 === 0 ? "bg-[#141414]" : "bg-[#111111]"
+                  className={`border-b border-white/3 transition-colors hover:bg-brand-pink/3 ${
+                    i % 2 === 0 ? "bg-[#050505]" : "bg-[#050505]"
                   }`}
                 >
                   <td className="px-4 py-2.5">
                     <span
-                      className={`font-mono text-[11px] ${
+                      className={`font-mono text-[13px] ${
                         i === 0
                           ? "text-[#FFD700]"
                           : i === 1
@@ -281,16 +281,16 @@ export function AnalyticsClient({
                       {i + 1}
                     </span>
                   </td>
-                  <td className="px-4 py-2.5 font-mono text-[11px] text-white/60">
+                  <td className="px-4 py-2.5 font-mono text-[13px] text-white/60">
                     {p.name}
                   </td>
-                  <td className="px-4 py-2.5 font-mono text-[10px] text-[#00F0FF]/40">
+                  <td className="px-4 py-2.5 font-mono text-[12px] text-brand-pink/40">
                     {p.sku}
                   </td>
-                  <td className="px-4 py-2.5 font-mono text-[11px] text-[#FFD700]/70">
+                  <td className="px-4 py-2.5 font-mono text-[13px] text-[#FFD700]/70">
                     {formatBRL(p.revenue)}
                   </td>
-                  <td className="px-4 py-2.5 font-mono text-[11px] text-white/40">
+                  <td className="px-4 py-2.5 font-mono text-[13px] text-white/40">
                     {p.qty}
                   </td>
                 </tr>
@@ -301,19 +301,19 @@ export function AnalyticsClient({
       </div>
 
       {/* Conversion Placeholder */}
-      <div className="border border-white/5 bg-[#141414] p-8 flex flex-col items-center gap-4">
+      <div className="border border-white/5 bg-[#050505] p-8 flex flex-col items-center gap-4">
         <MousePointerClick size={28} className="text-white/10" />
-        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/20">
-          Taxa de Conversão & Funil
+        <p className="font-mono text-[12px] uppercase tracking-[0.3em] text-white/20">
+          {"// Taxa de Conversão & Funil"}
         </p>
-        <p className="font-mono text-[9px] text-white/12 text-center max-w-xs">
+        <p className="font-mono text-[11px] text-white/12 text-center max-w-xs">
           Requer integração com pixel de rastreamento (Meta, GA4 ou TikTok).
           Configure em Admin → Configurações → Pixels.
         </p>
         <span
-          className="inline-flex items-center gap-2 px-3 py-1.5 border border-[#FF00B6]/20 font-mono text-[8px] uppercase tracking-[0.25em]"
+          className="inline-flex items-center gap-2 px-3 py-1.5 border border-brand-pink/20 font-mono text-[10px] uppercase tracking-[0.25em]"
           style={{
-            background: "linear-gradient(90deg, #FF00B6, #00F0FF, #FFD700)",
+            background: "linear-gradient(90deg, var(--brand-pink), brand-pink, #FFD700)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -323,8 +323,8 @@ export function AnalyticsClient({
         </span>
       </div>
 
-      <p className="font-mono text-[8px] text-white/12 text-center uppercase tracking-[0.3em]">
-        Analytics completo em desenvolvimento — top produtos são dados de demonstração
+      <p className="font-mono text-[10px] text-white/12 text-center uppercase tracking-[0.3em]">
+        {"// Analytics completo em desenvolvimento — top produtos são dados de demonstração"}
       </p>
     </div>
   );

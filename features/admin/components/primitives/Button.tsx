@@ -1,9 +1,9 @@
 "use client";
 /**
- * Component: Button — botão polimórfico com 4 variantes Y2K Chrome.
+ * Component: Button — botão polimórfico com 4 variantes Cyber HUD.
  *
- * primary: holo gradient + shadow cyan | secondary: chrome bevel inset |
- * ghost: transparent + pink border | danger: red glow. Sizes: sm / md / lg.
+ * primary: neon cyan com brackets | secondary: border fina escuro |
+ * ghost: transparente hover cyan | danger: red tactical glow. Sizes: sm / md / lg.
  *
  * Usado em: toda a UI do /admin.
  */
@@ -22,32 +22,30 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses: Record<Variant, string> = {
   primary: [
-    "bg-linear-to-r from-[#FF00B6] via-[#00F0FF] to-[#FFD700] bg-[length:200%_100%] animate-holo",
-    "text-black font-black border-2 border-transparent",
-    "shadow-[4px_4px_0_#00F0FF] hover:shadow-[2px_2px_0_#00F0FF] hover:translate-y-px",
-    "active:shadow-none active:translate-y-0.5",
+    "group relative overflow-hidden bg-brand-pink/5 border border-brand-pink/40",
+    "text-brand-pink hover:bg-brand-pink/15 hover:border-brand-pink",
+    "shadow-[inset_0_0_15px_rgba(255,0,182,0.05)]",
+    "before:absolute before:left-0 before:top-0 before:h-full before:w-[2px] before:bg-brand-pink before:transition-all hover:before:w-[4px]",
   ].join(" "),
   secondary: [
-    "bg-[#1a1a1a] text-white/80 border-2 border-white/10",
-    "shadow-[inset_1px_1px_0_rgba(255,255,255,0.08),inset_-1px_-1px_0_rgba(0,0,0,0.5)]",
-    "hover:border-white/20 hover:text-white",
+    "bg-[#0a0a0a] text-white/40 border border-white/10",
+    "hover:border-white/30 hover:text-white/80 hover:bg-[#0a0a0a]",
   ].join(" "),
   ghost: [
-    "bg-transparent text-[#FF00B6] border-2 border-[#FF00B6]/30",
-    "hover:border-[#FF00B6] hover:bg-[#FF00B6]/8",
-    "hover:shadow-[0_0_12px_rgba(255,0,182,0.25)]",
+    "bg-transparent text-white/40 border border-transparent",
+    "hover:border-brand-pink/20 hover:text-brand-pink hover:bg-brand-pink/5",
   ].join(" "),
   danger: [
-    "bg-transparent text-red-400 border-2 border-red-500/30",
-    "hover:border-red-400 hover:bg-red-500/8",
-    "hover:shadow-[0_0_12px_rgba(239,68,68,0.25)]",
+    "bg-red-500/5 text-red-500 border border-red-500/30",
+    "hover:border-red-500 hover:bg-red-500/15",
+    "shadow-[inset_0_0_15px_rgba(239,68,68,0.05)]",
   ].join(" "),
 };
 
 const sizeClasses: Record<Size, string> = {
-  sm: "px-3 py-1.5 text-[9px] tracking-[0.15em]",
-  md: "px-5 py-2.5 text-[10px] tracking-[0.2em]",
-  lg: "px-8 py-3.5 text-[12px] tracking-[0.2em]",
+  sm: "px-4 py-2 text-[11px] tracking-widest",
+  md: "px-6 py-2.5 text-[12px] tracking-widest",
+  lg: "px-8 py-3.5 text-[13px] tracking-[0.2em]",
 };
 
 export function Button({
@@ -57,26 +55,32 @@ export function Button({
   loading,
   disabled,
   className,
+  type = "button",
   ...props
 }: Props) {
   return (
     <button
+      type={type}
       {...props}
       disabled={disabled || loading}
       className={clsx(
         "inline-flex items-center justify-center gap-2",
-        "font-poppins font-bold uppercase",
+        "font-mono font-semibold uppercase rounded-none",
         "transition-all duration-150 cursor-pointer",
-        "disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none disabled:translate-y-0",
+        "disabled:opacity-30 disabled:cursor-not-allowed disabled:bg-transparent",
         variantClasses[variant],
         sizeClasses[size],
         className,
       )}
     >
       {loading ? (
-        <span className="font-mono text-[10px] animate-neon-pulse">...</span>
+        <span className="animate-pulse tracking-widest">PROCESSANDO...</span>
       ) : (
-        children
+        <>
+          {variant === "primary" && <span className="opacity-40">[</span>}
+          {children}
+          {variant === "primary" && <span className="opacity-40">]</span>}
+        </>
       )}
     </button>
   );

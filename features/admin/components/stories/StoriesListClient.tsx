@@ -47,7 +47,7 @@ function StoryCard({ story, onEdit, onDelete, isDeleting }: CardProps) {
 
   const isVideo = story.media_type === "video";
   const isProduct = story.kind === "product";
-  const kindColor = isProduct ? "#00F0FF" : "#FF00B6";
+  const kindColor = isProduct ? "brand-pink" : "var(--brand-pink)";
   const kindLabel = isProduct ? "PRODUCT" : isVideo ? "VIDEO" : "IMAGE";
 
   return (
@@ -58,9 +58,9 @@ function StoryCard({ story, onEdit, onDelete, isDeleting }: CardProps) {
         transition,
         opacity: isDragging ? 0.4 : 1,
       }}
-      className={`relative border-2 ${story.active ? "border-white/20" : "border-white/8"} bg-[#1a1a1a] shadow-[4px_4px_0_#000] hover:border-[#00F0FF]/30 transition-colors group`}
+      className={`relative border ${story.active ? "border-brand-pink/30" : "border-white/8"} bg-[#050505] hover:bg-[#050505] shadow-[inset_0_0_15px_rgba(255,0,182,0.05)] transition-colors group rounded-none`}
     >
-      <div className="aspect-9/16 relative overflow-hidden bg-[#0f0f0f]">
+      <div className="aspect-9/16 relative overflow-hidden bg-[#050505]">
         {story.media_url && !isVideo ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -83,18 +83,18 @@ function StoryCard({ story, onEdit, onDelete, isDeleting }: CardProps) {
         )}
 
         {story.avatar_label && (
-          <div className="absolute top-2 left-2 font-mono text-[9px] font-bold uppercase bg-[#FF00B6] text-black px-1.5 py-0.5 leading-none">
+          <div className="absolute top-2 left-2 font-mono text-[11px] font-bold uppercase bg-brand-pink text-black px-1.5 py-0.5 leading-none">
             {story.avatar_label}
           </div>
         )}
 
         <div
-          className={`absolute top-2 right-2 w-2 h-2 rounded-full ${story.active ? "bg-[#00F0FF] shadow-[0_0_6px_#00F0FF]" : "bg-white/15"}`}
+          className={`absolute top-2 right-2 w-2 h-2 rounded-none ${story.active ? "bg-brand-pink shadow-[inset_0_0_10px_brand-pink]" : "bg-white/15"}`}
         />
 
         {story.title_pt && (
           <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent px-2 py-3">
-            <p className="font-poppins text-[10px] font-semibold text-white leading-tight line-clamp-2">
+            <p className="font-poppins text-[12px] font-semibold text-white leading-tight line-clamp-2">
               {story.title_pt}
             </p>
           </div>
@@ -104,38 +104,38 @@ function StoryCard({ story, onEdit, onDelete, isDeleting }: CardProps) {
           <button
             {...listeners}
             {...attributes}
-            className="p-2 bg-[#1a1a1a] border border-white/20 text-white/50 hover:text-white cursor-grab active:cursor-grabbing"
+            className="p-2 bg-[#0a0a0a] border border-white/20 text-white/50 hover:text-white cursor-grab active:cursor-grabbing"
             title="Arrastar para reordenar"
           >
-            <GripVertical size={13} />
+            <GripVertical size={16} />
           </button>
           <button
             onClick={() => onEdit(story.id)}
-            className="p-2 bg-[#1a1a1a] border border-white/20 text-white/50 hover:text-[#00F0FF]"
+            className="p-2 bg-[#0a0a0a] border border-white/20 text-white/50 hover:text-brand-pink"
             title="Editar"
           >
-            <Pencil size={13} />
+            <Pencil size={16} />
           </button>
           <button
             onClick={() => onDelete(story.id)}
             disabled={isDeleting}
-            className="p-2 bg-[#1a1a1a] border border-white/20 text-white/50 hover:text-[#FF00B6] disabled:opacity-25"
+            className="p-2 bg-[#0a0a0a] border border-white/20 text-white/50 hover:text-brand-pink disabled:opacity-25"
             title="Deletar"
           >
-            <Trash2 size={13} />
+            <Trash2 size={16} />
           </button>
         </div>
       </div>
 
       <div className="px-2 py-1.5 border-t border-white/5">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0">
           <span
-            className="font-mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 border"
+            className="font-mono text-[11px] uppercase tracking-wider px-1.5 py-0.5 border"
             style={{ borderColor: `${kindColor}40`, color: kindColor }}
           >
             {kindLabel}
           </span>
-          <span className="font-mono text-[9px] text-white/20">#{story.display_order}</span>
+          <span className="font-mono text-[11px] text-white/20">#{story.display_order}</span>
         </div>
       </div>
     </div>
@@ -198,26 +198,26 @@ export default function StoriesListClient({ stories: initial }: Props) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0">
         <div>
           <h1 className="font-shrikhand text-3xl text-white tracking-wider">STORIES</h1>
-          <p className="font-mono text-[10px] text-white/30 mt-1 uppercase tracking-widest">
+          <p className="font-mono text-[12px] text-white/30 mt-1 uppercase tracking-widest">
             {stories.length} stor{stories.length !== 1 ? "ies" : "y"} — arraste para reordenar
             {reordering && " — salvando…"}
           </p>
         </div>
         <button
           onClick={() => router.push("/admin/stories/new")}
-          className="flex items-center gap-2 bg-linear-to-r from-[#FF00B6] to-[#00F0FF] text-black font-mono text-xs font-bold uppercase tracking-widest px-4 py-2 border-2 border-black shadow-[4px_4px_0_#000] hover:-translate-x-px hover:-translate-y-px hover:shadow-[5px_5px_0_#000] transition-all"
+          className="flex items-center gap-2 bg-linear-to-r from-[var(--brand-pink)] to-brand-pink text-black font-mono text-base font-bold uppercase tracking-widest px-4 py-2 border-2 border-black hover:bg-brand-pink-light transition-colors rounded-none"
         >
-          <Plus size={14} />
-          Novo Story
+          <Plus size={17} />
+          [ Novo Story ]
         </button>
       </div>
 
       {stories.length === 0 ? (
-        <div className="border-2 border-dashed border-white/10 bg-[#0f0f0f] p-20 text-center">
-          <div className="font-mono text-white/15 text-xs uppercase tracking-[0.4em]">
+        <div className="border-2 border-dashed border-white/10 bg-[#050505] p-20 text-center">
+          <div className="font-mono text-white/15 text-base uppercase tracking-[0.4em]">
             NENHUM STORY CADASTRADO
           </div>
         </div>

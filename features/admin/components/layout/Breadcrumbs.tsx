@@ -3,7 +3,7 @@
  * Component: Breadcrumbs — trilha monospace baseada em pathname para o /admin.
  *
  * Segmenta pathname por "/", traduz via mapa de labels e exibe com separador "›".
- * Último segmento em pink (#FF00B6); anteriores em white/25 clicáveis.
+ * Último segmento em pink (var(--brand-pink)); anteriores em white/25 clicáveis.
  *
  * Usado em: Topbar.
  */
@@ -79,16 +79,16 @@ export function Breadcrumbs() {
       {crumbs.map((crumb, i) => (
         <span key={crumb.href} className="flex items-center gap-1">
           {i > 0 && (
-            <span className="font-mono text-[14px] text-white/12 select-none">›</span>
+            <span className="font-mono text-[16px] text-white/12 select-none">›</span>
           )}
           {crumb.isLast ? (
-            <span className="font-mono text-[14px] uppercase tracking-[0.2em] text-brand-yellow">
+            <span className="font-mono text-[16px] uppercase tracking-[0.2em] text-brand-yellow">
               {crumb.label}
             </span>
           ) : (
             <Link
               href={crumb.href}
-              className="font-mono text-[14px] uppercase tracking-[0.2em] text-white/25 hover:text-white/50 transition-colors"
+              className="font-mono text-[16px] uppercase tracking-[0.2em] text-white/25 hover:text-white/50 transition-colors"
             >
               {crumb.label}
             </Link>

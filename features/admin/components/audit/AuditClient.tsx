@@ -79,9 +79,9 @@ const MOCK_LOGS = [
 ];
 
 const ACTION_STYLE: Record<string, string> = {
-  UPDATE: "border-[#00F0FF]/30 text-[#00F0FF] bg-[#00F0FF]/5",
+  UPDATE: "border-brand-pink/30 text-brand-pink bg-brand-pink/5",
   CREATE: "border-green-500/30 text-green-400 bg-green-500/5",
-  DELETE: "border-[#FF00B6]/30 text-[#FF00B6] bg-[#FF00B6]/5",
+  DELETE: "border-brand-pink/30 text-brand-pink bg-brand-pink/5",
   REFUND: "border-[#FFD700]/30 text-[#FFD700] bg-[#FFD700]/5",
 };
 
@@ -117,15 +117,15 @@ export function AuditClient() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-2">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 border border-[#FF00B6]/20 bg-[#FF00B6]/4 mb-1 self-start">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 border border-brand-pink/20 bg-brand-pink/4 mb-1 self-start">
           <span
-            className="w-1.5 h-1.5 rounded-full bg-[#00F0FF] animate-neon-pulse"
+            className="w-1.5 h-1.5 rounded-none bg-brand-pink animate-neon-pulse"
             aria-hidden="true"
           />
           <span
-            className="font-mono text-[8px] uppercase tracking-[0.3em] font-bold"
+            className="font-mono text-[10px] uppercase tracking-[0.3em] font-bold"
             style={{
-              background: "linear-gradient(90deg, #FF00B6, #00F0FF, #FFD700)",
+              background: "linear-gradient(90deg, var(--brand-pink), brand-pink, #FFD700)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
@@ -135,13 +135,13 @@ export function AuditClient() {
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <ClipboardList size={18} className="text-[#FF00B6]" />
+          <ClipboardList size={18} className="text-brand-pink" />
           <h1 className="font-shrikhand text-2xl text-white tracking-wide">
             Log de Auditoria
           </h1>
         </div>
-        <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/25">
-          Rastreia todas as ações admin com diff · dados abaixo são demonstrativos
+        <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/25">
+          {"// Rastreia todas as ações admin com diff · dados abaixo são demonstrativos"}
         </p>
       </div>
 
@@ -149,20 +149,20 @@ export function AuditClient() {
       <div className="flex items-center gap-3 flex-wrap">
         <div className="relative">
           <Search
-            size={12}
+            size={15}
             className="absolute left-3 top-1/2 -translate-y-1/2 text-white/20"
           />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar por email, tipo, ID..."
-            className="pl-8 pr-4 py-2 bg-[#0f0f0f] border border-white/8 focus:border-[#FF00B6]/40 font-mono text-[11px] text-white/60 placeholder:text-white/15 outline-none w-72 transition-colors"
+            className="pl-8 pr-4 py-2 bg-[#050505] border border-white/8 focus:border-brand-pink/40 font-mono text-[13px] text-white/60 placeholder:text-white/15 outline-none w-72 transition-colors"
           />
         </div>
         <select
           value={actionFilter}
           onChange={(e) => setActionFilter(e.target.value)}
-          className="appearance-none pl-3 pr-8 py-2 bg-[#0f0f0f] border border-white/8 focus:border-[#FF00B6]/40 font-mono text-[11px] text-white/40 outline-none transition-colors cursor-pointer"
+          className="appearance-none pl-3 pr-8 py-2 bg-[#050505] border border-white/8 focus:border-brand-pink/40 font-mono text-[13px] text-white/40 outline-none transition-colors cursor-pointer"
         >
           <option value="all">Todas as ações</option>
           <option value="UPDATE">UPDATE</option>
@@ -170,7 +170,7 @@ export function AuditClient() {
           <option value="DELETE">DELETE</option>
           <option value="REFUND">REFUND</option>
         </select>
-        <span className="font-mono text-[9px] text-white/20 ml-auto">
+        <span className="font-mono text-[11px] text-white/20 ml-auto">
           {rows.length} evento{rows.length !== 1 ? "s" : ""} (mock)
         </span>
       </div>
@@ -182,11 +182,11 @@ export function AuditClient() {
         <div className="border border-white/5 overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-[#1a1a1a]">
+              <tr className="bg-[#000000] border-b border-brand-pink/30 shadow-[inset_0_0_15px_rgba(255,0,182,0.05)]">
                 {["", "TIMESTAMP", "ADMIN", "AÇÃO", "TIPO", "ID ALVO"].map((h) => (
                   <th
                     key={h}
-                    className="px-4 py-3 font-mono text-[8px] uppercase tracking-[0.25em] text-white/25 font-normal border-b border-white/5 text-left whitespace-nowrap"
+                    className="px-4 py-3 font-mono text-[10px] uppercase tracking-[0.25em] text-white/25 font-normal border-b border-white/5 text-left whitespace-nowrap"
                   >
                     {h}
                   </th>
@@ -199,49 +199,49 @@ export function AuditClient() {
                   <tr
                     key={row.id}
                     className={`border-b border-white/3 cursor-pointer transition-colors ${
-                      i % 2 === 0 ? "bg-[#141414]" : "bg-[#111111]"
+                      i % 2 === 0 ? "bg-[#050505]" : "bg-[#050505]"
                     } hover:bg-white/3`}
                     onClick={() => setExpanded(expanded === row.id ? null : row.id)}
                   >
                     <td className="px-3 py-3 text-white/20">
                       {expanded === row.id ? (
-                        <ChevronDown size={12} />
+                        <ChevronDown size={15} />
                       ) : (
-                        <ChevronRight size={12} />
+                        <ChevronRight size={15} />
                       )}
                     </td>
-                    <td className="px-4 py-3 font-mono text-[9px] text-white/30 whitespace-nowrap">
+                    <td className="px-4 py-3 font-mono text-[11px] text-white/30 whitespace-nowrap">
                       {fmtTs(row.timestamp)}
                     </td>
-                    <td className="px-4 py-3 font-mono text-[10px] text-[#00F0FF]/40">
+                    <td className="px-4 py-3 font-mono text-[12px] text-brand-pink/40">
                       {row.admin_email}
                     </td>
                     <td className="px-4 py-3">
                       <span
-                        className={`inline-flex px-2 py-0.5 font-mono text-[8px] uppercase tracking-widest border ${
+                        className={`inline-flex px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest border ${
                           ACTION_STYLE[row.action] ?? "border-white/10 text-white/30"
                         }`}
                       >
                         {row.action}
                       </span>
                     </td>
-                    <td className="px-4 py-3 font-mono text-[10px] text-white/30">
+                    <td className="px-4 py-3 font-mono text-[12px] text-white/30">
                       {row.target_type}
                     </td>
-                    <td className="px-4 py-3 font-mono text-[10px] text-[#FF00B6]/30">
+                    <td className="px-4 py-3 font-mono text-[12px] text-brand-pink/30">
                       {row.target_id}
                     </td>
                   </tr>
                   {expanded === row.id && (
                     <tr
                       key={`${row.id}-diff`}
-                      className="bg-[#0c0c0c] border-b border-white/5"
+                      className="bg-[#050505] border-b border-white/5 shadow-[inset_0_0_15px_rgba(255,0,182,0.05)]"
                     >
                       <td colSpan={6} className="px-6 py-4">
-                        <p className="font-mono text-[7px] uppercase tracking-[0.3em] text-white/20 mb-2">
-                          diff
+                        <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/20 mb-2">
+                          {"// diff"}
                         </p>
-                        <pre className="font-mono text-[9px] text-[#00F0FF]/50 whitespace-pre-wrap leading-relaxed">
+                        <pre className="font-mono text-[11px] text-brand-pink/50 whitespace-pre-wrap leading-relaxed">
                           {row.diff}
                         </pre>
                       </td>
@@ -254,8 +254,8 @@ export function AuditClient() {
         </div>
       )}
 
-      <p className="font-mono text-[8px] text-white/12 text-center uppercase tracking-[0.3em]">
-        Dados demonstrativos — funcionalidade requer criação da tabela audit_logs
+      <p className="font-mono text-[10px] text-white/12 text-center uppercase tracking-[0.3em]">
+        {"// Dados demonstrativos — funcionalidade requer criação da tabela audit_logs"}
       </p>
     </div>
   );
