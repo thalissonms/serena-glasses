@@ -158,8 +158,8 @@ function Toggle({
       >
         <span
           className={`absolute top-0.5 w-4 h-4 transition-all duration-200 ${checked
-              ? "left-5 bg-brand-pink shadow-[0_0_8px_rgba(255,0,182,0.5)]"
-              : "left-0.5 bg-white/20"
+            ? "left-5 bg-brand-pink shadow-[0_0_8px_rgba(255,0,182,0.5)]"
+            : "left-0.5 bg-white/20"
             }`}
         />
       </span>
@@ -190,14 +190,14 @@ function RadioOption<T extends string>({
       type="button"
       onClick={() => onSelect(value)}
       className={`flex items-center gap-3 px-4 py-3 border text-left transition-all duration-150 ${selected
-          ? "border-brand-pink/50 bg-brand-pink/6 shadow-[inset_1px_1px_0_rgba(255,0,182,0.12)]"
-          : "border-white/8 hover:border-white/20 bg-white/2"
+        ? "border-brand-pink/50 bg-brand-pink/6 shadow-[inset_1px_1px_0_rgba(255,0,182,0.12)]"
+        : "border-white/8 hover:border-white/20 bg-white/2"
         }`}
     >
       <span
         className={`shrink-0 w-3 h-3 border rounded-none transition-all duration-150 ${selected
-            ? "border-brand-pink bg-brand-pink shadow-[0_0_6px_rgba(255,0,182,0.5)]"
-            : "border-white/20"
+          ? "border-brand-pink bg-brand-pink shadow-[0_0_6px_rgba(255,0,182,0.5)]"
+          : "border-white/20"
           }`}
       />
       {icon && (
@@ -282,8 +282,8 @@ function MultiSelectProducts({
               >
                 <span
                   className={`shrink-0 w-3 h-3 border transition-all ${isSel
-                      ? "border-brand-pink bg-brand-pink shadow-[0_0_6px_rgba(255,0,182,0.4)]"
-                      : "border-white/15"
+                    ? "border-brand-pink bg-brand-pink shadow-[0_0_6px_rgba(255,0,182,0.4)]"
+                    : "border-white/15"
                     }`}
                 />
                 <span
@@ -347,8 +347,8 @@ function MultiSelectCategories({
               >
                 <span
                   className={`shrink-0 w-3 h-3 border transition-all ${isSel
-                      ? "border-brand-pink bg-brand-pink shadow-[0_0_6px_rgba(255,0,182,0.4)]"
-                      : "border-white/15"
+                    ? "border-brand-pink bg-brand-pink shadow-[0_0_6px_rgba(255,0,182,0.4)]"
+                    : "border-white/15"
                     }`}
                 />
                 <span
@@ -386,7 +386,7 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
     setValue,
     watch,
     formState: { errors },
-  } = useForm<z.input<typeof formSchema>>({
+  } = useForm<z.input<typeof formSchema>, unknown, FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       code: initialData?.code ?? "",
@@ -490,8 +490,8 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
               </h1>
             </div>
             <p className="font-mono text-[11px] tracking-widest text-white/25 uppercase">{"// "}{mode === "create"
-                ? "Criar novo cupom de desconto"
-                : "Editar configurações do cupom"}
+              ? "Criar novo cupom de desconto"
+              : "Editar configurações do cupom"}
             </p>
           </div>
         </div>
@@ -582,36 +582,36 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
 
             {discountType !== "free_shipping" && (
               <div className="mt-4">
-                    <Input
-                      label={discountType === "percentage" ? "Valor do desconto" : "Valor do desconto (R$)"}
-                      placeholder="0,00"
-                      inputMode={discountType === "percentage" ? "numeric" : "decimal"}
-                      {...register("discount_value")}
-                      error={errors.discount_value?.message}
-                      hint={
-                        discountType === "percentage"
-                          ? "Informe o percentual (ex: 20 para 20%)"
-                          : "Informe em reais (ex: 50,00)"
-                      }
-                      suffix={
-                        <span className="pr-3 font-mono text-[12px] text-white/30">{"// "}{discountType === "percentage" ? "%" : "R$"}
-                        </span>
-                      }
-                    />
+                <Input
+                  label={discountType === "percentage" ? "Valor do desconto" : "Valor do desconto (R$)"}
+                  placeholder="0,00"
+                  inputMode={discountType === "percentage" ? "numeric" : "decimal"}
+                  {...register("discount_value")}
+                  error={errors.discount_value?.message}
+                  hint={
+                    discountType === "percentage"
+                      ? "Informe o percentual (ex: 20 para 20%)"
+                      : "Informe em reais (ex: 50,00)"
+                  }
+                  suffix={
+                    <span className="pr-3 font-mono text-[12px] text-white/30">{"// "}{discountType === "percentage" ? "%" : "R$"}
+                    </span>
+                  }
+                />
               </div>
             )}
 
             {discountType === "percentage" && (
               <div className="mt-3">
-                    <Input
-                      label="Desconto máximo (R$) (opcional)"
-                      placeholder="0,00"
-                      inputMode="decimal"
-                      {...register("max_discount_cents")}
-                      error={errors.max_discount_cents?.message}
-                      hint="Teto em reais (ex: 100,00). Vazio = sem teto."
-                      suffix={<span className="pr-3 font-mono text-[12px] text-white/30">{"// "}R$</span>}
-                    />
+                <Input
+                  label="Desconto máximo (R$) (opcional)"
+                  placeholder="0,00"
+                  inputMode="decimal"
+                  {...register("max_discount_cents")}
+                  error={errors.max_discount_cents?.message}
+                  hint="Teto em reais (ex: 100,00). Vazio = sem teto."
+                  suffix={<span className="pr-3 font-mono text-[12px] text-white/30">{"// "}R$</span>}
+                />
               </div>
             )}
           </div>
@@ -696,15 +696,15 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
           <div className="border border-white/8 bg-[#111] p-5 shadow-[4px_4px_0_rgba(255,0,182,0.12)]">
             <SectionLabel>Condições</SectionLabel>
             <div className="flex flex-col gap-4">
-                  <Input
-                    label="Pedido mínimo (R$)"
-                    placeholder="0,00"
-                    inputMode="decimal"
-                    {...register("min_order_cents")}
-                    error={errors.min_order_cents?.message}
-                    hint="0 = sem valor mínimo · Ex: 100,00"
-                    suffix={<span className="pr-3 font-mono text-[12px] text-white/30">{"// "}R$</span>}
-                  />
+              <Input
+                label="Pedido mínimo (R$)"
+                placeholder="0,00"
+                inputMode="decimal"
+                {...register("min_order_cents")}
+                error={errors.min_order_cents?.message}
+                hint="0 = sem valor mínimo · Ex: 100,00"
+                suffix={<span className="pr-3 font-mono text-[12px] text-white/30">{"// "}R$</span>}
+              />
               <Controller
                 control={control}
                 name="first_purchase_only"
