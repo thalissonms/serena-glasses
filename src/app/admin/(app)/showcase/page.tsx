@@ -87,11 +87,11 @@ export default async function AdminV2ShowcasePage() {
           <Card variant="flat" title="Flat">
             <p className="font-mono text-[12px] text-white/40">Variante flat</p>
           </Card>
-          <Card variant="chrome" title="Chrome">
-            <p className="font-mono text-[12px] text-white/40">Variante chrome</p>
+          <Card variant="cyber" title="Cyber">
+            <p className="font-mono text-[12px] text-white/40">Variante cyber</p>
           </Card>
-          <Card variant="holo" title="Holo">
-            <p className="font-mono text-[12px] text-white/40">Variante holo</p>
+          <Card variant="neon" title="Neon">
+            <p className="font-mono text-[12px] text-white/40">Variante neon</p>
           </Card>
         </div>
       </section>
