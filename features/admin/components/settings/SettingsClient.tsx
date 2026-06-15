@@ -833,7 +833,6 @@ export default function SettingsClient({ settings }: Props) {
             return (
               <AccordionPanel
                 key={id}
-                id={id}
                 title={title}
                 icon={icon}
                 isOpen={openPanel === id}
