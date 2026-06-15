@@ -386,7 +386,7 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
     setValue,
     watch,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<z.input<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       code: initialData?.code ?? "",
