@@ -19,11 +19,11 @@ export function LowStockAlerts({ items }: Props) {
     return (
       <div className="flex flex-col items-center justify-center py-10 gap-2">
         <div
-          className="w-2 h-2 rounded-full bg-[#00EE88]"
-          style={{ boxShadow: "0 0 8px #00EE88" }}
+          className="w-2 h-2 rounded-none bg-[#00EE88]"
+          style={{ border: "1px solid #00EE88" }}
           aria-hidden="true"
         />
-        <p className="font-mono text-[8px] uppercase tracking-[0.3em] text-white/20">
+        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/20">
           Estoque saudável
         </p>
       </div>
@@ -42,19 +42,18 @@ export function LowStockAlerts({ items }: Props) {
             className="flex items-center gap-3 py-2.5 border-b border-white/4 last:border-0 hover:bg-white/2 transition-colors group"
           >
             <AlertTriangle
-              size={10}
+              size={13}
               style={{
                 color: accent,
                 flexShrink: 0,
-                filter: `drop-shadow(0 0 3px ${accent})`,
               }}
               aria-hidden="true"
             />
             <div className="flex-1 min-w-0">
-              <p className="font-poppins text-[11px] text-white/60 truncate group-hover:text-white/80 transition-colors">
+              <p className="font-poppins text-[13px] text-white/60 truncate group-hover:text-white/80 transition-colors">
                 {item.product_name}
               </p>
-              <p className="font-mono text-[8px] text-white/25 truncate mt-0.5">
+              <p className="font-mono text-[10px] text-white/25 truncate mt-0.5">
                 {item.color_name}
               </p>
             </div>
@@ -63,12 +62,11 @@ export function LowStockAlerts({ items }: Props) {
                 className="font-jocham text-[18px] leading-none"
                 style={{
                   color: accent,
-                  textShadow: `0 0 10px ${accent}`,
                 }}
               >
                 {item.stock_quantity}
               </span>
-              <span className="font-mono text-[7px] text-white/20 uppercase tracking-wider">
+              <span className="font-mono text-[9px] text-white/20 uppercase tracking-wider">
                 un
               </span>
             </div>

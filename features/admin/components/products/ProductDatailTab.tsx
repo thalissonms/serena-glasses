@@ -109,7 +109,7 @@ export function DetailsTab({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Input
           label="Nome *"
           placeholder="Ex: Óculos de Sol Vintage"
@@ -135,7 +135,7 @@ export function DetailsTab({
         />
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Input
           label="Preço (R$) *"
           placeholder="0,00"
@@ -172,7 +172,7 @@ export function DetailsTab({
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
           <Controller
             name="category_id"
@@ -187,8 +187,7 @@ export function DetailsTab({
             )}
           />
           <div className="flex flex-col gap-1">
-            <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/40 select-none">
-              Subcategoria(s)
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/40 select-none">{"// "}Subcategoria(s)
             </span>
             <Controller
               key={selectedCategoryId || "no-category"}
@@ -219,9 +218,9 @@ export function DetailsTab({
                             }
                           }}
                           className={clsx(
-                            "px-4 py-2.5 font-mono text-[9px] uppercase tracking-widest border-2 transition-all duration-150 cursor-pointer",
+                            "px-4 py-2.5 font-mono text-[11px] uppercase tracking-widest border-2 transition-all duration-150 cursor-pointer",
                             active
-                              ? "border-[#00F0FF]/40 text-[#00F0FF] bg-[#00F0FF]/8 shadow-[0_0_10px_rgba(0,240,255,0.2)]"
+                              ? "border-brand-pink/40 text-brand-pink bg-brand-pink/8 shadow-[0_0_10px_rgba(255,0,182,0.2)]"
                               : "border-white/10 text-white/25 hover:border-white/25 bg-transparent",
                           )}
                         >
@@ -245,7 +244,7 @@ export function DetailsTab({
 
       <div>
         <SectionDivider label="Atributos Físicos" />
-        <div className="grid grid-cols-3 gap-4 mt-3">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
           <Controller
             name="frame_shape"
             control={control}
@@ -293,16 +292,16 @@ export function DetailsTab({
                 onClick={() => field.onChange(!field.value)}
                 className={clsx(
                   "flex items-center gap-2 px-4 py-2.5 border-2 transition-all duration-150",
-                  "font-mono text-[9px] uppercase tracking-widest",
+                  "font-mono text-[11px] uppercase tracking-widest",
                   field.value
-                    ? "border-[#00F0FF]/40 text-[#00F0FF] bg-[#00F0FF]/8 shadow-[0_0_10px_rgba(0,240,255,0.2)]"
+                    ? "border-brand-pink/40 text-brand-pink bg-brand-pink/8 shadow-[0_0_10px_rgba(255,0,182,0.2)]"
                     : "border-white/10 text-white/30 hover:border-white/20",
                 )}
               >
                 {field.value ? (
-                  <ToggleRight size={14} />
+                  <ToggleRight size={17} />
                 ) : (
-                  <ToggleLeft size={14} />
+                  <ToggleLeft size={17} />
                 )}
                 Proteção UV
               </button>
@@ -324,7 +323,7 @@ export function DetailsTab({
                   type="button"
                   onClick={() => field.onChange(!field.value)}
                   className={clsx(
-                    "px-4 py-2.5 font-mono text-[9px] uppercase tracking-widest border-2 transition-all duration-150",
+                    "px-4 py-2.5 font-mono text-[11px] uppercase tracking-widest border-2 transition-all duration-150",
                     !field.value &&
                       "border-white/10 text-white/25 hover:border-white/25 bg-transparent",
                   )}
@@ -374,7 +373,7 @@ export function DetailsTab({
           size="md"
           loading={mutation.isPending}
         >
-          <Save size={12} />
+          <Save size={15} />
           Salvar Detalhes
         </Button>
       </div>

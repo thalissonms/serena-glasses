@@ -9,6 +9,7 @@
  * Usado em: src/app/admin/orders/[id]/page.tsx.
  */
 import { type ReactNode, useState } from "react";
+import { fmtDateTime } from "../../utils/formatDate";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -128,16 +129,7 @@ function fmtPrice(cents: number | null | undefined): string {
   );
 }
 
-function fmtDateTime(iso: string | null | undefined): string {
-  if (!iso) return "—";
-  return new Date(iso).toLocaleString("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
+
 
 function fmtCEP(cep: string | null): string {
   if (!cep) return "—";
@@ -165,10 +157,10 @@ function SectionCard({
   children: ReactNode;
 }) {
   return (
-    <div className="bg-[#141414] border border-white/6 shadow-[inset_1px_1px_0_rgba(255,255,255,0.04)]">
-      <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5 bg-[#1a1a1a]/50">
+    <div className="bg-[#0a0a0a] border border-white/6 shadow-[inset_1px_1px_0_rgba(255,255,255,0.04)]">
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5 bg-[#0a0a0a]/50">
         <span className="text-white/20">{icon}</span>
-        <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/30">{title}</span>
+        <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/30">{"// "}{title}</span>
       </div>
       <div className="p-4">{children}</div>
     </div>
@@ -186,15 +178,14 @@ function DataRow({
 }) {
   return (
     <div className="flex items-baseline justify-between gap-3 py-1.5 border-b border-white/4 last:border-0">
-      <span className="font-mono text-[9px] uppercase tracking-[0.15em] text-white/25 shrink-0">
-        {label}
+      <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-white/25 shrink-0">{"// "}{label}
       </span>
       <span
         className={clsx(
           "text-right truncate max-w-[60%]",
           mono
-            ? "font-mono text-[10px] text-white/55"
-            : "font-poppins text-[12px] text-white/60",
+            ? "font-mono text-[12px] text-white/55"
+            : "font-poppins text-[14px] text-white/60",
         )}
       >
         {value ?? "—"}
@@ -205,16 +196,15 @@ function DataRow({
 
 function OrderStatusBadge({ status }: { status: string }) {
   if (VALID_BADGE_STATUSES.has(status)) {
-    return <Badge variant={status as any} />;
+    return <Badge variant={status as any /* eslint-disable-line @typescript-eslint/no-explicit-any */} />;
   }
   if (status === "payment_failed") {
     return (
-      <span className="inline-flex items-center px-2 py-0.5 font-mono text-[8px] uppercase tracking-[0.25em] border text-red-400 border-red-500/30 bg-red-500/8">
-        FALHOU
+      <span className="inline-flex items-center px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.25em] border text-red-400 border-red-500/30 bg-red-500/8">{"// "}FALHOU
       </span>
     );
   }
-  return <span className="font-mono text-[9px] text-white/25">{status}</span>;
+  return <span className="font-mono text-[11px] text-white/25">{"// "}{status}</span>;
 }
 
 // ─── Main Component ───────────────────────────────────────────────────────────
@@ -345,9 +335,9 @@ export function OrderDetailClient({ order, items, events }: Props) {
         <div className="flex flex-col gap-0.5">
           <Link
             href="/admin/orders"
-            className="inline-flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-widest text-white/20 hover:text-[#FF00B6] transition-colors mb-2"
+            className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest text-white/20 hover:text-brand-pink transition-colors mb-2"
           >
-            <ArrowLeft size={10} />
+            <ArrowLeft size={13} />
             Pedidos
           </Link>
           <div className="flex items-center gap-3 flex-wrap">
@@ -355,8 +345,7 @@ export function OrderDetailClient({ order, items, events }: Props) {
               #{order.order_number}
             </h1>
             <OrderStatusBadge status={order.status} />
-            <span className="font-mono text-[10px] text-white/20">
-              {fmtDateTime(order.created_at)}
+            <span className="font-mono text-[12px] text-white/20">{"// "}{fmtDateTime(order.created_at)}
             </span>
           </div>
         </div>
@@ -365,8 +354,7 @@ export function OrderDetailClient({ order, items, events }: Props) {
           <div className="font-mono text-3xl text-white font-bold tabular-nums">
             {fmtPrice(order.total)}
           </div>
-          <div className="font-mono text-[9px] uppercase tracking-widest text-white/20 mt-0.5">
-            {order.payment_method}
+          <div className="font-mono text-[11px] uppercase tracking-widest text-white/20 mt-0.5">{"// "}{order.payment_method}
           </div>
         </div>
       </div>
@@ -378,7 +366,7 @@ export function OrderDetailClient({ order, items, events }: Props) {
         <div className="lg:col-span-2 flex flex-col gap-4">
 
           {/* Items Table */}
-          <SectionCard title="Itens do Pedido" icon={<Package size={12} />}>
+          <SectionCard title="Itens do Pedido" icon={<Package size={15} />}>
             <div className="overflow-x-auto -mx-1">
               <table className="w-full border-collapse">
                 <thead>
@@ -386,9 +374,8 @@ export function OrderDetailClient({ order, items, events }: Props) {
                     {["Produto", "Cor", "Qtd", "Preço unit.", "Subtotal"].map((h) => (
                       <th
                         key={h}
-                        className="py-2 px-2 font-mono text-[8px] uppercase tracking-[0.2em] text-white/20 font-normal text-left first:pl-0 last:pr-0 last:text-right"
-                      >
-                        {h}
+                        className="py-2 px-2 font-mono text-[10px] uppercase tracking-[0.2em] text-white/20 font-normal text-left first:pl-0 last:pr-0 last:text-right"
+                      >{"// "}{h}
                       </th>
                     ))}
                   </tr>
@@ -400,7 +387,7 @@ export function OrderDetailClient({ order, items, events }: Props) {
                       className="border-b border-white/4 hover:bg-white/2 transition-colors"
                     >
                       <td className="py-3 pl-0 px-2">
-                        <span className="font-poppins text-[12px] text-white/70">
+                        <span className="font-poppins text-[14px] text-white/70">
                           {item.product_name}
                         </span>
                       </td>
@@ -408,29 +395,28 @@ export function OrderDetailClient({ order, items, events }: Props) {
                         {item.color ? (
                           <span className="inline-flex items-center gap-1.5">
                             <span
-                              className="w-3 h-3 rounded-full border border-white/10 shrink-0"
+                              className="w-3 h-3 rounded-none border border-white/10 shrink-0"
                               style={{ backgroundColor: item.color }}
                             />
-                            <span className="font-mono text-[9px] text-white/30">
-                              {item.color_label ?? item.color}
+                            <span className="font-mono text-[11px] text-white/30">{"// "}{item.color_label ?? item.color}
                             </span>
                           </span>
                         ) : (
-                          <span className="font-mono text-[9px] text-white/15">—</span>
+                          <span className="font-mono text-[11px] text-white/15">{"// "}—</span>
                         )}
                       </td>
                       <td className="py-3 px-2">
-                        <span className="font-mono text-[11px] text-white/50 tabular-nums">
+                        <span className="font-mono text-[13px] text-white/50 tabular-nums">
                           ×{item.quantity}
                         </span>
                       </td>
                       <td className="py-3 px-2">
-                        <span className="font-mono text-[11px] text-white/50 tabular-nums">
+                        <span className="font-mono text-[13px] text-white/50 tabular-nums">
                           {fmtPrice(item.price)}
                         </span>
                       </td>
                       <td className="py-3 pr-0 px-2 text-right">
-                        <span className="font-mono text-[12px] text-white/80 font-bold tabular-nums">
+                        <span className="font-mono text-[14px] text-white/80 font-bold tabular-nums">
                           {fmtPrice(item.price * item.quantity)}
                         </span>
                       </td>
@@ -443,38 +429,34 @@ export function OrderDetailClient({ order, items, events }: Props) {
             {/* Totals breakdown */}
             <div className="mt-4 pt-4 border-t border-white/6 flex flex-col gap-1.5 max-w-[260px] ml-auto">
               <div className="flex justify-between gap-4">
-                <span className="font-mono text-[9px] uppercase tracking-[0.15em] text-white/20">
-                  Subtotal
+                <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-white/20">{"// "}Subtotal
                 </span>
-                <span className="font-mono text-[11px] text-white/40 tabular-nums">
+                <span className="font-mono text-[13px] text-white/40 tabular-nums">
                   {fmtPrice(itemsTotal)}
                 </span>
               </div>
               {(order.shipping ?? 0) > 0 && (
                 <div className="flex justify-between gap-4">
-                  <span className="font-mono text-[9px] uppercase tracking-[0.15em] text-white/20">
-                    Frete
+                  <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-white/20">{"// "}Frete
                   </span>
-                  <span className="font-mono text-[11px] text-white/40 tabular-nums">
+                  <span className="font-mono text-[13px] text-white/40 tabular-nums">
                     +{fmtPrice(order.shipping)}
                   </span>
                 </div>
               )}
               {order.discount > 0 && (
                 <div className="flex justify-between gap-4">
-                  <span className="font-mono text-[9px] uppercase tracking-[0.15em] text-[#00F0FF]/40">
-                    Desconto{order.coupon_code ? ` (${order.coupon_code})` : ""}
+                  <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-brand-pink/40">{"// "}Desconto{order.coupon_code ? ` (${order.coupon_code})` : ""}
                   </span>
-                  <span className="font-mono text-[11px] text-[#00F0FF]/60 tabular-nums">
+                  <span className="font-mono text-[13px] text-brand-pink/60 tabular-nums">
                     −{fmtPrice(order.discount)}
                   </span>
                 </div>
               )}
               <div className="flex justify-between gap-4 pt-2 border-t border-white/6">
-                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/50 font-bold">
-                  Total
+                <span className="font-mono text-[12px] uppercase tracking-[0.2em] text-white/50 font-bold">{"// "}Total
                 </span>
-                <span className="font-mono text-[15px] text-white font-bold tabular-nums">
+                <span className="font-mono text-[17px] text-white font-bold tabular-nums">
                   {fmtPrice(order.total)}
                 </span>
               </div>
@@ -482,7 +464,7 @@ export function OrderDetailClient({ order, items, events }: Props) {
           </SectionCard>
 
           {/* Customer Card */}
-          <SectionCard title="Cliente" icon={<User size={12} />}>
+          <SectionCard title="Cliente" icon={<User size={15} />}>
             <div className="flex flex-col">
               <DataRow label="Nome" value={order.full_name} />
               <DataRow label="Email" value={order.email} mono />
@@ -492,7 +474,7 @@ export function OrderDetailClient({ order, items, events }: Props) {
           </SectionCard>
 
           {/* Shipping Card */}
-          <SectionCard title="Endereço de Entrega" icon={<MapPin size={12} />}>
+          <SectionCard title="Endereço de Entrega" icon={<MapPin size={15} />}>
             <div className="flex flex-col">
               <DataRow label="CEP" value={fmtCEP(order.cep)} mono />
               <DataRow
@@ -513,11 +495,10 @@ export function OrderDetailClient({ order, items, events }: Props) {
           </SectionCard>
 
           {/* Tracking Events Timeline */}
-          <SectionCard title="Eventos de Rastreio" icon={<Clock size={12} />}>
+          <SectionCard title="Eventos de Rastreio" icon={<Clock size={15} />}>
             {events.length === 0 ? (
               <div className="py-6 text-center">
-                <span className="font-mono text-[9px] uppercase tracking-widest text-white/15">
-                  Nenhum evento de rastreio registrado
+                <span className="font-mono text-[11px] uppercase tracking-widest text-white/15">{"// "}Nenhum evento de rastreio registrado
                 </span>
               </div>
             ) : (
@@ -527,9 +508,9 @@ export function OrderDetailClient({ order, items, events }: Props) {
                     <div className="flex flex-col items-center">
                       <div
                         className={clsx(
-                          "w-2 h-2 rounded-full border mt-1.5 shrink-0",
+                          "w-2 h-2 rounded-none border mt-1.5 shrink-0",
                           i === 0
-                            ? "border-[#FF00B6] bg-[#FF00B6]/30 shadow-[0_0_6px_#FF00B6]"
+                            ? "border-brand-pink bg-brand-pink/30 shadow-[0_0_6px_var(--brand-pink)]"
                             : "border-white/15 bg-transparent",
                         )}
                       />
@@ -538,11 +519,10 @@ export function OrderDetailClient({ order, items, events }: Props) {
                       )}
                     </div>
                     <div className="flex flex-col gap-0.5 pb-1">
-                      <span className="font-mono text-[9px] uppercase tracking-widest text-white/20">
-                        {fmtDateTime(event.occurred_at)}
+                      <span className="font-mono text-[11px] uppercase tracking-widest text-white/20">{"// "}{fmtDateTime(event.occurred_at)}
                         {event.location ? ` · ${event.location}` : ""}
                       </span>
-                      <span className="font-poppins text-[12px] text-white/60">
+                      <span className="font-poppins text-[14px] text-white/60">
                         {event.description}
                       </span>
                     </div>
@@ -553,18 +533,17 @@ export function OrderDetailClient({ order, items, events }: Props) {
           </SectionCard>
 
           {/* Metadata Block (collapsible) */}
-          <div className="bg-[#141414] border border-white/6">
+          <div className="bg-[#0a0a0a] border border-white/6">
             <button
               onClick={() => setMetadataExpanded((v) => !v)}
-              className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-white/2 transition-colors"
+              className="w-full flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 px-4 py-3 text-left hover:bg-white/2 transition-colors"
             >
-              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/25">
-                Metadados do Pedido
+              <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/25">{"// "}Metadados do Pedido
               </span>
               {metadataExpanded ? (
-                <ChevronUp size={12} className="text-white/15" />
+                <ChevronUp size={15} className="text-white/15" />
               ) : (
-                <ChevronDown size={12} className="text-white/15" />
+                <ChevronDown size={15} className="text-white/15" />
               )}
             </button>
             {metadataExpanded && (
@@ -605,14 +584,13 @@ export function OrderDetailClient({ order, items, events }: Props) {
             <div
               style={{
                 boxShadow:
-                  "4px 4px 0 #FF00B6, inset 1px 1px 0 rgba(255,255,255,0.06), inset -1px -1px 0 rgba(0,0,0,0.4)",
+                  "4px 4px 0 var(--brand-pink), inset 1px 1px 0 rgba(255,255,255,0.06), inset -1px -1px 0 rgba(0,0,0,0.4)",
               }}
-              className="bg-[#141414] border-2 border-[#FF00B6]/30"
+              className="bg-[#0a0a0a] border-2 border-brand-pink/30"
             >
               {/* Panel header */}
-              <div className="px-4 py-3 border-b border-[#FF00B6]/15 bg-linear-to-r from-[#FF00B6]/10 via-[#FF00B6]/5 to-transparent">
-                <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-[#FF00B6]/60">
-                  Painel de Ações
+              <div className="px-4 py-3 border-b border-brand-pink/15 bg-linear-to-r from-[var(--brand-pink)]/10 via-[var(--brand-pink)]/5 to-transparent">
+                <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-brand-pink/60">{"// "}Painel de Ações
                 </span>
               </div>
 
@@ -620,8 +598,7 @@ export function OrderDetailClient({ order, items, events }: Props) {
 
                 {/* Status Updater */}
                 <div className="flex flex-col gap-2">
-                  <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/25">
-                    Status
+                  <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/25">{"// "}Status
                   </span>
                   <Select
                     value={selectedStatus}
@@ -644,8 +621,7 @@ export function OrderDetailClient({ order, items, events }: Props) {
 
                 {/* Tracking */}
                 <div className="flex flex-col gap-2">
-                  <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/25">
-                    Rastreio Manual
+                  <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/25">{"// "}Rastreio Manual
                   </span>
                   <Input
                     value={trackingCode}
@@ -664,7 +640,7 @@ export function OrderDetailClient({ order, items, events }: Props) {
                     loading={isSavingTracking}
                     className="w-full"
                   >
-                    <Truck size={11} />
+                    <Truck size={14} />
                     Salvar Rastreio
                   </Button>
                 </div>
@@ -673,8 +649,7 @@ export function OrderDetailClient({ order, items, events }: Props) {
 
                 {/* Melhor Envio Label */}
                 <div className="flex flex-col gap-2">
-                  <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/25">
-                    Melhor Envio
+                  <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/25">{"// "}Melhor Envio
                   </span>
 
                   {canGenerateLabel && (
@@ -685,14 +660,13 @@ export function OrderDetailClient({ order, items, events }: Props) {
                       loading={isGeneratingLabel}
                       className="w-full"
                     >
-                      <FileText size={11} />
+                      <FileText size={14} />
                       Gerar Etiqueta ME
                     </Button>
                   )}
 
                   {isGeneratingLabel && (
-                    <p className="font-mono text-[8px] uppercase tracking-widest text-[#FF00B6]/50 animate-pulse text-center">
-                      Aguardando Melhor Envio...
+                    <p className="font-mono text-[10px] uppercase tracking-widest text-brand-pink/50 animate-pulse text-center">{"// "}Aguardando Melhor Envio...
                     </p>
                   )}
 
@@ -701,16 +675,15 @@ export function OrderDetailClient({ order, items, events }: Props) {
                       href={order.me_label_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 px-3 py-2.5 font-mono text-[9px] uppercase tracking-[0.2em] text-[#00F0FF] border border-[#00F0FF]/30 hover:border-[#00F0FF] hover:shadow-[0_0_8px_rgba(0,240,255,0.2)] transition-all duration-150"
+                      className="inline-flex items-center justify-center gap-2 px-3 py-2.5 font-mono text-[11px] uppercase tracking-[0.2em] text-brand-pink border border-brand-pink/30 hover:border-brand-pink hover:shadow-[0_0_8px_rgba(255,0,182,0.2)] transition-all duration-150"
                     >
-                      <ExternalLink size={10} />
+                      <ExternalLink size={13} />
                       Abrir Etiqueta PDF
                     </a>
                   )}
 
                   {order.me_order_id && !order.me_label_url && (
-                    <div className="font-mono text-[9px] text-[#FFD700]/50 border border-[#FFD700]/15 px-3 py-2">
-                      Etiqueta gerada — URL ainda sendo processada
+                    <div className="font-mono text-[11px] text-[#FFD700]/50 border border-[#FFD700]/15 px-3 py-2">{"// "}Etiqueta gerada — URL ainda sendo processada
                     </div>
                   )}
 
@@ -722,20 +695,18 @@ export function OrderDetailClient({ order, items, events }: Props) {
                       loading={isCancellingLabel}
                       className="w-full"
                     >
-                      <XIcon size={11} />
+                      <XIcon size={14} />
                       Cancelar Etiqueta ME
                     </Button>
                   )}
 
                   {order.me_status && (
-                    <div className="font-mono text-[8px] uppercase tracking-widest text-white/15 text-right">
-                      ME: {order.me_status}
+                    <div className="font-mono text-[10px] uppercase tracking-widest text-white/15 text-right">{"// "}ME: {order.me_status}
                     </div>
                   )}
 
                   {!canGenerateLabel && !order.me_order_id && (
-                    <div className="font-mono text-[9px] text-white/15 border border-white/5 px-3 py-2">
-                      {order.status !== "paid"
+                    <div className="font-mono text-[11px] text-white/15 border border-white/5 px-3 py-2">{"// "}{order.status !== "paid"
                         ? "Disponível apenas para pedidos pagos"
                         : "Etiqueta já gerada"}
                     </div>
@@ -747,12 +718,10 @@ export function OrderDetailClient({ order, items, events }: Props) {
                   <>
                     <div className="border-t border-white/5" />
                     <div className="flex flex-col gap-2">
-                      <div className="flex items-center justify-between">
-                        <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/25">
-                          Pagamento
+                      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0">
+                        <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/25">{"// "}Pagamento
                         </span>
-                        <span className="font-mono text-[9px] text-red-400/50">
-                          {order.payment_attempts}/4 tentativas
+                        <span className="font-mono text-[11px] text-red-400/50">{"// "}{order.payment_attempts}/4 tentativas
                         </span>
                       </div>
                       <Button
@@ -762,11 +731,10 @@ export function OrderDetailClient({ order, items, events }: Props) {
                         loading={isRetrying}
                         className="w-full"
                       >
-                        <RefreshCw size={11} />
+                        <RefreshCw size={14} />
                         Reativar para Retry
                       </Button>
-                      <p className="font-mono text-[8px] text-white/20 leading-relaxed">
-                        Reseta para "Pendente" e abre janela de 24h para nova tentativa.
+                      <p className="font-mono text-[10px] text-white/20 leading-relaxed">{"// "}Reseta para &quot;Pendente&quot; e abre janela de 24h para nova tentativa.
                       </p>
                     </div>
                   </>
@@ -777,8 +745,7 @@ export function OrderDetailClient({ order, items, events }: Props) {
                   <>
                     <div className="border-t border-red-500/10" />
                     <div className="flex flex-col gap-2">
-                      <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-red-400/35">
-                        Zona de Perigo
+                      <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-red-400/35">{"// "}Zona de Perigo
                       </span>
                       <Button
                         variant="danger"
@@ -788,7 +755,7 @@ export function OrderDetailClient({ order, items, events }: Props) {
                         loading={isRefunding}
                         className="w-full"
                       >
-                        <AlertTriangle size={11} />
+                        <AlertTriangle size={14} />
                         Emitir Reembolso
                       </Button>
                     </div>
@@ -827,20 +794,19 @@ export function OrderDetailClient({ order, items, events }: Props) {
           </>
         }
       >
-        <p className="font-poppins text-[13px] text-white/60 leading-relaxed">
+        <p className="font-poppins text-[15px] text-white/60 leading-relaxed">
           Alterar status de{" "}
-          <span className="text-[#FF00B6] font-bold">
+          <span className="text-brand-pink font-bold">
             {STATUS_LABEL[order.status] ?? order.status}
           </span>{" "}
           para{" "}
-          <span className="text-[#00F0FF] font-bold">
+          <span className="text-brand-pink font-bold">
             {STATUS_LABEL[selectedStatus] ?? selectedStatus}
           </span>
           ?
         </p>
         {(selectedStatus === "shipped" || selectedStatus === "cancelled") && (
-          <p className="font-mono text-[9px] uppercase tracking-wider text-[#FFD700]/55 mt-3 border border-[#FFD700]/15 px-3 py-2">
-            {selectedStatus === "shipped"
+          <p className="font-mono text-[11px] uppercase tracking-wider text-[#FFD700]/55 mt-3 border border-[#FFD700]/15 px-3 py-2">{"// "}{selectedStatus === "shipped"
               ? "Um email de envio será enviado ao cliente."
               : "Um email de cancelamento será enviado ao cliente."}
           </p>
@@ -869,27 +835,26 @@ export function OrderDetailClient({ order, items, events }: Props) {
               onClick={handleRefund}
               loading={isRefunding}
             >
-              <AlertTriangle size={11} />
+              <AlertTriangle size={14} />
               Confirmar Reembolso
             </Button>
           </>
         }
       >
         <div className="flex flex-col gap-3">
-          <p className="font-poppins text-[13px] text-white/60 leading-relaxed">
+          <p className="font-poppins text-[15px] text-white/60 leading-relaxed">
             Você está prestes a reembolsar{" "}
             <span className="text-white font-bold">{fmtPrice(order.total)}</span> ao cliente{" "}
-            <span className="text-[#FF00B6] font-semibold">{order.full_name}</span>.
+            <span className="text-brand-pink font-semibold">{order.full_name}</span>.
           </p>
           <div className="border border-red-500/20 bg-red-500/5 p-3 flex flex-col gap-1.5">
-            <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-red-400/60 font-bold">
-              Efeitos em cascata:
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-red-400/60 font-bold">{"// "}Efeitos em cascata:
             </span>
-            <ul className="font-mono text-[10px] text-white/35 flex flex-col gap-1 mt-1">
+            <ul className="font-mono text-[12px] text-white/35 flex flex-col gap-1 mt-1">
               <li>· Reembolso processado no Mercado Pago</li>
               <li>· Etiqueta ME cancelada (se gerada e não postada)</li>
               <li>· Email de cancelamento enviado ao cliente</li>
-              <li>· Status do pedido alterado para "Reembolsado"</li>
+              <li>· Status do pedido alterado para &quot;Reembolsado&quot;</li>
             </ul>
           </div>
         </div>
@@ -897,3 +862,5 @@ export function OrderDetailClient({ order, items, events }: Props) {
     </div>
   );
 }
+
+

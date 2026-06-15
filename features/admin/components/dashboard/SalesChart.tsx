@@ -24,33 +24,23 @@ export function SalesChart({ data }: Props) {
   const totalRevenue = data.reduce((s, d) => s + d.revenue, 0);
 
 function formatLabel(iso: string) {
-  const [_, month, day] = iso.split("-");
+  const [, month, day] = iso.split("-");
   return `${day}/${month}`;
 }
 
   return (
     <div
-      className="bg-[#141414] border border-white/10 p-5 relative overflow-hidden shadow-[4px_4px_0px] shadow-gray-500"
-
+      className="bg-[#050505] border border-white/10 p-5 relative overflow-hidden shadow-[inset_0_0_15px_rgba(255,0,182,0.05)]"
     >
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          boxShadow:
-            "inset 1px 1px 0 rgba(255,255,255,0.06), inset -1px -1px 0 rgba(0,0,0,0.4)",
-        }}
-        aria-hidden="true"
-      />
-
       <div className="relative z-10">
         <div className="flex items-start justify-between mb-5">
           <div>
-            <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/40">
+            <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/40">
               Receita — Últimos 30 dias
             </p>
             {hasData && (
                 <span className="flex flex-col font-family-poppins font-bold text-xl text-white mt-1">
-                  <span className="font-mono text-[10px] text-white/25 uppercase">
+                  <span className="font-mono text-[12px] text-white/25 uppercase">
                     {hovered
                       ? hovered.date.slice(5).replace("-", "/")
                       : "total"}
@@ -68,7 +58,7 @@ function formatLabel(iso: string) {
 
         {!hasData ? (
           <div className="h-24 flex items-center justify-center">
-            <p className="font-mono text-[9px] uppercase tracking-widest text-white/15">
+            <p className="font-mono text-[11px] uppercase tracking-widest text-white/15">
               Sem dados de receita
             </p>
           </div>
@@ -81,7 +71,7 @@ function formatLabel(iso: string) {
               return (
                 <div
                   key={point.date}
-                  className="flex-1 flex flex-col justify-end cursor-default"
+                  className="flex-1 h-full flex flex-col justify-end cursor-default"
                   onMouseEnter={() => setHovered(point)}
                   onMouseLeave={() => setHovered(null)}
                 >
@@ -92,12 +82,12 @@ function formatLabel(iso: string) {
                       background:
                         point.revenue > 0
                           ? isActive
-                            ? "linear-gradient(to top, #FF00B6, #FF88E0)"
-                            : "linear-gradient(to top, #FF00B6cc, #FF00B666)"
+                            ? "linear-gradient(to top, var(--brand-pink), #FF88E0)"
+                            : "linear-gradient(to top, color-mix(in srgb, var(--brand-pink) 80%, transparent), color-mix(in srgb, var(--brand-pink) 40%, transparent))"
                           : "rgba(255,255,255,0.04)",
-                      boxShadow:
+                      borderTop:
                         isActive && point.revenue > 0
-                          ? "0 0 8px rgba(255,0,182,0.6)"
+                          ? "1px solid var(--brand-pink)"
                           : "none",
                     }}
                   />

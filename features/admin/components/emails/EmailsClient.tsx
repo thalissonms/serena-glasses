@@ -77,13 +77,13 @@ const MOCK_HTML = `<!DOCTYPE html>
     body { font-family: 'Poppins', Arial, sans-serif; background: #fff5fa; margin: 0; padding: 24px; }
     .wrap { max-width: 580px; margin: 0 auto; background: #fff; border: 1px solid #fce7f3; }
     .hdr { background: #0f0f0f; padding: 28px 24px; text-align: center; }
-    .hdr h1 { color: #FF00B6; font-size: 20px; margin: 0; letter-spacing: 2px; text-transform: uppercase; }
+    .hdr h1 { color: var(--brand-pink); font-size: 20px; margin: 0; letter-spacing: 2px; text-transform: uppercase; }
     .hdr p { color: #888; font-size: 11px; margin: 6px 0 0; }
     .body { padding: 24px; }
     .body p { color: #333; font-size: 13px; line-height: 1.6; }
     table { width: 100%; border-collapse: collapse; margin: 16px 0; }
     td { padding: 12px 8px; border-bottom: 1px solid #fce7f3; font-size: 13px; }
-    .total-row td { border: none; font-weight: 700; font-size: 16px; color: #FF00B6; padding-top: 16px; }
+    .total-row td { border: none; font-weight: 700; font-size: 16px; color: var(--brand-pink); padding-top: 16px; }
     .footer { background: #f9f9f9; padding: 16px 24px; text-align: center; font-size: 11px; color: #aaa; border-top: 1px solid #fce7f3; }
   </style>
 </head>
@@ -116,26 +116,26 @@ export function EmailsClient() {
       <div className="flex flex-col gap-2">
         <DevBadge />
         <div className="flex items-center gap-3">
-          <Mail size={18} className="text-[#FF00B6]" />
+          <Mail size={18} className="text-brand-pink" />
           <h1 className="font-shrikhand text-2xl text-white tracking-wide">
             Templates de E-mail
           </h1>
         </div>
-        <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/25">
+        <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/25">
           {EMAIL_TEMPLATES.length} templates transacionais · via Resend · editor visual em breve
         </p>
       </div>
 
       {/* Editor locked notice */}
       <div className="border border-[#FFD700]/20 bg-[#FFD700]/4 p-4 flex items-start gap-3">
-        <Lock size={14} className="text-[#FFD700]/60 shrink-0 mt-0.5" />
+        <Lock size={17} className="text-[#FFD700]/60 shrink-0 mt-0.5" />
         <div className="space-y-1">
-          <p className="font-mono text-[10px] text-[#FFD700]/70 uppercase tracking-wider">
+          <p className="font-mono text-[12px] text-[#FFD700]/70 uppercase tracking-wider">
             Editor Visual — Em breve
           </p>
-          <p className="font-mono text-[9px] text-white/30 leading-relaxed max-w-xl">
+          <p className="font-mono text-[11px] text-white/30 leading-relaxed max-w-xl">
             Templates gerados via funções TypeScript em{" "}
-            <span className="text-[#00F0FF]/50">
+            <span className="text-brand-pink/50">
               features/emails/templates/orderTemplates.ts
             </span>{" "}
             e enviados via Resend. O editor visual permitirá customizar HTML/CSS sem
@@ -149,33 +149,33 @@ export function EmailsClient() {
         {EMAIL_TEMPLATES.map((tpl) => (
           <div
             key={tpl.key}
-            className="border border-white/8 bg-[#141414] hover:border-white/14 transition-colors"
+            className="border border-white/8 bg-[#0a0a0a] hover:border-white/14 transition-colors"
           >
             <div className="flex items-start justify-between p-4 gap-4">
               <div className="flex items-start gap-3 min-w-0">
-                <div className="w-8 h-8 border border-[#FF00B6]/20 bg-[#FF00B6]/5 flex items-center justify-center shrink-0 mt-0.5">
-                  <Mail size={14} className="text-[#FF00B6]/60" />
+                <div className="w-8 h-8 border border-brand-pink/20 bg-brand-pink/5 flex items-center justify-center shrink-0 mt-0.5">
+                  <Mail size={17} className="text-brand-pink/60" />
                 </div>
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
-                    <p className="font-mono text-[12px] text-white font-bold tracking-wide">
+                    <p className="font-mono text-[14px] text-white font-bold tracking-wide">
                       {tpl.name}
                     </p>
-                    <span className="px-2 py-0.5 font-mono text-[7px] uppercase tracking-widest border border-[#00F0FF]/20 text-[#00F0FF]/60 bg-[#00F0FF]/3">
+                    <span className="px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest border border-brand-pink/20 text-brand-pink/60 bg-brand-pink/3">
                       {tpl.key}
                     </span>
                   </div>
-                  <p className="font-mono text-[9px] text-white/25 uppercase tracking-wider mb-1.5">
+                  <p className="font-mono text-[11px] text-white/25 uppercase tracking-wider mb-1.5">
                     Trigger: {tpl.trigger}
                   </p>
-                  <p className="font-mono text-[10px] text-white/40 leading-relaxed">
+                  <p className="font-mono text-[12px] text-white/40 leading-relaxed">
                     {tpl.description}
                   </p>
                   <div className="mt-2 flex items-center gap-2">
-                    <span className="font-mono text-[7px] text-white/15 uppercase tracking-wider">
+                    <span className="font-mono text-[9px] text-white/15 uppercase tracking-wider">
                       Subject:
                     </span>
-                    <span className="font-mono text-[8px] text-white/25 italic">
+                    <span className="font-mono text-[10px] text-white/25 italic">
                       {tpl.subject}
                     </span>
                   </div>
@@ -185,26 +185,26 @@ export function EmailsClient() {
                 <button
                   type="button"
                   onClick={() => setPreview(tpl)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 font-mono text-[9px] uppercase tracking-widest border border-[#00F0FF]/20 text-[#00F0FF]/60 hover:border-[#00F0FF]/40 hover:text-[#00F0FF]/80 transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 font-mono text-[11px] uppercase tracking-widest border border-brand-pink/20 text-brand-pink/60 hover:border-brand-pink/40 hover:text-brand-pink/80 transition-colors"
                 >
-                  <Eye size={11} />
+                  <Eye size={14} />
                   Preview
                 </button>
                 <button
                   type="button"
                   disabled
-                  className="flex items-center gap-1.5 px-3 py-1.5 font-mono text-[9px] uppercase tracking-widest border border-white/5 text-white/15 cursor-not-allowed"
+                  className="flex items-center gap-1.5 px-3 py-1.5 font-mono text-[11px] uppercase tracking-widest border border-white/5 text-white/15 cursor-not-allowed"
                 >
-                  <Code2 size={11} />
+                  <Code2 size={14} />
                   Editar
                 </button>
               </div>
             </div>
             <div className="border-t border-white/5 px-4 py-2 flex items-center gap-2 bg-white/1">
-              <span className="font-mono text-[7px] uppercase tracking-[0.3em] text-white/12">
+              <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/12">
                 Função:
               </span>
-              <code className="font-mono text-[8px] text-[#FF00B6]/30">{tpl.fn}()</code>
+              <code className="font-mono text-[10px] text-brand-pink/30">{tpl.fn}()</code>
             </div>
           </div>
         ))}
@@ -217,15 +217,15 @@ export function EmailsClient() {
           onClick={() => setPreview(null)}
         >
           <div
-            className="bg-[#0f0f0f] border border-white/10 w-full max-w-2xl max-h-[80vh] flex flex-col shadow-[4px_4px_0_#FF00B6]"
+            className="bg-[#050505] border border-brand-pink/30 w-full max-w-2xl max-h-[80vh] flex flex-col shadow-[inset_0_0_15px_rgba(255,0,182,0.05)] rounded-none"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between p-4 border-b border-white/8 shrink-0">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 p-4 border-b border-white/8 shrink-0">
               <div>
-                <p className="font-mono text-[11px] text-white font-bold">
+                <p className="font-mono text-[13px] text-white font-bold">
                   {preview.name}
                 </p>
-                <p className="font-mono text-[8px] text-white/25 uppercase tracking-wider mt-0.5">
+                <p className="font-mono text-[10px] text-white/25 uppercase tracking-wider mt-0.5">
                   Preview com dados demonstrativos
                 </p>
               </div>
@@ -234,7 +234,7 @@ export function EmailsClient() {
                 onClick={() => setPreview(null)}
                 className="p-1.5 text-white/30 hover:text-white/70 border border-white/5 hover:border-white/15 transition-colors"
               >
-                <X size={14} />
+                <X size={17} />
               </button>
             </div>
             <div className="flex-1 overflow-auto bg-white">
@@ -246,8 +246,8 @@ export function EmailsClient() {
               />
             </div>
             <div className="border-t border-white/5 p-3 flex items-center gap-2 shrink-0">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00F0FF] animate-pulse" />
-              <p className="font-mono text-[8px] text-white/20 uppercase tracking-wider">
+              <span className="w-1.5 h-1.5 rounded-none bg-brand-pink animate-pulse" />
+              <p className="font-mono text-[10px] text-white/20 uppercase tracking-wider">
                 Template real usa dados reais do pedido · via {preview.fn}()
               </p>
             </div>

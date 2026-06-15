@@ -32,19 +32,19 @@ export function Tabs({ tabs, defaultValue, value, onValueChange, className }: Pr
       onValueChange={onValueChange}
       className={className}
     >
-      <RadixTabs.List className="flex border-b border-white/8 bg-[#1a1a1a]">
+      <RadixTabs.List className="flex border-b border-white/8 bg-[#0a0a0a]">
         {tabs.map((tab) => (
           <RadixTabs.Trigger
             key={tab.value}
             value={tab.value}
             className={[
-              "relative px-5 py-3 font-mono text-[9px] uppercase tracking-[0.2em]",
+              "relative px-5 py-3 font-mono text-[11px] uppercase tracking-[0.2em]",
               "text-white/30 hover:text-white/60 transition-colors duration-150",
               "data-[state=active]:text-white",
               "after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px]",
-              "after:bg-[#FF00B6] after:transition-transform after:duration-200 after:origin-left",
+              "after:bg-brand-pink after:transition-transform after:duration-200 after:origin-left",
               "after:scale-x-0 data-[state=active]:after:scale-x-100",
-              "outline-none focus-visible:ring-1 focus-visible:ring-[#FF00B6]/50",
+              "outline-none focus-visible:ring-1 focus-visible:ring-[var(--brand-pink)]/50",
             ].join(" ")}
           >
             {tab.label}

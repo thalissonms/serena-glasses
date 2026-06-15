@@ -24,19 +24,27 @@ const BADGEY2K_GLASS_STYLES: Record<BadgeVariant, string> = {
 
 interface BadgeProps {
   variant: BadgeVariant;
+  size?: "default" | "mobile";
   children: React.ReactNode;
 }
 
-export function ProductBadgeY2K({ variant, children }: BadgeProps) {
+export function ProductBadgeY2K({ variant, size = "default", children }: BadgeProps) {
+  const isMobile = size === "mobile";
   return (
     <span
       className={clsx(
-        "text-[12px] isolate relative font-black font-poppins uppercase py-0.75 px-2 rounded-sm rounded-br-lg border-2 border-brand-black/80",
-
+        "isolate relative font-black font-poppins uppercase border-brand-black/80",
+        isMobile 
+          ? "text-[9px] py-0.5 px-1.5 rounded-[2px] rounded-br-md border-[1.5px]" 
+          : "text-[12px] py-0.75 px-2 rounded-sm rounded-br-lg border-2",
         BADGEY2K_STYLES[variant],
       )}
     >
-      <div className={clsx("-z-1 absolute w-[95%] h-[75%] left-0 top-0 rounded-br-lg", BADGEY2K_GLASS_STYLES[variant])} />
+      <div className={clsx(
+        "-z-1 absolute w-[95%] h-[75%] left-0 top-0", 
+        isMobile ? "rounded-br-md" : "rounded-br-lg", 
+        BADGEY2K_GLASS_STYLES[variant]
+      )} />
       {children}
     </span>
   );

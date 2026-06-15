@@ -12,9 +12,10 @@ import { GalleryVertical, LayoutGrid } from "lucide-react";
 import { useState } from "react";
 import clsx from "clsx";
 import BannerPromo from "./BannerPromo";
+import { ProductCardY2KMobile } from "@/features/products/components/mobile/ProductCardY2KMobile";
 
 const LAYOUT_SELECT = [
-  { label: "layout grid", icon: LayoutGrid, isGrid: true},
+  { label: "layout grid", icon: LayoutGrid, isGrid: true },
   { label: "layout feed", icon: GalleryVertical, isGrid: false },
 ];
 
@@ -49,7 +50,7 @@ const NewArrivalsMobile = ({
             </div>
             {/* Botão para mudar o layout, por enquanto desativado display:hidden */}
             <div className="items-end justify-end px-2 gap-2 mb-2 hidden">
-              {LAYOUT_SELECT.map(({label, icon: Icon, isGrid}) => {
+              {LAYOUT_SELECT.map(({ label, icon: Icon, isGrid }) => {
                 const active = productsGrid === isGrid
                 return (
                   <button
@@ -82,8 +83,8 @@ const NewArrivalsMobile = ({
         >
           {products.map((product, i) => (
             <div key={product.id} className="w-full flex flex-col items-center">
-              <PolaroidProductCard
-                gridSize={productsGrid}
+
+              <ProductCardY2KMobile
                 product={product}
                 index={i}
               />

@@ -12,41 +12,40 @@ interface Props {
 
 export function ScanlineLoader({ message = "LOADING SYSTEM DATA" }: Props) {
   return (
-    <div className="fixed inset-0 z-50 bg-[#0f0f0f] flex flex-col items-center justify-center overflow-hidden">
+    <div className="fixed inset-0 z-50 bg-[#050505] flex flex-col items-center justify-center overflow-hidden">
       <div
         className="absolute inset-0 opacity-4 pointer-events-none"
         aria-hidden="true"
         style={{
           backgroundImage: [
-            "linear-gradient(rgba(0,240,255,0.6) 1px, transparent 1px)",
-            "linear-gradient(90deg, rgba(0,240,255,0.6) 1px, transparent 1px)",
+            "linear-gradient(rgba(255,0,182,0.6) 1px, transparent 1px)",
+            "linear-gradient(90deg, rgba(255,0,182,0.6) 1px, transparent 1px)",
           ].join(", "),
           backgroundSize: "40px 40px",
         }}
       />
 
       <div
-        className="absolute left-0 right-0 h-[2px] bg-linear-to-r from-transparent via-[#00F0FF] to-transparent opacity-70 animate-scanline pointer-events-none"
+        className="absolute left-0 right-0 h-[2px] bg-linear-to-r from-transparent via-brand-pink to-transparent opacity-70 animate-scanline pointer-events-none"
         aria-hidden="true"
       />
 
       <div className="relative flex flex-col items-center gap-7 z-10">
         <p
-          className="font-shrikhand text-5xl text-[#FF00B6] animate-neon-pulse"
-          style={{ textShadow: "0 0 30px #FF00B6, 0 0 60px #FF00B680" }}
+          className="font-shrikhand text-5xl text-brand-pink animate-neon-pulse"
         >
           SERENA
         </p>
 
         <div className="flex flex-col items-center gap-3">
-          <p className="font-mono text-[9px] uppercase tracking-[0.5em] text-[#00F0FF]">
+          <p className="font-mono text-[11px] uppercase tracking-[0.5em] text-brand-pink">
             {message}
           </p>
           <div className="flex gap-1">
             {Array.from({ length: 16 }).map((_, i) => (
               <div
                 key={i}
-                className="w-[3px] h-4 bg-[#FF00B6] animate-neon-pulse"
+                className="w-[3px] h-4 bg-brand-pink animate-neon-pulse rounded-none border border-brand-pink/30"
                 style={{ animationDelay: `${i * 0.06}s` }}
                 aria-hidden="true"
               />

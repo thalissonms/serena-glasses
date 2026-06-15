@@ -41,21 +41,20 @@ const TABS: { value: Tab; label: string; threshold: (q: number) => boolean }[] =
 function StockBadge({ qty }: { qty: number }) {
   if (qty === 0)
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 font-mono text-[9px] border border-red-500/30 bg-red-500/8 text-red-400">
-        <XCircle size={9} />
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 font-mono text-[11px] border border-red-500/30 bg-red-500/8 text-red-400">
+        <XCircle size={12} />
         ZERADO
       </span>
     );
   if (qty < 3)
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 font-mono text-[9px] border border-[#FF00B6]/30 bg-[#FF00B6]/8 text-[#FF00B6]">
-        <AlertTriangle size={9} />
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 font-mono text-[11px] border border-brand-pink/30 bg-brand-pink/8 text-brand-pink">
+        <AlertTriangle size={12} />
         CRÍTICO
       </span>
     );
   return (
-    <span className="px-2 py-0.5 font-mono text-[9px] border border-[#FFD700]/30 bg-[#FFD700]/8 text-[#FFD700]">
-      BAIXO
+    <span className="px-2 py-0.5 font-mono text-[11px] border border-[#FFD700]/30 bg-[#FFD700]/8 text-[#FFD700]">{"// "}BAIXO
     </span>
   );
 }
@@ -85,39 +84,36 @@ export function InventoryListClient({ variants }: Props) {
       <div className="flex flex-col gap-2">
         <DevBadge />
         <div className="flex items-center gap-3">
-          <Warehouse size={18} className="text-[#FF00B6]" />
-          <h1 className="font-shrikhand text-2xl text-white tracking-wide">
+          <Warehouse size={18} className="text-brand-pink" />
+          <h1 className="font-poppins font-black text-2xl text-white tracking-wide">
             Inventário
           </h1>
         </div>
-        <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/25">
-          {variants.length} variantes com estoque abaixo de 10 unidades
+        <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/25">{"// "}{variants.length} variantes com estoque abaixo de 10 unidades
         </p>
       </div>
 
       {/* Alert strip */}
       {counts.critical > 0 && (
         <div className="flex items-center gap-3 px-4 py-3 border border-red-500/30 bg-red-500/5">
-          <XCircle size={14} className="text-red-400 shrink-0" />
-          <p className="font-mono text-[10px] text-red-400/80 uppercase tracking-wider">
-            {counts.critical} variante{counts.critical > 1 ? "s" : ""} com estoque zerado — reposição necessária
+          <XCircle size={17} className="text-red-400 shrink-0" />
+          <p className="font-mono text-[12px] text-red-400/80 uppercase tracking-wider">{"// "}{counts.critical} variante{counts.critical > 1 ? "s" : ""} com estoque zerado — reposição necessária
           </p>
         </div>
       )}
 
       {/* KPI Strip */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {[
           { label: "Estoque < 10", value: counts.all, color: "text-[#FFD700]/80" },
-          { label: "Estoque < 5", value: counts.low, color: "text-[#FF00B6]" },
+          { label: "Estoque < 5", value: counts.low, color: "text-brand-pink" },
           { label: "Estoque = 0", value: counts.critical, color: "text-red-400" },
         ].map((kpi) => (
           <div
             key={kpi.label}
-            className="border border-white/5 bg-[#141414] px-5 py-4 shadow-[inset_1px_1px_0_rgba(255,255,255,0.03)]"
+            className="border border-white/5 bg-[#0a0a0a] px-5 py-4 shadow-[inset_1px_1px_0_rgba(255,255,255,0.03)]"
           >
-            <p className="font-mono text-[8px] uppercase tracking-[0.3em] text-white/25 mb-1">
-              {kpi.label}
+            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/25 mb-1">{"// "}{kpi.label}
             </p>
             <p className={`font-mono text-2xl ${kpi.color}`}>{kpi.value}</p>
           </div>
@@ -133,15 +129,15 @@ export function InventoryListClient({ variants }: Props) {
               key={tab.value}
               type="button"
               onClick={() => setActiveTab(tab.value)}
-              className={`px-4 py-2.5 font-mono text-[9px] uppercase tracking-widest border-b-2 transition-all -mb-px ${
+              className={`px-4 py-2.5 font-mono text-[11px] uppercase tracking-widest border-b-2 transition-all -mb-px ${
                 active
-                  ? "border-[#FF00B6] text-[#FF00B6]"
+                  ? "border-brand-pink text-brand-pink"
                   : "border-transparent text-white/30 hover:text-white/50"
               }`}
             >
               {tab.label}
               <span
-                className={`ml-2 ${active ? "text-[#FF00B6]" : "text-white/20"}`}
+                className={`ml-2 ${active ? "text-brand-pink" : "text-white/20"}`}
               >
                 ({counts[tab.value]})
               </span>
@@ -154,7 +150,7 @@ export function InventoryListClient({ variants }: Props) {
       <div className="border border-white/5 overflow-x-auto">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-[#1a1a1a] shadow-[inset_1px_1px_0_rgba(255,255,255,0.05)]">
+            <tr className="bg-[#0a0a0a] shadow-[inset_1px_1px_0_rgba(255,255,255,0.05)]">
               {[
                 "CÓDIGO",
                 "PRODUTO",
@@ -165,9 +161,8 @@ export function InventoryListClient({ variants }: Props) {
               ].map((label) => (
                 <th
                   key={label}
-                  className="px-4 py-3 font-mono text-[8px] uppercase tracking-[0.25em] text-white/25 font-normal border-b border-white/5 text-left"
-                >
-                  {label}
+                  className="px-4 py-3 font-mono text-[10px] uppercase tracking-[0.25em] text-white/25 font-normal border-b border-white/5 text-left"
+                >{"// "}{label}
                 </th>
               ))}
             </tr>
@@ -189,14 +184,13 @@ export function InventoryListClient({ variants }: Props) {
                   className={`border-b border-white/3 transition-colors ${
                     v.stock_quantity === 0
                       ? "hover:bg-red-500/4"
-                      : "hover:bg-[#FF00B6]/4"
-                  } ${i % 2 === 0 ? "bg-[#141414]" : "bg-[#111111]"}`}
+                      : "hover:bg-brand-pink/4"
+                  } ${i % 2 === 0 ? "bg-[#0a0a0a]" : "bg-[#0a0a0a]"}`}
                 >
-                  <td className="px-4 py-3 font-mono text-[10px] text-[#00F0FF]/50">
-                    {v.variant_code ??
+                  <td className="px-4 py-3 font-mono text-[12px] text-brand-pink/50">{"// "}{v.variant_code ??
                       `${v.product_code ?? "—"}-${v.color_name.slice(0, 3).toUpperCase()}`}
                   </td>
-                  <td className="px-4 py-3 font-mono text-[11px] text-white/60">
+                  <td className="px-4 py-3 font-mono text-[13px] text-white/60">
                     {v.product_name}
                   </td>
                   <td className="px-4 py-3">
@@ -205,8 +199,7 @@ export function InventoryListClient({ variants }: Props) {
                         className="w-4 h-4 border border-white/10 shrink-0"
                         style={{ backgroundColor: v.color_hex }}
                       />
-                      <span className="font-mono text-[10px] text-white/40">
-                        {v.color_name}
+                      <span className="font-mono text-[12px] text-white/40">{"// "}{v.color_name}
                       </span>
                     </div>
                   </td>
@@ -217,7 +210,7 @@ export function InventoryListClient({ variants }: Props) {
                           v.stock_quantity === 0
                             ? "text-red-400"
                             : v.stock_quantity < 3
-                              ? "text-[#FF00B6]"
+                              ? "text-brand-pink"
                               : "text-[#FFD700]"
                         }`}
                       >
@@ -228,7 +221,7 @@ export function InventoryListClient({ variants }: Props) {
                   </td>
                   <td className="px-4 py-3">
                     <span
-                      className={`font-mono text-[9px] uppercase tracking-widest ${
+                      className={`font-mono text-[11px] uppercase tracking-widest ${
                         v.in_stock ? "text-emerald-400/70" : "text-red-400/50"
                       }`}
                     >
@@ -240,13 +233,12 @@ export function InventoryListClient({ variants }: Props) {
                       <button
                         type="button"
                         disabled
-                        className="flex items-center gap-1.5 px-3 py-1.5 font-mono text-[9px] uppercase tracking-widest text-white/15 border border-white/5 bg-white/2 cursor-not-allowed"
+                        className="flex items-center gap-1.5 px-3 py-1.5 font-mono text-[11px] uppercase tracking-widest text-white/15 border border-white/5 bg-white/2 cursor-not-allowed"
                       >
-                        <Package size={10} />
+                        <Package size={13} />
                         Repor
                       </button>
-                      <div className="absolute bottom-full left-0 mb-2 px-2 py-1 bg-[#1a1a1a] border border-white/10 font-mono text-[8px] text-white/50 whitespace-nowrap opacity-0 group-hover/restock:opacity-100 transition-opacity pointer-events-none z-10">
-                        Gestão de reposição em breve
+                      <div className="absolute bottom-full left-0 mb-2 px-2 py-1 bg-[#0a0a0a] border border-white/10 font-mono text-[10px] text-white/50 whitespace-nowrap opacity-0 group-hover/restock:opacity-100 transition-opacity pointer-events-none z-10">{"// "}Gestão de reposição em breve
                       </div>
                     </div>
                   </td>
@@ -257,8 +249,7 @@ export function InventoryListClient({ variants }: Props) {
         </table>
       </div>
 
-      <p className="font-mono text-[8px] text-white/12 text-center uppercase tracking-[0.3em]">
-        {filtered.length} variantes exibidas — ações de reposição em desenvolvimento
+      <p className="font-mono text-[10px] text-white/12 text-center uppercase tracking-[0.3em]">{"// "}{filtered.length} variantes exibidas — ações de reposição em desenvolvimento
       </p>
     </div>
   );

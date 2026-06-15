@@ -18,30 +18,31 @@ export function MelhorEnvioCard({ connected, accountEmail }: Props) {
   const color = connected ? "#00EE88" : "#FF3355";
 
   return (
-    <div className="flex items-center justify-between gap-8">
+    <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 gap-8">
       <div className="flex items-center gap-3">
         <div
-          className="w-2.5 h-2.5 rounded-full shrink-0"
+          className="w-2.5 h-2.5 rounded-none shrink-0"
           style={{
             background: color,
-            boxShadow: `0 0 8px ${color}, 0 0 16px ${color}44`,
+            border: `1px solid ${color}`,
+            boxShadow: `inset 0 0 10px ${color}1a`,
           }}
           aria-label={connected ? "Conectado" : "Desconectado"}
         />
         <div>
           <p
-            className="font-mono text-[10px] uppercase tracking-[0.25em]"
+            className="font-mono text-[12px] uppercase tracking-[0.25em]"
             style={{ color }}
           >
             {connected ? "Conectado" : "Desconectado"}
           </p>
           {connected && accountEmail && (
-            <p className="font-mono text-[8px] text-white/25 mt-0.5">
+            <p className="font-mono text-[10px] text-white/25 mt-0.5">
               {accountEmail}
             </p>
           )}
           {!connected && (
-            <p className="font-mono text-[8px] text-white/20 mt-0.5">
+            <p className="font-mono text-[10px] text-white/20 mt-0.5">
               Verifique as configurações de integração
             </p>
           )}
@@ -50,7 +51,7 @@ export function MelhorEnvioCard({ connected, accountEmail }: Props) {
 
       <Link
         href="/admin/integrations/melhor-envio"
-        className="flex items-center gap-1.5 font-mono text-[12px] uppercase tracking-wider text-white/80 hover:text-[#00F0FF] transition-colors"
+        className="flex items-center gap-1.5 font-mono text-[14px] uppercase tracking-wider text-white/80 hover:text-brand-pink transition-colors"
       >
         <ExternalLink size={20} />
         Config

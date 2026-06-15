@@ -76,7 +76,7 @@ export default function VariantCard({
   }
 
   return (
-    <div className="border border-white/8 bg-[#141414] p-4 flex flex-col gap-3 hover:border-white/12 transition-colors duration-150">
+    <div className="border border-white/8 bg-[#0a0a0a] p-4 flex flex-col gap-3 hover:border-white/12 transition-colors duration-150">
       <div className="flex items-center gap-3">
         <div
           className="w-7 h-7 border border-white/15 shrink-0"
@@ -84,19 +84,17 @@ export default function VariantCard({
           title={variant.color_hex}
         />
         <div className="flex-1 min-w-0">
-          <p className="font-poppins font-semibold text-[12px] text-white truncate">
+          <p className="font-poppins font-semibold text-[14px] text-white truncate">
             {variant.color_name}
           </p>
-          <p className="font-mono text-[9px] text-white/30 uppercase tracking-widest">
-            {variant.color_hex}
+          <p className="font-mono text-[11px] text-white/30 uppercase tracking-widest">{"// "}{variant.color_hex}
           </p>
         </div>
       </div>
 
       <div className="flex items-center gap-3 flex-wrap">
         <div className="flex items-center gap-2">
-          <span className="font-mono text-[8px] uppercase tracking-widest text-white/35 whitespace-nowrap">
-            Estoque
+          <span className="font-mono text-[10px] uppercase tracking-widest text-white/35 whitespace-nowrap">{"// "}Estoque
           </span>
           <input
             type="number"
@@ -106,51 +104,51 @@ export default function VariantCard({
             onBlur={saveStock}
             disabled={addMutation.isPending}
             className={clsx(
-              "w-16 bg-[#1a1a1a] border-2 border-[#FF00B6]/20 px-2 py-1",
-              "font-mono text-[11px] text-white text-center outline-none",
-              "focus:border-[#FF00B6] transition-colors duration-150",
+              "w-16 bg-[#0a0a0a] border-2 border-brand-pink/20 px-2 py-1",
+              "font-mono text-[13px] text-white text-center outline-none",
+              "focus:border-brand-pink transition-colors duration-150",
               "disabled:opacity-50 [appearance:textfield]",
             )}
           />
         </div>
-        <div className="flex items-center gap-3 font-mono text-[9px]">
+        <div className="flex items-center gap-3 font-mono text-[11px]">
           <span className="text-white/25">
             Res:{" "}
-            <span className="text-[#FF00B6]/60">{variant.stock.reserved}</span>
+            <span className="text-brand-pink/60">{variant.stock.reserved}</span>
           </span>
           <span className="text-white/25">
             Disp:{" "}
-            <span className="text-[#00F0FF]/60">{variant.stock.available}</span>
+            <span className="text-brand-pink/60">{variant.stock.available}</span>
           </span>
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0">
         <button
           type="button"
           onClick={toggleInStock}
           disabled={toggleMutation.isPending}
           className={clsx(
-            "flex items-center gap-1.5 font-mono text-[8px] uppercase tracking-widest",
+            "flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest",
             "transition-all duration-150 disabled:opacity-50",
             variant.in_stock
-              ? "text-[#00F0FF]"
+              ? "text-brand-pink"
               : "text-white/25 hover:text-white/40",
           )}
         >
           {variant.in_stock ? (
-            <ToggleRight size={14} />
+            <ToggleRight size={17} />
           ) : (
-            <ToggleLeft size={14} />
+            <ToggleLeft size={17} />
           )}
           {variant.in_stock ? "Em estoque" : "Fora de estoque"}
         </button>
         <button
           type="button"
           onClick={() => onDelete(variant.id)}
-          className="flex items-center gap-1 font-mono text-[8px] uppercase tracking-widest text-red-500/40 hover:text-red-400 transition-colors duration-150"
+          className="flex items-center gap-1 font-mono text-[10px] uppercase tracking-widest text-red-500/40 hover:text-red-400 transition-colors duration-150"
         >
-          <Trash2 size={10} />
+          <Trash2 size={13} />
           Excluir
         </button>
       </div>

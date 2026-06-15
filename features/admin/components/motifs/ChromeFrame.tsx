@@ -17,20 +17,18 @@ interface Props {
   glow?: GlowColor;
 }
 
-const bevel = "inset_1px_1px_0_rgba(255,255,255,0.08),inset_-1px_-1px_0_rgba(0,0,0,0.5)";
-
 const glowMap: Record<GlowColor, string> = {
-  pink: `shadow-[0_0_24px_rgba(255,0,182,0.2),${bevel}]`,
-  cyan: `shadow-[0_0_24px_rgba(0,240,255,0.2),${bevel}]`,
-  gold: `shadow-[0_0_24px_rgba(255,215,0,0.2),${bevel}]`,
-  none: `shadow-[${bevel}]`,
+  pink: `border-[var(--brand-pink)]/30 shadow-[inset_0_0_15px_rgba(255,0,182,0.1)]`,
+  cyan: `border-cyan-400/30 shadow-[inset_0_0_15px_rgba(34,211,238,0.1)]`,
+  gold: `border-[#FFD700]/30 shadow-[inset_0_0_15px_rgba(255,215,0,0.1)]`,
+  none: `border-white/10`,
 };
 
 export function ChromeFrame({ children, className, glow = "none" }: Props) {
   return (
     <div
       className={clsx(
-        "bg-[#1a1a1a] border border-white/10",
+        "bg-[#050505] border rounded-none",
         glowMap[glow],
         className,
       )}

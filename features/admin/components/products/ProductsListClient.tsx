@@ -15,7 +15,7 @@ import Image from "next/image";
 import { Plus, Search, Edit2, Trash2, Package, X } from "lucide-react";
 import { toast } from "sonner";
 import { clsx } from "clsx";
-import type { ProductType } from "@/features/admin/types/product/products.type";
+import type { ProductType } from "@features/admin/types/product/products.type";
 import type { CategoryRow } from "@features/categories/types/category.types";
 import { formatPrice } from "@features/products/utils/formatPrice";
 import { Button } from "@features/admin/components/primitives/Button";
@@ -32,10 +32,10 @@ interface Props {
 type FlagKey = "featured" | "is_new" | "is_sale" | "is_outlet";
 
 const FLAG_CONFIG: Record<FlagKey, { label: string; color: string }> = {
-  featured: { label: "DEST", color: "#FFD700" },
-  is_new: { label: "NEW", color: "#00F0FF" },
+  featured: { label: "DESTAQUE", color: "#FFD700" },
+  is_new: { label: "NOVIDADE", color: "#9B00FF" },
   is_sale: { label: "SALE", color: "#FF00B6" },
-  is_outlet: { label: "OUTL", color: "#FF7700" },
+  is_outlet: { label: "OUTLET", color: "#FF7700" },
 };
 
 const PAGE_SIZE = 20;
@@ -153,7 +153,7 @@ export default function ProductsListClient({ products: initialProducts, categori
       key: "thumbnail",
       label: "",
       render: (p) => (
-        <div className="w-10 h-10 relative shrink-0 bg-[#1a1a1a] border border-white/8 overflow-hidden">
+        <div className="w-10 h-10 relative shrink-0 bg-[#0a0a0a] border border-white/8 overflow-hidden">
           {p.product_images?.[0] ? (
             <Image
               src={p.product_images[0].url}
@@ -164,7 +164,7 @@ export default function ProductsListClient({ products: initialProducts, categori
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <Package size={14} className="text-white/15" />
+              <Package size={17} className="text-white/15" />
             </div>
           )}
         </div>
@@ -176,9 +176,9 @@ export default function ProductsListClient({ products: initialProducts, categori
       sortable: true,
       render: (p) => (
         <div className="flex flex-col gap-0.5 min-w-0">
-          <span className="font-mono text-[11px] text-white/85 leading-snug truncate">{p.name}</span>
+          <span className="font-mono text-[13px] text-white/85 leading-snug truncate">{p.name}</span>
           {p.code && (
-            <span className="font-mono text-[8px] text-[#00F0FF]/60 tracking-widest">{p.code}</span>
+            <span className="font-mono text-[10px] text-brand-pink/60 tracking-widest">{"// "}{p.code}</span>
           )}
         </div>
       ),
@@ -187,7 +187,7 @@ export default function ProductsListClient({ products: initialProducts, categori
       key: "category",
       label: "Categoria",
       render: (p) => (
-        <span className="font-mono text-[10px] text-white/40">{p.category?.name_pt ?? "—"}</span>
+        <span className="font-mono text-[12px] text-white/40">{"// "}{p.category?.name_pt ?? "—"}</span>
       ),
     },
     {
@@ -196,7 +196,7 @@ export default function ProductsListClient({ products: initialProducts, categori
       sortable: true,
       align: "right",
       render: (p) => (
-        <span className="font-jocham text-[12px] text-white/80">{formatPrice(p.price)}</span>
+        <span className="font-jocham text-[14px] text-white/80">{formatPrice(p.price)}</span>
       ),
     },
     {
@@ -209,12 +209,12 @@ export default function ProductsListClient({ products: initialProducts, categori
         return (
           <span
             className={clsx(
-              "font-mono text-[11px] font-bold tabular-nums",
+              "font-mono text-[13px] font-bold tabular-nums",
               available === 0
                 ? "text-red-400"
                 : available <= 5
                   ? "text-yellow-400"
-                  : "text-[#00F0FF]",
+                  : "text-brand-pink",
             )}
           >
             {available}
@@ -227,7 +227,7 @@ export default function ProductsListClient({ products: initialProducts, categori
       label: "Vars",
       align: "center",
       render: (p) => (
-        <span className="font-mono text-[10px] text-white/30">{p.product_variants.length}</span>
+        <span className="font-mono text-[12px] text-white/30">{"// "}{p.product_variants.length}</span>
       ),
     },
     {
@@ -248,11 +248,12 @@ export default function ProductsListClient({ products: initialProducts, categori
             {active.map(([key, cfg]) => (
               <span
                 key={key}
-                className="px-1.5 py-0.5 font-mono text-[7px] uppercase tracking-widest border"
+                className="px-2 py-1 font-mono text-[10px] uppercase tracking-widest border-2"
                 style={{
                   color: cfg.color,
-                  borderColor: `${cfg.color}40`,
-                  backgroundColor: `${cfg.color}10`,
+                  borderColor: `${cfg.color}60`,
+                  backgroundColor: `${cfg.color}12`,
+                  boxShadow: `0 0 10px ${cfg.color}25`,
                 }}
               >
                 {cfg.label}
@@ -277,15 +278,15 @@ export default function ProductsListClient({ products: initialProducts, categori
             className={clsx(
               "relative w-9 h-5 shrink-0 border-2 transition-all duration-200",
               "disabled:opacity-40 disabled:cursor-not-allowed",
-              p.active ? "bg-[#FF00B6]/20 border-[#FF00B6]/50" : "bg-white/3 border-white/15",
+              p.active ? "bg-brand-pink/20 border-brand-pink/50" : "bg-white/3 border-white/15",
             )}
           >
             <span
               className={clsx(
                 "absolute top-0.5 h-3 w-3 transition-all duration-200",
-                p.active ? "right-0.5 bg-[#FF00B6]" : "left-0.5 bg-white/25",
+                p.active ? "right-0.5 bg-brand-pink" : "left-0.5 bg-white/25",
               )}
-              style={p.active ? { boxShadow: "0 0 6px #FF00B6" } : undefined}
+              style={p.active ? { boxShadow: "0 0 6px var(--brand-pink)" } : undefined}
             />
           </button>
         );
@@ -299,25 +300,24 @@ export default function ProductsListClient({ products: initialProducts, categori
         <div className="flex items-center gap-1">
           <Link
             href={`/admin/products/${p.id}`}
-            className="p-1.5 text-white/25 hover:text-[#00F0FF] border border-transparent hover:border-[#00F0FF]/20 hover:bg-[#00F0FF]/8 transition-all duration-150"
+            className="p-1.5 text-white/25 hover:text-brand-pink border border-transparent hover:border-brand-pink/20 hover:bg-brand-pink/8 transition-all duration-150"
           >
-            <Edit2 size={11} />
+            <Edit2 size={14} />
           </Link>
           {confirmDelete === p.id ? (
             <div className="flex items-center gap-1">
               <button
                 type="button"
                 onClick={() => handleDelete(p.id)}
-                className="px-2 py-1 font-mono text-[8px] uppercase text-red-400 border border-red-500/30 hover:bg-red-500/10 transition-colors"
-              >
-                OK
+                className="px-2 py-1 font-mono text-[10px] uppercase text-red-400 border border-red-500/30 hover:bg-red-500/10 transition-colors"
+              >{"// "}OK
               </button>
               <button
                 type="button"
                 onClick={() => setConfirmDelete(null)}
                 className="p-1 text-white/20 hover:text-white/50 transition-colors"
               >
-                <X size={10} />
+                <X size={13} />
               </button>
             </div>
           ) : (
@@ -326,7 +326,7 @@ export default function ProductsListClient({ products: initialProducts, categori
               onClick={() => setConfirmDelete(p.id)}
               className="p-1.5 text-white/25 hover:text-red-400 border border-transparent hover:border-red-500/20 hover:bg-red-500/8 transition-all duration-150"
             >
-              <Trash2 size={11} />
+              <Trash2 size={14} />
             </button>
           )}
         </div>
@@ -340,17 +340,16 @@ export default function ProductsListClient({ products: initialProducts, categori
   return (
     <div className="flex flex-col gap-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0">
         <div>
-          <h1 className="font-shrikhand text-2xl text-white tracking-wide">PRODUTOS</h1>
-          <p className="font-mono text-[9px] uppercase tracking-widest text-white/25 mt-1">
-            {filtered.length} resultado{filtered.length !== 1 ? "s" : ""}
+          <h1 className="font-poppins font-black text-2xl text-white tracking-wide">PRODUTOS</h1>
+          <p className="font-mono text-[11px] uppercase tracking-widest text-white/25 mt-1">{"// "}{filtered.length} resultado{filtered.length !== 1 ? "s" : ""}
             {products.length !== filtered.length ? ` de ${products.length}` : ""}
           </p>
         </div>
         <Link href="/admin/products/new">
           <Button variant="primary" size="md">
-            <Plus size={12} />
+            <Plus size={15} />
             Novo Produto
           </Button>
         </Link>
@@ -358,8 +357,8 @@ export default function ProductsListClient({ products: initialProducts, categori
 
       {/* Filters */}
       <div
-        className="bg-[#141414] border border-white/5 p-4 flex flex-wrap gap-3 items-end"
-        style={{ boxShadow: "inset 1px 1px 0 rgba(255,255,255,0.03)" }}
+        className="bg-[#0a0a0a] border border-white/5 p-4 flex flex-wrap gap-3 items-end"
+        style={{ boxShadow: "inset 0 0 15px rgba(255,0,182,0.05)" }}
       >
         <div className="flex-1 min-w-[180px]">
           <Input
@@ -370,7 +369,7 @@ export default function ProductsListClient({ products: initialProducts, categori
               setSearch(e.target.value);
               setPage(1);
             }}
-            prefix={<Search size={12} />}
+            prefix={<Search size={15} />}
           />
         </div>
         <div className="w-48">
@@ -400,8 +399,7 @@ export default function ProductsListClient({ products: initialProducts, categori
           />
         </div>
         <div className="flex flex-col gap-1.5">
-          <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/40 select-none">
-            Flags
+          <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/40 select-none">{"// "}Flags
           </span>
           <div className="flex gap-1.5">
             {(
@@ -412,7 +410,7 @@ export default function ProductsListClient({ products: initialProducts, categori
                 type="button"
                 onClick={() => toggleFlag(key)}
                 className={clsx(
-                  "px-2.5 py-2 font-mono text-[8px] uppercase tracking-widest border-2 transition-all duration-150",
+                  "px-3 py-2 font-mono text-[11px] uppercase tracking-widest border-2 transition-all duration-150",
                   !activeFlags.includes(key) && "border-white/10 text-white/25 hover:border-white/25",
                 )}
                 style={
@@ -446,7 +444,7 @@ export default function ProductsListClient({ products: initialProducts, categori
             !isFiltering ? (
               <Link href="/admin/products/new">
                 <Button variant="primary" size="sm">
-                  <Plus size={10} />
+                  <Plus size={13} />
                   Criar primeiro produto
                 </Button>
               </Link>
@@ -465,18 +463,16 @@ export default function ProductsListClient({ products: initialProducts, categori
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between border-t border-white/5 pt-4">
-          <span className="font-mono text-[9px] uppercase tracking-widest text-white/20">
-            Página {page}/{totalPages} · {filtered.length} produto{filtered.length !== 1 ? "s" : ""}
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 border-t border-white/5 pt-4">
+          <span className="font-mono text-[11px] uppercase tracking-widest text-white/20">{"// "}Página {page}/{totalPages} · {filtered.length} produto{filtered.length !== 1 ? "s" : ""}
           </span>
           <div className="flex items-center gap-1">
             <button
               type="button"
               disabled={page === 1}
               onClick={() => setPage((p) => Math.max(1, p - 1))}
-              className="px-3 py-1.5 font-mono text-[9px] uppercase tracking-widest border border-white/8 text-white/30 hover:border-[#FF00B6]/30 hover:text-white/60 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-150"
-            >
-              ← Ant
+              className="px-3 py-1.5 font-mono text-[11px] uppercase tracking-widest border border-white/8 text-white/30 hover:border-brand-pink/30 hover:text-white/60 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-150"
+            >{"// "}← Ant
             </button>
             {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
               const pageNum =
@@ -493,9 +489,9 @@ export default function ProductsListClient({ products: initialProducts, categori
                   type="button"
                   onClick={() => setPage(pageNum)}
                   className={clsx(
-                    "w-8 h-8 font-mono text-[9px] border transition-all duration-150",
+                    "w-8 h-8 font-mono text-[11px] border transition-all duration-150",
                     pageNum === page
-                      ? "border-[#FF00B6]/60 text-[#FF00B6] bg-[#FF00B6]/10"
+                      ? "border-brand-pink/60 text-brand-pink bg-brand-pink/10"
                       : "border-white/8 text-white/25 hover:border-white/20 hover:text-white/50",
                   )}
                 >
@@ -507,9 +503,8 @@ export default function ProductsListClient({ products: initialProducts, categori
               type="button"
               disabled={page === totalPages}
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-              className="px-3 py-1.5 font-mono text-[9px] uppercase tracking-widest border border-white/8 text-white/30 hover:border-[#FF00B6]/30 hover:text-white/60 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-150"
-            >
-              Prox →
+              className="px-3 py-1.5 font-mono text-[11px] uppercase tracking-widest border border-white/8 text-white/30 hover:border-brand-pink/30 hover:text-white/60 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-150"
+            >{"// "}Prox →
             </button>
           </div>
         </div>

@@ -10,6 +10,7 @@
  * Usado em: src/app/admin/customers/page.tsx.
  */
 import { useState, useMemo } from "react";
+import { fmtDate } from "../../utils/formatDate";
 import { Search, Users, ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
 import { AsciiEmpty } from "@features/admin/components/motifs/AsciiEmpty";
 import { DevBadge } from "@features/admin/components/motifs/DevBadge";
@@ -38,10 +39,7 @@ function formatBRL(cents: number) {
   });
 }
 
-function fmtDate(iso: string | null) {
-  if (!iso) return "—";
-  return new Date(iso).toLocaleDateString("pt-BR");
-}
+
 
 const COLS: {
   label: string;
@@ -91,11 +89,11 @@ export function CustomersListClient({ customers }: Props) {
 
   function SortChevron({ k }: { k: SortKey }) {
     if (k !== sortKey)
-      return <ArrowUpDown size={9} className="text-white/20" />;
+      return <ArrowUpDown size={12} className="text-white/20" />;
     return sortDir === "desc" ? (
-      <ArrowDown size={9} className="text-[#FF00B6]" />
+      <ArrowDown size={12} className="text-brand-pink" />
     ) : (
-      <ArrowUp size={9} className="text-[#FF00B6]" />
+      <ArrowUp size={12} className="text-brand-pink" />
     );
   }
 
@@ -108,18 +106,18 @@ export function CustomersListClient({ customers }: Props) {
       <div className="flex flex-col gap-2">
         <DevBadge />
         <div className="flex items-center gap-3">
-          <Users size={18} className="text-[#FF00B6]" />
+          <Users size={18} className="text-brand-pink" />
           <h1 className="font-shrikhand text-2xl text-white tracking-wide">
             Clientes
           </h1>
         </div>
-        <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/25">
-          {customers.length} clientes registrados — somente leitura
+        <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/25">
+          {"// {customers.length} clientes registrados — somente leitura"}
         </p>
       </div>
 
       {/* KPI Strip */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {[
           { label: "Total Cadastros", value: customers.length.toString() },
           { label: "Com Compras", value: withOrders.toString() },
@@ -127,10 +125,10 @@ export function CustomersListClient({ customers }: Props) {
         ].map((kpi) => (
           <div
             key={kpi.label}
-            className="border border-white/5 bg-[#141414] px-5 py-4 shadow-[inset_1px_1px_0_rgba(255,255,255,0.03)]"
+            className="border border-brand-pink/30 bg-[#050505] px-5 py-4 shadow-[inset_0_0_15px_rgba(255,0,182,0.05)]"
           >
-            <p className="font-mono text-[8px] uppercase tracking-[0.3em] text-white/25 mb-1">
-              {kpi.label}
+            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/25 mb-1">
+              {"// {kpi.label}"}
             </p>
             <p className="font-mono text-xl text-white/80">{kpi.value}</p>
           </div>
@@ -140,7 +138,7 @@ export function CustomersListClient({ customers }: Props) {
       {/* Search */}
       <div className="relative max-w-sm">
         <Search
-          size={13}
+          size={16}
           className="absolute left-3 top-1/2 -translate-y-1/2 text-white/25 pointer-events-none"
         />
         <input
@@ -148,7 +146,7 @@ export function CustomersListClient({ customers }: Props) {
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="BUSCAR POR EMAIL OU NOME..."
-          className="w-full pl-9 pr-4 py-2.5 bg-[#141414] border border-white/8 font-mono text-[11px] text-white/70 placeholder:text-white/20 focus:outline-none focus:border-[#FF00B6]/40 transition-all"
+          className="w-full pl-9 pr-4 py-2.5 bg-[#050505] border border-white/8 font-mono text-[13px] text-white/70 placeholder:text-white/20 focus:outline-none focus:border-brand-pink/40 transition-all rounded-none"
         />
       </div>
 
@@ -156,12 +154,12 @@ export function CustomersListClient({ customers }: Props) {
       <div className="border border-white/5 overflow-x-auto">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-[#1a1a1a] shadow-[inset_1px_1px_0_rgba(255,255,255,0.05)]">
+            <tr className="bg-[#000000] border-b border-brand-pink/30 shadow-[inset_0_0_15px_rgba(255,0,182,0.05)]">
               {COLS.map((col) => (
                 <th
                   key={col.label}
                   onClick={col.sortKey ? () => handleSort(col.sortKey!) : undefined}
-                  className={`px-4 py-3 font-mono text-[8px] uppercase tracking-[0.25em] text-white/25 font-normal border-b border-white/5 text-left ${col.sortKey ? "cursor-pointer hover:text-white/50 select-none" : ""}`}
+                  className={`px-4 py-3 font-mono text-[10px] uppercase tracking-[0.25em] text-white/25 font-normal border-b border-white/5 text-left ${col.sortKey ? "cursor-pointer hover:text-white/50 select-none" : ""}`}
                 >
                   <span className="inline-flex items-center gap-1">
                     {col.label}
@@ -187,29 +185,29 @@ export function CustomersListClient({ customers }: Props) {
               filtered.map((c, i) => (
                 <tr
                   key={c.id}
-                  className={`border-b border-white/3 transition-colors hover:bg-[#FF00B6]/4 ${
-                    i % 2 === 0 ? "bg-[#141414]" : "bg-[#111111]"
+                  className={`border-b border-white/3 transition-colors hover:bg-brand-pink/4 ${
+                    i % 2 === 0 ? "bg-[#050505]" : "bg-[#050505]"
                   }`}
                 >
-                  <td className="px-4 py-3 font-mono text-[11px] text-white/60">
+                  <td className="px-4 py-3 font-mono text-[13px] text-white/60">
                     {c.name ?? <span className="text-white/20">—</span>}
                   </td>
-                  <td className="px-4 py-3 font-mono text-[11px] text-[#00F0FF]/60">
+                  <td className="px-4 py-3 font-mono text-[13px] text-brand-pink/60">
                     {c.email}
                   </td>
-                  <td className="px-4 py-3 font-mono text-[11px] text-white/35">
+                  <td className="px-4 py-3 font-mono text-[13px] text-white/35">
                     {c.phone ?? "—"}
                   </td>
-                  <td className="px-4 py-3 text-center font-mono text-[11px]">
+                  <td className="px-4 py-3 text-center font-mono text-[13px]">
                     <span
                       className={
-                        c.total_orders > 0 ? "text-[#FF00B6]" : "text-white/20"
+                        c.total_orders > 0 ? "text-brand-pink" : "text-white/20"
                       }
                     >
                       {c.total_orders}
                     </span>
                   </td>
-                  <td className="px-4 py-3 font-mono text-[11px]">
+                  <td className="px-4 py-3 font-mono text-[13px]">
                     <span
                       className={
                         c.total_spent > 0
@@ -220,7 +218,7 @@ export function CustomersListClient({ customers }: Props) {
                       {c.total_spent > 0 ? formatBRL(c.total_spent) : "—"}
                     </span>
                   </td>
-                  <td className="px-4 py-3 font-mono text-[10px] text-white/30">
+                  <td className="px-4 py-3 font-mono text-[12px] text-white/30">
                     {fmtDate(c.created_at)}
                   </td>
                 </tr>
@@ -230,8 +228,8 @@ export function CustomersListClient({ customers }: Props) {
         </table>
       </div>
 
-      <p className="font-mono text-[8px] text-white/12 text-center uppercase tracking-[0.3em]">
-        {filtered.length} / {customers.length} registros — CRUD em desenvolvimento
+      <p className="font-mono text-[10px] text-white/12 text-center uppercase tracking-[0.3em]">
+        {"// {filtered.length} / {customers.length} registros — CRUD em desenvolvimento"}
       </p>
     </div>
   );

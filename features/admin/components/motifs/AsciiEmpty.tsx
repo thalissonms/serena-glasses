@@ -21,7 +21,7 @@ export function AsciiEmpty({
   return (
     <div className="flex flex-col items-center justify-center py-20 gap-5 select-none">
       <pre
-        className="font-mono text-[9px] leading-relaxed text-white/12 text-center"
+        className="font-mono text-[11px] leading-relaxed text-white/12 text-center"
         aria-hidden="true"
       >
         {`╔═══════════════════════════════╗
@@ -32,11 +32,11 @@ export function AsciiEmpty({
 ╚═══════════════════════════════╝`}
       </pre>
       <div className="flex flex-col items-center gap-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/25">
+        <p className="font-mono text-[12px] uppercase tracking-[0.35em] text-white/25">
           {message}
         </p>
         {description && (
-          <p className="font-mono text-[9px] text-white/15 text-center max-w-[280px] leading-relaxed">
+          <p className="font-mono text-[11px] text-white/15 text-center max-w-[280px] leading-relaxed">
             {description}
           </p>
         )}

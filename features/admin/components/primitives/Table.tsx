@@ -1,10 +1,8 @@
 /**
- * Component: Table — tabela de dados chrome com hover neon e sort indicators.
+ * Component: Table — tabela de dados com estilo Cyber HUD.
  *
- * Cabeçalho com chrome bevel. Linhas alternadas dark/darker. Hover row com glow pink.
- * Sort via callback externo; indicator ativo em pink. Colunas tipadas com render opcional.
- *
- * Usado em: listagens de pedidos, produtos, cupons e demais tabelas do /admin.
+ * Cabeçalho oscuro com borders sutis. Linhas hoverables com neon sutil.
+ * Sort via callback externo.
  */
 import { type ReactNode } from "react";
 import { ChevronUp, ChevronDown, ChevronsUpDown } from "lucide-react";
@@ -45,53 +43,52 @@ export function Table<T>({
   className,
 }: Props<T>) {
   return (
-    <div className={clsx("w-full overflow-x-auto border border-white/5", className)}>
-      <table className="w-full border-collapse">
-        <thead>
-          <tr className="bg-[#1a1a1a] shadow-[inset_1px_1px_0_rgba(255,255,255,0.05),inset_-1px_-1px_0_rgba(0,0,0,0.3)]">
+    <div className={clsx("w-full overflow-x-auto border border-brand-pink/20 bg-[#050505] shadow-[inset_0_0_20px_rgba(255,0,182,0.02)]", className)}>
+      <table className="w-full text-left text-base text-white border-collapse whitespace-nowrap">
+        <thead className="bg-[#000000] border-b border-brand-pink/20">
+          <tr>
             {columns.map((col) => (
               <th
                 key={col.key}
                 onClick={col.sortable && onSort ? () => onSort(col.key) : undefined}
                 className={clsx(
-                  "px-4 py-3 font-mono text-[8px] uppercase tracking-[0.25em] text-white/25 font-normal",
-                  "border-b border-white/5 select-none",
+                  "px-4 py-3 font-mono text-[11px] uppercase tracking-[0.2em] text-brand-pink/60 font-normal select-none",
                   col.align === "center" && "text-center",
                   col.align === "right" && "text-right",
-                  col.sortable && "cursor-pointer hover:text-white/50 transition-colors",
+                  col.sortable && "cursor-pointer hover:text-brand-pink transition-colors",
                 )}
               >
-                <span className="inline-flex items-center gap-1">
-                  {col.label}
+                <span className={clsx("inline-flex items-center gap-1", col.align === "center" && "justify-center", col.align === "right" && "justify-end")}>
+                  // {col.label}
                   {col.sortable &&
                     (sort?.key === col.key ? (
                       sort.direction === "asc" ? (
-                        <ChevronUp size={9} className="text-[#FF00B6]" />
+                        <ChevronUp size={12} className="text-brand-pink" />
                       ) : (
-                        <ChevronDown size={9} className="text-[#FF00B6]" />
+                        <ChevronDown size={12} className="text-brand-pink" />
                       )
                     ) : (
-                      <ChevronsUpDown size={9} className="text-white/15" />
+                      <ChevronsUpDown size={12} className="text-brand-pink/20" />
                     ))}
                 </span>
               </th>
             ))}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="divide-y divide-white/5">
           {loading ? (
             <tr>
-              <td colSpan={columns.length} className="px-4 py-10 text-center">
-                <span className="font-mono text-[9px] uppercase tracking-widest text-[#00F0FF] animate-neon-pulse">
-                  Carregando dados...
+              <td colSpan={columns.length} className="px-4 py-10 text-center bg-[#0a0a0a]">
+                <span className="font-mono text-[11px] uppercase tracking-widest text-brand-pink animate-pulse">
+                  PROCESSANDO DADOS...
                 </span>
               </td>
             </tr>
           ) : data.length === 0 ? (
             <tr>
-              <td colSpan={columns.length} className="px-4 py-10 text-center">
-                <span className="font-mono text-[9px] uppercase tracking-widest text-white/20">
-                  {emptyMessage}
+              <td colSpan={columns.length} className="px-4 py-10 text-center bg-[#0a0a0a]">
+                <span className="font-mono text-[11px] uppercase tracking-widest text-white/20">
+                  [ {emptyMessage} ]
                 </span>
               </td>
             </tr>
@@ -100,16 +97,15 @@ export function Table<T>({
               <tr
                 key={keyExtractor(row, i)}
                 className={clsx(
-                  "border-b border-white/3 transition-colors group",
-                  i % 2 === 0 ? "bg-[#141414]" : "bg-[#111111]",
-                  "hover:bg-[#FF00B6]/4",
+                  "bg-[#0a0a0a] transition-colors group",
+                  "hover:bg-brand-pink/5 hover:shadow-[inset_0_0_10px_rgba(255,0,182,0.05)]",
                 )}
               >
                 {columns.map((col) => (
                   <td
                     key={col.key}
                     className={clsx(
-                      "px-4 py-3 font-mono text-[11px] text-white/55 group-hover:text-white/80 transition-colors",
+                      "px-4 py-3 font-mono text-[13px] text-white/55 group-hover:text-white/80 transition-colors",
                       col.align === "center" && "text-center",
                       col.align === "right" && "text-right",
                     )}

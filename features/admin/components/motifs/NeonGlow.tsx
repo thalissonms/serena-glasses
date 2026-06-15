@@ -19,7 +19,7 @@ interface Props {
 
 const intensityPx: Record<Intensity, number> = { sm: 4, md: 8, lg: 16 };
 
-export function NeonGlow({ children, color = "#FF00B6", intensity = "md", pulse }: Props) {
+export function NeonGlow({ children, color = "var(--brand-pink)", intensity = "md", pulse }: Props) {
   const px = intensityPx[intensity];
   const style: CSSProperties = {
     filter: `drop-shadow(0 0 ${px}px ${color}) drop-shadow(0 0 ${px * 2}px ${color}40)`,

@@ -43,7 +43,7 @@ import type {
   CategoryWithSubs,
   SubcategoryRow,
 } from "@features/categories/types/category.types";
-import { ALLOWED_CATEGORY_ICONS } from "@/features/admin/consts/categoryIcons.const";
+import { ALLOWED_CATEGORY_ICONS } from "@features/admin/consts/categoryIcons.const";
 import { DynamicLucideIcon } from "@shared/components/DynamicLucideIcon";
 import { Button } from "@features/admin/components/primitives/Button";
 import { Input } from "@features/admin/components/primitives/Input";
@@ -83,12 +83,12 @@ function IconPickerModal({
             className={clsx(
               "flex flex-col items-center gap-1.5 p-3 border-2 transition-all duration-150",
               value === icon
-                ? "border-[#FF00B6]/60 bg-[#FF00B6]/10 text-[#FF00B6] shadow-[0_0_8px_rgba(255,0,182,0.2)]"
-                : "border-white/8 bg-[#141414] text-white/40 hover:border-white/20 hover:text-white/70",
+                ? "border-brand-pink/60 bg-brand-pink/10 text-brand-pink shadow-[0_0_8px_rgba(255,0,182,0.2)]"
+                : "border-white/8 bg-[#0a0a0a] text-white/40 hover:border-white/20 hover:text-white/70",
             )}
           >
             <DynamicLucideIcon name={icon} size={18} />
-            <span className="font-mono text-[7px] uppercase tracking-wider truncate w-full text-center">
+            <span className="font-mono text-[9px] uppercase tracking-wider truncate w-full text-center">
               {icon}
             </span>
           </button>
@@ -138,22 +138,20 @@ function SortableSubRow({
         {...listeners}
         className="text-white/15 hover:text-white/30 cursor-grab active:cursor-grabbing transition-colors shrink-0"
       >
-        <GripVertical size={12} />
+        <GripVertical size={15} />
       </button>
 
       <div className="flex-1 min-w-0">
-        <p className="font-poppins text-[13px] text-white/70 truncate">
+        <p className="font-poppins text-[15px] text-white/70 truncate">
           {sub.name_pt}
         </p>
         {(sub.name_en || sub.name_es) && (
-          <p className="font-mono text-[8px] text-white/22 mt-0.5 truncate">
-            {[sub.name_en, sub.name_es].filter(Boolean).join(" · ")}
+          <p className="font-mono text-[10px] text-white/22 mt-0.5 truncate">{"// "}{[sub.name_en, sub.name_es].filter(Boolean).join(" · ")}
           </p>
         )}
       </div>
 
-      <span className="font-mono text-[8px] text-white/18 shrink-0">
-        {sub.slug}
+      <span className="font-mono text-[10px] text-white/18 shrink-0">{"// "}{sub.slug}
       </span>
 
       <button
@@ -162,11 +160,11 @@ function SortableSubRow({
         className={clsx(
           "flex items-center transition-colors shrink-0",
           sub.active
-            ? "text-[#00F0FF]/60 hover:text-[#00F0FF]"
+            ? "text-brand-pink/60 hover:text-brand-pink"
             : "text-white/18 hover:text-white/40",
         )}
       >
-        {sub.active ? <ToggleRight size={14} /> : <ToggleLeft size={14} />}
+        {sub.active ? <ToggleRight size={17} /> : <ToggleLeft size={17} />}
       </button>
 
       <button
@@ -174,7 +172,7 @@ function SortableSubRow({
         onClick={() => onDelete(sub.id, sub.name_pt)}
         className="text-red-500/20 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100 shrink-0"
       >
-        <Trash2 size={11} />
+        <Trash2 size={14} />
       </button>
     </div>
   );
@@ -355,20 +353,20 @@ function SubcategoriesSection({
               loading={deleting}
               onClick={confirmDelete}
             >
-              <Trash2 size={11} />
+              <Trash2 size={14} />
               Remover
             </Button>
           </>
         }
       >
-        <p className="font-mono text-[11px] text-white/60">
+        <p className="font-mono text-[13px] text-white/60">
           Remover{" "}
           <span className="text-white font-bold">{deleteTarget?.name}</span>?
         </p>
       </Modal>
 
       {subs.length > 0 ? (
-        <div className="border border-white/8 bg-[#141414]">
+        <div className="border border-white/8 bg-[#0a0a0a]">
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
@@ -391,8 +389,7 @@ function SubcategoriesSection({
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center py-8 border border-dashed border-white/8">
-          <p className="font-mono text-[9px] uppercase tracking-widest text-white/20">
-            Nenhuma subcategoria ainda
+          <p className="font-mono text-[11px] uppercase tracking-widest text-white/20">{"// "}Nenhuma subcategoria ainda
           </p>
         </div>
       )}
@@ -401,12 +398,11 @@ function SubcategoriesSection({
         <form
           onSubmit={handleSubmit(onAddSub)}
           noValidate
-          className="border border-[#FF00B6]/20 bg-[#0f0f0f] p-4 space-y-4"
+          className="border border-brand-pink/20 bg-[#050505] p-4 space-y-4"
         >
-          <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#FF00B6]/60">
-            Nova Subcategoria
+          <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-brand-pink/60">{"// "}Nova Subcategoria
           </p>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
               label="Nome PT *"
               placeholder="Ex: Quadrado"
@@ -431,7 +427,7 @@ function SubcategoriesSection({
               )}
             />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
               label="Nome EN"
               placeholder="Square"
@@ -450,7 +446,7 @@ function SubcategoriesSection({
               size="sm"
               loading={isSubmitting}
             >
-              <Plus size={11} />
+              <Plus size={14} />
               Adicionar
             </Button>
             <button
@@ -460,9 +456,8 @@ function SubcategoriesSection({
                 reset();
                 slugTouched.current = false;
               }}
-              className="font-mono text-[9px] uppercase tracking-widest text-white/25 hover:text-white/40 transition-colors"
-            >
-              Cancelar
+              className="font-mono text-[11px] uppercase tracking-widest text-white/25 hover:text-white/40 transition-colors"
+            >{"// "}Cancelar
             </button>
           </div>
         </form>
@@ -472,12 +467,12 @@ function SubcategoriesSection({
           onClick={() => setShowAddForm(true)}
           className={clsx(
             "w-full flex items-center justify-center gap-2 py-3",
-            "border border-dashed border-[#FF00B6]/20",
-            "font-mono text-[9px] uppercase tracking-widest text-[#FF00B6]/40",
-            "hover:text-[#FF00B6]/70 hover:border-[#FF00B6]/40 transition-all duration-150",
+            "border border-dashed border-brand-pink/20",
+            "font-mono text-[11px] uppercase tracking-widest text-brand-pink/40",
+            "hover:text-brand-pink/70 hover:border-brand-pink/40 transition-all duration-150",
           )}
         >
-          <Plus size={11} />
+          <Plus size={14} />
           Adicionar Subcategoria
         </button>
       )}
@@ -570,23 +565,22 @@ export default function CategoryEditClient({ category }: Props) {
         <div className="flex flex-col gap-1.5">
           <Link
             href="/admin/categories"
-            className="flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-widest text-white/25 hover:text-[#FF00B6]/60 transition-colors w-fit"
+            className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest text-white/25 hover:text-brand-pink/60 transition-colors w-fit"
           >
-            <ArrowLeft size={10} />
+            <ArrowLeft size={13} />
             Categorias
           </Link>
           <div className="flex items-center gap-3">
-            <div className="text-[#FF00B6]/60 shrink-0">
+            <div className="text-brand-pink/60 shrink-0">
               <DynamicLucideIcon name={iconValue} size={22} />
             </div>
-            <h1 className="font-shrikhand text-2xl text-white tracking-wide">
+            <h1 className="font-poppins font-black text-2xl text-white tracking-wide">
               {category.name_pt}
             </h1>
           </div>
           <div className="flex items-center gap-2 ml-0.5">
-            <Lock size={9} className="text-white/15" />
-            <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/25">
-              {category.slug}
+            <Lock size={12} className="text-white/15" />
+            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/25">{"// "}{category.slug}
             </p>
           </div>
         </div>
@@ -594,18 +588,17 @@ export default function CategoryEditClient({ category }: Props) {
 
       {/* Form */}
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
-        <div className="bg-[#141414] border border-white/5 p-6 space-y-6">
+        <div className="bg-[#0a0a0a] border border-white/5 p-6 space-y-6">
           {/* Slug locked */}
           <div className="flex flex-col gap-1.5">
-            <label className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/40">
-              Slug{" "}
+            <label className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/40">{"// "}Slug{" "}
               <span className="text-white/18 normal-case tracking-normal">
                 (bloqueado após criação)
               </span>
             </label>
-            <div className="flex items-center gap-2 bg-[#0f0f0f] border-2 border-white/5 px-3 py-2.5">
-              <Lock size={10} className="text-white/20 shrink-0" />
-              <span className="font-mono text-[12px] text-white/30">
+            <div className="flex items-center gap-2 bg-[#050505] border-2 border-white/5 px-3 py-2.5">
+              <Lock size={13} className="text-white/20 shrink-0" />
+              <span className="font-mono text-[14px] text-white/30">
                 {category.slug}
               </span>
             </div>
@@ -613,7 +606,7 @@ export default function CategoryEditClient({ category }: Props) {
 
           {/* i18n names */}
           <SectionDivider label="Nomes — i18n" />
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Input
               label="Nome PT *"
               placeholder="Óculos de Sol"
@@ -635,29 +628,28 @@ export default function CategoryEditClient({ category }: Props) {
           {/* Config */}
           <SectionDivider label="Configurações" />
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Icon picker */}
             <div className="flex flex-col gap-1.5">
-              <label className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/40">
-                Ícone *
+              <label className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/40">{"// "}Ícone *
               </label>
               <button
                 type="button"
                 onClick={() => setIconPickerOpen(true)}
                 className={clsx(
-                  "flex items-center gap-3 px-3 py-2.5 bg-[#1a1a1a] border-2 text-left",
-                  "border-[#FF00B6]/20 hover:border-[#FF00B6]/50 transition-colors",
+                  "flex items-center gap-3 px-3 py-2.5 bg-[#0a0a0a] border-2 text-left",
+                  "border-brand-pink/20 hover:border-brand-pink/50 transition-colors",
                 )}
               >
                 <DynamicLucideIcon
                   name={iconValue}
                   size={18}
-                  className="text-[#FF00B6]/70 shrink-0"
+                  className="text-brand-pink/70 shrink-0"
                 />
-                <span className="font-mono text-[11px] text-white/60 flex-1">
+                <span className="font-mono text-[13px] text-white/60 flex-1">
                   {iconValue}
                 </span>
-                <span className="font-mono text-[7px] uppercase tracking-widest text-white/20">
+                <span className="font-mono text-[9px] uppercase tracking-widest text-white/20">
                   Trocar
                 </span>
               </button>
@@ -680,7 +672,7 @@ export default function CategoryEditClient({ category }: Props) {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
               label="Link Override"
               placeholder="/sale ou /new-in"
@@ -689,8 +681,7 @@ export default function CategoryEditClient({ category }: Props) {
             />
 
             <div className="flex flex-col gap-1.5">
-              <label className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/40">
-                Status
+              <label className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/40">{"// "}Status
               </label>
               <Controller
                 name="active"
@@ -701,16 +692,16 @@ export default function CategoryEditClient({ category }: Props) {
                     onClick={() => field.onChange(!field.value)}
                     className={clsx(
                       "flex items-center gap-2.5 px-4 py-2.5 border-2 transition-all duration-150",
-                      "font-mono text-[9px] uppercase tracking-widest",
+                      "font-mono text-[11px] uppercase tracking-widest",
                       field.value
-                        ? "border-[#00F0FF]/40 text-[#00F0FF] bg-[#00F0FF]/8 shadow-[0_0_10px_rgba(0,240,255,0.12)]"
+                        ? "border-brand-pink/40 text-brand-pink bg-brand-pink/8 shadow-[0_0_10px_rgba(255,0,182,0.12)]"
                         : "border-white/10 text-white/30 hover:border-white/20",
                     )}
                   >
                     {field.value ? (
-                      <ToggleRight size={14} />
+                      <ToggleRight size={17} />
                     ) : (
-                      <ToggleLeft size={14} />
+                      <ToggleLeft size={17} />
                     )}
                     {field.value ? "Ativa" : "Inativa"}
                   </button>
@@ -727,7 +718,7 @@ export default function CategoryEditClient({ category }: Props) {
             size="md"
             loading={isSubmitting}
           >
-            <Save size={12} />
+            <Save size={15} />
             Salvar Categoria
           </Button>
         </div>

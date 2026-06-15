@@ -97,9 +97,10 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <script
+        <Script
+          id="theme-init-script"
+          strategy="beforeInteractive"
           nonce={nonce}
-          suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: themeInitScript }}
         />
         <Script
@@ -158,7 +159,7 @@ export default async function RootLayout({
               <AnimationProvider>
                 <SpeedInsights />
                 <Analytics />
-                <main className="min-h-screen">{children}</main>
+                <main className="min-h-screen bg-brand-light-surface-0 dark:bg-brand-dark-surface-0">{children}</main>
                 <ModalPresence modal={modal} />
                 <Y2KToaster />
               </AnimationProvider>

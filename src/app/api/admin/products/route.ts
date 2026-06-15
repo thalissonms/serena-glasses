@@ -1,10 +1,22 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
 import { productCreateSchema } from "@features/admin/schemas/product/payload/productCreate.schema";
 import { generateNextProductCode } from "@features/admin/utils/generateProductCode";
 
+import { getProductsList } from "@features/admin/services/productsList.service";
+
 const CODE_RETRY_LIMIT = 5;
+
+export const GET = withAdmin(async () => {
+  try {
+    const products = await getProductsList();
+    return NextResponse.json(products);
+  } catch (error: unknown) {
+    console.error("GET /api/admin/products error:", error);
+    return NextResponse.json({ error: "Erro ao buscar produtos" }, { status: 500 });
+  }
+});
 
 export const POST = withAdmin(async (req) => {
   const body = await req.json().catch(() => null);

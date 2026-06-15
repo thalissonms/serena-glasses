@@ -39,12 +39,12 @@ export default function ShowcaseInteractive() {
   return (
     <div className="flex flex-col gap-10">
       <section className="flex flex-col gap-4">
-        <h2 className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/30">Tabs</h2>
+        <h2 className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/30">Tabs</h2>
         <Tabs tabs={tabs} />
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/30">Select</h2>
+        <h2 className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/30">Select</h2>
         <div className="max-w-xs">
           <Select
             label="Status do pedido"
@@ -57,7 +57,7 @@ export default function ShowcaseInteractive() {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/30">Input</h2>
+        <h2 className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/30">Input</h2>
         <div className="max-w-xs flex flex-col gap-3">
           <Input
             label="Campo normal"
@@ -67,7 +67,7 @@ export default function ShowcaseInteractive() {
           />
           <Input
             label="Com prefix"
-            prefix={<Search size={12} />}
+            prefix={<Search size={15} />}
             placeholder="Buscar..."
           />
           <Input
@@ -79,12 +79,12 @@ export default function ShowcaseInteractive() {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/30">Date Range</h2>
+        <h2 className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/30">Date Range</h2>
         <DateRangePicker value={range} onChange={setRange} label="Período" />
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/30">Modal</h2>
+        <h2 className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/30">Modal</h2>
         <Button variant="ghost" onClick={() => setModalOpen(true)}>
           Abrir Modal
         </Button>
@@ -104,18 +104,18 @@ export default function ShowcaseInteractive() {
             </>
           }
         >
-          <p className="font-mono text-[11px] text-white/50">
+          <p className="font-mono text-[13px] text-white/50">
             Tem certeza que deseja realizar esta ação?
           </p>
         </Modal>
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/30">
+        <h2 className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/30">
           Holo Button
         </h2>
         <HoloButton>
-          <Plus size={16} />
+          <Plus size={19} />
           Ação Principal
         </HoloButton>
       </section>
@@ -140,7 +140,7 @@ function ButtonsTab() {
 
 function InputsTab() {
   return (
-    <div className="grid grid-cols-2 gap-4 max-w-2xl">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl">
       <Input label="Nome" placeholder="John Doe" />
       <Input label="E-mail" placeholder="john@example.com" />
       <Input label="Com hint" placeholder="..." hint="Mínimo 8 caracteres" />

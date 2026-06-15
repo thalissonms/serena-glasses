@@ -1,15 +1,5 @@
 "use client";
-/**
- * Component: CouponFormClient — formulário CRUD de cupons com estética Y2K Chrome.
- *
- * Create (POST /api/admin/coupons) e Edit (PATCH /api/admin/coupons/[id]).
- * discount_type radio controla campos condicionais (discount_value, max_discount_cents).
- * applies_to radio controla multi-select de produtos ou categorias.
- * Datas: datetime-local → ISO antes de enviar.
- * Code: imutável em modo edit. Forçado uppercase/trim no submit.
- *
- * Usado em: /admin/coupons/new e /admin/coupons/[id].
- */
+
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -31,8 +21,21 @@ import {
 } from "lucide-react";
 import { Button } from "@features/admin/components/primitives/Button";
 import { Input } from "@features/admin/components/primitives/Input";
+import { toDatetimeLocal, toISO } from "../../utils/datetimeInputs";
+import { centsToDisplay } from "../../utils/centToDisplay";
 
 const codeRegex = /^[A-Z0-9_-]+$/;
+
+const priceStringSchema = z.union([z.string(), z.number()]).refine((v) => {
+  if (v === "" || v == null) return true;
+  if (typeof v === "number") return v >= 0;
+  const n = parseFloat(v.replace(",", "."));
+  return !isNaN(n) && n >= 0;
+}, "Valor inválido").transform(v => {
+  if (v === "" || v == null) return 0;
+  if (typeof v === "number") return v;
+  return parseFloat(v.replace(",", "."));
+});
 
 const formSchema = z
   .object({
@@ -43,9 +46,9 @@ const formSchema = z
       .regex(codeRegex, "Use apenas A-Z, 0-9, _ ou -"),
     description: z.string().max(200, "Máximo 200 caracteres").optional(),
     discount_type: z.enum(["percentage", "fixed", "free_shipping"]),
-    discount_value: z.number().int("Deve ser inteiro").nonnegative("Deve ser ≥ 0"),
-    max_discount_cents: z.number().int().nonnegative().nullable().optional(),
-    min_order_cents: z.number().int().nonnegative(),
+    discount_value: priceStringSchema,
+    max_discount_cents: priceStringSchema.nullable().optional(),
+    min_order_cents: priceStringSchema,
     first_purchase_only: z.boolean(),
     applies_to: z.enum(["all", "products", "categories"]),
     applicable_product_ids: z.array(z.string()).nullable().optional(),
@@ -116,26 +119,10 @@ interface Props {
   categories: CategoryOption[];
 }
 
-function toDatetimeLocal(iso: string | null | undefined): string {
-  if (!iso) return "";
-  const d = new Date(iso);
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-}
-
-function toIso(local: string | null | undefined): string | undefined {
-  if (!local) return undefined;
-  try {
-    return new Date(local).toISOString();
-  } catch {
-    return undefined;
-  }
-}
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="font-mono text-[9px] uppercase tracking-[0.35em] text-[#FF00B6]/70 mb-4 pb-2 border-b border-[#FF00B6]/10">
-      {children}
+    <h3 className="mb-4 border-b border-brand-pink/10 pb-2 font-mono text-[11px] tracking-[0.35em] text-brand-pink/70 uppercase">{"// "}{children}
     </h3>
   );
 }
@@ -143,8 +130,8 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 function FieldError({ message }: { message?: string }) {
   if (!message) return null;
   return (
-    <p className="flex items-center gap-1.5 mt-1.5 font-mono text-[9px] uppercase tracking-wider text-red-400">
-      <AlertCircle size={9} />
+    <p className="mt-1.5 flex items-center gap-1.5 font-mono text-[11px] tracking-wider text-red-400 uppercase">
+      <AlertCircle size={12} />
       {message}
     </p>
   );
@@ -163,23 +150,20 @@ function Toggle({
     <button
       type="button"
       onClick={() => onChange(!checked)}
-      className="flex items-center gap-3 group"
+      className="group flex items-center gap-3"
     >
       <span
-        className={`relative w-10 h-5 border transition-all duration-200 shrink-0 ${
-          checked ? "bg-[#FF00B6]/15 border-[#FF00B6]/50" : "bg-white/4 border-white/10"
-        }`}
+        className={`relative w-10 h-5 border transition-all duration-200 shrink-0 ${checked ? "bg-brand-pink/15 border-brand-pink/50" : "bg-white/4 border-white/10"
+          }`}
       >
         <span
-          className={`absolute top-0.5 w-4 h-4 transition-all duration-200 ${
-            checked
-              ? "left-5 bg-[#FF00B6] shadow-[0_0_8px_rgba(255,0,182,0.5)]"
-              : "left-0.5 bg-white/20"
-          }`}
+          className={`absolute top-0.5 w-4 h-4 transition-all duration-200 ${checked
+            ? "left-5 bg-brand-pink shadow-[0_0_8px_rgba(255,0,182,0.5)]"
+            : "left-0.5 bg-white/20"
+            }`}
         />
       </span>
-      <span className="font-mono text-[10px] uppercase tracking-wider text-white/60 group-hover:text-white/80 transition-colors">
-        {label}
+      <span className="font-mono text-[12px] tracking-wider text-white/60 uppercase transition-colors group-hover:text-white/80">{"// "}{label}
       </span>
     </button>
   );
@@ -205,32 +189,30 @@ function RadioOption<T extends string>({
     <button
       type="button"
       onClick={() => onSelect(value)}
-      className={`flex items-center gap-3 px-4 py-3 border text-left transition-all duration-150 ${
-        selected
-          ? "border-[#FF00B6]/50 bg-[#FF00B6]/6 shadow-[inset_1px_1px_0_rgba(255,0,182,0.12)]"
-          : "border-white/8 hover:border-white/20 bg-white/2"
-      }`}
+      className={`flex items-center gap-3 px-4 py-3 border text-left transition-all duration-150 ${selected
+        ? "border-brand-pink/50 bg-brand-pink/6 shadow-[inset_1px_1px_0_rgba(255,0,182,0.12)]"
+        : "border-white/8 hover:border-white/20 bg-white/2"
+        }`}
     >
       <span
-        className={`shrink-0 w-3 h-3 border rounded-full transition-all duration-150 ${
-          selected
-            ? "border-[#FF00B6] bg-[#FF00B6] shadow-[0_0_6px_rgba(255,0,182,0.5)]"
-            : "border-white/20"
-        }`}
+        className={`shrink-0 w-3 h-3 border rounded-none transition-all duration-150 ${selected
+          ? "border-brand-pink bg-brand-pink shadow-[0_0_6px_rgba(255,0,182,0.5)]"
+          : "border-white/20"
+          }`}
       />
       {icon && (
-        <span className={`shrink-0 ${selected ? "text-[#FF00B6]" : "text-white/25"}`}>
+        <span className={`shrink-0 ${selected ? "text-brand-pink" : "text-white/25"}`}>
           {icon}
         </span>
       )}
-      <div className="flex-1 min-w-0">
+      <div className="min-w-0 flex-1">
         <p
-          className={`font-mono text-[10px] uppercase tracking-wider ${selected ? "text-white" : "text-white/50"}`}
+          className={`font-mono text-[12px] uppercase tracking-wider ${selected ? "text-white" : "text-white/50"}`}
         >
           {label}
         </p>
         {description && (
-          <p className="font-mono text-[8px] text-white/25 mt-0.5">{description}</p>
+          <p className="mt-0.5 font-mono text-[10px] text-white/25">{"// "}{description}</p>
         )}
       </div>
     </button>
@@ -264,30 +246,29 @@ function MultiSelectProducts({
 
   return (
     <div className={`border ${error ? "border-red-500/40" : "border-white/8"}`}>
-      <div className="p-2 border-b border-white/5">
+      <div className="border-b border-white/5 p-2">
         <div className="relative">
-          <Search size={10} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/25" />
+          <Search size={13} className="absolute top-1/2 left-3 -translate-y-1/2 text-white/25" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar produto..."
-            className="w-full bg-transparent pl-8 pr-3 py-1.5 font-mono text-[10px] text-white placeholder:text-white/20 outline-none"
-          />
-          {search && (
+            className="w-full bg-transparent py-1.5 pr-3 pl-8 font-mono text-[12px] text-white outline-none placeholder:text-white/20"
+          />{"// "}{search && (
             <button
               type="button"
               onClick={() => setSearch("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/20 hover:text-white/50"
+              className="absolute top-1/2 right-3 -translate-y-1/2 text-white/20 hover:text-white/50"
             >
-              <X size={10} />
+              <X size={13} />
             </button>
           )}
         </div>
       </div>
       <div className="max-h-48 overflow-y-auto">
         {filtered.length === 0 ? (
-          <p className="p-4 font-mono text-[9px] text-white/20 text-center">Nenhum produto</p>
+          <p className="p-4 text-center font-mono text-[11px] text-white/20">{"// "}Nenhum produto</p>
         ) : (
           filtered.map((p) => {
             const isSel = selected.includes(p.id);
@@ -296,24 +277,22 @@ function MultiSelectProducts({
                 key={p.id}
                 type="button"
                 onClick={() => toggle(p.id)}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-all duration-100 border-b border-white/3 last:border-b-0 ${
-                  isSel ? "bg-[#FF00B6]/6" : "hover:bg-white/2"
-                }`}
+                className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-all duration-100 border-b border-white/3 last:border-b-0 ${isSel ? "bg-brand-pink/6" : "hover:bg-white/2"
+                  }`}
               >
                 <span
-                  className={`shrink-0 w-3 h-3 border transition-all ${
-                    isSel
-                      ? "border-[#FF00B6] bg-[#FF00B6] shadow-[0_0_6px_rgba(255,0,182,0.4)]"
-                      : "border-white/15"
-                  }`}
+                  className={`shrink-0 w-3 h-3 border transition-all ${isSel
+                    ? "border-brand-pink bg-brand-pink shadow-[0_0_6px_rgba(255,0,182,0.4)]"
+                    : "border-white/15"
+                    }`}
                 />
                 <span
-                  className={`font-poppins text-[11px] flex-1 min-w-0 truncate ${isSel ? "text-white" : "text-white/50"}`}
+                  className={`font-poppins text-[13px] flex-1 min-w-0 truncate ${isSel ? "text-white" : "text-white/50"}`}
                 >
                   {p.name}
                 </span>
                 {p.code && (
-                  <span className="font-mono text-[8px] text-white/20 shrink-0">{p.code}</span>
+                  <span className="shrink-0 font-mono text-[10px] text-white/20">{"// "}{p.code}</span>
                 )}
               </button>
             );
@@ -321,9 +300,8 @@ function MultiSelectProducts({
         )}
       </div>
       {selected.length > 0 && (
-        <div className="p-2 border-t border-white/5 bg-white/1">
-          <p className="font-mono text-[8px] text-[#FF00B6]/60 uppercase tracking-wider">
-            {selected.length} produto{selected.length !== 1 ? "s" : ""} selecionado
+        <div className="border-t border-white/5 bg-white/1 p-2">
+          <p className="font-mono text-[10px] tracking-wider text-brand-pink/60 uppercase">{"// "}{selected.length} produto{selected.length !== 1 ? "s" : ""} selecionado
             {selected.length !== 1 ? "s" : ""}
           </p>
         </div>
@@ -354,8 +332,7 @@ function MultiSelectCategories({
     <div className={`border ${error ? "border-red-500/40" : "border-white/8"}`}>
       <div className="max-h-48 overflow-y-auto">
         {categories.length === 0 ? (
-          <p className="p-4 font-mono text-[9px] text-white/20 text-center">
-            Nenhuma categoria
+          <p className="p-4 text-center font-mono text-[11px] text-white/20">{"// "}Nenhuma categoria
           </p>
         ) : (
           categories.map((cat) => {
@@ -365,24 +342,21 @@ function MultiSelectCategories({
                 key={cat.slug}
                 type="button"
                 onClick={() => toggle(cat.slug)}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-all duration-100 border-b border-white/3 last:border-b-0 ${
-                  isSel ? "bg-[#FF00B6]/6" : "hover:bg-white/2"
-                }`}
+                className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-all duration-100 border-b border-white/3 last:border-b-0 ${isSel ? "bg-brand-pink/6" : "hover:bg-white/2"
+                  }`}
               >
                 <span
-                  className={`shrink-0 w-3 h-3 border transition-all ${
-                    isSel
-                      ? "border-[#FF00B6] bg-[#FF00B6] shadow-[0_0_6px_rgba(255,0,182,0.4)]"
-                      : "border-white/15"
-                  }`}
+                  className={`shrink-0 w-3 h-3 border transition-all ${isSel
+                    ? "border-brand-pink bg-brand-pink shadow-[0_0_6px_rgba(255,0,182,0.4)]"
+                    : "border-white/15"
+                    }`}
                 />
                 <span
-                  className={`font-poppins text-[11px] flex-1 min-w-0 truncate ${isSel ? "text-white" : "text-white/50"}`}
+                  className={`font-poppins text-[13px] flex-1 min-w-0 truncate ${isSel ? "text-white" : "text-white/50"}`}
                 >
                   {cat.name_pt}
                 </span>
-                <span className="font-mono text-[8px] text-white/20 shrink-0">
-                  {cat.slug}
+                <span className="shrink-0 font-mono text-[10px] text-white/20">{"// "}{cat.slug}
                 </span>
               </button>
             );
@@ -390,9 +364,8 @@ function MultiSelectCategories({
         )}
       </div>
       {selected.length > 0 && (
-        <div className="p-2 border-t border-white/5 bg-white/1">
-          <p className="font-mono text-[8px] text-[#FF00B6]/60 uppercase tracking-wider">
-            {selected.length} categoria{selected.length !== 1 ? "s" : ""} selecionada
+        <div className="border-t border-white/5 bg-white/1 p-2">
+          <p className="font-mono text-[10px] tracking-wider text-brand-pink/60 uppercase">{"// "}{selected.length} categoria{selected.length !== 1 ? "s" : ""} selecionada
             {selected.length !== 1 ? "s" : ""}
           </p>
         </div>
@@ -413,15 +386,21 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
     setValue,
     watch,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<z.input<typeof formSchema>, unknown, FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       code: initialData?.code ?? "",
       description: initialData?.description ?? "",
       discount_type: initialData?.discount_type ?? "percentage",
-      discount_value: initialData?.discount_value ?? 10,
-      max_discount_cents: initialData?.max_discount_cents ?? null,
-      min_order_cents: initialData?.min_order_cents ?? 0,
+      discount_value: initialData?.discount_type === "fixed" && initialData?.discount_value
+        ? centsToDisplay(initialData.discount_value)
+        : (initialData?.discount_value?.toString() ?? "10"),
+      max_discount_cents: initialData?.max_discount_cents
+        ? centsToDisplay(initialData.max_discount_cents)
+        : "",
+      min_order_cents: initialData?.min_order_cents
+        ? centsToDisplay(initialData.min_order_cents)
+        : "0,00",
       first_purchase_only: initialData?.first_purchase_only ?? false,
       applies_to: initialData?.applies_to ?? "all",
       applicable_product_ids: initialData?.applicable_product_ids ?? [],
@@ -443,14 +422,15 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
       const payload = {
         ...data,
         code: data.code.toUpperCase().trim(),
-        discount_value: data.discount_type === "free_shipping" ? 0 : data.discount_value,
-        max_discount_cents: data.discount_type === "percentage" ? data.max_discount_cents : null,
+        discount_value: data.discount_type === "free_shipping" ? 0 : data.discount_type === "fixed" ? Math.round(Number(data.discount_value) * 100) : Number(data.discount_value),
+        max_discount_cents: data.discount_type === "percentage" && data.max_discount_cents ? Math.round(Number(data.max_discount_cents) * 100) : null,
+        min_order_cents: data.min_order_cents ? Math.round(Number(data.min_order_cents) * 100) : 0,
         applicable_product_ids:
           data.applies_to === "products" ? data.applicable_product_ids : null,
         applicable_categories:
           data.applies_to === "categories" ? data.applicable_categories : null,
-        valid_from: toIso(data.valid_from),
-        valid_until: toIso(data.valid_until) ?? null,
+        valid_from: toISO(data.valid_from),
+        valid_until: toISO(data.valid_until) ?? null,
       };
 
       const url =
@@ -493,54 +473,60 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0">
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => router.push("/admin/coupons")}
-            className="p-2 text-white/25 hover:text-white/70 border border-white/8 hover:border-white/20 transition-all"
+            className="border border-white/8 p-2 text-white/25 transition-all hover:border-white/20 hover:text-white/70"
           >
-            <ChevronLeft size={14} />
+            <ChevronLeft size={17} />
           </button>
           <div>
-            <div className="flex items-center gap-2 mb-0.5">
-              <Tag size={16} className="text-[#FF00B6]" />
-              <h1 className="font-shrikhand text-xl text-white tracking-wide">
+            <div className="mb-0.5 flex items-center gap-2">
+              <Tag size={19} className="text-brand-pink" />
+              <h1 className="font-poppins font-black text-xl tracking-wide text-white">
                 {mode === "create" ? "NOVO CUPOM" : `EDITAR: ${initialData?.code}`}
               </h1>
             </div>
-            <p className="font-mono text-[9px] uppercase tracking-widest text-white/25">
-              {mode === "create"
-                ? "Criar novo cupom de desconto"
-                : "Editar configurações do cupom"}
+            <p className="font-mono text-[11px] tracking-widest text-white/25 uppercase">{"// "}{mode === "create"
+              ? "Criar novo cupom de desconto"
+              : "Editar configurações do cupom"}
             </p>
           </div>
         </div>
         <Button type="submit" variant="primary" size="md" loading={isSubmitting}>
-          <Save size={12} />
+          <Save size={15} />
           {mode === "create" ? "Criar Cupom" : "Salvar"}
         </Button>
       </div>
 
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="flex flex-col gap-6">
-          <div className="bg-[#111] border border-white/8 p-5 shadow-[4px_4px_0_rgba(255,0,182,0.12)]">
+          <div className="border border-white/8 bg-[#111] p-5 shadow-[4px_4px_0_rgba(255,0,182,0.12)]">
             <SectionLabel>Identificação</SectionLabel>
             <div className="flex flex-col gap-4">
-              <Input
-                label="Código do cupom"
-                placeholder="DESCONTO20"
-                {...register("code")}
-                onChange={(e) => {
-                  const upper = e.target.value.toUpperCase().replace(/[^A-Z0-9_-]/g, "");
-                  setValue("code", upper);
-                }}
-                disabled={mode === "edit"}
-                error={errors.code?.message}
-                hint={
-                  mode === "edit" ? "Código imutável após criação" : "Apenas A-Z, 0-9, _ ou -"
-                }
-              />
+              {mode === "edit" ? (
+                <div>
+                  <label className="mb-2 block font-mono text-[11px] tracking-wider text-white/40 uppercase">{"// "}Código do cupom</label>
+                  <div className="flex w-full items-center border border-brand-pink/20 bg-brand-pink/5 px-4 py-2.5">
+                    <p className="font-poppins text-[13px] font-black tracking-widest text-brand-pink uppercase">{initialData?.code}</p>
+                  </div>
+                  <p className="mt-1.5 font-mono text-[10px] tracking-wider text-white/30 uppercase">{"// "}Código imutável após criação</p>
+                </div>
+              ) : (
+                <Input
+                  label="Código do cupom"
+                  placeholder="DESCONTO20"
+                  {...register("code")}
+                  onChange={(e) => {
+                    const upper = e.target.value.toUpperCase().replace(/[^A-Z0-9_-]/g, "");
+                    setValue("code", upper);
+                  }}
+                  error={errors.code?.message}
+                  hint="Apenas A-Z, 0-9, _ ou -"
+                />
+              )}
               <Input
                 label="Descrição (opcional)"
                 placeholder="Ex: 20% off na primeira compra"
@@ -550,7 +536,7 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
             </div>
           </div>
 
-          <div className="bg-[#111] border border-white/8 p-5 shadow-[4px_4px_0_rgba(255,0,182,0.12)]">
+          <div className="border border-white/8 bg-[#111] p-5 shadow-[4px_4px_0_rgba(255,0,182,0.12)]">
             <SectionLabel>Tipo de Desconto</SectionLabel>
             <div className="flex flex-col gap-2">
               <Controller
@@ -565,7 +551,7 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
                         field.onChange(v);
                       }}
                       label="Percentual"
-                      icon={<Percent size={12} />}
+                      icon={<Percent size={15} />}
                       description="Ex: 20% de desconto sobre o subtotal"
                     />
                     <RadioOption
@@ -575,7 +561,7 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
                         field.onChange(v);
                       }}
                       label="Valor fixo"
-                      icon={<DollarSign size={12} />}
+                      icon={<DollarSign size={15} />}
                       description="Ex: R$50,00 de desconto (informe em centavos)"
                     />
                     <RadioOption
@@ -586,7 +572,7 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
                         setValue("discount_value", 0);
                       }}
                       label="Frete grátis"
-                      icon={<Truck size={12} />}
+                      icon={<Truck size={15} />}
                       description="Zera o valor do frete no checkout"
                     />
                   </>
@@ -596,63 +582,41 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
 
             {discountType !== "free_shipping" && (
               <div className="mt-4">
-                <Controller
-                  control={control}
-                  name="discount_value"
-                  render={({ field }) => (
-                    <Input
-                      label="Valor do desconto"
-                      type="number"
-                      min={1}
-                      max={discountType === "percentage" ? 100 : undefined}
-                      step={1}
-                      value={field.value ?? ""}
-                      onChange={(e) => field.onChange(e.target.valueAsNumber || 0)}
-                      error={errors.discount_value?.message}
-                      hint={
-                        discountType === "percentage"
-                          ? "Informe o percentual (ex: 20 para 20%)"
-                          : "Informe em centavos (ex: 5000 = R$50,00)"
-                      }
-                      suffix={
-                        <span className="pr-3 font-mono text-[10px] text-white/30">
-                          {discountType === "percentage" ? "%" : "¢"}
-                        </span>
-                      }
-                    />
-                  )}
+                <Input
+                  label={discountType === "percentage" ? "Valor do desconto" : "Valor do desconto (R$)"}
+                  placeholder="0,00"
+                  inputMode={discountType === "percentage" ? "numeric" : "decimal"}
+                  {...register("discount_value")}
+                  error={errors.discount_value?.message}
+                  hint={
+                    discountType === "percentage"
+                      ? "Informe o percentual (ex: 20 para 20%)"
+                      : "Informe em reais (ex: 50,00)"
+                  }
+                  suffix={
+                    <span className="pr-3 font-mono text-[12px] text-white/30">{"// "}{discountType === "percentage" ? "%" : "R$"}
+                    </span>
+                  }
                 />
               </div>
             )}
 
             {discountType === "percentage" && (
               <div className="mt-3">
-                <Controller
-                  control={control}
-                  name="max_discount_cents"
-                  render={({ field }) => (
-                    <Input
-                      label="Desconto máximo (opcional)"
-                      type="number"
-                      min={0}
-                      step={1}
-                      value={field.value ?? ""}
-                      onChange={(e) =>
-                        field.onChange(
-                          e.target.value === "" ? null : e.target.valueAsNumber,
-                        )
-                      }
-                      error={errors.max_discount_cents?.message}
-                      hint="Teto em centavos (ex: 10000 = R$100,00). Vazio = sem teto."
-                      suffix={<span className="pr-3 font-mono text-[10px] text-white/30">¢</span>}
-                    />
-                  )}
+                <Input
+                  label="Desconto máximo (R$) (opcional)"
+                  placeholder="0,00"
+                  inputMode="decimal"
+                  {...register("max_discount_cents")}
+                  error={errors.max_discount_cents?.message}
+                  hint="Teto em reais (ex: 100,00). Vazio = sem teto."
+                  suffix={<span className="pr-3 font-mono text-[12px] text-white/30">{"// "}R$</span>}
                 />
               </div>
             )}
           </div>
 
-          <div className="bg-[#111] border border-white/8 p-5 shadow-[4px_4px_0_rgba(255,0,182,0.12)]">
+          <div className="border border-white/8 bg-[#111] p-5 shadow-[4px_4px_0_rgba(255,0,182,0.12)]">
             <SectionLabel>Aplicação</SectionLabel>
             <div className="flex flex-col gap-2">
               <Controller
@@ -672,7 +636,7 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
                       current={field.value}
                       onSelect={field.onChange}
                       label="Produtos específicos"
-                      icon={<Package size={12} />}
+                      icon={<Package size={15} />}
                       description="Selecione os produtos elegíveis abaixo"
                     />
                     <RadioOption
@@ -680,7 +644,7 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
                       current={field.value}
                       onSelect={field.onChange}
                       label="Categorias específicas"
-                      icon={<FolderTree size={12} />}
+                      icon={<FolderTree size={15} />}
                       description="Selecione as categorias elegíveis abaixo"
                     />
                   </>
@@ -690,8 +654,7 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
 
             {appliesTo === "products" && (
               <div className="mt-4">
-                <p className="font-mono text-[9px] uppercase tracking-wider text-white/40 mb-2">
-                  Produtos elegíveis
+                <p className="mb-2 font-mono text-[11px] tracking-wider text-white/40 uppercase">{"// "}Produtos elegíveis
                 </p>
                 <Controller
                   control={control}
@@ -710,8 +673,7 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
 
             {appliesTo === "categories" && (
               <div className="mt-4">
-                <p className="font-mono text-[9px] uppercase tracking-wider text-white/40 mb-2">
-                  Categorias elegíveis
+                <p className="mb-2 font-mono text-[11px] tracking-wider text-white/40 uppercase">{"// "}Categorias elegíveis
                 </p>
                 <Controller
                   control={control}
@@ -731,25 +693,17 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
         </div>
 
         <div className="flex flex-col gap-6">
-          <div className="bg-[#111] border border-white/8 p-5 shadow-[4px_4px_0_rgba(0,240,255,0.12)]">
+          <div className="border border-white/8 bg-[#111] p-5 shadow-[4px_4px_0_rgba(255,0,182,0.12)]">
             <SectionLabel>Condições</SectionLabel>
             <div className="flex flex-col gap-4">
-              <Controller
-                control={control}
-                name="min_order_cents"
-                render={({ field }) => (
-                  <Input
-                    label="Pedido mínimo (centavos)"
-                    type="number"
-                    min={0}
-                    step={1}
-                    value={field.value ?? 0}
-                    onChange={(e) => field.onChange(e.target.valueAsNumber || 0)}
-                    error={errors.min_order_cents?.message}
-                    hint="0 = sem valor mínimo · Ex: 10000 = R$100,00"
-                    suffix={<span className="pr-3 font-mono text-[10px] text-white/30">¢</span>}
-                  />
-                )}
+              <Input
+                label="Pedido mínimo (R$)"
+                placeholder="0,00"
+                inputMode="decimal"
+                {...register("min_order_cents")}
+                error={errors.min_order_cents?.message}
+                hint="0 = sem valor mínimo · Ex: 100,00"
+                suffix={<span className="pr-3 font-mono text-[12px] text-white/30">{"// "}R$</span>}
               />
               <Controller
                 control={control}
@@ -765,7 +719,7 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
             </div>
           </div>
 
-          <div className="bg-[#111] border border-white/8 p-5 shadow-[4px_4px_0_rgba(0,240,255,0.12)]">
+          <div className="border border-white/8 bg-[#111] p-5 shadow-[4px_4px_0_rgba(255,0,182,0.12)]">
             <SectionLabel>Limites de Uso</SectionLabel>
             <div className="flex flex-col gap-4">
               <Controller
@@ -807,33 +761,31 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
             </div>
           </div>
 
-          <div className="bg-[#111] border border-white/8 p-5 shadow-[4px_4px_0_rgba(0,240,255,0.12)]">
+          <div className="border border-white/8 bg-[#111] p-5 shadow-[4px_4px_0_rgba(255,0,182,0.12)]">
             <SectionLabel>Validade</SectionLabel>
             <div className="flex flex-col gap-4">
               <div>
-                <label className="block font-mono text-[9px] uppercase tracking-wider text-white/40 mb-2">
-                  Válido a partir de (opcional)
+                <label className="mb-2 block font-mono text-[11px] tracking-wider text-white/40 uppercase">{"// "}Válido a partir de (opcional)
                 </label>
                 <input
                   type="datetime-local"
                   {...register("valid_from")}
-                  className="w-full bg-transparent border border-[#FF00B6]/15 focus:border-[#FF00B6] focus:shadow-[0_0_8px_rgba(255,0,182,0.2)] px-3 py-2.5 font-mono text-[11px] text-white outline-none transition-all duration-150 [color-scheme:dark]"
+                  className="w-full border border-brand-pink/15 bg-transparent px-3 py-2.5 font-mono text-[13px] text-white [color-scheme:dark] transition-all duration-150 outline-none focus:border-brand-pink focus:shadow-[0_0_8px_rgba(255,0,182,0.2)]"
                 />
               </div>
               <div>
-                <label className="block font-mono text-[9px] uppercase tracking-wider text-white/40 mb-2">
-                  Válido até (opcional)
+                <label className="mb-2 block font-mono text-[11px] tracking-wider text-white/40 uppercase">{"// "}Válido até (opcional)
                 </label>
                 <input
                   type="datetime-local"
                   {...register("valid_until")}
-                  className="w-full bg-transparent border border-[#FF00B6]/15 focus:border-[#FF00B6] focus:shadow-[0_0_8px_rgba(255,0,182,0.2)] px-3 py-2.5 font-mono text-[11px] text-white outline-none transition-all duration-150 [color-scheme:dark]"
+                  className="w-full border border-brand-pink/15 bg-transparent px-3 py-2.5 font-mono text-[13px] text-white [color-scheme:dark] transition-all duration-150 outline-none focus:border-brand-pink focus:shadow-[0_0_8px_rgba(255,0,182,0.2)]"
                 />
               </div>
             </div>
           </div>
 
-          <div className="bg-[#111] border border-white/8 p-5 shadow-[4px_4px_0_rgba(0,240,255,0.12)]">
+          <div className="border border-white/8 bg-[#111] p-5 shadow-[4px_4px_0_rgba(255,0,182,0.12)]">
             <SectionLabel>Status</SectionLabel>
             <Controller
               control={control}
@@ -850,16 +802,15 @@ export function CouponFormClient({ mode, initialData, products, categories }: Pr
         </div>
       </div>
 
-      <div className="flex items-center justify-between p-4 border border-white/8 bg-white/1">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 border border-white/8 bg-white/1 p-4">
         <button
           type="button"
           onClick={() => router.push("/admin/coupons")}
-          className="font-mono text-[9px] uppercase tracking-widest text-white/25 hover:text-white/60 transition-colors"
-        >
-          ← Voltar para cupons
+          className="font-mono text-[11px] tracking-widest text-white/25 uppercase transition-colors hover:text-white/60"
+        >{"// "}← Voltar para cupons
         </button>
         <Button type="submit" variant="primary" size="md" loading={isSubmitting}>
-          <Save size={12} />
+          <Save size={15} />
           {mode === "create" ? "Criar Cupom" : "Salvar Alterações"}
         </Button>
       </div>

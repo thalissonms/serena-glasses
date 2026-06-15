@@ -55,21 +55,21 @@ export default async function AdminV2ShowcasePage() {
   return (
     <div className="flex flex-col gap-12 max-w-4xl pb-20">
       <div>
-        <h1 className="font-shrikhand text-3xl text-white">Design System</h1>
-        <p className="font-mono text-[9px] uppercase tracking-[0.4em] text-[#00F0FF] mt-1">
+        <h1 className="font-poppins text-3xl text-white">Design System</h1>
+        <p className="font-mono text-[11px] uppercase tracking-[0.4em] text-brand-pink mt-1">
           Y2K Chrome · /admin Primitives Showcase
         </p>
       </div>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/30 border-b border-white/5 pb-2">
+        <h2 className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/30 border-b border-white/5 pb-2">
           DevBadge
         </h2>
         <DevBadge />
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/30 border-b border-white/5 pb-2">
+        <h2 className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/30 border-b border-white/5 pb-2">
           Badges
         </h2>
         <div className="flex flex-wrap gap-2">
@@ -80,24 +80,24 @@ export default async function AdminV2ShowcasePage() {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/30 border-b border-white/5 pb-2">
+        <h2 className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/30 border-b border-white/5 pb-2">
           Cards
         </h2>
         <div className="grid grid-cols-3 gap-4">
           <Card variant="flat" title="Flat">
-            <p className="font-mono text-[10px] text-white/40">Variante flat</p>
+            <p className="font-mono text-[12px] text-white/40">Variante flat</p>
           </Card>
-          <Card variant="chrome" title="Chrome">
-            <p className="font-mono text-[10px] text-white/40">Variante chrome</p>
+          <Card variant="cyber" title="Cyber">
+            <p className="font-mono text-[12px] text-white/40">Variante cyber</p>
           </Card>
-          <Card variant="holo" title="Holo">
-            <p className="font-mono text-[10px] text-white/40">Variante holo</p>
+          <Card variant="neon" title="Neon">
+            <p className="font-mono text-[12px] text-white/40">Variante neon</p>
           </Card>
         </div>
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/30 border-b border-white/5 pb-2">
+        <h2 className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/30 border-b border-white/5 pb-2">
           Table
         </h2>
         <Table
@@ -108,7 +108,7 @@ export default async function AdminV2ShowcasePage() {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/30 border-b border-white/5 pb-2">
+        <h2 className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/30 border-b border-white/5 pb-2">
           Table — Empty State
         </h2>
         <Table
@@ -119,13 +119,13 @@ export default async function AdminV2ShowcasePage() {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/30 border-b border-white/5 pb-2">
+        <h2 className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/30 border-b border-white/5 pb-2">
           ChromeFrame
         </h2>
         <div className="grid grid-cols-3 gap-4">
           {(["none", "pink", "cyan", "gold"] as const).map((g) => (
             <ChromeFrame key={g} glow={g} className="p-4">
-              <p className="font-mono text-[9px] text-white/40 uppercase tracking-wider">
+              <p className="font-mono text-[11px] text-white/40 uppercase tracking-wider">
                 Glow: {g}
               </p>
             </ChromeFrame>
@@ -134,24 +134,24 @@ export default async function AdminV2ShowcasePage() {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/30 border-b border-white/5 pb-2">
+        <h2 className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/30 border-b border-white/5 pb-2">
           NeonGlow
         </h2>
         <div className="flex gap-8 items-center">
-          <NeonGlow color="#FF00B6" intensity="sm">
-            <p className="font-shrikhand text-2xl text-[#FF00B6]">Pink SM</p>
+          <NeonGlow color="var(--brand-pink)" intensity="sm">
+            <p className="font-poppins text-2xl text-brand-pink">Pink SM</p>
           </NeonGlow>
-          <NeonGlow color="#00F0FF" intensity="md">
-            <p className="font-shrikhand text-2xl text-[#00F0FF]">Cyan MD</p>
+          <NeonGlow color="var(--brand-pink)" intensity="md">
+            <p className="font-poppins text-2xl text-brand-pink">Cyan MD</p>
           </NeonGlow>
           <NeonGlow color="#FFD700" intensity="lg" pulse>
-            <p className="font-shrikhand text-2xl text-[#FFD700]">Gold LG</p>
+            <p className="font-poppins text-2xl text-[#FFD700]">Gold LG</p>
           </NeonGlow>
         </div>
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/30 border-b border-white/5 pb-2">
+        <h2 className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/30 border-b border-white/5 pb-2">
           AsciiEmpty
         </h2>
         <div className="border border-white/5">
@@ -163,7 +163,7 @@ export default async function AdminV2ShowcasePage() {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/30 border-b border-white/5 pb-2">
+        <h2 className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/30 border-b border-white/5 pb-2">
           Interactive Components
         </h2>
         <ShowcaseInteractive />
