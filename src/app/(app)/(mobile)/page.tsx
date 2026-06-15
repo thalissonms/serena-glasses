@@ -2,24 +2,15 @@ export const dynamic = "force-dynamic";
 
 import { SerenaCollageBackground } from "@shared/components/layout";
 import Showcase from "@features/home/components/Showcase";
-import { NewArrivals } from "@features/home/components/NewArrivals";
-import {
-  getAllProducts,
-  getNewProducts,
-  getPromotionProducts,
-} from "@features/products/services/productService";
-import NewArrivalsMobile from "@features/home/components/mobile/NewArrivalsMobile";
-import Sales from "@features/home/components/Sales";
+import MobileHomeFeed from "@/shared/components/MobileProductFeed";
 import { getPublicSiteHighlight } from "@features/home/services/siteHighlightPublic.service";
-import SiteHighlight from "@features/home/components/SiteHighlight";
-import DynamicHomeSections from "@/features/home/components/DynamicHomeSections";
+import DynamicHomeSections from "@features/home/components/DynamicHomeSections";
 import { getPublicHomeSections } from "@features/home/services/homeSectionsPublic.service";
+import StartsBackground from "@shared/components/layout/Backgrounds/StartsBackground";
+import clsx from "clsx";
 
 export default async function HomePage() {
-  const [newProducts, allProducts, promotionProducts, highlight, homeSections] = await Promise.all([
-    getNewProducts(),
-    getAllProducts(),
-    getPromotionProducts(),
+  const [highlight, homeSections] = await Promise.all([
     getPublicSiteHighlight(),
     getPublicHomeSections()
   ]);
@@ -32,15 +23,26 @@ export default async function HomePage() {
             <Showcase />
           </SerenaCollageBackground>
         </div>
-        <div className="relative mb-25 hidden bg-brand-light-surface-0 md:block dark:bg-brand-dark-surface-0">
-          <NewArrivals products={newProducts} />
-          <SiteHighlight hightlight={highlight || null} />
-          <DynamicHomeSections sections={homeSections} />
+        <div className="relative mb-25 hidden md:block">
+          <div className={clsx("absolute inset-0 -top-4 left-0 z-40 hidden h-4 w-screen bg-linear-0 from-brand-light-surface-0 via-brand-light-surface-0/20 to-transparent",
+            "dark:from-brand-dark-surface-0 dark:via-brand-dark-surface-0/20 md:block")} />
+          <div className="relative overflow-x-hidden h-full w-full bg-brand-light-surface-0 dark:bg-brand-dark-surface-0"
+            style={{
+              backgroundImage: "url('/backgrounds/bg-grid.svg')",
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+            }}
+          >
+            <StartsBackground>
+              <DynamicHomeSections sections={homeSections} highlight={highlight} />
+            </StartsBackground>
+          </div>
         </div>
         <div className="block max-w-[100vw] md:hidden">
-          <NewArrivalsMobile products={allProducts} />
+          <MobileHomeFeed sections={homeSections} />
         </div>
       </article>
     </>
   );
 }
+

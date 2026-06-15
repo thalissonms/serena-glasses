@@ -1,3 +1,10 @@
+/**
+ * API Route: GET/PUT /api/admin/site-highlight — lê e atualiza o highlight promocional.
+ *
+ * GET retorna o registro singleton (id=1). PUT faz upsert com image_url_light, image_url_dark e position.
+ *
+ * Usado em: SiteHightlight (admin/banners).
+ */
 import { NextResponse } from "next/server";
 import { getSupabaseServer } from "@shared/lib/supabase/server";
 import { withAdmin } from "@shared/lib/auth/withAdmin";
@@ -21,11 +28,15 @@ export const PUT = withAdmin(async (req) => {
   const body = await req.json().catch(() => null);
   if (!body) return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
 
-  const { image_url_light, image_url_dark } = body;
+  const { image_url_light, image_url_dark, position = 0 } = body;
 
   if (!image_url_light || !image_url_dark) {
     return NextResponse.json({ error: "Both image_url_light and image_url_dark are required" }, { status: 400 });
   }
+
+  const parsedPosition = typeof position === "number" && Number.isInteger(position) && position >= 0
+    ? position
+    : 0;
 
   const { data, error } = await getSupabaseServer()
     .from("site_highlight")
@@ -33,6 +44,7 @@ export const PUT = withAdmin(async (req) => {
       id: 1,
       image_url_light,
       image_url_dark,
+      position: parsedPosition,
     })
     .select()
     .single();

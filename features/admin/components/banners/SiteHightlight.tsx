@@ -10,7 +10,7 @@ import { AdminUploadBox } from "../primitives/AdminUploadBox";
 import { Button } from "../primitives/Button";
 import { Modal } from "../primitives/Modal";
 
-export default function SiteHightlight() {
+export default function SiteHightlight({ sectionTitles }: { sectionTitles: string[] }) {
     const [isEditing, setIsEditing] = useState(false);
     const { data: highlight, isLoading } = useSiteHighlight();
     const updateMutation = useUpdateSiteHighlight();
@@ -20,15 +20,19 @@ export default function SiteHightlight() {
     const [previewDark, setPreviewDark] = useState<string | null>(null);
     const [progressLight, setProgressLight] = useState<number | null>(null);
     const [progressDark, setProgressDark] = useState<number | null>(null);
+    const [selectedPosition, setSelectedPosition] = useState(0);
     const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
+    const [previewTheme, setPreviewTheme] = useState<"light" | "dark">("light");
 
     useEffect(() => {
         if (!isEditing && highlight) {
             setPreviewLight(highlight.image_url_light || null);
             setPreviewDark(highlight.image_url_dark || null);
+            setSelectedPosition(highlight.position ?? 0);
         } else if (!isEditing && !highlight) {
             setPreviewLight(null);
             setPreviewDark(null);
+            setSelectedPosition(0);
         }
     }, [isEditing, highlight]);
 
@@ -67,6 +71,7 @@ export default function SiteHightlight() {
             await updateMutation.mutateAsync({
                 image_url_light: previewLight || "",
                 image_url_dark: previewDark || "",
+                position: selectedPosition,
             });
             toast.success("Highlight atualizado");
             setIsEditing(false);
@@ -85,6 +90,7 @@ export default function SiteHightlight() {
             await updateMutation.mutateAsync({
                 image_url_light: "",
                 image_url_dark: "",
+                position: 0,
             });
             toast.success("Highlight removido");
         } catch (err: unknown) {
@@ -97,6 +103,29 @@ export default function SiteHightlight() {
     };
 
     const hasHighlight = highlight?.image_url_light || highlight?.image_url_dark;
+
+    const handlePositionChange = async (newPosition: number) => {
+        if (!highlight) return;
+        setSelectedPosition(newPosition);
+        try {
+            await updateMutation.mutateAsync({
+                image_url_light: highlight.image_url_light,
+                image_url_dark: highlight.image_url_dark,
+                position: newPosition,
+            });
+            toast.success("Posição atualizada");
+        } catch (err: unknown) {
+            if (isApiError(err)) {
+                toast.error(err.message);
+            } else {
+                toast.error("Falha ao atualizar posição");
+            }
+        }
+    };
+
+    const previewImageUrl = previewTheme === "dark"
+        ? highlight?.image_url_dark
+        : highlight?.image_url_light;
 
     return (
         <div className="space-y-6">
@@ -149,85 +178,104 @@ export default function SiteHightlight() {
                     </div>
                 </div>
             ) : isEditing ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 border-2 border-dashed border-brand-pink/30 bg-[#050505]">
-                    <div className="space-y-3">
-                        <div className="flex items-center gap-2 font-mono text-base tracking-widest text-white/60 uppercase">
-                            <Sun size={17} className="text-brand-pink" />
-                            Versão Claro
-                        </div>
-                        {previewLight ? (
-                            <div className="relative border-2 border-white/10 group bg-white/5">
-                                <Image
-                                    src={previewLight}
-                                    alt="Light Highlight"
-                                    width={1920}
-                                    height={1080}
-                                    className="w-full h-auto"
-                                    unoptimized
-                                />
-                                <button
-                                    onClick={() => setPreviewLight(null)}
-                                    className="absolute top-2 right-2 bg-black/60 p-2 text-white/60 hover:text-brand-pink transition-colors backdrop-blur-sm"
-                                >
-                                    <Trash2 size={19} />
-                                </button>
-                            </div>
-                        ) : (
-                            <AdminUploadBox
-                                title="Enviar Highlight Claro"
-                                subtitle="PNG, JPG, WEBP (Ideal: 1920x520)"
-                                icon={<ImageIcon size={24} />}
-                                accept="image/*"
-                                isUploading={progressLight !== null}
-                                progress={progressLight}
-                                onFilesSelect={(files) => handleUpload(files, "light")}
-                                themeColor="cyan"
-                            />
-                        )}
-                        <p className="font-mono text-[11px] text-brand-pink/50 uppercase tracking-widest mt-2 flex items-center gap-1.5">
-                            <AlertCircle size={13} />
-                            Resolução Recomendada: 1920x520
-                        </p>
+                <div className="space-y-6 p-6 border-2 border-dashed border-brand-pink/30 bg-[#050505]">
+                    <div className="space-y-2">
+                        <label className="font-poppins text-[10px] font-bold uppercase tracking-widest text-gray-400 block">
+                            Posição na Home
+                        </label>
+                        <select
+                            value={selectedPosition}
+                            onChange={(e) => setSelectedPosition(Number(e.target.value))}
+                            className="w-full max-w-md bg-[#1a1a1a] border-2 border-white/10 text-white font-inter text-sm px-3 py-2 outline-none focus:border-brand-pink transition-colors"
+                        >
+                            <option value={0}>Antes de todas as seções</option>
+                            {sectionTitles.map((title, i) => (
+                                <option key={i} value={i + 1}>
+                                    Após {title}
+                                </option>
+                            ))}
+                        </select>
                     </div>
-                    
-                    <div className="space-y-3">
-                        <div className="flex items-center gap-2 font-mono text-base tracking-widest text-white/60 uppercase">
-                            <Moon size={17} className="text-brand-pink" />
-                            Versão Escuro
-                        </div>
-                        {previewDark ? (
-                            <div className="relative border-2 border-white/10 group bg-white/5">
-                                <Image
-                                    src={previewDark}
-                                    alt="Dark Highlight"
-                                    width={1920}
-                                    height={1080}
-                                    className="w-full h-auto"
-                                    unoptimized
-                                />
-                                <button
-                                    onClick={() => setPreviewDark(null)}
-                                    className="absolute top-2 right-2 bg-black/60 p-2 text-white/60 hover:text-brand-pink transition-colors backdrop-blur-sm"
-                                >
-                                    <Trash2 size={19} />
-                                </button>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-2 font-mono text-base tracking-widest text-white/60 uppercase">
+                                <Sun size={17} className="text-brand-pink" />
+                                Versão Claro
                             </div>
-                        ) : (
-                            <AdminUploadBox
-                                title="Enviar Highlight Escuro"
-                                subtitle="PNG, JPG, WEBP (Ideal: 1920x520)"
-                                icon={<ImageIcon size={24} />}
-                                accept="image/*"
-                                isUploading={progressDark !== null}
-                                progress={progressDark}
-                                onFilesSelect={(files) => handleUpload(files, "dark")}
-                                themeColor="pink"
-                            />
-                        )}
-                        <p className="font-mono text-[11px] text-brand-pink/50 uppercase tracking-widest mt-2 flex items-center gap-1.5">
-                            <AlertCircle size={13} />
-                            Resolução Recomendada: 1920x520
-                        </p>
+                            {previewLight ? (
+                                <div className="relative border-2 border-white/10 group bg-white/5">
+                                    <Image
+                                        src={previewLight}
+                                        alt="Light Highlight"
+                                        width={1920}
+                                        height={1080}
+                                        className="w-full h-auto"
+                                        unoptimized
+                                    />
+                                    <button
+                                        onClick={() => setPreviewLight(null)}
+                                        className="absolute top-2 right-2 bg-black/60 p-2 text-white/60 hover:text-brand-pink transition-colors backdrop-blur-sm"
+                                    >
+                                        <Trash2 size={19} />
+                                    </button>
+                                </div>
+                            ) : (
+                                <AdminUploadBox
+                                    title="Enviar Highlight Claro"
+                                    subtitle="PNG, JPG, WEBP (Ideal: 1920x520)"
+                                    icon={<ImageIcon size={24} />}
+                                    accept="image/*"
+                                    isUploading={progressLight !== null}
+                                    progress={progressLight}
+                                    onFilesSelect={(files) => handleUpload(files, "light")}
+                                    themeColor="cyan"
+                                />
+                            )}
+                            <p className="font-mono text-[11px] text-brand-pink/50 uppercase tracking-widest mt-2 flex items-center gap-1.5">
+                                <AlertCircle size={13} />
+                                Resolução Recomendada: 1920x520
+                            </p>
+                        </div>
+
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-2 font-mono text-base tracking-widest text-white/60 uppercase">
+                                <Moon size={17} className="text-brand-pink" />
+                                Versão Escuro
+                            </div>
+                            {previewDark ? (
+                                <div className="relative border-2 border-white/10 group bg-white/5">
+                                    <Image
+                                        src={previewDark}
+                                        alt="Dark Highlight"
+                                        width={1920}
+                                        height={1080}
+                                        className="w-full h-auto"
+                                        unoptimized
+                                    />
+                                    <button
+                                        onClick={() => setPreviewDark(null)}
+                                        className="absolute top-2 right-2 bg-black/60 p-2 text-white/60 hover:text-brand-pink transition-colors backdrop-blur-sm"
+                                    >
+                                        <Trash2 size={19} />
+                                    </button>
+                                </div>
+                            ) : (
+                                <AdminUploadBox
+                                    title="Enviar Highlight Escuro"
+                                    subtitle="PNG, JPG, WEBP (Ideal: 1920x520)"
+                                    icon={<ImageIcon size={24} />}
+                                    accept="image/*"
+                                    isUploading={progressDark !== null}
+                                    progress={progressDark}
+                                    onFilesSelect={(files) => handleUpload(files, "dark")}
+                                    themeColor="pink"
+                                />
+                            )}
+                            <p className="font-mono text-[11px] text-brand-pink/50 uppercase tracking-widest mt-2 flex items-center gap-1.5">
+                                <AlertCircle size={13} />
+                                Resolução Recomendada: 1920x520
+                            </p>
+                        </div>
                     </div>
                 </div>
             ) : !hasHighlight ? (
@@ -240,22 +288,10 @@ export default function SiteHightlight() {
                 <div className="space-y-6">
                     <div className="isolate">
                         <div className="-z-1 flex h-fit items-center justify-center overflow-hidden pt-2">
-                            {highlight?.image_url_dark ? (
+                            {previewImageUrl ? (
                                 <Image
-                                    src={highlight.image_url_dark}
-                                    alt={"sale"}
-                                    width={1920}
-                                    height={1080}
-                                    priority
-                                    quality={100}
-                                    role="img"
-                                    className="drop-shadow-[4px_-4px_0px] drop-shadow-brand-purple dark:drop-shadow-brand-dark-surface-2"
-                                    unoptimized
-                                />
-                            ) : highlight?.image_url_light ? (
-                                <Image
-                                    src={highlight.image_url_light}
-                                    alt={"sale"}
+                                    src={previewImageUrl}
+                                    alt="highlight preview"
                                     width={1920}
                                     height={1080}
                                     priority
@@ -267,15 +303,38 @@ export default function SiteHightlight() {
                             ) : null}
                         </div>
 
-                        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 border border-brand-pink/30 px-4 py-2.5 shadow-[inset_0_0_15px_rgba(255,0,182,0.05)] transition-colors duration-150 hover:bg-[#050505] mt-2 bg-[#050505] rounded-none">
+                        <div className="flex items-center justify-end gap-2 mt-1">
+                            <button
+                                onClick={() => setPreviewTheme(previewTheme === "light" ? "dark" : "light")}
+                                className="flex items-center gap-1.5 px-2 py-1 font-mono text-[11px] uppercase tracking-widest text-white/40 hover:text-brand-pink transition-colors"
+                            >
+                                {previewTheme === "light" ? <Sun size={14} /> : <Moon size={14} />}
+                                {previewTheme === "light" ? "Claro" : "Escuro"}
+                            </button>
+                        </div>
+
+                        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 border border-brand-pink/30 px-4 py-2.5 shadow-[inset_0_0_15px_rgba(255,0,182,0.05)] transition-colors duration-150 hover:bg-[#050505] bg-[#050505] rounded-none">
                             <div className="flex flex-wrap items-center gap-3">
-                                <span className={`inline-flex items-center gap-1.5 font-mono text-[12px] uppercase tracking-widest px-2 py-0.5 border border-brand-pink/30 text-brand-pink bg-brand-pink/5`}>
-                                    <span className={`w-1.5 h-1.5 rounded-none bg-brand-pink animate-pulse`} />
+                                <span className="inline-flex items-center gap-1.5 font-mono text-[12px] uppercase tracking-widest px-2 py-0.5 border border-brand-pink/30 text-brand-pink bg-brand-pink/5">
+                                    <span className="w-1.5 h-1.5 rounded-none bg-brand-pink animate-pulse" />
                                     {"//"} ATIVO AGORA
                                 </span>
                             </div>
 
-                            <div className="flex items-center gap-1">
+                            <div className="flex items-center gap-3">
+                                <select
+                                    value={selectedPosition}
+                                    onChange={(e) => handlePositionChange(Number(e.target.value))}
+                                    disabled={updateMutation.isPending}
+                                    className="bg-[#1a1a1a] border border-white/10 text-white/60 font-mono text-[11px] uppercase tracking-widest px-2 py-1 outline-none focus:border-brand-pink transition-colors disabled:opacity-40"
+                                >
+                                    <option value={0}>Antes de todas</option>
+                                    {sectionTitles.map((title, i) => (
+                                        <option key={i} value={i + 1}>
+                                            Após {title}
+                                        </option>
+                                    ))}
+                                </select>
                                 <button
                                     onClick={handleDelete}
                                     disabled={updateMutation.isPending}

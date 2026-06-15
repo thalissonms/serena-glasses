@@ -26,10 +26,20 @@ export default function StartsBackground({ children, variant = "default", partic
     const heartPath = new Path2D(HEART_SVG);
 
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      if (canvas.parentElement) {
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+      }
     };
-    window.addEventListener("resize", resize);
+    
+    const resizeObserver = new ResizeObserver(() => {
+      resize();
+    });
+    
+    if (canvas.parentElement) {
+      resizeObserver.observe(canvas.parentElement);
+    }
+    
     resize();
 
     const getParticleOpacity = () => variant === "faint" ? Math.random() * 0.18 + 0.04 : Math.random() * 0.5 + 0.1;
@@ -68,10 +78,10 @@ export default function StartsBackground({ children, variant = "default", partic
       particles.forEach((p) => {
         p.phase += p.speed;
         p.size = p.baseSize + Math.sin(p.phase) * (p.baseSize * 0.5);
-        
+
         ctx.beginPath();
         ctx.arc(p.x, p.y, Math.abs(p.size), 0, Math.PI * 2);
-        
+
         ctx.shadowBlur = 6;
         ctx.shadowColor = `rgba(${pinkColor}, 0.5)`;
         ctx.fillStyle = `rgba(${pinkColor}, ${p.opacity})`;
@@ -81,14 +91,14 @@ export default function StartsBackground({ children, variant = "default", partic
       sparkles.forEach((s) => {
         s.phase += s.speed;
         s.rotation += s.rotationSpeed;
-        
+
         const scale = 1 + Math.sin(s.phase) * 0.3;
         const currentOpacity = s.opacity + Math.sin(s.phase) * 0.2;
 
         ctx.save();
         ctx.translate(s.x, s.y);
         ctx.rotate(s.rotation);
-        
+
         const scaleFactor = (s.baseSize / 24) * scale;
         ctx.translate(-12 * scaleFactor, -12 * scaleFactor);
         ctx.scale(scaleFactor, scaleFactor);
@@ -107,7 +117,7 @@ export default function StartsBackground({ children, variant = "default", partic
     render();
 
     return () => {
-      window.removeEventListener("resize", resize);
+      resizeObserver.disconnect();
       cancelAnimationFrame(animationFrameId);
     };
   }, [variant, particleCount]);

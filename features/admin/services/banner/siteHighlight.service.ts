@@ -1,9 +1,17 @@
+/**
+ * Service: siteHighlight — CRUD do highlight promocional (admin).
+ *
+ * Client-side. Faz fetch/put em /api/admin/site-highlight + upload via XHR com progress.
+ *
+ * Usado em: SiteHightlight (admin/banners).
+ */
 import type { ApiError } from "../../types/error/apiError.interface";
 
 export interface SiteHighlightData {
   id: number;
   image_url_light: string;
   image_url_dark: string;
+  position: number;
   updated_at: string;
 }
 
@@ -24,6 +32,7 @@ export async function getSiteHighlight(): Promise<SiteHighlightData | null> {
 export async function updateSiteHighlight(data: {
   image_url_light: string;
   image_url_dark: string;
+  position: number;
 }): Promise<SiteHighlightData> {
   const res = await fetch("/api/admin/site-highlight", {
     method: "PUT",
