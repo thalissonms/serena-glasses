@@ -48,7 +48,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
     const inputEl = (
       <div
         className={clsx(
-          "relative flex items-center bg-brand-pink-light dark:bg-brand-dark-surface-0 transition-all duration-200 group",
+          "relative w-full flex items-center bg-brand-pink-light dark:bg-brand-dark-surface-0 transition-all duration-200 group",
           isLg
             ? "border-2 border-black dark:border-brand-pink"
             : "border-2 border-black/60 dark:border-brand-pink",
@@ -67,7 +67,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
           aria-hidden="true"
         >
           {leftIcon ?? (isLg ? "✦" : (
-            <Search className="text-brand-black/80 dark:text-brand-white/80 group-focus-within:text-brand-pink dark:group-focus-within:text-brand-pink-light" strokeWidth={isLg ? 2.5 : 3} size={isLg ? 16 : 18} />
+            <Search className="text-brand-black/80 dark:text-brand-white/80 group-focus-within:text-brand-pink dark:group-focus-within:text-brand-purple" strokeWidth={isLg ? 2.5 : 3} size={isLg ? 16 : 18} />
           ))}
         </span>
 
@@ -88,7 +88,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
           aria-label={ariaLabel ?? placeholder}
           placeholder={placeholder}
           className={clsx(
-            "flex-1 bg-transparent outline-none font-poppins uppercase placeholder-brand-black/40 dark:placeholder:text-brand-white/40 focus:placeholder-brand-pink/60 dark:focus:placeholder-brand-pink-light/80 text-brand-black dark:text-brand-white",
+            "flex-1 min-w-0 bg-transparent outline-none font-poppins uppercase placeholder-brand-black/40 dark:placeholder:text-brand-white/40 focus:placeholder-brand-pink/40 dark:focus:placeholder-brand-purple/40 text-brand-black dark:text-brand-white",
             isLg
               ? "py-2 text-sm tracking-[0.2em] placeholder:font-semibold"
               : "px-2 py-2 text-base",

@@ -1,8 +1,8 @@
 "use client";
-import { Lock, Loader2 } from "lucide-react";
+import { Lock, Loader2, ShoppingBag } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import CheckoutHeader from "@features/checkout/components/CheckoutHeader";
+import MobileNavHeader from "@/features/checkout/components/CheckoutHeader";
 import OrderSummarySidebar from "@features/checkout/components/OrderSummarySidebar";
 import { IdentificationModule } from "@features/checkout/components/IdentificationModule";
 import { AddressModule } from "@features/checkout/components/AddressModule";
@@ -31,11 +31,12 @@ export default function CheckoutContentPage() {
   if (phase.status === "pix") {
     return (
       <main className="w-full min-h-screen bg-[#FFF0FA] dark:bg-[#0a0a0a] text-black dark:text-white py-12 px-4 sm:px-8 lg:px-20 transition-colors">
-        <CheckoutHeader
+        <MobileNavHeader
           breadcrumb={{
             isActive: true,
             items: [{ navs: t("breadcrumb.checkout"), url: "" }],
           }}
+          icon={ShoppingBag}
           finishingOrder={false}
         />
         <PixPaymentScreen
@@ -52,11 +53,12 @@ export default function CheckoutContentPage() {
   if (phase.status === "boleto") {
     return (
       <main className="w-full min-h-screen bg-[#FFF0FA] dark:bg-[#0a0a0a] text-black dark:text-white py-12 px-4 sm:px-8 lg:px-20 transition-colors">
-        <CheckoutHeader
+        <MobileNavHeader
           breadcrumb={{
             isActive: true,
             items: [{ navs: t("breadcrumb.checkout"), url: "" }],
           }}
+          icon={ShoppingBag}
           finishingOrder={false}
         />
         <BoletoPaymentScreen
@@ -79,7 +81,7 @@ export default function CheckoutContentPage() {
         backgroundRepeat: "repeat",
       }}
     >
-      <CheckoutHeader
+      <MobileNavHeader
         breadcrumb={{
           isActive: true,
           items: [
@@ -87,6 +89,7 @@ export default function CheckoutContentPage() {
             { navs: t("breadcrumb.checkout"), url: "" },
           ],
         }}
+        icon={ShoppingBag}
         finishingOrder={true}
       />
 

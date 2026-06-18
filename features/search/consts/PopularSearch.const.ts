@@ -1,0 +1,1 @@
+export const POPULAR_CHIPS = ["Cat-Eye", "Acetato", "Rosa"];

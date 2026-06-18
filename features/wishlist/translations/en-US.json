@@ -3,5 +3,14 @@
     "addLabel": "Add to wishlist",
     "removeLabel": "Remove from wishlist",
     "added": "Added"
-  }
+  },
+  "title": "Wishlist",
+  "ariaLabel": "Your wishlist",
+  "back": "back",
+  "empty": {
+    "title": "Empty List",
+    "description": "Save the glasses you love while exploring our collection."
+  },
+  "listAriaLabel": "Wishlisted products",
+  "removeAriaLabel": "Remove {{name}} from wishlist"
 }

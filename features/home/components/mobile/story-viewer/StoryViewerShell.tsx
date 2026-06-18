@@ -75,7 +75,7 @@ export function StoryViewerShell({ isOpen, onClose, children }: StoryViewerShell
             role="dialog"
             aria-modal="true"
             aria-label={t("storyViewer.title")}
-            className="fixed inset-0 z-61 bg-black touch-none overflow-hidden"
+            className="fixed inset-0 z-300 bg-black touch-none overflow-hidden"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}

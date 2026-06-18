@@ -19,8 +19,8 @@
     "listHeader": "{{count}} results ✦ scroll to explore"
   },
   "emptyResults": {
-    "title": "No results ✦",
-    "desktopTitle": "Nothing here yet ✦",
+    "title": "No results",
+    "desktopTitle": "Nothing here yet",
     "clearCta": "Clear search"
   },
   "seeAll": "See all ({{count}})",

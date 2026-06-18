@@ -1,4 +1,4 @@
-import ProductPageContentMobile from "@features/products/components/mobile/ProductPageContentMobile";
+import ProductModalContent from "@features/products/components/mobile/ProductModalContent";
 import { getProductBySlug } from "@features/products/services/productService";
 import { notFound } from "next/navigation";
 
@@ -12,5 +12,5 @@ export default async function ProductModal({
 
   if (!product) notFound();
 
-  return <ProductPageContentMobile product={product} />;
+  return <ProductModalContent product={product} />;
 }

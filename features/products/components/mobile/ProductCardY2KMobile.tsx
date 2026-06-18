@@ -204,7 +204,6 @@ export function ProductCardY2KMobile({ product }: ProductCardMobileProps) {
             )}
           </div>
 
-          {/* Colors */}
           <div className="flex flex-col justify-start w-full">
             {product.inStock ? (
               <>
@@ -252,7 +251,6 @@ export function ProductCardY2KMobile({ product }: ProductCardMobileProps) {
         </div>
 
         <div className="mt-3 flex flex-col w-full gap-1.5 px-2">
-          {/* Row 1: Comprar */}
           <div className="grid grid-cols-[auto_2.5rem] gap-1">
 
             <button

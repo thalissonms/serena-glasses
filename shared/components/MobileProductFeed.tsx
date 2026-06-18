@@ -23,18 +23,17 @@ export default function MobileHomeFeed({ sections }: { sections: PublicHomeSecti
       <StoryViewerOverlay />
       <div className="max-w-md mx-auto flex flex-col gap-1">
         <FilterCategories />
-        <div className="w-full flex flex-col gap-3 py-4 -mt-4">
-          <BannerPromo />
+        <div className="w-full flex flex-col gap-4 py-4 -mt-4">
           <VideoReelsMobile />
-          <Y2KDivider className="-mx-4 px-20 -mb-2" />
+          {/* <Y2KDivider className="-mx-4 px-20 -mb-2" /> */}
         </div>
 
-        <div className="flex flex-col gap-12 mt-4">
+        <div className="flex flex-col gap-12 mt-1">
           {sections.map((section) => {
             if (!section.products || section.products.length === 0) return null;
             return (
               <section key={section.id} className="w-full flex flex-col items-center">
-                <div className="mb-6">
+                <div className="mb-3">
                   <SectionTitle title={pickLocale(section, i18n.language)} />
                 </div>
 

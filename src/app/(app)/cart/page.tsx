@@ -2,9 +2,9 @@
 
 import { useCartStore } from "@features/cart/store/cart.store";
 import CartPageContent from "@features/cart/components/CartPageContent";
-import CartPageContentMobile from "@features/cart/components/mobile/CartPageContentMobile";
+import CartModalContent from "@features/cart/components/mobile/CartModalContent";
 
-export default function ProductsPage() {
+export default function CartPage() {
   const { items, removeItem, updateQuantity } = useCartStore();
 
   function changeQty(variantId: string, delta: number) {
@@ -22,11 +22,7 @@ export default function ProductsPage() {
         />
       </div>
       <div className="md:hidden">
-        <CartPageContentMobile
-          items={items}
-          removeItem={removeItem}
-          changeQty={changeQty}
-        />
+        <CartModalContent />
       </div>
     </>
   );

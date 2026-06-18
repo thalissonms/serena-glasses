@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import ModalNavHeader from "@/shared/navigation/components/mobile/modals/ModalNavHeader";
+import ModalNavHeader from "@shared/navigation/components/mobile/modals/ModalNavHeader";
 import { AddressModuleMobile } from "@features/checkout/components/mobile/AddressModuleMobile";
 import { IdentificationModuleMobile } from "@features/checkout/components/mobile/IdentificationModuleMobile";
 import { PaymentModuleMobile } from "@features/checkout/components/mobile/PaymentModuleMobile";
@@ -18,7 +18,7 @@ import { useCheckoutPricing } from "@features/checkout/hooks/useCheckoutPricing"
 import { useCheckoutSubmission } from "@features/checkout/hooks/useCheckoutSubmission";
 import { useEmptyCartGuard } from "@features/checkout/hooks/useEmptyCartGuard";
 import clsx from "clsx";
-import PageInterceptTransition from "@/shared/navigation/components/mobile/modals/PageInterceptTransition";
+import PageInterceptTransition from "@shared/navigation/components/mobile/modals/PageInterceptTransition";
 import { ShoppingBagIcon } from "@heroicons/react/24/solid";
 
 
@@ -42,7 +42,7 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
   );
 }
 
-const CheckoutModalContent = () => {
+export default function CheckoutMobileContent() {
   const { t } = useTranslation("checkout");
   const router = useRouter();
   const {
@@ -166,10 +166,4 @@ const CheckoutModalContent = () => {
   );
 };
 
-export default function CheckoutPageContentMobile() {
-  return (
-    <PageInterceptTransition>
-      <CheckoutModalContent />
-    </PageInterceptTransition>
-  );
-}
+

@@ -4,6 +4,7 @@ import { Footer } from "@shared/components/layout";
 import { WhatsAppFloat } from "@shared/components/WhatsAppFloat";
 import { Nav } from "@shared/navigation/components/Nav";
 import { TopBanner } from "@shared/components/layout/TopBanner";
+import NavBottom from "@shared/navigation/components/mobile/NavBottom";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -17,6 +18,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <ReviewsOverlay />
       <WhatsAppFloat />
       <CapturePopupTrigger />
+      <NavBottom />
     </>
   );
 }

@@ -3,5 +3,14 @@
     "addLabel": "Adicionar aos favoritos",
     "removeLabel": "Remover dos favoritos",
     "added": "Adicionado"
-  }
+  },
+  "title": "Favoritos",
+  "ariaLabel": "Seus favoritos",
+  "back": "voltar",
+  "empty": {
+    "title": "Lista Vazia",
+    "description": "Salve os óculos que você adorou enquanto explora nossa coleção."
+  },
+  "listAriaLabel": "Produtos favoritos",
+  "removeAriaLabel": "Remover {{name}} dos favoritos"
 }

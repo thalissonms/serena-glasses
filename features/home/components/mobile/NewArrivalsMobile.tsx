@@ -2,7 +2,6 @@
 
 import { useTranslation } from "react-i18next";
 import type { Product } from "@features/products/types";
-import { PolaroidProductCard } from "@features/products/components/mobile/PolaroidProductCard";
 import FilterCategories from "@features/products/components/mobile/FilterCategories";
 import VideoReelsMobile from "@features/home/components/mobile/VideoReelsMobile";
 import { Y2KDivider } from "@features/home/components/mobile/Y2KDivider";
@@ -12,7 +11,7 @@ import { GalleryVertical, LayoutGrid } from "lucide-react";
 import { useState } from "react";
 import clsx from "clsx";
 import BannerPromo from "./BannerPromo";
-import { ProductCardY2KMobile } from "@/features/products/components/mobile/ProductCardY2KMobile";
+import { ProductCardY2KMobile } from "@features/products/components/mobile/ProductCardY2KMobile";
 
 const LAYOUT_SELECT = [
   { label: "layout grid", icon: LayoutGrid, isGrid: true },

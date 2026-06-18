@@ -2,12 +2,13 @@ export const dynamic = "force-dynamic";
 
 import { SerenaCollageBackground } from "@shared/components/layout";
 import Showcase from "@features/home/components/Showcase";
-import MobileHomeFeed from "@/shared/components/MobileProductFeed";
+import MobileHomeFeed from "@shared/components/MobileProductFeed";
 import { getPublicSiteHighlight } from "@features/home/services/siteHighlightPublic.service";
 import DynamicHomeSections from "@features/home/components/DynamicHomeSections";
 import { getPublicHomeSections } from "@features/home/services/homeSectionsPublic.service";
 import StartsBackground from "@shared/components/layout/Backgrounds/StartsBackground";
 import clsx from "clsx";
+import ProductModal from "@features/products/components/modal/ProductModal";
 
 export default async function HomePage() {
   const [highlight, homeSections] = await Promise.all([
@@ -17,7 +18,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <article className="transition-duration-300 scroll-smooth text-brand-black transition-colors dark:text-brand-white">
+      <article className="transition-duration-300 scroll-smooth text-brand-black transition-colors dark:text-brand-white overflow-x-hidden">
         <div className="sticky top-0 hidden md:block">
           <SerenaCollageBackground>
             <Showcase />
@@ -35,6 +36,7 @@ export default async function HomePage() {
           >
             <StartsBackground>
               <DynamicHomeSections sections={homeSections} highlight={highlight} />
+              <ProductModal />
             </StartsBackground>
           </div>
         </div>

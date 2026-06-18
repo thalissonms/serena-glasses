@@ -7,31 +7,26 @@ import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { useCartStore } from "@features/cart/store/cart.store";
 import { useWishlist } from "@features/wishlist/hooks/useWishlist";
+import { useEffect } from "react";
+import BadgeCounter from "../BadgeCounter";
 
 const NAV_ITEMS = [
-  { href: "/", secHref:"/products", icon: Home, labelKey: "home", badge: false },
-  { href: "/search", secHref:"", icon: Search, labelKey: "search", badge: false },
-  { href: "/wishlist", secHref:"", icon: Heart, labelKey: "wishlist", badge: true },
-  { href: "/cart", secHref:"/checkout", icon: ShoppingBag, labelKey: "cart", badge: true },
+  { href: "/", secHref: "/products", icon: Home, labelKey: "home", badge: false },
+  { href: "/search", secHref: "", icon: Search, labelKey: "search", badge: false },
+  { href: "/wishlist", secHref: "", icon: Heart, labelKey: "wishlist", badge: true },
+  { href: "/cart", secHref: "/checkout", icon: ShoppingBag, labelKey: "cart", badge: true },
 ] as const;
-
-function Badge({ count }: { count: number }) {
-  if (count === 0) return null;
-  return (
-    <span
-      aria-hidden="true"
-      className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-brand-pink dark:bg-brand-purple text-brand-white text-[9px] font-black flex items-center justify-center border-[1.5px] shadow-[1px_1px_0px] shadow-brand-black dark:shadow-brand-blue border-brand-black"
-    >
-      {count > 9 ? "9+" : count}
-    </span>
-  );
-}
 
 export default function NavBottom() {
   const pathname = usePathname();
   const { t } = useTranslation("nav");
   const cartCount = useCartStore((s) => s.items.reduce((n, i) => n + i.quantity, 0));
   const { data: wishlist = [] } = useWishlist();
+
+  useEffect(() => {
+    document.body.classList.add("has-nav-bottom");
+    return () => document.body.classList.remove("has-nav-bottom");
+  }, []);
 
   const counts: Record<string, number> = {
     "/cart": cartCount,
@@ -41,7 +36,7 @@ export default function NavBottom() {
   return (
     <nav
       aria-label={t("mainNavigation")}
-      className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-brand-light-surface-2 dark:bg-brand-dark-surface-1 border-t border-neutral-200 dark:border-neutral-800"
+      className="fixed bottom-0 left-0 right-0 z-200 md:hidden bg-brand-light-surface-2 dark:bg-brand-dark-surface-1 border-t border-neutral-200 dark:border-neutral-800"
     >
       <div className="flex items-center justify-around h-14">
         {NAV_ITEMS.map(({ href, secHref, icon: Icon, labelKey }) => {
@@ -64,7 +59,7 @@ export default function NavBottom() {
                     active ? "text-brand-pink" : "text-brand-black/60 dark:text-brand-white/60",
                   )}
                 />
-                <Badge count={count} />
+                <BadgeCounter count={count} />
               </div>
             </Link>
           );

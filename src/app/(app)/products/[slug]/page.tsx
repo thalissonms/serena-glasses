@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getProductBySlug } from "@features/products/services/productService";
 import { getSupabaseServer } from "@shared/lib/supabase/server";
 import ProductPageContent from "@features/products/components/ProductPageContent";
-import { ProductPageMobileContent } from "@features/products/components/mobile/ProductPageContentMobile";
+import ProductModalContent from "@features/products/components/mobile/ProductModalContent";
 import type { ReviewItem } from "@features/products/components/ProductReviews";
 
 export default async function ProductPage({
@@ -50,7 +50,7 @@ export default async function ProductPage({
         <ProductPageContent product={product} videoSrc={product.videoUrl} reviews={reviews} />
       </div>
       <div className="md:hidden">
-        <ProductPageMobileContent product={product} reviews={reviews} />
+        <ProductModalContent product={product} reviews={reviews} />
       </div>
     </>
   );

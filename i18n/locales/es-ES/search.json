@@ -19,8 +19,8 @@
     "listHeader": "{{count}} resultados ✦ desliza para explorar"
   },
   "emptyResults": {
-    "title": "Sin resultados ✦",
-    "desktopTitle": "Nada aquí aún ✦",
+    "title": "Sin resultados",
+    "desktopTitle": "Nada aquí aún",
     "clearCta": "Limpiar búsqueda"
   },
   "seeAll": "Ver todos ({{count}})",

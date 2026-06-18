@@ -1,8 +1,5 @@
 "use client";
 
-import { useSmartBack } from "@/shared/navigation/hooks/useBackIntercept";
-import PageInterceptTransition from "@/shared/navigation/components/mobile/modals/PageInterceptTransition";
-import { ArrowLeft, Share2Icon } from "lucide-react";
 import { WishlistButton } from "@features/wishlist/components/WishlistButton";
 import ProductActionsMobile from "@features/products/components/mobile/ProductActionsMobile";
 import type { Product } from "@features/products/types/product.types";
@@ -16,11 +13,11 @@ import ProductDescription from "../ProductDescription";
 import { Y2KDivider } from "@features/home/components/mobile/Y2KDivider";
 import { getPrimaryTag } from "@features/products/utils/getPrimaryTag";
 import { shareProduct } from "@features/products/utils/polaroidCard.utils";
-import ModalNavHeader from "@/shared/navigation/components/mobile/modals/ModalNavHeader";
+import ModalNavHeader from "@shared/navigation/components/mobile/modals/ModalNavHeader";
 
 import type { ReviewItem } from "../ProductReviews";
 
-export function ProductPageMobileContent({ product, reviews }: { product: Product; reviews?: ReviewItem[] }) {
+export default function ProductMobileContent({ product, reviews }: { product: Product; reviews?: ReviewItem[] }) {
   const { t, i18n } = useTranslation("products");
   const firstInStock = product.variants.findIndex((v) => v.inStock);
   const [selectedColor, setSelectedColor] = useState(
@@ -86,15 +83,15 @@ export function ProductPageMobileContent({ product, reviews }: { product: Produc
                       product.price,
                       product.maxInstallments,
                     ) && (
-                      <div className="w-1/2 flex items-center gap-1">
-                        <span className="text-sm font-family-poppins font-normal text-gray-400 dark:text-gray-300">
-                          {formatInstallment(
-                            product.price,
-                            product.maxInstallments,
-                          )}
-                        </span>
-                      </div>
-                    )}
+                        <div className="w-1/2 flex items-center gap-1">
+                          <span className="text-sm font-family-poppins font-normal text-gray-400 dark:text-gray-300">
+                            {formatInstallment(
+                              product.price,
+                              product.maxInstallments,
+                            )}
+                          </span>
+                        </div>
+                      )}
                   </div>
                   <div className="flex items-center self-start mt-4 mr-2">
                     <WishlistButton size={32} productId={product.id} />
@@ -118,13 +115,5 @@ export function ProductPageMobileContent({ product, reviews }: { product: Produc
         </footer>
       </article>
     </div>
-  );
-}
-
-export default function ProductModalPage({ product }: { product: Product }) {
-  return (
-    <PageInterceptTransition>
-      <ProductPageMobileContent product={product} />
-    </PageInterceptTransition>
   );
 }

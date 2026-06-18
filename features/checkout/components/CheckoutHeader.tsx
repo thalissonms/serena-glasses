@@ -1,19 +1,23 @@
 "use client";
 import { useTranslation } from "react-i18next";
-import { BreadcrumbProps } from "@/shared/navigation/types/breadcrumb.types";
-import Breadcrumb from "@/shared/navigation/components/Breadcrumb";
-import { ShoppingBag } from "lucide-react";
+import { BreadcrumbProps } from "@shared/navigation/types/breadcrumb.types";
+import Breadcrumb from "@shared/navigation/components/Breadcrumb";
+import { LucideIcon } from "lucide-react";
 
 const CheckoutHeader = ({
   itemsAmount,
   finishingOrder = false,
   breadcrumb = { isActive: false, items: [] },
+  icon
 }: {
   itemsAmount?: number;
   finishingOrder?: boolean;
   breadcrumb?: BreadcrumbProps;
+  icon?: LucideIcon;
 }) => {
   const { t } = useTranslation("checkout");
+
+  const Icon = icon || null;
 
   function headingText() {
     if (itemsAmount && itemsAmount > 0) {
@@ -28,7 +32,9 @@ const CheckoutHeader = ({
         <Breadcrumb items={breadcrumb.items} />
       ) : (
         <div className="flex items-center gap-3 mb-1">
-          <ShoppingBag size={18} strokeWidth={2.5} className="text-gray-500 dark:text-gray-400" />
+          {Icon &&
+            <Icon size={18} strokeWidth={2.5} className="text-gray-500 dark:text-gray-400" />
+          }
           <p className="font-poppins text-xs uppercase tracking-[0.3em] text-gray-500 dark:text-gray-400 font-semibold">
             {t("header.myCart")}
           </p>

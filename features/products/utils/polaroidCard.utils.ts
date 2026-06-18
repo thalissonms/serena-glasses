@@ -1,8 +1,6 @@
-export function shareProduct(slug: string, name: string): void {
+import { smartShare } from "@shared/utils/smartShare";
+
+export async function shareProduct(slug: string, name: string): Promise<void> {
   const url = `${window.location.origin}/products/${slug}`;
-  if (navigator.share) {
-    navigator.share({ title: name, url });
-  } else {
-    navigator.clipboard?.writeText(url);
-  }
+  await smartShare(url, name);
 }

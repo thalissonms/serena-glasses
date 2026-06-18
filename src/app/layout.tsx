@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { headers } from "next/headers";
 import "../../styles/tailwind.css";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/next"
@@ -84,11 +83,9 @@ export default async function RootLayout({
         ? i18n.options.fallbackLng
         : undefined;
 
-  const [headersList, pixels] = await Promise.all([
-    headers(),
+  const [pixels] = await Promise.all([
     getSetting("pixels").catch(() => null),
   ]);
-  const nonce = headersList.get("x-nonce") ?? undefined;
 
   return (
     <html
@@ -97,20 +94,29 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <Script
-          id="theme-init-script"
-          strategy="beforeInteractive"
-          nonce={nonce}
-          dangerouslySetInnerHTML={{ __html: themeInitScript }}
-        />
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
+      <body>
+        <ThemeProvider>
+          <QueryProvider>
+            <I18nProvider>
+              <AnimationProvider>
+                <SpeedInsights />
+                <Analytics />
+                <main className="min-h-screen bg-brand-light-surface-0 dark:bg-brand-dark-surface-0 pb-(--nav-bottom-height) transition-[padding] duration-300 ease-in-out">{children}</main>
+                <ModalPresence modal={modal} />
+                <Y2KToaster />
+              </AnimationProvider>
+            </I18nProvider>
+          </QueryProvider>
+        </ThemeProvider>
         <Script
           src="https://sdk.mercadopago.com/js/v2"
           strategy="afterInteractive"
-          nonce={nonce}
         />
-
         {pixels?.meta_pixel_id && (
-          <Script id="meta-pixel" strategy="afterInteractive" nonce={nonce}>{`
+          <Script id="meta-pixel" strategy="afterInteractive">{`
             !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
             n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
             n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
@@ -119,15 +125,13 @@ export default async function RootLayout({
             fbq('init','${pixels.meta_pixel_id}');fbq('track','PageView');
           `}</Script>
         )}
-
         {pixels?.ga4_id && (
           <>
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${pixels.ga4_id}`}
               strategy="afterInteractive"
-              nonce={nonce}
             />
-            <Script id="ga4" strategy="afterInteractive" nonce={nonce}>{`
+            <Script id="ga4" strategy="afterInteractive">{`
               window.dataLayer=window.dataLayer||[];
               function gtag(){dataLayer.push(arguments);}
               gtag('js',new Date());
@@ -135,12 +139,11 @@ export default async function RootLayout({
             `}</Script>
           </>
         )}
-
         {pixels?.tiktok_pixel_id && (
-          <Script id="tiktok-pixel" strategy="afterInteractive" nonce={nonce}>{`
+          <Script id="tiktok-pixel" strategy="afterInteractive">{`
             !function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];
             ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"];
-            ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};
+            ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0))}};
             for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);
             ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e};
             ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";
@@ -151,21 +154,6 @@ export default async function RootLayout({
             ttq.load('${pixels.tiktok_pixel_id}');ttq.page();}(window,document,'ttq');
           `}</Script>
         )}
-      </head>
-      <body>
-        <ThemeProvider>
-          <QueryProvider>
-            <I18nProvider>
-              <AnimationProvider>
-                <SpeedInsights />
-                <Analytics />
-                <main className="min-h-screen bg-brand-light-surface-0 dark:bg-brand-dark-surface-0">{children}</main>
-                <ModalPresence modal={modal} />
-                <Y2KToaster />
-              </AnimationProvider>
-            </I18nProvider>
-          </QueryProvider>
-        </ThemeProvider>
       </body>
     </html>
   );
