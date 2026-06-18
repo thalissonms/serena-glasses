@@ -27,15 +27,15 @@ export function useEmptyCartGuard(onEmpty: () => void) {
   onEmptyRef.current = onEmpty;
 
   const [hasHydrated, setHasHydrated] = useState(() =>
-    useCartStore.persist.hasHydrated(),
+    useCartStore.persist?.hasHydrated() ?? false,
   );
 
   useEffect(() => {
     if (hasHydrated) return;
-    const unsub = useCartStore.persist.onFinishHydration(() =>
+    const unsub = useCartStore.persist?.onFinishHydration(() =>
       setHasHydrated(true),
     );
-    if (useCartStore.persist.hasHydrated()) setHasHydrated(true);
+    if (useCartStore.persist?.hasHydrated()) setHasHydrated(true);
     return unsub;
   }, [hasHydrated]);
 
