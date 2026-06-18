@@ -31,15 +31,15 @@ export default function StartsBackground({ children, variant = "default", partic
         canvas.height = canvas.parentElement.clientHeight;
       }
     };
-    
+
     const resizeObserver = new ResizeObserver(() => {
       resize();
     });
-    
+
     if (canvas.parentElement) {
       resizeObserver.observe(canvas.parentElement);
     }
-    
+
     resize();
 
     const getParticleOpacity = () => variant === "faint" ? Math.random() * 0.18 + 0.04 : Math.random() * 0.5 + 0.1;
@@ -126,13 +126,6 @@ export default function StartsBackground({ children, variant = "default", partic
     <>
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
-
-        <div
-          className="absolute inset-0 opacity-[1] mix-blend-overlay"
-          style={{
-            backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')",
-          }}
-        />
       </div>
       {children}
     </>

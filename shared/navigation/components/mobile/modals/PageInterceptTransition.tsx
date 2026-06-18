@@ -106,7 +106,7 @@ export default function PageInterceptTransition({ children }: Props) {
   return (
     <m.div
       ref={containerRef}
-      className="fixed inset-0 z-100 bg-white overflow-y-auto min-h-screen touch-pan-y"
+      className="fixed inset-0 z-100 bg-brand-light-surface-0 dark:bg-brand-dark-surface-0 overflow-y-auto min-h-screen touch-pan-y pb-(--nav-bottom-height)"
       initial={{ x: "100%" }}
       animate={controls}
       exit={{ x: "100%" }}
@@ -120,10 +120,7 @@ export default function PageInterceptTransition({ children }: Props) {
         if (info.offset.x < 0) controls.set({ x: 0 });
       }}
     >
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-linear-to-b from-brand-pink/5 dark:from-brand-pink-bg-dark via-transparent to-brand-pink-light/20 dark:to-brand-pink-dark/5" />
-      </div>
-      
+
       {enabled && (
         <StartsBackground variant="faint" particleCount={60}>
           {children}

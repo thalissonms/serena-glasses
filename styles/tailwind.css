@@ -147,6 +147,19 @@
   --font-family-mono: var(--font-jetbrains-mono), "Courier New", monospace;
 }
 
+/* NavBottom Height Control */
+:root {
+  --nav-bottom-height: 0px;
+}
+body.has-nav-bottom {
+  --nav-bottom-height: 56px;
+}
+@media (min-width: 768px) {
+  body.has-nav-bottom {
+    --nav-bottom-height: 0px;
+  }
+}
+
 /* Dark Mode Overrides (classe .dark no <html> ou <body>) */
 .dark {
   --color-background: oklch(0.145 0 0);

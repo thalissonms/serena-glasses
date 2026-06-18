@@ -1,12 +1,12 @@
 "use client";
 
 import PageInterceptTransition from "@shared/navigation/components/mobile/modals/PageInterceptTransition";
-import CartMobileContent from "./CartMobileContent";
+import CheckoutMobileContent from "./CheckoutMobileContent";
 
-export default function CartModalContent() {
+export default function CheckoutModalContent() {
   return (
     <PageInterceptTransition>
-      <CartMobileContent />
+      <CheckoutMobileContent />
     </PageInterceptTransition>
   );
 }

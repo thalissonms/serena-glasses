@@ -5,7 +5,7 @@ import { AnimatePresence, m } from "framer-motion";
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { formatPrice } from "@features/products/utils/formatPrice";
-import CheckoutHeader from "@features/checkout/components/CheckoutHeader";
+import MobileNavHeader from "@/features/checkout/components/CheckoutHeader";
 import OrderSummarySidebar from "@features/checkout/components/OrderSummarySidebar";
 import { CartItem } from "../types/cart.types";
 
@@ -21,8 +21,8 @@ export default function CartPageContent({
   changeQty,
 }: {
   items: CartItem[],
-  removeItem: (variantId: string) => void ,
-  changeQty: (variantId: string, delta: number)  => void
+  removeItem: (variantId: string) => void,
+  changeQty: (variantId: string, delta: number) => void
 }) {
   const { t } = useTranslation("checkout");
 
@@ -36,7 +36,7 @@ export default function CartPageContent({
         backgroundRepeat: "repeat",
       }}
     >
-      <CheckoutHeader itemsAmount={items.length} />
+      <MobileNavHeader itemsAmount={items.length} />
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8 items-start">
         <div className="flex flex-col gap-4">

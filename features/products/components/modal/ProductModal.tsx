@@ -1,3 +1,5 @@
+"use client"
+
 import { AnimatePresence, m } from "framer-motion";
 import { useProductModal } from '../../hooks/useProductModal';
 import { Expand, Share2, X } from 'lucide-react';
@@ -21,11 +23,11 @@ export default function ProductModal() {
         }
     }
 
-    const share = () => {
+    const share = async () => {
         if (selectedProduct) {
             const url = `${process.env.NEXT_PUBLIC_BASE_URL}/products/${selectedProduct.slug}`;
-            navigator.clipboard.writeText(url);
-            y2kToast.success("Link copiado para a área de transferência!");
+            const { smartShare } = await import('@shared/utils/smartShare');
+            await smartShare(url, selectedProduct.name);
         }
     }
 

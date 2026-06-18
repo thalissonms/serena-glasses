@@ -1,9 +1,8 @@
 "use client";
 
-import PageInterceptTransition from "@/shared/navigation/components/mobile/modals/PageInterceptTransition";
 import { CheckoutFormProvider } from "@features/checkout/providers/checkout.rhf";
 import { useMounted } from "@shared/hooks/useMounted";
-import CheckoutPageContentMobile from "@features/checkout/components/mobile/CheckoutContentPageMobile";
+import CheckoutModalContent from "@features/checkout/components/mobile/CheckoutModalContent";
 import { useIsDesktop } from "@shared/hooks/useIsDesktop";
 
 export default function CheckoutModal() {
@@ -14,7 +13,7 @@ export default function CheckoutModal() {
 
   return (
     <CheckoutFormProvider>
-      <CheckoutPageContentMobile />
+      <CheckoutModalContent />
     </CheckoutFormProvider>
   );
 }

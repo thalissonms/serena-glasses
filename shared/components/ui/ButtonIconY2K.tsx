@@ -28,7 +28,7 @@ export interface ButtonNavActionProps {
   isActive?: boolean;
   href?: string;
   variant?: Y2KIconButton;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const ButtonIconY2K = ({

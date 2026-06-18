@@ -96,7 +96,9 @@ function CompactSearchBar({
 function CategoryChips({ onSelect }: { onSelect: (slug: string) => void }) {
   const { t } = useTranslation("search");
   const { data: facets } = useSearchFacets();
-  const chips = (facets?.subcategories ?? []).slice(0, 6);
+  const chips = (facets?.subcategories ?? [])
+    .filter((sub, index, self) => self.findIndex((t) => t.slug === sub.slug) === index)
+    .slice(0, 6);
 
   if (chips.length === 0) return null;
 
@@ -252,8 +254,8 @@ export function SearchPageContent({ query: initialQuery, initialResults }: Props
   const results = hasInteracted
     ? liveResults
     : liveResults.length > 0
-    ? liveResults
-    : initialResults;
+      ? liveResults
+      : initialResults;
 
   const hasQuery = (hasInteracted ? debouncedQ : initialQuery).length >= 2;
   const effectiveQuery = hasInteracted ? debouncedQ : initialQuery;

@@ -2,12 +2,12 @@ import * as React from "react";
 
 const SlidesHeart = ({
   className,
-  size,
-  strokeWidth,
+  size = 24,
+  strokeWidth = 2.5,
 }: {
-  className: string;
-  size: number;
-  strokeWidth: number;
+  className?: string;
+  size?: number;
+  strokeWidth?: number;
 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -15,6 +15,7 @@ const SlidesHeart = ({
     height={size}
     fill="none"
     className={className}
+    stroke="currentColor"
     strokeWidth={strokeWidth}
     x="0"
     y="0"

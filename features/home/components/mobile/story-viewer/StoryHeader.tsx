@@ -16,10 +16,9 @@ export function StoryHeader({ story, onClose }: StoryHeaderProps) {
   const { t } = useTranslation("home");
 
   return (
-    <div className="relative flex flex-col gap-0.5 px-3 pb-2 shrink-0 mt-2">
+    <div className="relative isolate flex flex-col gap-0.5 px-3 pb-2 shrink-0 mt-2">
       <div className="absolute -top-10 left-0 w-full h-24 bg-linear-to-b from-brand-pink-bg-dark/80 to-brand-pink-bg-dark/0" />
       <div className="relative flex items-center gap-2">
-        {/* Avatar */}
         {story.avatarKind === "icon" ? (
           <div className="w-12 h-12 relative flex items-center justify-center rounded-full transition-all duration-300 border-4 border-brand-yellow dark:ring-offset-brand-pink-light ring-offset-brand-pink-dark ring-offset-4shadow-[2px_2px_0px_4px] shadow-brand-blue">
             <div
@@ -49,11 +48,13 @@ export function StoryHeader({ story, onClose }: StoryHeaderProps) {
         )}
 
         <div className="flex flex-col gap-1 ml-0.5 mt-1">
-          <span className="text-white font-poppins text-lg font-bold italic leading-4 text-shadow-[2px_2px_0px] text-shadow-brand-pink">
+          <span className={clsx("text-white font-poppins text-lg font-bold italic leading-4 text-shadow-[1.5px_1.5px_0px] text-shadow-brand-pink",
+            "[-webkit-text-stroke:0.75px_rgba(18,18,18,0.75)] [text-stroke:0.75px_rgba(18,18,18,0.75)]"
+          )}>
             {story.title}
           </span>
           {story.subtitle && (
-            <span className="text-white/60 text-xs font-family-inter italic truncate">
+            <span className="text-white/60 text-xs font-family-inter italic">
               {story.subtitle}
             </span>
           )}

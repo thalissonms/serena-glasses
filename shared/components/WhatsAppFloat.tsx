@@ -18,7 +18,7 @@ export function WhatsAppFloat() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={t("whatsapp")}
-      className={`fixed bottom-20 ${positionClass} z-40 w-14 h-14 bg-[#25D366] border-2 border-black shadow-[4px_4px_0_#000] flex items-center justify-center hover:scale-110 transition-transform`}
+      className={`fixed bottom-[calc(5rem+var(--nav-bottom-height))] ${positionClass} z-40 w-14 h-14 bg-[#25D366] border-2 border-black shadow-[4px_4px_0_#000] flex items-center justify-center hover:scale-110 transition-all duration-300`}
     >
       <MessageCircle size={28} className="text-white" fill="currentColor" />
     </a>

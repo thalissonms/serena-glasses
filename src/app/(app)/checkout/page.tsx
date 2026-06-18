@@ -1,4 +1,4 @@
-import CheckoutPageContentMobile from "@features/checkout/components/mobile/CheckoutContentPageMobile";
+import CheckoutModalContent from "@features/checkout/components/mobile/CheckoutModalContent";
 import CheckoutContentPage from "@features/checkout/components/CheckoutContentPage";
 import { CheckoutFormProvider } from "@features/checkout/providers/checkout.rhf";
 
@@ -9,7 +9,7 @@ export default function CheckoutPage() {
         <CheckoutContentPage />
       </div>
       <div className="md:hidden block">
-        <CheckoutPageContentMobile />
+        <CheckoutModalContent />
       </div>
     </CheckoutFormProvider>
   );

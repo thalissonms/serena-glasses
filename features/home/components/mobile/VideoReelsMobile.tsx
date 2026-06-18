@@ -7,6 +7,8 @@ import { useTranslation } from "react-i18next";
 import { useStoryViewer } from "@features/home/hooks/useStoryViewer";
 import { useHomeStories } from "@features/home/hooks/useHomeStories";
 import HeaderDivider from "./HeaderDivider";
+import { PlayCircleIcon, PlayIcon } from "@heroicons/react/24/solid";
+import clsx from "clsx";
 
 const VideoReelsMobile = () => {
   const { t, i18n } = useTranslation("home");
@@ -60,7 +62,7 @@ const VideoReelsMobile = () => {
 
     if (activeVideo) {
       activeVideo.currentTime = 0;
-      activeVideo.play().catch(() => {});
+      activeVideo.play().catch(() => { });
     }
 
     const advanceId = setTimeout(() => {
@@ -93,13 +95,29 @@ const VideoReelsMobile = () => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.4 }}
-      className="w-full flex flex-col gap-3 py-4 -mt-4"
+      className="w-full flex flex-col py-1 bg-brand-dark-surface-1/10  rounded-sm"
+      style={{
+        backgroundImage: "url('/backgrounds/bg-grid.svg')",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+      }}
     >
-      <HeaderDivider title={t("reels.title")} />
+      {/* <HeaderDivider title={t("reels.title")} />  */}
+      <div className="flex items-center gap-0.5 px-2 mb-1">
+        <h2 className={clsx("text-brand-blue dark:text-brand-yellow text-lg tracking-wide font-shrikhand shrink-0 capitalize",
+          "[-webkit-text-stroke:1px_rgba(255,0,182,1)] [text-stroke:1px_rgba(255,0,182,1)] dark:[-webkit-text-stroke:1px_rgba(155,0,255,0.75)] dark:[text-stroke:1.5px_rgba(155,0,255,0.75)]"
+        )}>
+          {t("reels.title")}
+        </h2>
+        <div className={clsx("flex-1 h-px mx-2 bg-linear-90 from-brand-blue/20 via-brand-blue/75 to-brand-blue/20 rounded-full dark:bg-brand-pink/20",
+          "dark:from-brand-pink/0 dark:via-brand-pink/40 dark:to-brand-pink/0 "
+        )} />
+        <PlayIcon className="w-4 h-4 text-brand-pink dark:text-brand-purple" />
+      </div>
 
       <div
         ref={containerRef}
-        className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4 pb-1"
+        className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-3 pb-1"
       >
         {stories.map((story, i) => {
           const isActive = i === activeIndex;
@@ -115,9 +133,8 @@ const VideoReelsMobile = () => {
               }}
               onClick={() => openStoryViewer(stories, i)}
               className={[
-                "snap-center shrink-0 w-[32vw] aspect-9/16 relative overflow-hidden cursor-pointer transition-all duration-300",
-                "border-2 border-black shadow-brand-pink dark:shadow-brand-blue dark:border-brand-pink-light",
-                isActive ? "shadow-[4px_6px_0px]" : "shadow-[3px_5px_0px]",
+                "snap-center shrink-0 w-[22vw] aspect-9/16 relative overflow-hidden cursor-pointer transition-all duration-300",
+                "border-2 border-brand-pink dark:border-brand-purple rounded-md",
               ].join(" ")}
             >
               <div className="absolute inset-0 bg-brand-pink-light dark:bg-brand-black-dark" />
@@ -159,10 +176,17 @@ const VideoReelsMobile = () => {
                   {story.avatarLabel}
                 </span>
               )}
-
+              {/* 
               <p className="absolute bottom-2 left-0 right-0 text-center text-white text-xs px-1 z-10 truncate font-shrikhand">
                 {story.title}
-              </p>
+              </p> */}
+              <div className="absolute inset-0 z-30 pointer-events-none rounded-md overflow-hidden mix-blend-screen">
+                <div className="absolute inset-0 ring-1 ring-inset ring-white/20" />
+
+                <div className="absolute inset-0 bg-linear-to-br from-white/10 via-transparent to-transparent opacity-80" />
+
+                <div className="absolute top-[-50%] bottom-[-50%] left-[15%] w-[25%] bg-linear-to-r from-transparent via-white/20 to-transparent -skew-x-[25deg]" />
+              </div>
             </button>
           );
         })}

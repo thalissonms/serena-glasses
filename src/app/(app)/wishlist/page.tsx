@@ -1,10 +1,9 @@
-import WishlistMobileContent from "@features/wishlist/components/mobile/WishlistMobileContent";
+import WishlistModalContent from "@features/wishlist/components/mobile/WishlistModalContent";
 import { Heart } from "lucide-react";
 
 export default function WishlistPage() {
   return (
     <>
-      {/* Desktop: a WishlistDropdown no Nav já serve o desktop */}
       <div className="hidden md:flex min-h-[60vh] flex-col items-center justify-center gap-4 text-center px-8">
         <Heart size={48} strokeWidth={1.5} className="text-brand-pink/30" aria-hidden="true" />
         <h1 className="font-jocham text-4xl uppercase text-black dark:text-white">Favoritos</h1>
@@ -13,9 +12,8 @@ export default function WishlistPage() {
         </p>
       </div>
 
-      {/* Mobile: fixed overlay cobre o footer do app layout */}
-      <div className="md:hidden fixed inset-0 z-40 overflow-y-auto bg-[#FFF0FA] dark:bg-[#0a0a0a]">
-        <WishlistMobileContent />
+      <div className="md:hidden">
+        <WishlistModalContent />
       </div>
     </>
   );

@@ -69,7 +69,8 @@ export function StoryViewerOverlay() {
         onDurationChange={onDurationChange}
       />
 
-      <div className="absolute top-0 inset-x-0 z-30 flex flex-col">
+      <div className="relative isolate top-0 inset-x-0 z-30 flex flex-col">
+        <div className="-z-1 absolute top-0 left-0 bg-linear-to-b from-brand-black/75 via-brand-black/40 to-transparent h-20 w-full" />
         <StoryProgressBar
           count={stories.length}
           activeIndex={currentIndex}

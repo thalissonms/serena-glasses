@@ -1,6 +1,7 @@
 "use client";
 
 import clsx from "clsx";
+import { m } from "framer-motion"
 import { ProductBadgeY2K } from "./ProductBadge";
 import { Check, InfoIcon, ShoppingCart } from "lucide-react";
 import Image from "next/image";
@@ -24,7 +25,7 @@ export interface ProductCardProps {
   index?: number;
 }
 
-export default function ProductCardY2K({ product }: ProductCardProps) {
+export default function ProductCardY2K({ product, index }: ProductCardProps) {
   const { t, i18n } = useTranslation("products");
 
   const firstInStock = product.variants.findIndex((v) => v.inStock);
@@ -42,7 +43,15 @@ export default function ProductCardY2K({ product }: ProductCardProps) {
   const openModal = useProductModal((state) => state.openModal);
 
   return (
-    <div
+    <m.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{
+        duration: 0.5,
+        delay: (index || 0) * 0.3,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      }}
       className={clsx(
         "relative flex h-full w-full max-w-100 flex-col rounded-lg border-4 border-brand-black/75 bg-brand-light-surface-2 pb-4",
         "shadow-[4px_4px_0px] shadow-brand-purple sm:shadow-[5px_5px_0px] lg:shadow-[6px_6px_0px]",
@@ -346,6 +355,6 @@ export default function ProductCardY2K({ product }: ProductCardProps) {
           </button>
         </div>
       </div>
-    </div>
+    </m.div>
   );
 }
