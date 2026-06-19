@@ -50,6 +50,11 @@ function NavPagesFallback({
   return (
     <nav aria-label={t("mainNavigation")} className="hidden lg:block">
       <ul className="flex items-center gap-6">
+        <NavItem
+          key="/"
+          item={{ href: "/", label: t("home") }}
+          active={isActive(pathname, "/")}
+        />
         {pages.map((item) => {
           const active = isActive(pathname, item.href.split("?")[0]);
           return <NavItem key={item.href} item={item} active={active} />;
