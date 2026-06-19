@@ -9,6 +9,7 @@ import { usePolaroidCarousel } from "../../hooks/usePolaroidCarousel";
 import { Heart } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { cva } from "class-variance-authority";
+import { ProductBadgeY2K } from "../ProductBadge";
 
 type Props = {
   product: Product;
@@ -19,7 +20,7 @@ type Props = {
 
 const photoWrapperStyles = cva("block", {
   variants: {
-    size: { feed: "px-3 pt-3", grid: "px-2 pt-2" },
+    size: { feed: "", grid: "px-2 pt-2" },
   },
 });
 
@@ -48,7 +49,7 @@ export function PolaroidProductImage({
       <div
         ref={imageContainerRef}
         className={clsx(
-          "relative aspect-square bg-brand-light-surface-2 dark:bg-brand-dark-surface-2",
+          "relative aspect-square dark:bg-brand-dark-surface-2",
           isZooming ? "overflow-visible z-50" : "overflow-hidden",
         )}
         onTouchStart={handleTouchStart}
@@ -92,9 +93,8 @@ export function PolaroidProductImage({
                   src={currentImage.url}
                   alt={currentImage.alt}
                   fill
-                  sizes="(max-width: 768px) 92vw, 420px"
                   className={clsx(
-                    "object-contain p-4",
+                    "object-cover",
                     !product.inStock && "grayscale",
                   )}
                   priority={index < 2}
@@ -119,32 +119,28 @@ export function PolaroidProductImage({
           </AnimatePresence>
         </m.div>
         {/* Y2K Badges — fora do wrapper de zoom para não escalar com a imagem */}
-        <div className="absolute top-2 left-2 z-10 flex gap-1.5">
+        <div className="absolute top-2 right-2 z-10 flex gap-1.5">
           {product.isNew && (
-            <span className="bg-brand-pink text-white text-[10px] font-bold font-poppins uppercase px-2 py-0.5 border border-black shadow-[2px_2px_0px] shadow-brand-blue">
+            <ProductBadgeY2K variant="new">
               {t("card.newBadge")}
-            </span>
-          )}
-          {product.isOnSale && product.compareAtPrice && (
-            <span className="bg-black text-white text-[10px] font-bold font-poppins px-2 py-0.5 border border-brand-pink shadow-[2px_2px_0px_#FF00B6] rotate-1">
-              -{discountPercentage(product.price, product.compareAtPrice)}%
-            </span>
+            </ProductBadgeY2K>
           )}
           {product.isOutlet && (
-            <span className="bg-brand-blue text-black text-[10px] font-bold font-poppins uppercase px-2 py-0.5 border border-black shadow-[2px_2px_0px] shadow-brand-pink-light">
+            <ProductBadgeY2K variant="outlet">
               {t("card.outletBadge")}
-            </span>
+            </ProductBadgeY2K>
+          )}
+          {product.isOnSale && product.compareAtPrice && (
+            <ProductBadgeY2K variant="sale">
+              -
+              {discountPercentage(
+                product.price,
+                product.compareAtPrice,
+              )}
+              %
+            </ProductBadgeY2K>
           )}
         </div>
-
-        {!product.inStock && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-            <span className="bg-red-600/90 text-white text-sm font-bold font-poppins uppercase px-4 py-1.5 border-2 border-white shadow-lg -rotate-12 tracking-widest">
-              {t("feed.soldOut")}
-            </span>
-          </div>
-        )}
-
         {sortedImages.length > 1 && (
           <div className="absolute bottom-2 left-0 right-0 z-10 flex justify-center gap-1.5 pointer-events-none">
             {sortedImages.map((_, i) => (

@@ -66,7 +66,7 @@ export default function ModalNavHeader({
           <div className="flex flex-col items-center justify-center">
             <h1
               className={clsx(
-                "text-brand-pink px-1 text-center text-shadow-[2px_2px_0px] text-shadow-brand-black/75 font-family-jocham font-light tracking-wide truncate",
+                "text-brand-pink px-1 py-0.5 text-center text-shadow-[2px_2px_0px] text-shadow-brand-black/75 font-family-jocham font-light tracking-wide truncate",
                 "dark:text-brand-purple",
                 "[-webkit-text-stroke:0.75px_rgba(18,18,18,0.8)] [text-stroke:0.75px_rgba(18,18,18,0.8)] dark:[-webkit-text-stroke:0.5px_rgba(18,18,18,1)] dark:[text-stroke:0.75px_rgba(18,18,18,1)]",
                 subtitle ? "text-[28px] leading-7" : "text-[32px] leading-8",

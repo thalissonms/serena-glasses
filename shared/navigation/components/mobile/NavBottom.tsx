@@ -23,10 +23,18 @@ export default function NavBottom() {
   const cartCount = useCartStore((s) => s.items.reduce((n, i) => n + i.quantity, 0));
   const { data: wishlist = [] } = useWishlist();
 
+  const isProductPage = pathname.startsWith("/products/") && pathname.split("/").length >= 3;
+
   useEffect(() => {
+    if (isProductPage) {
+      document.body.classList.remove("has-nav-bottom");
+      return;
+    }
     document.body.classList.add("has-nav-bottom");
     return () => document.body.classList.remove("has-nav-bottom");
-  }, []);
+  }, [isProductPage]);
+
+  if (isProductPage) return null;
 
   const counts: Record<string, number> = {
     "/cart": cartCount,

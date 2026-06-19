@@ -9,18 +9,18 @@ export default function CartPage() {
   const { items, removeItem, updateQuantity } = useCartStore();
   const mounted = useMounted();
 
+  const currentItems = mounted ? items : [];
+
   function changeQty(variantId: string, delta: number) {
-    const item = items.find((i) => i.variantId === variantId);
+    const item = currentItems.find((i) => i.variantId === variantId);
     if (item) updateQuantity(variantId, item.quantity + delta);
   }
-
-  if (!mounted) return null;
 
   return (
     <>
       <div className="hidden md:block">
         <CartPageContent
-          items={items}
+          items={currentItems}
           removeItem={removeItem}
           changeQty={changeQty}
         />
