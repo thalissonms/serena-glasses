@@ -6,7 +6,7 @@ import type { Product } from "@features/products/types/product.types";
 import { PolaroidProductImage } from "@features/products/components/mobile/PolaroidProductImages";
 import { useCallback, useState } from "react";
 import ProductColorSelect from "../ProductColorSelect";
-import { formatPrice, formatInstallment } from "../../utils/formatPrice";
+import { formatPrice, formatInstallment, discountPercentage } from "../../utils/formatPrice";
 import { useTranslation } from "react-i18next";
 import ProductDelivery from "../ProductDelivery";
 import ProductDescription from "../ProductDescription";
@@ -16,6 +16,7 @@ import { shareProduct } from "@features/products/utils/polaroidCard.utils";
 import ModalNavHeader from "@shared/navigation/components/mobile/modals/ModalNavHeader";
 
 import type { ReviewItem } from "../ProductReviews";
+import clsx from "clsx";
 
 export default function ProductMobileContent({ product, reviews }: { product: Product; reviews?: ReviewItem[] }) {
   const { t, i18n } = useTranslation("products");
@@ -32,21 +33,22 @@ export default function ProductMobileContent({ product, reviews }: { product: Pr
   return (
     <div className="min-h-screen bg-brand-pink-light dark:bg-brand-pink-bg-dark">
       <ModalNavHeader
-        pageToBack={"/products"}
+        pageToBack={"/"}
         isSharedButton={true}
         handleShared={handleShare}
         display={product.name}
         subtitle={getPrimaryTag(product, i18n.language)}
         buttons={{ labelBack: t("page.back"), labelShared: `${t("feed.actionShare")} ${product.name}` }}
       />
-      <article className="flex flex-col gap-4 mb-22 mt-4">
-        <section className="px-1">
-          <div className="w-full relative aspect-square bg-white dark:bg-brand-pink-dark shadow-[2px_2px_0px] shadow-black dark:shadow-brand-blue border-4 border-black dark:border-brand-pink-light">
+      <article className="flex flex-col gap-4 mb-22">
+        <section className="">
+          <div className={clsx("w-full relative aspect-square rounded-md",
+          )}>
             <PolaroidProductImage
               product={product}
               index={0}
               size="feed"
-              discountPercentage={() => 0}
+              discountPercentage={discountPercentage}
             />
             <div className="flex flex-col gap-6 p-4">
               <div className="w-full flex justify-between items-center">
