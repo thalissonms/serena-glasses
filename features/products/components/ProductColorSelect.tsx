@@ -3,6 +3,7 @@
 import { useTranslation } from "react-i18next";
 import { Product } from "../types";
 import clsx from "clsx";
+import Y2KBadge from "@/shared/components/ui/Y2KBadge";
 
 export default function ProductColorSelect({
   product,
@@ -28,28 +29,32 @@ export default function ProductColorSelect({
           {activeColor?.color.name}{" "}
         </span>
       </p>
-      <span className="text-brand-black text-sm dark:text-brand-white font-bold mb-0.5">
-        {" "}{t("page.colorLabel").slice(0, -1)}
-      </span>
-      <div className="flex gap-2 md:gap-3">
-        {uniqueColors.map(
-          (variant, i) =>
-            variant.inStock && (
-              <button
-                key={variant.color.slug}
-                onClick={() => onColorChange(i)}
-                title={variant.color.name}
-                style={{ backgroundColor: variant.color.hex }}
-                className={clsx(
-                  "w-7 h-7 md:w-6 md:h-6 md:rounded-full transition-all",
-                  variant.color.hex === "#FFFFFF" && "border border-brand-black/20",
-                  selectedColor === i
-                    ? "border-2 border-brand-yellow shadow-[2px_2px_0] shadow-brand-black scale-110"
-                    : "border border-brand-black hover:scale-110",
-                )}
-              />
-            ),
-        )}
+      <div className="flex flex-col gap-1">
+
+        <Y2KBadge text={t("page.colorLabel").slice(0, -1)} size={"mobile"} />
+        <div className="flex relative gap-2 md:gap-3">
+          {uniqueColors.map(
+            (variant, i) =>
+              variant.inStock && (
+                <div key={variant.color.slug} className="relative">
+                  <button
+                    onClick={() => onColorChange(i)}
+                    title={variant.color.name}
+                    style={{ backgroundColor: variant.color.hex }}
+                    className={clsx(
+                      "w-7 h-7 md:w-6 md:h-6 md:rounded-full relative transition-all rounded-md",
+                      variant.color.hex === "#FFFFFF" && "border border-brand-black/20",
+                      selectedColor === i
+                        ? "border-2 border-brand-yellow shadow-[2px_2px_0] shadow-brand-black scale-110"
+                        : "border-2 border-brand-black hover:scale-110",
+                    )}
+                  >
+                    <div className="w-6 h-6 md:w-5 md:h-5 absolute top-px left-px rounded-sm bg-linear-0 from-brand-white/20 via-white/5 to-transparent" />
+                  </button>
+                </div>
+              ),
+          )}
+        </div>
       </div>
     </div>
   );

@@ -31,7 +31,7 @@ export default function ProductMobileContent({ product, reviews }: { product: Pr
   );
 
   return (
-    <div className="min-h-screen bg-brand-pink-light dark:bg-brand-pink-bg-dark">
+    <div className="min-h-screen bg-brand-pink-light/60 dark:bg-brand-dark-surface-0">
       <ModalNavHeader
         pageToBack={"/"}
         isSharedButton={true}
@@ -50,11 +50,34 @@ export default function ProductMobileContent({ product, reviews }: { product: Pr
               size="feed"
               discountPercentage={discountPercentage}
             />
-            <div className="flex flex-col gap-6 p-4">
+            <div className="flex flex-col gap-6 -mt-2 px-4">
               <div className="w-full flex justify-between items-center">
-                <span className="w-fit h-fit inline-block text-[10px] font-bold tracking-[0.2em] uppercase text-brand-pink dark:text-brand-pink-light border-2 border-brand-pink dark:border-brand-pink-light px-2 py-1">
-                  {product.frameShape}
-                </span>
+                <div className={clsx("[clip-path:polygon(0%_0%,calc(100%-8px)_0%,100%_8px,100%_100%,0%_100%)] p-px flex justify-center items-center",
+                  "bg-brand-black/80 rounded-md",
+                  "dark:bg-brand-pink-light relative"
+                )}>
+                  <span className={clsx("w-fit h-fit inline-block text-[10px] tracking-[0.2em] uppercase text-brand-white dark:text-brand-black px-2 py-1",
+                    "[clip-path:polygon(0%_0%,calc(100%-7.5px)_0%,100%_7.5px,100%_100%,0%_100%)] rounded-[5px]",
+                    "bg-brand-pink font-family-poppins font-black text-shadow-[0.5px_0.5px_0px] text-shadow-brand-black/80"
+                  )}>
+                    {product.frameShape}
+                  </span>
+                  <div className={clsx("absolute [clip-path:polygon(0%_0%,calc(100%-7.5px)_0%,100%_7.5px,100%_100%,0%_100%)]",
+                    "bg-linear-0 from-brand-white/15 via-white/5 to-transparent w-full h-full top-0 right-0",
+                    "dark:bg-brand-pink-light"
+                  )} />
+
+                  <div className={clsx(
+                    "absolute right-0 top-0 rounded-lg pointer-events-none",
+                    "[clip-path:polygon(0%_0%,calc(100%-8px)_0%,100%_8px,100%_100%,0%_100%)]",
+                    "bg-brand-black/80 blur-sm w-2.5 h-2.5"
+                  )} />
+                  <div className={clsx(
+                    "absolute right-0 top-0 rounded-lg pointer-events-none",
+                    "[clip-path:polygon(0%_0%,calc(100%-8px)_0%,100%_8px,100%_100%,0%_100%)]",
+                    "bg-brand-light-surface-2 w-2.25 h-2.25"
+                  )} />
+                </div>
                 <ProductColorSelect
                   product={product}
                   selectedColor={selectedColor}

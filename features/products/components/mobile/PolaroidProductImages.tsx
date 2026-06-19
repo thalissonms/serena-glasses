@@ -49,7 +49,7 @@ export function PolaroidProductImage({
       <div
         ref={imageContainerRef}
         className={clsx(
-          "relative aspect-square dark:bg-brand-dark-surface-2",
+          "relative aspect-square",
           isZooming ? "overflow-visible z-50" : "overflow-hidden",
         )}
         onTouchStart={handleTouchStart}
@@ -118,7 +118,6 @@ export function PolaroidProductImage({
             </m.div>
           </AnimatePresence>
         </m.div>
-        {/* Y2K Badges — fora do wrapper de zoom para não escalar com a imagem */}
         <div className="absolute top-2 right-2 z-10 flex gap-1.5">
           {product.isNew && (
             <ProductBadgeY2K variant="new">
